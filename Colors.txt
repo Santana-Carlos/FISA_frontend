@@ -12,9 +12,9 @@ Green----------------Contactos
 ->idle->  #4F9A73
 ->focus-> #7358A5
 
-Pink-----------------Seguimiento
-->idle->  #F38AB4
-->focus-> #DE4F89
+Orange---------------Seguimiento
+->idle->  #DF7255
+->focus-> #CE4724
 
 Cyan-----------------Reportes
 ->idle->  #6ECFCF
