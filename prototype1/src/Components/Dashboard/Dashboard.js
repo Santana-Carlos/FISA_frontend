@@ -1,0 +1,139 @@
+import React from "react";
+import { Route, NavLink, Redirect } from "react-router-dom";
+import { Button } from "@material-ui/core/";
+import logo from "../../Assets/logo2.png";
+import Organizacion from "../Cards/Organizacion";
+import Contacto from "../Cards/Contacto";
+import Seguimiento from "../Cards/Seguimiento";
+import Reportes from "../Cards/Reportes";
+import Administracion from "../Cards/Administracion";
+import Seguridad from "../Cards/Seguridad";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { logOut, logoutToken, updateUser, updatePass } from "../../Actions";
+import SwitchWithSlide from "../SwitchWithSlide/SwitchWithSlide";
+import "./Dashboard.css";
+
+const Dashboard = () => {
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
+  const rol = useSelector((state) => state.rol);
+  const token = useSelector((state) => state.token);
+  const isLog = useSelector((state) => state.isLog);
+
+  const callApiLogout = () => {
+    clearInterval(window.refreshToken);
+    fetch("http://localhost:8000/api/auth/logout", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+    }).catch((error) => {
+      console.error("Error:", error);
+    });
+    dispatch(logoutToken(""));
+    dispatch(updateUser(""));
+    dispatch(updatePass(""));
+    dispatch(logOut());
+  };
+
+  return (
+    <div className="o-dashboard">
+      {isLog ? null : <Redirect exact to="/" />}
+      <div className="o-bannerDash">
+        <div className="o-bannerDash-btnContainer">
+          <NavLink className="o-btnBannerLogo" to="/dashboard">
+            <Button className="o-btnBanner-btn">
+              <img className="o-logoDash" src={logo} alt="Home" />
+            </Button>
+          </NavLink>
+          <NavLink
+            className="o-btnBanner"
+            activeClassName="o-btnBannerActive o-btnOrganizacion-active"
+            to="/dashboard/organizacion#/consultar_organizacion"
+          >
+            <Button className="o-btnBanner-btn">Organizaciones</Button>
+          </NavLink>
+          <NavLink
+            className="o-btnBanner"
+            activeClassName="o-btnBannerActive o-btnContacto-active"
+            to="/dashboard/contacto#/consultar_contacto"
+          >
+            <Button className="o-btnBanner-btn">Contactos</Button>
+          </NavLink>
+          <NavLink
+            className="o-btnBanner"
+            activeClassName="o-btnBannerActive o-btnSeguimiento-active"
+            to="/dashboard/seguimiento#/placeholder_1"
+          >
+            <Button className="o-btnBanner-btn">Seguimiento</Button>
+          </NavLink>
+          <NavLink
+            className="o-btnBanner"
+            activeClassName="o-btnBannerActive o-btnReportes-active"
+            to="/dashboard/reportes#/generar_reporte"
+          >
+            <Button className="o-btnBanner-btn">Reportes</Button>
+          </NavLink>
+          <NavLink
+            className="o-btnBanner"
+            activeClassName="o-btnBannerActive o-btnAdministracion-active"
+            to="/dashboard/administracion#/placeholder_1"
+          >
+            <Button className="o-btnBanner-btn">Administración</Button>
+          </NavLink>
+          <NavLink
+            className="o-btnBanner"
+            activeClassName="o-btnBannerActive o-btnSeguridad-active"
+            to="/dashboard/seguridad#/cambio_contraseña"
+          >
+            <Button className="o-btnBanner-btn">Seguridad</Button>
+          </NavLink>
+        </div>
+        <NavLink exact={true} to="/" className="o-btnBannerLogout">
+          <Button className="o-btnBanner-btn" onClick={callApiLogout}>
+            Salir
+          </Button>
+        </NavLink>
+      </div>
+      <SwitchWithSlide>
+        <Route exact path="/dashboard/">
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              width: "100%",
+              height: "100%",
+              alignItems: "center",
+              color: "#3e3e3e",
+            }}
+          >
+            <h1>Bienvenido {user}</h1>
+            <h3>(Sesión iniciada como {rol})</h3>
+          </div>
+        </Route>
+        <Route path="/dashboard/organizacion">
+          <Organizacion />
+        </Route>
+        <Route path="/dashboard/contacto">
+          <Contacto />
+        </Route>
+        <Route path="/dashboard/seguimiento">
+          <Seguimiento />
+        </Route>
+        <Route path="/dashboard/reportes">
+          <Reportes />
+        </Route>
+        <Route path="/dashboard/administracion">
+          <Administracion />
+        </Route>
+        <Route path="/dashboard/seguridad">
+          <Seguridad />
+        </Route>
+      </SwitchWithSlide>
+    </div>
+  );
+};
+
+export default Dashboard;

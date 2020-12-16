@@ -1,0 +1,23 @@
+Purple---------------Organizacion
+->idle->  #967ACC
+->focus-> #7358A5
+
+Green----------------Contactos
+->idle->  #4F9A73
+->focus-> #7358A5
+
+Pink-----------------Seguimiento
+->idle->  #F38AB4
+->focus-> #DE4F89
+
+Cyan-----------------Reportes
+->idle->  #6ECFCF
+->focus-> #1FA7A7
+
+Yellow---------------Administracion
+->idle->  #EFB248
+->focus-> #D98D0B
+
+Blue-----------------Seguridad
+->idle->  #608ADF
+->focus-> #3460B8

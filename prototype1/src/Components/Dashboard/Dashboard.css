@@ -1,0 +1,109 @@
+h1 {
+  color: #3e3e3e;
+  font-size: 32px;
+  margin: 2rem auto;
+}
+
+.o-dashboard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
+.o-bannerDash {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  height: 3rem;
+  width: 100%;
+  background-color: #ffffff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.o-bannerDash-btnContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+.o-logoDash {
+  display: flex;
+  height: 25px;
+}
+
+.o-btnBanner {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  width: 10rem;
+  padding: 0;
+  background-color: #ffffff;
+  color: #3e3e3e;
+  text-decoration-line: none;
+  text-align: center;
+}
+
+.o-btnBanner-btn {
+  display: flex;
+  height: 100%;
+  width: 100%;
+}
+
+.o-btnBannerLogout {
+  display: flex;
+  height: 100%;
+  width: 5rem;
+  text-decoration: none;
+}
+
+.o-btnBannerActive {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding: 0;
+  background-color: #dadada;
+  color: #ffffff;
+  text-decoration-line: none;
+  text-align: center;
+}
+
+.o-btnOrganizacion-active {
+  border-bottom: 4px solid #7358a5;
+}
+
+.o-btnContacto-active {
+  border-bottom: 4px solid #227d4d;
+}
+
+.o-btnSeguimiento-active {
+  border-bottom: 4px solid #de4f89;
+}
+
+.o-btnReportes-active {
+  border-bottom: 4px solid #1fa7a7;
+}
+
+.o-btnAdministracion-active {
+  border-bottom: 4px solid #d98d0b;
+}
+
+.o-btnSeguridad-active {
+  border-bottom: 4px solid #3460b8;
+}
+
+.o-btnBannerLogo {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  width: 6%;
+  padding: 0;
+  background-color: #ffffff;
+}

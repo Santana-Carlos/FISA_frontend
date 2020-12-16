@@ -1,0 +1,137 @@
+.o-cards {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+}
+
+.o-cardTitleCont {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  width: 82%;
+  margin: 1rem auto 0.6rem;
+  padding: 0;
+  font-size: 1.2rem;
+  color: #3e3e3e;
+}
+
+.o-bigCard {
+  display: flex;
+  width: 83%;
+  height: 88%;
+  margin: 0 auto;
+  padding: 0;
+  border-radius: 5px;
+  background-color: #ffffff;
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.4);
+  overflow: hidden;
+}
+
+.o-sidebar {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  width: 21%;
+  margin: 0;
+}
+
+.o-sidebar-organizacion {
+  background-color: #967acc;
+}
+
+.o-sidebar-contacto {
+  background-color: #4f9a73;
+}
+
+.o-sidebar-seguimiento {
+  background-color: #f38ab4;
+}
+
+.o-sidebar-reportes {
+  background-color: #6ecfcf;
+}
+
+.o-sidebar-administracion {
+  background-color: #efb248;
+}
+
+.o-sidebar-seguridad {
+  background-color: #608adf;
+}
+
+.o-btnSidebar {
+  display: flex;
+  width: 100%;
+  height: 11%;
+  margin: 0;
+  text-decoration-line: none;
+}
+
+.o-btnSidebar-btn {
+  display: flex;
+  height: 100%;
+  width: 100%;
+}
+
+.o-cardPlaceholder {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  width: 79%;
+  height: 100%;
+}
+
+/* Btn organizacion colors */
+.o-btnSidebar-organizacion {
+  background-color: #967acc;
+}
+
+.o-btnSidebar-organizacionActive {
+  background-color: #7358a5;
+}
+
+/* Btn contacto colors */
+.o-btnSidebar-contacto {
+  background-color: #4f9a73;
+}
+
+.o-btnSidebar-contactoActive {
+  background-color: #227d4d;
+}
+
+/* Btn seguimiento colors */
+.o-btnSidebar-seguimiento {
+  background-color: #f38ab4;
+}
+
+.o-btnSidebar-seguimientoActive {
+  background-color: #de4f89;
+}
+
+/* Btn reportes colors */
+.o-btnSidebar-reportes {
+  background-color: #6ecfcf;
+}
+
+.o-btnSidebar-reportesActive {
+  background-color: #1fa7a7;
+}
+
+/* Btn administracion colors */
+.o-btnSidebar-administracion {
+  background-color: #efb248;
+}
+
+.o-btnSidebar-administracionActive {
+  background-color: #d98d0b;
+}
+
+/* Btn seguridad colors */
+.o-btnSidebar-seguridad {
+  background-color: #608adf;
+}
+
+.o-btnSidebar-seguridadActive {
+  background-color: #3460b8;
+}

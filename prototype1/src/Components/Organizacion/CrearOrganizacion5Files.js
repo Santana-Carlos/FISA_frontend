@@ -1,0 +1,397 @@
+import React, { Component } from "react";
+import { saveAs } from "file-saver";
+import {
+  IconButton,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Table,
+  TableBody,
+  TableContainer,
+  TableHead,
+  TableRow,
+} from "@material-ui/core";
+import {
+  Delete as IconDelete,
+  Publish as IconUpload,
+  GetApp as IconDownload,
+} from "@material-ui/icons";
+import {
+  BlueButton,
+  GreenButton,
+  RedButton,
+  StyledTableCell,
+  StyledTableCellBig,
+} from "../Buttons";
+import { Link, Redirect } from "react-router-dom";
+import TxtIcon from "../../Assets/01_ext.png";
+import DocIcon from "../../Assets/02_ext.png";
+import DocxIcon from "../../Assets/03_ext.png";
+import XlsIcon from "../../Assets/04_ext.png";
+import XlsxIcon from "../../Assets/05_ext.png";
+import CsvIcon from "../../Assets/06_ext.png";
+import PdfIcon from "../../Assets/07_ext.png";
+import JpgIcon from "../../Assets/08_ext.png";
+import JpegIcon from "../../Assets/09_ext.png";
+import PngIcon from "../../Assets/10_ext.png";
+import "../Styles.css";
+
+const iconos = [
+  TxtIcon,
+  DocIcon,
+  DocxIcon,
+  XlsIcon,
+  XlsxIcon,
+  CsvIcon,
+  PdfIcon,
+  JpgIcon,
+  JpegIcon,
+  PngIcon,
+];
+const exts = [
+  "txt",
+  "doc",
+  "docx",
+  "xls",
+  "xlsx",
+  "csv",
+  "pdf",
+  "jpg",
+  "jpeg",
+  "png",
+];
+
+class CrearOrganizacion5Files extends Component {
+  constructor(props) {
+    super();
+    this.state = {
+      dbid_org: props.dbid_org,
+      token: props.token,
+      temp_files_fil: "",
+      temp_id_fil: "",
+      files: [],
+      delFile: false,
+      createS: false,
+    };
+
+    this.handleChange = this.handleChange.bind(this);
+  }
+
+  componentDidMount() {
+    this.callAPi();
+  }
+
+  callAPi = () => {
+    const data = {
+      organizacion_id: this.state.dbid_org,
+    };
+    fetch("http://localhost:8000/api/auth/Archivo/Org", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + this.props.token,
+      },
+      body: JSON.stringify(data),
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        this.setState({
+          files: data.archivos,
+        });
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  };
+
+  handleClickOpenDel = () => {
+    this.setState({ delFile: true });
+  };
+
+  callAPiDownload = () => {
+    const nameFile = this.state.files[
+      this.state.files.findIndex((x) => x.id === this.state.temp_id_fil)
+    ].nombre;
+    const idFile = this.state.temp_id_fil;
+    fetch("http://localhost:8000/api/auth/Archivo/" + idFile, {
+      method: "GET",
+      headers: {
+        Authorization: "Bearer " + this.props.token,
+      },
+    })
+      .then((response) => {
+        return response.blob();
+      })
+      .then((data) => {
+        saveAs(data, nameFile);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  };
+
+  handleCloseDel = (a) => {
+    const idFile = this.state.temp_id_fil;
+    if (a) {
+      fetch("http://localhost:8000/api/auth/Archivo/" + idFile, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + this.props.token,
+        },
+      })
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {})
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    }
+    this.setState({
+      delFile: false,
+      temp_id_fil: "",
+    });
+    setTimeout(this.callAPi, 2000);
+    setTimeout(this.callAPi, 5000);
+    setTimeout(this.callAPi, 10000);
+  };
+
+  handleChange(event) {
+    let name = event.target.name;
+    const files = event.target.files[0];
+
+    switch (name) {
+      case "input_file_fil":
+        if (files.size !== undefined) {
+          this.setState({ temp_files_fil: files }, this.callApiUpFile);
+        }
+        break;
+      default:
+        break;
+    }
+  }
+
+  callApiUpFile = () => {
+    const fileTemp = this.state.temp_files_fil;
+
+    if (fileTemp.size < 5300000) {
+      const data = new FormData();
+      data.append("file", this.state.temp_files_fil);
+      data.append("organizacion_id", this.state.dbid_org);
+
+      fetch("http://localhost:8000/api/auth/Archivo/Upload", {
+        method: "POST",
+        headers: {
+          Authorization: "Bearer " + this.props.token,
+        },
+        body: data,
+      })
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          console.log(data);
+          if (data.success) {
+          }
+        })
+        .catch((error) => {
+          this.setState({ createS: true });
+        });
+      setTimeout(this.callAPi, 2000);
+      setTimeout(this.callAPi, 5000);
+      setTimeout(this.callAPi, 10000);
+    } else {
+      this.setState({ createS: true });
+    }
+  };
+
+  render() {
+    const BOX_SIZE = window.innerHeight > 900 ? "24rem" : "13rem";
+    return (
+      <div className="o-cardContent">
+        {this.props.dbid_org === "" ? (
+          <Redirect exact to="/crear_organizacion" />
+        ) : null}
+        <div className="o-contentTittle">
+          <h3 className="o-contentTittle-principal">Lista de archivos</h3>
+          <div className="o-text-nameOrg">
+            {" "}
+            {"Organización: "}
+            {this.props.name_org || ""}
+          </div>
+        </div>
+        <div className="o-contentTittle-sub" style={{ marginTop: "1rem" }}>
+          {"Tamaño máximo: 5MB"}
+        </div>
+        <div
+          className="o-contentTittle-sub"
+          style={{ marginTop: "0.5rem", marginBottom: "0.2rem" }}
+        >
+          {"Archivos permitidos:"}
+        </div>
+        <div
+          style={{ display: "flex", flexDirection: "row", marginTop: "0.2rem" }}
+        >
+          {iconos.map((obj, i) => (
+            <img
+              style={{ marginRight: "0.8rem", maxHeight: "3rem" }}
+              key={i}
+              src={obj}
+              alt="icono"
+            />
+          ))}
+        </div>
+        <div className="o-contentForm-big">
+          <div className="o-tableContainer">
+            <TableContainer
+              className="o-tableBase-files"
+              style={{ maxHeight: BOX_SIZE }}
+            >
+              <Table stickyHeader size="small">
+                <TableHead>
+                  <TableRow>
+                    <StyledTableCellBig>Nombre</StyledTableCellBig>
+                    <StyledTableCell>Tipo</StyledTableCell>
+                    <StyledTableCell>Creación</StyledTableCell>
+                    <StyledTableCell></StyledTableCell>
+                    <StyledTableCell></StyledTableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {this.state.files.map((obj, i) => (
+                    <TableRow key={i}>
+                      <StyledTableCellBig size="small">
+                        {obj.nombre}
+                      </StyledTableCellBig>
+                      <StyledTableCell size="small">
+                        <img
+                          style={{ maxHeight: "2rem" }}
+                          key={i}
+                          src={iconos[exts.findIndex((x) => x === obj.tipo)]}
+                          alt="icono"
+                        />
+                      </StyledTableCell>
+                      <StyledTableCell size="small">
+                        {obj.creacion}
+                      </StyledTableCell>
+                      <StyledTableCell
+                        size="small"
+                        style={{ paddingRight: "0.1rem" }}
+                      >
+                        <IconButton
+                          size="small"
+                          className="o-tinyBtn"
+                          color="primary"
+                          onClick={() =>
+                            this.setState(
+                              { temp_id_fil: obj.id },
+                              this.callAPiDownload
+                            )
+                          }
+                        >
+                          <IconDownload />
+                        </IconButton>
+                      </StyledTableCell>
+                      <StyledTableCell
+                        size="small"
+                        className="o-tinyBtn"
+                        style={{ paddingLeft: "0.1rem" }}
+                      >
+                        <IconButton
+                          size="small"
+                          color="secondary"
+                          onClick={() =>
+                            this.setState(
+                              { temp_id_fil: obj.id },
+                              this.handleClickOpenDel
+                            )
+                          }
+                        >
+                          <IconDelete />
+                        </IconButton>
+                      </StyledTableCell>
+                    </TableRow>
+                  ))}
+                  {this.state.files[0] === undefined ? (
+                    <TableRow>
+                      <StyledTableCell>...</StyledTableCell>
+                    </TableRow>
+                  ) : null}
+                </TableBody>
+              </Table>
+            </TableContainer>
+            <div className="o-btnAnadirTable">
+              <BlueButton variant="contained" component="label">
+                Subir
+                <IconUpload style={{ marginLeft: "0.5rem" }} size="small" />
+                <input
+                  type="file"
+                  name="input_file_fil"
+                  onChange={this.handleChange}
+                  hidden
+                />
+              </BlueButton>
+            </div>
+          </div>
+        </div>
+        <div className="o-btnBotNav">
+          <Link to="/crear_organizacion/finanzas" className="o-btnBotNav-btn">
+            <BlueButton>Anterior</BlueButton>
+          </Link>
+          <Link
+            exact="true"
+            to="/consultar_organizacion"
+            className="o-btnBotNav-btn"
+          >
+            <GreenButton>Finalizar</GreenButton>
+          </Link>
+        </div>
+        <Dialog
+          disableBackdropClick
+          disableEscapeKeyDown
+          open={this.state.delFile}
+          onClose={() => this.handleCloseDel(false)}
+          maxWidth={false}
+        >
+          <DialogTitle style={{ textAlign: "center" }}>
+            ¿Desea eliminar el archivo?
+          </DialogTitle>
+          <DialogContent></DialogContent>
+          <DialogActions style={{ justifyContent: "center" }}>
+            <div className="o-btnBotNav-btnDiag3">
+              <RedButton onClick={() => this.handleCloseDel(true)}>
+                Eliminar
+              </RedButton>
+            </div>
+            <div className="o-btnBotNav-btnDiag3">
+              <GreenButton onClick={() => this.handleCloseDel(false)}>
+                Cancelar
+              </GreenButton>
+            </div>
+          </DialogActions>
+        </Dialog>
+        <Dialog open={this.state.createS} maxWidth={false}>
+          <DialogTitle style={{ textAlign: "center" }}>
+            {"El archivo no se pudo subir"}
+          </DialogTitle>
+          <DialogContent style={{ textAlign: "center" }}>
+            (Tipo de archivo inválido o demasiado pesado)
+          </DialogContent>
+          <DialogActions style={{ justifyContent: "center" }}>
+            <div className="o-btnBotNav-btnDiag3">
+              <GreenButton onClick={() => this.setState({ createS: false })}>
+                {"Aceptar"}
+              </GreenButton>
+            </div>
+          </DialogActions>
+        </Dialog>
+      </div>
+    );
+  }
+}
+
+export default CrearOrganizacion5Files;
