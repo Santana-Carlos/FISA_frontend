@@ -1,3 +1,9 @@
+Lighgray-------------General
+->appBackground-> #F6F6F6
+
+Gray-----------------General
+->items-> #3E3E3E 
+
 Purple---------------Organizacion
 ->idle->  #967ACC
 ->focus-> #7358A5

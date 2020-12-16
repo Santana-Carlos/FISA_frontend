@@ -1,0 +1,10 @@
+npm install react-router-dom
+npm install @material-ui/core
+npm install @material-ui/lab
+npm install @material-ui/icons
+npm install @material-ui/pickers
+npm i @date-io/date-fns@1.x date-fns
+npm install file-saver --save
+npm install redux
+npm install react-redux
+npm install redux-persist
