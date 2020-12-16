@@ -79,7 +79,7 @@ class ConsultarOrganizacion extends Component {
   }
 
   componentDidMount() {
-    setTimeout(this.callAPi, 1200);
+    setTimeout(this.callAPi, 400);
   }
 
   callAPi = () => {

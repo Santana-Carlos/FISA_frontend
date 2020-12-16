@@ -22,6 +22,7 @@ import {
 
 const Login = () => {
   const [diag, setDiag] = React.useState(false);
+  const [diagserver, setDiagserver] = React.useState(false);
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
   const pass = useSelector((state) => state.pass);
@@ -70,7 +71,7 @@ const Login = () => {
         }
       })
       .catch((error) => {
-        console.error("Error:", error);
+        setDiagserver(true);
       });
   };
 
@@ -114,7 +115,7 @@ const Login = () => {
             className="o-btnLogin-btn"
             onClick={callApiLogin}
           >
-            Iniciar sesión
+            {"Iniciar sesión"}
           </BlueButton>
         </div>
       </div>
@@ -125,12 +126,34 @@ const Login = () => {
         maxWidth={false}
       >
         <DialogTitle style={{ textAlign: "center" }}>
-          Credenciales inválidas
+          {"Credenciales inválidas"}
         </DialogTitle>
         <DialogContent></DialogContent>
         <DialogActions style={{ justifyContent: "center" }}>
           <div className="o-btnBotNav-btnDiag3">
-            <GreenButton onClick={() => setDiag(false)}>Aceptar</GreenButton>
+            <GreenButton onClick={() => setDiag(false)}>
+              {"Aceptar"}
+            </GreenButton>
+          </div>
+        </DialogActions>
+      </Dialog>
+      <Dialog
+        disableBackdropClick
+        disableEscapeKeyDown
+        open={diagserver}
+        maxWidth={false}
+      >
+        <DialogTitle style={{ textAlign: "center" }}>
+          {"Servidor no disponible"}
+        </DialogTitle>
+        <DialogContent style={{ textAlign: "center" }}>
+          {"(El servidor presenta problemas o no se encuentra disponible)"}
+        </DialogContent>
+        <DialogActions style={{ justifyContent: "center" }}>
+          <div className="o-btnBotNav-btnDiag3">
+            <GreenButton onClick={() => setDiagserver(false)}>
+              {"Aceptar"}
+            </GreenButton>
           </div>
         </DialogActions>
       </Dialog>
