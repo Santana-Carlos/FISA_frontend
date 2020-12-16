@@ -45,7 +45,7 @@
 }
 
 .o-sidebar-seguimiento {
-  background-color: #f38ab4;
+  background-color: #df7255;
 }
 
 .o-sidebar-reportes {
@@ -102,11 +102,11 @@
 
 /* Btn seguimiento colors */
 .o-btnSidebar-seguimiento {
-  background-color: #f38ab4;
+  background-color: #df7255;
 }
 
 .o-btnSidebar-seguimientoActive {
-  background-color: #de4f89;
+  background-color: #ce4724;
 }
 
 /* Btn reportes colors */
