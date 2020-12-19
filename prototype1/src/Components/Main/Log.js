@@ -30,7 +30,7 @@ const Log = () => {
         .catch((error) => {
           console.error("Error:", error);
         });
-    }, 900000);
+    }, 3600000);
   }
   return <Dashboard />;
 };

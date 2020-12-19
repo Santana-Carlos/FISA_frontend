@@ -661,14 +661,13 @@ class CrearOrganizacion2Oficinas extends Component {
                 <h3 className="o-diagSubTittle">Otros datos</h3>
                 <div style={{ marginBottom: BOX_SPACING }}>
                   <TextField
-                    label="Teléfono*"
+                    label="Teléfono"
                     variant="outlined"
                     name="input_tel_ofi"
                     value={this.state.temp_tel_ofi || ""}
                     onChange={this.handleChange}
                     className="o-space"
                     margin="dense"
-                    error={this.state.reqText && this.state.temp_tel_ofi === ""}
                   />
                 </div>
                 <div style={{ marginBottom: BOX_SPACING }}>
@@ -777,7 +776,7 @@ class CrearOrganizacion2Oficinas extends Component {
             {"Datos inválidos o insuficientes"}
           </DialogTitle>
           <DialogContent style={{ textAlign: "center" }}>
-            {"(Puede que el contacto ya exista)"}
+            {"(Puede que la oficina ya exista)"}
           </DialogContent>
           <DialogActions style={{ justifyContent: "center" }}>
             <div className="o-btnBotNav-btnDiag3">

@@ -225,13 +225,21 @@ class CrearOrganizacion1DatosBasicos extends Component {
   }
 
   handleDateAfi = (date) => {
-    date.setHours(12);
-    this.setState({ fechaafi_org: date });
+    if (date !== null && date !== "") {
+      date.setHours(12);
+      this.setState({ fechaafi_org: date });
+    } else {
+      this.setState({ fechaafi_org: "" });
+    }
   };
 
   handleDateDesafi = (date) => {
-    date.setHours(12);
-    this.setState({ fechadesafi_org: date });
+    if (date !== null && date !== "") {
+      date.setHours(12);
+      this.setState({ fechadesafi_org: date });
+    } else {
+      this.setState({ fechadesafi_org: "" });
+    }
   };
 
   apiPost = (a) => {
@@ -323,6 +331,7 @@ class CrearOrganizacion1DatosBasicos extends Component {
       empind_org: "",
       estado_org: "",
       ciiu_org: [],
+      ciiuFake_org: [],
     });
   };
 
@@ -422,14 +431,13 @@ class CrearOrganizacion1DatosBasicos extends Component {
                 </div>
                 <div style={{ marginBottom: BOX_SPACING }}>
                   <TextField
-                    label="Razón social*"
+                    label="Razón social"
                     variant="outlined"
                     name="input_razsoc_org"
                     value={this.state.razsoc_org || ""}
                     onChange={this.handleChange}
                     className="o-space"
                     margin="dense"
-                    error={this.state.reqText && this.state.razsoc_org === ""}
                   />
                 </div>
                 <FormControl
@@ -468,10 +476,9 @@ class CrearOrganizacion1DatosBasicos extends Component {
                   style={{ maxWidth: "100%" }}
                   variant="outlined"
                   margin="dense"
-                  error={this.state.reqText && this.state.pais_org === ""}
                 >
                   <InputLabel id="demo-simple-select-outlined-label">
-                    País*
+                    País
                   </InputLabel>
                   <Select
                     labelId="demo-simple-select-outlined-label"
@@ -497,10 +504,9 @@ class CrearOrganizacion1DatosBasicos extends Component {
                   style={{ maxWidth: "100%" }}
                   variant="outlined"
                   margin="dense"
-                  error={this.state.reqText && this.state.tipo_org === ""}
                 >
                   <InputLabel id="demo-simple-select-outlined-label">
-                    Tipo organización*
+                    Tipo organización
                   </InputLabel>
                   <Select
                     labelId="demo-simple-select-outlined-label"
@@ -543,10 +549,9 @@ class CrearOrganizacion1DatosBasicos extends Component {
                   style={{ maxWidth: "100%" }}
                   variant="outlined"
                   margin="dense"
-                  error={this.state.reqText && this.state.clase_org === ""}
                 >
                   <InputLabel id="demo-simple-select-outlined-label">
-                    Clase organización*
+                    Clase organización
                   </InputLabel>
                   <Select
                     labelId="demo-simple-select-outlined-label"
@@ -576,10 +581,9 @@ class CrearOrganizacion1DatosBasicos extends Component {
                   style={{ maxWidth: "100%" }}
                   variant="outlined"
                   margin="dense"
-                  error={this.state.reqText && this.state.sectoreco_org === ""}
                 >
                   <InputLabel id="demo-simple-select-outlined-label">
-                    Sector económico*
+                    Sector económico
                   </InputLabel>
                   <Select
                     labelId="demo-simple-select-outlined-label"
@@ -610,10 +614,9 @@ class CrearOrganizacion1DatosBasicos extends Component {
                   variant="outlined"
                   margin="dense"
                   disabled={this.state.sectoreco_org === ""}
-                  error={this.state.reqText && this.state.subsececo_org === ""}
                 >
                   <InputLabel id="demo-simple-select-outlined-label">
-                    Subsector económico*
+                    Subsector económico
                   </InputLabel>
                   <Select
                     labelId="demo-simple-select-outlined-label"
@@ -663,15 +666,12 @@ class CrearOrganizacion1DatosBasicos extends Component {
                 <div style={{ marginBottom: BOX_SPACING }}>
                   <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     <KeyboardDatePicker
-                      error={
-                        this.state.reqText && this.state.fechaafi_org === ""
-                      }
                       disableToolbar
                       inputVariant="outlined"
                       variant="inline"
                       format="dd/MM/yy"
                       margin="dense"
-                      label="Fecha afiliacion*"
+                      label="Fecha afiliacion"
                       value={this.state.fechaafi_org || null}
                       onChange={this.handleDateAfi}
                       className="o-space"

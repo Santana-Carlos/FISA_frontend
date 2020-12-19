@@ -12,6 +12,8 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  Fade,
+  CircularProgress,
 } from "@material-ui/core";
 import {
   MuiPickersUtilsProvider,
@@ -76,6 +78,7 @@ class Consultar1DatosBasicos extends Component {
       ciiu_org_api: [],
       dbid_org: "",
       indexCat: -1,
+      loading: true,
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -160,6 +163,7 @@ class Consultar1DatosBasicos extends Component {
             empind_org: data.organizacion.empleados_indirectos,
             estado_org: data.organizacion.estado,
             ciiu_org: data.actividades,
+            loading: false,
           },
           this.callApiSubsector
         );
@@ -277,16 +281,25 @@ class Consultar1DatosBasicos extends Component {
   }
 
   handleDateAfi = (date) => {
-    date.setHours(12);
-    this.setState({ fechaafi_org: date });
+    if (date !== null && date !== "") {
+      date.setHours(12);
+      this.setState({ fechaafi_org: date });
+    } else {
+      this.setState({ fechaafi_org: "" });
+    }
   };
 
   handleDateDesafi = (date) => {
-    date.setHours(12);
-    this.setState({ fechadesafi_org: date });
+    if (date !== null && date !== "") {
+      date.setHours(12);
+      this.setState({ fechadesafi_org: date });
+    } else {
+      this.setState({ fechadesafi_org: "" });
+    }
   };
 
   apiPost = () => {
+    this.setState({ loading: true });
     const idOrg = this.props.dbid_org;
     const data = {
       nombre: this.state.nomcom_org,
@@ -385,7 +398,19 @@ class Consultar1DatosBasicos extends Component {
             campos marcados con * son obligatorios
           </h4>
           <div className="o-text-nameOrg">
-            {" "}
+            <Fade
+              in={this.state.loading}
+              style={{
+                transitionDelay: "200ms",
+                marginRight: "1rem",
+              }}
+              unmountOnExit
+            >
+              <div style={{ fontSize: "1rem" }}>
+                {"Cargando... "}
+                <CircularProgress size={"1rem"} thickness={6} />
+              </div>
+            </Fade>
             {"Organización: "}
             {this.props.name_org || ""}
           </div>
@@ -452,14 +477,13 @@ class Consultar1DatosBasicos extends Component {
             </div>
             <div style={{ marginBottom: BOX_SPACING }}>
               <TextField
-                label="Razón social*"
+                label="Razón social"
                 variant="outlined"
                 name="input_razsoc_org"
                 value={this.state.razsoc_org || ""}
                 onChange={this.handleChange}
                 className="o-space"
                 margin="dense"
-                error={this.state.reqText && this.state.razsoc_org === ""}
               />
             </div>
             <FormControl
@@ -495,10 +519,9 @@ class Consultar1DatosBasicos extends Component {
               style={{ maxWidth: "100%" }}
               variant="outlined"
               margin="dense"
-              error={this.state.reqText && this.state.pais_org === ""}
             >
               <InputLabel id="demo-simple-select-outlined-label">
-                País*
+                País
               </InputLabel>
               <Select
                 labelId="demo-simple-select-outlined-label"
@@ -524,10 +547,9 @@ class Consultar1DatosBasicos extends Component {
               style={{ maxWidth: "100%" }}
               variant="outlined"
               margin="dense"
-              error={this.state.reqText && this.state.tipo_org === ""}
             >
               <InputLabel id="demo-simple-select-outlined-label">
-                Tipo organización*
+                Tipo organización
               </InputLabel>
               <Select
                 labelId="demo-simple-select-outlined-label"
@@ -570,10 +592,9 @@ class Consultar1DatosBasicos extends Component {
               style={{ maxWidth: "100%" }}
               variant="outlined"
               margin="dense"
-              error={this.state.reqText && this.state.clase_org === ""}
             >
               <InputLabel id="demo-simple-select-outlined-label">
-                Clase organización*
+                Clase organización
               </InputLabel>
               <Select
                 labelId="demo-simple-select-outlined-label"
@@ -600,10 +621,9 @@ class Consultar1DatosBasicos extends Component {
               style={{ maxWidth: "100%" }}
               variant="outlined"
               margin="dense"
-              error={this.state.reqText && this.state.sectoreco_org === ""}
             >
               <InputLabel id="demo-simple-select-outlined-label">
-                Sector económico*
+                Sector económico
               </InputLabel>
               <Select
                 labelId="demo-simple-select-outlined-label"
@@ -634,17 +654,16 @@ class Consultar1DatosBasicos extends Component {
               variant="outlined"
               margin="dense"
               disabled={this.state.sectoreco_org === ""}
-              error={this.state.reqText && this.state.subsececo_org === ""}
             >
               <InputLabel id="demo-simple-select-outlined-label">
-                Subsector económico*
+                Subsector económico
               </InputLabel>
               <Select
                 labelId="demo-simple-select-outlined-label"
                 id="demo-simple-select-outlined"
                 value={this.state.subsececo_org || ""}
                 onChange={this.handleChange}
-                label="Subsector económico*"
+                label="Subsector económico"
                 name="input_subsececo_org"
                 className="o-space"
                 style={{ marginBottom: BOX_SPACING }}
@@ -687,13 +706,12 @@ class Consultar1DatosBasicos extends Component {
             <div style={{ marginBottom: BOX_SPACING }}>
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <KeyboardDatePicker
-                  error={this.state.reqText && this.state.fechaafi_org === ""}
                   disableToolbar
                   inputVariant="outlined"
                   variant="inline"
                   format="dd/MM/yy"
                   margin="dense"
-                  label="Fecha afiliacion*"
+                  label="Fecha afiliacion"
                   value={this.state.fechaafi_org || null}
                   onChange={this.handleDateAfi}
                   className="o-space"

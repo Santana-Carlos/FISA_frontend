@@ -7,6 +7,7 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  CircularProgress,
 } from "@material-ui/core/";
 import { BlueButton, GreenButton } from "../Buttons";
 import { Link } from "react-router-dom";
@@ -21,6 +22,7 @@ import {
 } from "../../Actions";
 
 const Login = () => {
+  const [loading, setloading] = React.useState(false);
   const [diag, setDiag] = React.useState(false);
   const [diagserver, setDiagserver] = React.useState(false);
   const dispatch = useDispatch();
@@ -44,11 +46,12 @@ const Login = () => {
   };
 
   const callApiLogin = () => {
+    setloading(true);
     const data = {
       usuario: user,
       password: pass,
     };
-    fetch("http://localhost:8000/api/auth/login", {
+    fetch(process.env.REACT_APP_API_URL + "login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -64,13 +67,16 @@ const Login = () => {
           dispatch(loginToken(data.token));
           dispatch(updateRol(data.rol));
           dispatch(logIn());
+          setloading(false);
           window.location.assign("/dashboard");
         } else {
+          setloading(false);
           dispatch(logOut());
           setDiag(true);
         }
       })
       .catch((error) => {
+        setloading(false);
         setDiagserver(true);
       });
   };
@@ -156,6 +162,21 @@ const Login = () => {
             </GreenButton>
           </div>
         </DialogActions>
+      </Dialog>
+      <Dialog
+        disableBackdropClick
+        disableEscapeKeyDown
+        open={loading}
+        maxWidth={false}
+      >
+        <DialogContent
+          style={{ justifyContent: "center", alignItems: "center" }}
+        >
+          <div style={{ fontSize: "1.2rem", margin: "1rem" }}>
+            {"Iniciando sesión... "}
+            <CircularProgress size={"1.5rem"} thickness={6} />
+          </div>
+        </DialogContent>
       </Dialog>
     </div>
   );

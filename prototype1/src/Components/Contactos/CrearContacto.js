@@ -399,20 +399,16 @@ class CrearContacto extends Component {
                 error={this.state.reqText && this.state.temp_apell_con === ""}
               />
             </div>
-            <FormControl
-              variant="outlined"
-              margin="dense"
-              error={this.state.reqText && this.state.temp_sex_con === ""}
-            >
+            <FormControl variant="outlined" margin="dense">
               <InputLabel id="demo-simple-select-outlined-label">
-                Sexo*
+                Sexo
               </InputLabel>
               <Select
                 labelId="demo-simple-select-outlined-label"
                 id="demo-simple-select-outlined"
                 value={this.state.temp_sex_con}
                 onChange={this.handleChange}
-                label="Sexo*"
+                label="Sexo"
                 name="input_sex_con"
                 className="o-space"
                 style={{ marginBottom: BOX_SPACING }}
@@ -503,14 +499,13 @@ class CrearContacto extends Component {
             <h3 className="o-innerSubTittle2">Datos de contacto</h3>
             <div style={{ marginBottom: BOX_SPACING }}>
               <TextField
-                label="Celular*"
+                label="Celular"
                 variant="outlined"
                 name="input_cel_con"
                 value={this.state.temp_cel_con || ""}
                 onChange={this.handleChange}
                 className="o-space"
                 margin="dense"
-                error={this.state.reqText && this.state.temp_cel_con === ""}
               />
             </div>
             <div style={{ marginBottom: BOX_SPACING }}>
@@ -526,14 +521,13 @@ class CrearContacto extends Component {
             </div>
             <div style={{ marginBottom: BOX_SPACING }}>
               <TextField
-                label="Correo*"
+                label="Correo"
                 variant="outlined"
                 name="input_correo_con"
                 value={this.state.temp_correo_con || ""}
                 onChange={this.handleChange}
                 className="o-space"
                 margin="dense"
-                error={this.state.reqText && this.state.temp_correo_con === ""}
               />
             </div>
           </div>

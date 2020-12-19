@@ -17,6 +17,8 @@ import {
   IconButton,
   FormControlLabel,
   Checkbox,
+  Fade,
+  CircularProgress,
 } from "@material-ui/core";
 import {
   BlueButton,
@@ -73,6 +75,7 @@ class ConsultarOrganizacion extends Component {
       delOrg: false,
       delcheck: false,
       delcheckOpen: false,
+      loading: true,
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -97,6 +100,7 @@ class ConsultarOrganizacion extends Component {
         if (data.success) {
           this.setState({
             orgs: data.organizaciones,
+            loading: false,
           });
         }
       })
@@ -106,6 +110,7 @@ class ConsultarOrganizacion extends Component {
   };
 
   apiSearch = () => {
+    this.setState({ loading: true });
     const tipo1 = this.state.tipo1;
     const tipo2 = this.state.tipo2 === "" ? tipo1 : this.state.tipo2;
     const tipo3 = this.state.tipo3 === "" ? tipo1 : this.state.tipo3;
@@ -136,6 +141,7 @@ class ConsultarOrganizacion extends Component {
         .then((data) => {
           if (data.success) {
             this.setState({
+              loading: false,
               orgs: data.organizaciones,
               reqText: false,
             });
@@ -145,7 +151,7 @@ class ConsultarOrganizacion extends Component {
           console.error("Error:", error);
         });
     } else {
-      this.setState({ reqText: true, createS: true });
+      this.setState({ loading: false, reqText: true, createS: true });
       this.callAPi();
     }
   };
@@ -158,6 +164,7 @@ class ConsultarOrganizacion extends Component {
     const idOrg = this.state.temp_id_org;
     if (a) {
       if (this.state.delcheck) {
+        this.setState({ loading: true });
         fetch("http://localhost:8000/api/auth/Organizacion/" + idOrg, {
           method: "DELETE",
           headers: {
@@ -205,6 +212,7 @@ class ConsultarOrganizacion extends Component {
   clearFunc = () => {
     this.setState(
       {
+        loading: true,
         tipo1: "",
         tipo2: "",
         tipo3: "",
@@ -271,14 +279,33 @@ class ConsultarOrganizacion extends Component {
 
   render() {
     const BOX_SPACING = window.innerHeight > 900 ? "0.4rem" : "0rem";
+    const BOX_SIZE = window.innerHeight > 900 ? "30rem" : "17rem";
     return (
       <Switch>
         <Route exact path="/consultar_organizacion">
           <div className="o-cardContent">
             <div className="o-contentTittle">
-              <h3 className="o-contentTittle-principal">
+              <h3
+                className="o-contentTittle-principal"
+                style={{ marginTop: "0.2rem" }}
+              >
                 Consultar organizaciones
               </h3>
+              <div className="o-text-nameOrg">
+                <Fade
+                  in={this.state.loading}
+                  style={{
+                    transitionDelay: "200ms",
+                    marginRight: "1rem",
+                  }}
+                  unmountOnExit
+                >
+                  <div style={{ fontSize: "1rem" }}>
+                    {"Cargando... "}
+                    <CircularProgress size={"1rem"} thickness={6} />
+                  </div>
+                </Fade>
+              </div>
             </div>
             <div className="o-contentForm-big-consultas">
               <div className="o-consultas-containerInit">
@@ -448,7 +475,10 @@ class ConsultarOrganizacion extends Component {
                   </div>
                 </div>
               </div>
-              <TableContainer className="o-tableBase-consultas">
+              <TableContainer
+                className="o-tableBase-consultas"
+                style={{ maxHeight: BOX_SIZE }}
+              >
                 <Table stickyHeader size="small">
                   <TableHead>
                     <TableRow>

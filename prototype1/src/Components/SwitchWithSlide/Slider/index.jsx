@@ -95,19 +95,19 @@ export default class Slider extends React.Component {
       <div
         ref={node => (this.node = node)}
         className={classNames("animatable", {
-          ["to"]: [Slider.TO_LEFT, Slider.TO_RIGHT].includes(
+          to: [Slider.TO_LEFT, Slider.TO_RIGHT].includes(
             this.state.position
           ),
-          ["from"]: [Slider.FROM_LEFT, Slider.FROM_RIGHT].includes(
+          from: [Slider.FROM_LEFT, Slider.FROM_RIGHT].includes(
             this.state.position
           ),
-          ["right"]: [Slider.TO_RIGHT, Slider.FROM_RIGHT].includes(
+          right: [Slider.TO_RIGHT, Slider.FROM_RIGHT].includes(
             this.state.position
           ),
-          ["left"]: [Slider.TO_LEFT, Slider.FROM_LEFT].includes(
+          left: [Slider.TO_LEFT, Slider.FROM_LEFT].includes(
             this.state.position
           ),
-          ["prepare"]: this.state.animatePrepare
+          prepare: this.state.animatePrepare
         })}
         data-qa-loading={Boolean(
           this.props["data-qa-loading"] || this.state.animating

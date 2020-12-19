@@ -15,6 +15,8 @@ import {
   TableHead,
   TableRow,
   IconButton,
+  Fade,
+  CircularProgress,
 } from "@material-ui/core";
 import {
   BlueButton,
@@ -72,6 +74,7 @@ class ConsultarContacto extends Component {
       contacts: [],
       temp_id_con: "",
       delCon: false,
+      loading: true,
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -96,6 +99,7 @@ class ConsultarContacto extends Component {
         if (data.success) {
           this.setState({
             contacts: data.contactos,
+            loading: false,
           });
         }
       })
@@ -105,6 +109,7 @@ class ConsultarContacto extends Component {
   };
 
   apiSearch = () => {
+    this.setState({ loading: true });
     const tipo1 = this.state.tipo1;
     const tipo2 = this.state.tipo2 === "" ? tipo1 : this.state.tipo2;
     const tipo3 = this.state.tipo3 === "" ? tipo1 : this.state.tipo3;
@@ -135,6 +140,7 @@ class ConsultarContacto extends Component {
         .then((data) => {
           if (data.success) {
             this.setState({
+              loading: false,
               contacts: data.contactos,
               reqText: false,
             });
@@ -144,7 +150,7 @@ class ConsultarContacto extends Component {
           console.error("Error:", error);
         });
     } else {
-      this.setState({ reqText: true, createS: true });
+      this.setState({ loading: false, reqText: true, createS: true });
       this.callAPi();
     }
   };
@@ -156,6 +162,7 @@ class ConsultarContacto extends Component {
   handleCloseDel = (a) => {
     const idCon = this.state.temp_id_con;
     if (a) {
+      this.setState({ loading: true });
       fetch("http://localhost:8000/api/auth/Contacto/" + idCon, {
         method: "DELETE",
         headers: {
@@ -195,6 +202,7 @@ class ConsultarContacto extends Component {
   clearFunc = () => {
     this.setState(
       {
+        loading: true,
         tipo1: "",
         tipo2: "",
         tipo3: "",
@@ -261,12 +269,33 @@ class ConsultarContacto extends Component {
 
   render() {
     const BOX_SPACING = window.innerHeight > 900 ? "0.4rem" : "0rem";
+    const BOX_SIZE = window.innerHeight > 900 ? "30rem" : "17rem";
     return (
       <Switch>
         <Route exact path="/consultar_contacto">
           <div className="o-cardContent">
             <div className="o-contentTittle">
-              <h3 className="o-contentTittle-principal">Consultar contactos</h3>
+              <h3
+                className="o-contentTittle-principal"
+                style={{ marginTop: "0.2rem" }}
+              >
+                Consultar contactos
+              </h3>
+              <div className="o-text-nameOrg">
+                <Fade
+                  in={this.state.loading}
+                  style={{
+                    transitionDelay: "200ms",
+                    marginRight: "1rem",
+                  }}
+                  unmountOnExit
+                >
+                  <div style={{ fontSize: "1rem" }}>
+                    {"Cargando... "}
+                    <CircularProgress size={"1rem"} thickness={6} />
+                  </div>
+                </Fade>
+              </div>
             </div>
             <div className="o-contentForm-big-consultas">
               <div className="o-consultas-containerInit">
@@ -436,7 +465,10 @@ class ConsultarContacto extends Component {
                   </div>
                 </div>
               </div>
-              <TableContainer className="o-tableBase-consultas">
+              <TableContainer
+                className="o-tableBase-consultas"
+                style={{ maxHeight: BOX_SIZE }}
+              >
                 <Table stickyHeader size="small">
                   <TableHead>
                     <TableRow>

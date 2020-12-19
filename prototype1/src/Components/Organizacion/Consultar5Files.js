@@ -268,13 +268,7 @@ class Consultar5Files extends Component {
                         <img
                           style={{ maxHeight: "2rem" }}
                           key={i}
-                          src={
-                            iconos[
-                              exts.findIndex(
-                                (x) => x === obj.tipo.toLowerCase()
-                              )
-                            ]
-                          }
+                          src={iconos[exts.findIndex((x) => x === obj.tipo)]}
                           alt="icono"
                         />
                       </StyledTableCell>

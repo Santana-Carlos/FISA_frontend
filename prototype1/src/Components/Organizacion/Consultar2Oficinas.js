@@ -15,6 +15,8 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Fade,
+  CircularProgress,
 } from "@material-ui/core";
 import {
   Delete as IconDelete,
@@ -67,6 +69,8 @@ class Consultar2Oficinas extends Component {
       temp_tel2_ofi: "",
       temp_pbx_ofi: "",
       temp_estado_ofi: "",
+      loading: true,
+      loadingDiag: false,
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -115,6 +119,7 @@ class Consultar2Oficinas extends Component {
       .then((data) => {
         this.setState({
           ofices: data.oficinas,
+          loading: false,
         });
       })
       .catch((error) => {
@@ -192,6 +197,7 @@ class Consultar2Oficinas extends Component {
               temp_tel2_ofi: data.oficina.telefono_2,
               temp_pbx_ofi: data.oficina.pbx,
               temp_estado_ofi: data.oficina.estado,
+              loadingDiag: false,
             },
             this.callAPiDepes
           );
@@ -228,6 +234,7 @@ class Consultar2Oficinas extends Component {
   handleCloseDel = (a) => {
     const idOfi = this.state.temp_id_ofi;
     if (a) {
+      this.setState({ loading: true });
       fetch("http://localhost:8000/api/auth/Oficina/" + idOfi, {
         method: "DELETE",
         headers: {
@@ -248,6 +255,7 @@ class Consultar2Oficinas extends Component {
   };
 
   callApipostOficina = () => {
+    this.setState({ loadingDiag: true, loading: true });
     const idOfi = this.state.temp_id_ofi;
     const data = {
       organizacion_id: this.props.dbid_org,
@@ -281,7 +289,12 @@ class Consultar2Oficinas extends Component {
           }
         })
         .catch((error) => {
-          this.setState({ reqText: true, createS: true });
+          this.setState({
+            loading: false,
+            loadingDiag: false,
+            reqText: true,
+            createS: true,
+          });
         });
     } else {
       fetch("http://localhost:8000/api/auth/Oficina/" + idOfi, {
@@ -296,13 +309,14 @@ class Consultar2Oficinas extends Component {
           return response.json();
         })
         .then((data) => {
+          console.log(data);
           if (data.success) {
             this.clearTemp();
             this.setState({ addOffice: false, reqText: false });
           }
         })
         .catch((error) => {
-          this.setState({ reqText: true, createS: true });
+          this.setState({ loadingDiag: false, reqText: true, createS: true });
         });
     }
     setTimeout(this.callAPi, 2000);
@@ -372,7 +386,19 @@ class Consultar2Oficinas extends Component {
         <div className="o-contentTittle">
           <h3 className="o-contentTittle-principal">Lista de oficinas</h3>
           <div className="o-text-nameOrg">
-            {" "}
+            <Fade
+              in={this.state.loading}
+              style={{
+                transitionDelay: "200ms",
+                marginRight: "1rem",
+              }}
+              unmountOnExit
+            >
+              <div style={{ fontSize: "1rem" }}>
+                {"Cargando... "}
+                <CircularProgress size={"1rem"} thickness={6} />
+              </div>
+            </Fade>
             {"Organización: "}
             {this.props.name_org || ""}
           </div>
@@ -386,7 +412,7 @@ class Consultar2Oficinas extends Component {
                     <StyledTableCell>Tipo</StyledTableCell>
                     <StyledTableCell>Ciudad - País</StyledTableCell>
                     <StyledTableCell>Dirección</StyledTableCell>
-                    <StyledTableCell>Estado</StyledTableCell>
+                    <StyledTableCell>Teléfono</StyledTableCell>
                     <StyledTableCell></StyledTableCell>
                     <StyledTableCell></StyledTableCell>
                   </TableRow>
@@ -414,7 +440,7 @@ class Consultar2Oficinas extends Component {
                           style={{ color: "#47B14C" }}
                           onClick={() =>
                             this.setState(
-                              { temp_id_ofi: obj.id },
+                              { loadingDiag: true, temp_id_ofi: obj.id },
                               this.handleClickOpen
                             )
                           }
@@ -486,6 +512,21 @@ class Consultar2Oficinas extends Component {
               <h5 className="o-diagTittle-sub">
                 campos marcados con * son obligatorios
               </h5>
+              <div className="o-text-nameOrg">
+                <Fade
+                  in={this.state.loadingDiag}
+                  style={{
+                    transitionDelay: "200ms",
+                    marginRight: "1rem",
+                  }}
+                  unmountOnExit
+                >
+                  <div style={{ fontSize: "1rem" }}>
+                    {"Cargando... "}
+                    <CircularProgress size={"1rem"} thickness={6} />
+                  </div>
+                </Fade>
+              </div>
             </div>
           </DialogTitle>
           <div className="o-diagContent"></div>
@@ -647,14 +688,13 @@ class Consultar2Oficinas extends Component {
                 <h3 className="o-diagSubTittle">Otros datos</h3>
                 <div style={{ marginBottom: BOX_SPACING }}>
                   <TextField
-                    label="Teléfono*"
+                    label="Teléfono"
                     variant="outlined"
                     name="input_tel_ofi"
                     value={this.state.temp_tel_ofi || ""}
                     onChange={this.handleChange}
                     className="o-space"
                     margin="dense"
-                    error={this.state.reqText && this.state.temp_tel_ofi === ""}
                   />
                 </div>
                 <div style={{ marginBottom: BOX_SPACING }}>
@@ -763,7 +803,7 @@ class Consultar2Oficinas extends Component {
             {"Datos inválidos o insuficientes"}
           </DialogTitle>
           <DialogContent style={{ textAlign: "center" }}>
-            {"(Puede que el contacto ya exista)"}
+            {"(Puede que la oficina ya exista)"}
           </DialogContent>
           <DialogActions style={{ justifyContent: "center" }}>
             <div className="o-btnBotNav-btnDiag3">

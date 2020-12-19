@@ -125,7 +125,6 @@
 .o-tableBase {
   display: flex;
   width: 100%;
-  max-height: 70%;
   border: 1px solid #3e3e3e;
   border-radius: 5px;
 }
@@ -133,6 +132,7 @@
 .o-tableBase-files {
   display: flex;
   width: 100%;
+  min-height: 0;
   border: 1px solid #3e3e3e;
   border-radius: 5px;
 }
@@ -140,7 +140,6 @@
 .o-tableBaseCon {
   display: flex;
   width: 100%;
-  max-height: 100%;
   border: 1px solid #3e3e3e;
   border-radius: 5px;
 }
@@ -317,7 +316,6 @@
 .o-tableBase-consultas {
   display: flex;
   width: 100%;
-  max-height: 17.5rem;
   border: 1px solid #3e3e3e;
   border-radius: 5px;
 }

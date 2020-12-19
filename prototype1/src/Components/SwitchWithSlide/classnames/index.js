@@ -6,8 +6,6 @@
 /* global define */
 
 (function () {
-  "use strict";
-
   var hasOwn = {}.hasOwnProperty;
 
   function classNames() {

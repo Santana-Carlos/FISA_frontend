@@ -1,6 +1,7 @@
 import React from "react";
 import { Route, NavLink, Redirect } from "react-router-dom";
 import { Button } from "@material-ui/core/";
+import { ExitToApp as IconExit } from "@material-ui/icons";
 import logo from "../../Assets/logo2.png";
 import Organizacion from "../Cards/Organizacion";
 import Contacto from "../Cards/Contacto";
@@ -72,7 +73,7 @@ const Dashboard = () => {
           <NavLink
             className="o-btnBanner"
             activeClassName="o-btnBannerActive o-btnReportes-active"
-            to="/dashboard/reportes#/generar_reporte"
+            to="/dashboard/reportes#/reporte_organizaciones"
           >
             <Button className="o-btnBanner-btn">Reportes</Button>
           </NavLink>
@@ -92,8 +93,16 @@ const Dashboard = () => {
           </NavLink>
         </div>
         <NavLink exact={true} to="/" className="o-btnBannerLogout">
-          <Button className="o-btnBanner-btn" onClick={callApiLogout}>
+          <Button
+            className="o-btnBanner-btn"
+            onClick={callApiLogout}
+            style={{ paddingRight: "0.25rem" }}
+          >
             Salir
+            <IconExit
+              style={{ marginLeft: "0.4rem", marginRight: 0 }}
+              size="small"
+            />
           </Button>
         </NavLink>
       </div>

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { BlueButton } from "../Buttons";
+import { Fade, CircularProgress } from "@material-ui/core";
 import { Edit as IconEdit } from "@material-ui/icons";
 import { Switch, Link, Route, Redirect } from "react-router-dom";
 import Consultar1DatosBasicos from "./Consultar1DatosBasicos";
@@ -23,6 +24,7 @@ class OrganizacionMenu extends Component {
       pais_org: "",
       subsececo_org: "",
       estado_org: "",
+      loading: true,
     };
   }
 
@@ -56,6 +58,7 @@ class OrganizacionMenu extends Component {
             pais_org: data.organizacion.pais,
             subsececo_org: data.organizacion.subsector,
             estado_org: data.organizacion.estado,
+            loading: false,
           });
         }
       })
@@ -73,21 +76,41 @@ class OrganizacionMenu extends Component {
         <Route exact path="/consultar_organizacion/editar">
           <div className="o-cardContent">
             <div className="o-contentTittle">
-              <h3 className="o-contentTittle-principal">
+              <h3
+                className="o-contentTittle-principal"
+                style={{ marginTop: "0.2rem" }}
+              >
                 {"Editar Organización"}
               </h3>
+              <div className="o-text-nameOrg">
+                <Fade
+                  in={this.state.loading}
+                  style={{
+                    transitionDelay: "200ms",
+                    marginRight: "1rem",
+                  }}
+                  unmountOnExit
+                >
+                  <div style={{ fontSize: "1rem" }}>
+                    {"Cargando... "}
+                    <CircularProgress size={"1rem"} thickness={6} />
+                  </div>
+                </Fade>
+              </div>
             </div>
             <div className="o-contentForm-big-consultas">
               <div className="o-consultas-containerMenu">
                 <div className="o-consultasMenu">
                   <div className="o-textMain">
                     {"Nombre comercial:"}
-                    <div className="o-textSub">{this.state.name_org || ""}</div>
+                    <div className="o-textSub">
+                      {this.state.name_org || "Sin asignar"}
+                    </div>
                   </div>
                   <div className="o-textMain">
                     {"Razón social:"}
                     <div className="o-textSub">
-                      {this.state.razon_org || ""}
+                      {this.state.razon_org || "Sin asignar"}
                     </div>
                   </div>
                 </div>
@@ -95,24 +118,29 @@ class OrganizacionMenu extends Component {
                   <div className="o-textMain">
                     {"Identificación:"}
                     <div className="o-textSub">
-                      {this.state.idtipo_org + " " + this.state.idnum_org || ""}
+                      {this.state.idtipo_org + " " + this.state.idnum_org ||
+                        "Sin asignar"}
                     </div>
                   </div>
                   <div className="o-textMain">
                     {"Subsector económico:"}
                     <div className="o-textSub">
-                      {this.state.subsececo_org || ""}
+                      {this.state.subsececo_org || "Sin asignar"}
                     </div>
                   </div>
                 </div>
                 <div className="o-consultasMenu">
                   <div className="o-textMain">
                     {"Categoría:"}
-                    <div className="o-textSub">{this.state.cat_org || ""}</div>
+                    <div className="o-textSub">
+                      {this.state.cat_org || "Sin asignar"}
+                    </div>
                   </div>
                   <div className="o-textMain">
                     {"País:"}
-                    <div className="o-textSub">{this.state.pais_org || ""}</div>
+                    <div className="o-textSub">
+                      {this.state.pais_org || "Sin asignar"}
+                    </div>
                   </div>
                 </div>
                 <div
@@ -122,7 +150,8 @@ class OrganizacionMenu extends Component {
                   <div className="o-textMain">
                     {"Estado:"}
                     <div className="o-textSub">
-                      {(this.state.estado_org ? "ACTIVO" : "INACTIVO") || ""}
+                      {(this.state.estado_org ? "ACTIVO" : "INACTIVO") ||
+                        "Sin asignar"}
                     </div>
                   </div>
                 </div>

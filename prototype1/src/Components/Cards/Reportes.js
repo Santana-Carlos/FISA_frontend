@@ -15,24 +15,31 @@ const Reportes = () => {
             <NavLink
               className="o-btnSidebar o-btnSidebar-reportes"
               activeClassName="o-btnSidebar o-btnSidebar-reportesActive"
-              to="/generar_reporte"
+              to="/reporte_organizaciones"
             >
-              <SideButton size="small">Placeholder 1</SideButton>
+              <SideButton size="small">Organizaciones</SideButton>
             </NavLink>
             <NavLink
               className="o-btnSidebar o-btnSidebar-reportes"
               activeClassName="o-btnSidebar o-btnSidebar-reportesActive"
-              to="/placeholder_2"
+              to="/reporte_contactos"
             >
-              <SideButton>Placeholder 2</SideButton>
+              <SideButton>Contactos</SideButton>
+            </NavLink>
+            <NavLink
+              className="o-btnSidebar o-btnSidebar-reportes"
+              activeClassName="o-btnSidebar o-btnSidebar-reportesActive"
+              to="/reporte_contactos"
+            >
+              <SideButton>Fechas</SideButton>
             </NavLink>
           </div>
           <div className="o-cardPlaceholder">
             <Switch>
-              <Route path="/generar_reporte">
+              <Route path="/reporte_organizaciones">
                 <h5>Placeholder 1</h5>
               </Route>
-              <Route path="/placeholder_2">
+              <Route path="/reporte_contactos">
                 <h5>Placeholder 2</h5>
               </Route>
             </Switch>
