@@ -359,10 +359,16 @@ class CrearOrganizacion2Oficinas extends Component {
         this.setState({ temp_comdir_ofi: value });
         break;
       case "input_pais_ofi":
-        this.setState({ temp_pais_ofi: value }, this.callAPiDepes);
+        this.setState(
+          { temp_pais_ofi: value, temp_depest_ofi: "", temp_city_ofi: "" },
+          this.callAPiDepes
+        );
         break;
       case "input_depest_ofi":
-        this.setState({ temp_depest_ofi: value }, this.callAPiCity);
+        this.setState(
+          { temp_depest_ofi: value, temp_city_ofi: "" },
+          this.callAPiCity
+        );
         break;
       case "input_city_ofi":
         this.setState({ temp_city_ofi: value });

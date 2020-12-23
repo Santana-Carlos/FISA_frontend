@@ -36,6 +36,9 @@ class OrganizacionMenu extends Component {
     const data = {
       org_id: this.props.dbid_org,
     };
+    if (this.props.dbid_org === "") {
+      return null;
+    }
     fetch(process.env.REACT_APP_API_URL + "Organizacion/EditOrg", {
       method: "POST",
       headers: {

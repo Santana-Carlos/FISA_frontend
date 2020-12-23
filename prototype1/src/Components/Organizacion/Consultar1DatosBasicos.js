@@ -250,7 +250,10 @@ class Consultar1DatosBasicos extends Component {
         this.setState({ clase_org: value });
         break;
       case "input_sectoreco_org":
-        this.setState({ sectoreco_org: value }, this.callApiSubsector);
+        this.setState(
+          { sectoreco_org: value, subsececo_org: "" },
+          this.callApiSubsector
+        );
         break;
       case "input_subsececo_org":
         this.setState({ subsececo_org: value });

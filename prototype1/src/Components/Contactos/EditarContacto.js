@@ -73,6 +73,9 @@ class EditarContacto extends Component {
   }
 
   componentDidMount() {
+    if (this.props.temp_id_con === "") {
+      return null;
+    }
     fetch(process.env.REACT_APP_API_URL + "Contacto/Data", {
       method: "GET",
       headers: {
@@ -375,10 +378,14 @@ class EditarContacto extends Component {
 
   handleChangeOrg(event, value) {
     if (value === null) {
-      this.setState({ dbidFake_org: value, ofices_api: [] });
+      this.setState({
+        dbidFake_org: value,
+        ofices_api: [],
+        temp_idoffice_con: "",
+      });
     } else {
       this.setState(
-        { dbidFake_org: value, dbid_org: value.id },
+        { dbidFake_org: value, dbid_org: value.id, temp_idoffice_con: "" },
         this.callAPiOff
       );
     }
