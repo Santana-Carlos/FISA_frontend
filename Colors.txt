@@ -17,7 +17,7 @@ Orange---------------Seguimiento
 ->focus-> #CE4724
 
 Cyan-----------------Reportes
-->idle->  #6ECFCF
+->idle->  #65C1C1
 ->focus-> #1FA7A7
 
 Yellow---------------Administracion
