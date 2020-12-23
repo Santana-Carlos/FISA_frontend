@@ -11,6 +11,8 @@ import {
   DialogContent,
   DialogTitle,
   Checkbox,
+  Fade,
+  CircularProgress,
 } from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
 import { GreenButton, BlueButton } from "../Buttons";
@@ -29,7 +31,6 @@ class EditarContacto extends Component {
       orgSelect: false,
       temp_id_con: props.temp_id_con,
       contacts: [],
-      addContact: false,
       delContact: false,
       tipoid_con_api: [],
       subcat_con_api: [],
@@ -63,6 +64,7 @@ class EditarContacto extends Component {
       temp_subcatFake_con: [],
       userUpdated_con: "",
       fechaUpdated_con: "",
+      loading: true,
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -71,7 +73,7 @@ class EditarContacto extends Component {
   }
 
   componentDidMount() {
-    fetch("http://localhost:8000/api/auth/Contacto/Data", {
+    fetch(process.env.REACT_APP_API_URL + "Contacto/Data", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -92,7 +94,7 @@ class EditarContacto extends Component {
   }
 
   callApiOrg = () => {
-    fetch("http://localhost:8000/api/auth/Organizacion/SimpList", {
+    fetch(process.env.REACT_APP_API_URL + "Organizacion/SimpList", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -115,7 +117,7 @@ class EditarContacto extends Component {
 
   callApi = () => {
     const idCon = this.props.temp_id_con;
-    fetch("http://localhost:8000/api/auth/Contacto/" + idCon, {
+    fetch(process.env.REACT_APP_API_URL + "Contacto/" + idCon, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -144,13 +146,16 @@ class EditarContacto extends Component {
             temp_estado_con: data.contacto.estado,
             userUpdated_con: data.usuario_actualizacion.usuario_actualizacion,
             fechaUpdated_con: data.contacto.updated_at,
+            loading: false,
             temp_subcat_con:
               data.categorias[0] === this.state.indexCat ? [] : data.categorias,
           },
           this.dataFake
         );
       })
-      .catch((error) => {});
+      .catch((error) => {
+        this.setState({ loading: false });
+      });
   };
 
   dataFake = () => {
@@ -178,7 +183,7 @@ class EditarContacto extends Component {
     const data = {
       organizacion_id: this.state.dbid_org,
     };
-    fetch("http://localhost:8000/api/auth/Oficina/Org", {
+    fetch(process.env.REACT_APP_API_URL + "Oficina/Org", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -198,6 +203,7 @@ class EditarContacto extends Component {
   };
 
   callApiPutContacto = () => {
+    this.setState({ loading: true });
     const idCon = this.props.temp_id_con;
     const data = {
       organizacion_id: this.state.dbid_org,
@@ -215,7 +221,7 @@ class EditarContacto extends Component {
       numero_documento: this.state.temp_nid_con,
       sexo: this.state.temp_sex_con,
     };
-    fetch("http://localhost:8000/api/auth/Contacto/" + idCon, {
+    fetch(process.env.REACT_APP_API_URL + "Contacto/" + idCon, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -230,6 +236,7 @@ class EditarContacto extends Component {
         if (data.success) {
           this.setState(
             {
+              loading: false,
               reqText: false,
               temp_id_con: data.contacto.id,
             },
@@ -238,7 +245,7 @@ class EditarContacto extends Component {
         }
       })
       .catch((error) => {
-        this.setState({ reqText: true, createS: true });
+        this.setState({ loading: false, reqText: true, createS: true });
       });
   };
 
@@ -246,8 +253,7 @@ class EditarContacto extends Component {
     const tempSubcat = {
       contacto_id: this.state.temp_id_con,
     };
-    console.log(tempSubcat);
-    fetch("http://localhost:8000/api/auth/Contacto/DelSub", {
+    fetch(process.env.REACT_APP_API_URL + "Contacto/DelSub", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -258,11 +264,12 @@ class EditarContacto extends Component {
       .then((response) => {
         return response.json();
       })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
+      .catch((error) => {});
     if (this.state.temp_subcat_con[0] !== undefined) {
       this.addSubcatApi();
+    } else {
+      setTimeout(this.callApi, 2000);
+      setTimeout(this.callApi, 5000);
     }
   };
 
@@ -271,8 +278,7 @@ class EditarContacto extends Component {
       contacto_id: this.state.temp_id_con,
       categorias: this.state.temp_subcat_con,
     };
-    console.log(tempSubcat);
-    fetch("http://localhost:8000/api/auth/CategoriaContacto", {
+    fetch(process.env.REACT_APP_API_URL + "CategoriaContacto", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -281,15 +287,12 @@ class EditarContacto extends Component {
       body: JSON.stringify(tempSubcat),
     })
       .then((response) => {
-        this.setState({ addContact: false, reqText: false, temp_id_con: "" });
+        this.setState({ reqText: false, temp_id_con: "" });
         return response.json();
       })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
+      .catch((error) => {});
     setTimeout(this.callApi, 2000);
     setTimeout(this.callApi, 5000);
-    setTimeout(this.callApi, 10000);
   };
 
   clearTemp = () => {
@@ -405,6 +408,21 @@ class EditarContacto extends Component {
           <h4 className="o-contentTittle-sub">
             campos marcados con * son obligatorios
           </h4>
+          <div className="o-text-nameOrg">
+            <Fade
+              in={this.state.loading}
+              style={{
+                transitionDelay: "200ms",
+                marginRight: "1rem",
+              }}
+              unmountOnExit
+            >
+              <div style={{ fontSize: "1rem" }}>
+                {"Cargando... "}
+                <CircularProgress size={"1rem"} thickness={6} />
+              </div>
+            </Fade>
+          </div>
         </div>
         <div className="o-contentForm-big">
           <div className="o-contentForm">
@@ -480,7 +498,7 @@ class EditarContacto extends Component {
               <Select
                 labelId="demo-simple-select-outlined-label"
                 id="demo-simple-select-outlined"
-                value={this.state.temp_sex_con}
+                value={this.state.temp_sex_con || ""}
                 onChange={this.handleChange}
                 label="Sexo"
                 name="input_sex_con"

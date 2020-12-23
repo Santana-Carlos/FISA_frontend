@@ -77,7 +77,7 @@ class Consultar2Oficinas extends Component {
   }
 
   componentDidMount() {
-    fetch("http://localhost:8000/api/auth/Oficina/Data", {
+    fetch(process.env.REACT_APP_API_URL + "Oficina/Data", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -96,16 +96,14 @@ class Consultar2Oficinas extends Component {
           this.callAPi
         );
       })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
+      .catch((error) => {});
   }
 
   callAPi = () => {
     const data = {
       organizacion_id: this.props.dbid_org,
     };
-    fetch("http://localhost:8000/api/auth/Oficina/Org", {
+    fetch(process.env.REACT_APP_API_URL + "Oficina/Org", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -123,7 +121,7 @@ class Consultar2Oficinas extends Component {
         });
       })
       .catch((error) => {
-        console.error("Error:", error);
+        this.setState({ loading: false });
       });
   };
 
@@ -131,7 +129,7 @@ class Consultar2Oficinas extends Component {
     const data = {
       pais_id: this.state.temp_pais_ofi,
     };
-    fetch("http://localhost:8000/api/auth/DepartamentoEstado/Pais", {
+    fetch(process.env.REACT_APP_API_URL + "DepartamentoEstado/Pais", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -154,7 +152,7 @@ class Consultar2Oficinas extends Component {
     const data = {
       departamento_estado_id: this.state.temp_depest_ofi,
     };
-    fetch("http://localhost:8000/api/auth/Ciudad/Dep", {
+    fetch(process.env.REACT_APP_API_URL + "Ciudad/Dep", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -176,7 +174,7 @@ class Consultar2Oficinas extends Component {
   handleClickOpen = () => {
     const idOfi = this.state.temp_id_ofi;
     if (idOfi !== "") {
-      fetch("http://localhost:8000/api/auth/Oficina/" + idOfi, {
+      fetch(process.env.REACT_APP_API_URL + "Oficina/" + idOfi, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -211,7 +209,10 @@ class Consultar2Oficinas extends Component {
             temp_city_ofi: data.oficina.ciudad_id,
           });
         })
-        .catch((error) => {});
+        .catch((error) => {
+          this.setState({ loadingDiag: false });
+          alert("SERVIDOR NO DISPONIBLE\nConsulte a su gestor de servicios");
+        });
     }
     this.setState({ addOffice: true });
   };
@@ -235,15 +236,13 @@ class Consultar2Oficinas extends Component {
     const idOfi = this.state.temp_id_ofi;
     if (a) {
       this.setState({ loading: true });
-      fetch("http://localhost:8000/api/auth/Oficina/" + idOfi, {
+      fetch(process.env.REACT_APP_API_URL + "Oficina/" + idOfi, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + this.props.token,
         },
-      }).catch((error) => {
-        console.error("Error:", error);
-      });
+      }).catch((error) => {});
     }
     this.setState({
       delOffice: false,
@@ -251,11 +250,10 @@ class Consultar2Oficinas extends Component {
     });
     setTimeout(this.callAPi, 2000);
     setTimeout(this.callAPi, 5000);
-    setTimeout(this.callAPi, 10000);
   };
 
   callApipostOficina = () => {
-    this.setState({ loadingDiag: true, loading: true });
+    this.setState({ loadingDiag: true });
     const idOfi = this.state.temp_id_ofi;
     const data = {
       organizacion_id: this.props.dbid_org,
@@ -271,7 +269,7 @@ class Consultar2Oficinas extends Component {
       ciudad_id: this.state.temp_city_ofi,
     };
     if (idOfi === "") {
-      fetch("http://localhost:8000/api/auth/Oficina/", {
+      fetch(process.env.REACT_APP_API_URL + "Oficina/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -285,19 +283,23 @@ class Consultar2Oficinas extends Component {
         .then((data) => {
           if (data.success) {
             this.clearTemp();
-            this.setState({ addOffice: false, reqText: false });
+            this.setState({
+              loading: true,
+              loadingDiag: false,
+              addOffice: false,
+              reqText: false,
+            });
           }
         })
         .catch((error) => {
           this.setState({
-            loading: false,
             loadingDiag: false,
             reqText: true,
             createS: true,
           });
         });
     } else {
-      fetch("http://localhost:8000/api/auth/Oficina/" + idOfi, {
+      fetch(process.env.REACT_APP_API_URL + "Oficina/" + idOfi, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -309,10 +311,9 @@ class Consultar2Oficinas extends Component {
           return response.json();
         })
         .then((data) => {
-          console.log(data);
           if (data.success) {
             this.clearTemp();
-            this.setState({ addOffice: false, reqText: false });
+            this.setState({ loading: true, addOffice: false, reqText: false });
           }
         })
         .catch((error) => {
@@ -321,7 +322,6 @@ class Consultar2Oficinas extends Component {
     }
     setTimeout(this.callAPi, 2000);
     setTimeout(this.callAPi, 5000);
-    setTimeout(this.callAPi, 10000);
   };
 
   clearTemp = () => {
@@ -419,7 +419,7 @@ class Consultar2Oficinas extends Component {
                 </TableHead>
                 <TableBody>
                   {this.state.ofices.map((obj, i) => (
-                    <TableRow key={i}>
+                    <TableRow key={i} hover={true}>
                       <StyledTableCell size="small">{obj.tipo}</StyledTableCell>
                       <StyledTableCell size="small">
                         {obj.ciudad} - {obj.pais}

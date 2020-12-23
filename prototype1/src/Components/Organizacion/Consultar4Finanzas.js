@@ -11,6 +11,8 @@ import {
   DialogTitle,
   ListItemText,
   Checkbox,
+  Fade,
+  CircularProgress,
 } from "@material-ui/core";
 import { Edit as IconEdit } from "@material-ui/icons";
 import {
@@ -55,13 +57,14 @@ class Consultar4Finanzas extends Component {
       clas_fin_api: [],
       regimen_fin_api: [],
       pais_fin_api: [],
+      loading: true,
     };
 
     this.handleChange = this.handleChange.bind(this);
   }
 
   componentDidMount() {
-    fetch("http://localhost:8000/api/auth/InformacionFinanciera/Data", {
+    fetch(process.env.REACT_APP_API_URL + "InformacionFinanciera/Data", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -78,9 +81,7 @@ class Consultar4Finanzas extends Component {
           pais_fin_api: data.paises,
         });
       })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
+      .catch((error) => {});
     this.callApi();
   }
 
@@ -88,7 +89,7 @@ class Consultar4Finanzas extends Component {
     const data = {
       organizacion_id: this.props.dbid_org,
     };
-    fetch("http://localhost:8000/api/auth/InformacionFinanciera/Org", {
+    fetch(process.env.REACT_APP_API_URL + "InformacionFinanciera/Org", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -124,22 +125,25 @@ class Consultar4Finanzas extends Component {
             temp_anocuota_fin: data.informacion.temporada_cuota,
             temp_import_fin: data.importaciones,
             temp_export_fin: data.exportaciones,
+            loading: false,
           });
         }
       })
       .catch((error) => {
-        console.error("Error:", error);
+        this.setState({ loading: false });
       });
   };
 
   handleClose = (a) => {
     if (a) {
+      this.setState({ loading: true });
       this.delInterAPi();
     } else {
       this.setState({
         temp_export_fin: [],
         temp_import_fin: [],
       });
+      this.callApi();
     }
     setTimeout(this.callApi, 2000);
     this.setState({ openInter: false });
@@ -149,16 +153,14 @@ class Consultar4Finanzas extends Component {
     const data = {
       organizacion_id: this.props.dbid_org,
     };
-    fetch("http://localhost:8000/api/auth/InformacionFinanciera/DelOpe", {
+    fetch(process.env.REACT_APP_API_URL + "InformacionFinanciera/DelOpe", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + this.props.token,
       },
       body: JSON.stringify(data),
-    }).catch((error) => {
-      console.error("Error:", error);
-    });
+    }).catch((error) => {});
     this.addInterAPi();
   };
 
@@ -171,7 +173,7 @@ class Consultar4Finanzas extends Component {
       organizacion_id: this.state.dbid_org,
       paises: this.state.temp_export_fin,
     };
-    fetch("http://localhost:8000/api/auth/Exportaciones/", {
+    fetch(process.env.REACT_APP_API_URL + "Exportaciones/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -182,11 +184,9 @@ class Consultar4Finanzas extends Component {
       .then((response) => {
         return response.json();
       })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
+      .catch((error) => {});
 
-    fetch("http://localhost:8000/api/auth/Importaciones/", {
+    fetch(process.env.REACT_APP_API_URL + "Importaciones/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -197,14 +197,13 @@ class Consultar4Finanzas extends Component {
       .then((response) => {
         return response.json();
       })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
+      .catch((error) => {});
     setTimeout(this.callApi, 2000);
     setTimeout(this.callApi, 5000);
   };
 
   callApiPut = (a) => {
+    this.setState({ loading: true });
     const idFin = this.state.temp_id_fin;
     const data = {
       organizacion_id: this.props.dbid_org,
@@ -227,7 +226,7 @@ class Consultar4Finanzas extends Component {
       cuota_anual: this.state.temp_cuotaanual_fin,
     };
 
-    fetch("http://localhost:8000/api/auth/InformacionFinanciera/" + idFin, {
+    fetch(process.env.REACT_APP_API_URL + "InformacionFinanciera/" + idFin, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -247,10 +246,10 @@ class Consultar4Finanzas extends Component {
       });
     setTimeout(this.callApi, 2000);
     setTimeout(this.callApi, 5000);
-    setTimeout(this.callApi, 10000);
   };
 
   callApiPost = (a) => {
+    this.setState({ loading: true });
     const data = {
       organizacion_id: this.props.dbid_org,
       ingresos_anuales: this.state.temp_totaling_fin,
@@ -270,7 +269,7 @@ class Consultar4Finanzas extends Component {
       cuota_real_afiliacion: this.state.temp_cuorealafi_fin,
     };
 
-    fetch("http://localhost:8000/api/auth/InformacionFinanciera/", {
+    fetch(process.env.REACT_APP_API_URL + "InformacionFinanciera/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -288,12 +287,9 @@ class Consultar4Finanzas extends Component {
           });
         }
       })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
+      .catch((error) => {});
     setTimeout(this.callApi, 2000);
     setTimeout(this.callApi, 5000);
-    setTimeout(this.callApi, 10000);
   };
 
   handleChange(event) {
@@ -329,7 +325,8 @@ class Consultar4Finanzas extends Component {
         this.setState({ temp_clas_fin: value }, () => {
           if (
             this.state.temp_clas_fin !== "" &&
-            this.state.temp_clas_fin !== undefined
+            this.state.temp_clas_fin !== undefined &&
+            this.state.temp_clas_fin !== null
           ) {
             this.setState({
               temp_anocuota_fin: this.state.clas_fin_api[
@@ -386,7 +383,19 @@ class Consultar4Finanzas extends Component {
             campos marcados con * son obligatorios
           </h4>
           <div className="o-text-nameOrg">
-            {" "}
+            <Fade
+              in={this.state.loading}
+              style={{
+                transitionDelay: "200ms",
+                marginRight: "1rem",
+              }}
+              unmountOnExit
+            >
+              <div style={{ fontSize: "1rem" }}>
+                {"Cargando... "}
+                <CircularProgress size={"1rem"} thickness={6} />
+              </div>
+            </Fade>
             {"Organización: "}
             {this.props.name_org || ""}
           </div>
@@ -630,8 +639,9 @@ class Consultar4Finanzas extends Component {
               }}
             >
               {"Año cuota:"}
-              {this.state.temp_anocuota_fin === "" ? (
-                <div style={{ color: "gray", marginLeft: "0.3rem" }}>{"0"}</div>
+              {this.state.temp_anocuota_fin === "" ||
+              this.state.temp_anocuota_fin === null ? (
+                <div style={{ color: "gray", marginLeft: "0.3rem" }}>{"-"}</div>
               ) : (
                 <div style={{ color: "gray", marginLeft: "0.3rem" }}>
                   {this.state.temp_anocuota_fin}
@@ -646,8 +656,9 @@ class Consultar4Finanzas extends Component {
               }}
             >
               {"Cuota anual:"}
-              {this.state.temp_cuotaanual_fin === "" ? (
-                <div style={{ color: "gray", marginLeft: "0.3rem" }}>{"0"}</div>
+              {this.state.temp_cuotaanual_fin === "" ||
+              this.state.temp_cuotaanual_fin === null ? (
+                <div style={{ color: "gray", marginLeft: "0.3rem" }}>{"-"}</div>
               ) : (
                 <div style={{ color: "gray", marginLeft: "0.3rem" }}>
                   {this.state.temp_cuotaanual_fin}

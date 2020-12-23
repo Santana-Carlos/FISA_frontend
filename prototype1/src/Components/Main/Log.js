@@ -9,8 +9,11 @@ const Log = () => {
   const isLog = useSelector((state) => state.isLog);
   const token = useSelector((state) => state.token);
   if (isLog) {
+    if (window.refreshToken !== undefined) {
+      clearInterval(window.refreshToken);
+    }
     window.refreshToken = setInterval(() => {
-      fetch("http://localhost:8000/api/auth/refresh", {
+      fetch(process.env.REACT_APP_API_URL + "refresh", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -22,15 +25,16 @@ const Log = () => {
         })
         .then((data) => {
           if (data.success) {
+            //console.log("token refreshed");
             dispatch(updateToken(data.token));
           } else {
-            alert("Servidor desconectado");
+            alert("SERVIDOR NO DISPONIBLE\nConsulte a su gestor de servicios");
           }
         })
         .catch((error) => {
-          console.error("Error:", error);
+          alert("SERVIDOR NO DISPONIBLE\nConsulte a su gestor de servicios");
         });
-    }, 3600000);
+    }, 2700000);
   }
   return <Dashboard />;
 };

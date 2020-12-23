@@ -15,6 +15,8 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Fade,
+  CircularProgress,
 } from "@material-ui/core";
 import {
   Delete as IconDelete,
@@ -67,13 +69,15 @@ class CrearOrganizacion2Oficinas extends Component {
       temp_tel2_ofi: "",
       temp_pbx_ofi: "",
       temp_estado_ofi: "",
+      loading: true,
+      loadingDiag: false,
     };
 
     this.handleChange = this.handleChange.bind(this);
   }
 
   componentDidMount() {
-    fetch("http://localhost:8000/api/auth/Oficina/Data", {
+    fetch(process.env.REACT_APP_API_URL + "Oficina/Data", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -92,16 +96,14 @@ class CrearOrganizacion2Oficinas extends Component {
           this.callAPi
         );
       })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
+      .catch((error) => {});
   }
 
   callAPi = () => {
     const data = {
       organizacion_id: this.props.dbid_org,
     };
-    fetch("http://localhost:8000/api/auth/Oficina/Org", {
+    fetch(process.env.REACT_APP_API_URL + "Oficina/Org", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -115,10 +117,11 @@ class CrearOrganizacion2Oficinas extends Component {
       .then((data) => {
         this.setState({
           ofices: data.oficinas,
+          loading: false,
         });
       })
       .catch((error) => {
-        console.error("Error:", error);
+        this.setState({ loading: false });
       });
   };
 
@@ -126,7 +129,7 @@ class CrearOrganizacion2Oficinas extends Component {
     const data = {
       pais_id: this.state.temp_pais_ofi,
     };
-    fetch("http://localhost:8000/api/auth/DepartamentoEstado/Pais", {
+    fetch(process.env.REACT_APP_API_URL + "DepartamentoEstado/Pais", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -149,7 +152,7 @@ class CrearOrganizacion2Oficinas extends Component {
     const data = {
       departamento_estado_id: this.state.temp_depest_ofi,
     };
-    fetch("http://localhost:8000/api/auth/Ciudad/Dep", {
+    fetch(process.env.REACT_APP_API_URL + "Ciudad/Dep", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -171,7 +174,7 @@ class CrearOrganizacion2Oficinas extends Component {
   handleClickOpen = () => {
     const idOfi = this.state.temp_id_ofi;
     if (idOfi !== "") {
-      fetch("http://localhost:8000/api/auth/Oficina/" + idOfi, {
+      fetch(process.env.REACT_APP_API_URL + "Oficina/" + idOfi, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -192,6 +195,7 @@ class CrearOrganizacion2Oficinas extends Component {
               temp_tel2_ofi: data.oficina.telefono_2,
               temp_pbx_ofi: data.oficina.pbx,
               temp_estado_ofi: data.oficina.estado,
+              loadingDiag: false,
             },
             this.callAPiDepes
           );
@@ -205,7 +209,10 @@ class CrearOrganizacion2Oficinas extends Component {
             temp_city_ofi: data.oficina.ciudad_id,
           });
         })
-        .catch((error) => {});
+        .catch((error) => {
+          this.setState({ loadingDiag: false });
+          alert("SERVIDOR NO DISPONIBLE\nConsulte a su gestor de servicios");
+        });
     }
     this.setState({ addOffice: true });
   };
@@ -228,15 +235,14 @@ class CrearOrganizacion2Oficinas extends Component {
   handleCloseDel = (a) => {
     const idOfi = this.state.temp_id_ofi;
     if (a) {
-      fetch("http://localhost:8000/api/auth/Oficina/" + idOfi, {
+      this.setState({ loading: true });
+      fetch(process.env.REACT_APP_API_URL + "Oficina/" + idOfi, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + this.props.token,
         },
-      }).catch((error) => {
-        console.error("Error:", error);
-      });
+      }).catch((error) => {});
     }
     this.setState({
       delOffice: false,
@@ -244,10 +250,10 @@ class CrearOrganizacion2Oficinas extends Component {
     });
     setTimeout(this.callAPi, 2000);
     setTimeout(this.callAPi, 5000);
-    setTimeout(this.callAPi, 10000);
   };
 
   callApipostOficina = () => {
+    this.setState({ loadingDiag: true });
     const idOfi = this.state.temp_id_ofi;
     const data = {
       organizacion_id: this.props.dbid_org,
@@ -263,7 +269,7 @@ class CrearOrganizacion2Oficinas extends Component {
       ciudad_id: this.state.temp_city_ofi,
     };
     if (idOfi === "") {
-      fetch("http://localhost:8000/api/auth/Oficina/", {
+      fetch(process.env.REACT_APP_API_URL + "Oficina/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -277,14 +283,23 @@ class CrearOrganizacion2Oficinas extends Component {
         .then((data) => {
           if (data.success) {
             this.clearTemp();
-            this.setState({ addOffice: false, reqText: false });
+            this.setState({
+              loading: true,
+              loadingDiag: false,
+              addOffice: false,
+              reqText: false,
+            });
           }
         })
         .catch((error) => {
-          this.setState({ reqText: true, createS: true });
+          this.setState({
+            loadingDiag: false,
+            reqText: true,
+            createS: true,
+          });
         });
     } else {
-      fetch("http://localhost:8000/api/auth/Oficina/" + idOfi, {
+      fetch(process.env.REACT_APP_API_URL + "Oficina/" + idOfi, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -298,16 +313,20 @@ class CrearOrganizacion2Oficinas extends Component {
         .then((data) => {
           if (data.success) {
             this.clearTemp();
-            this.setState({ addOffice: "", reqText: false });
+            this.setState({
+              loading: true,
+              loadingDiag: false,
+              addOffice: false,
+              reqText: false,
+            });
           }
         })
         .catch((error) => {
-          this.setState({ reqText: true, createS: true });
+          this.setState({ loadingDiag: false, reqText: true, createS: true });
         });
     }
     setTimeout(this.callAPi, 2000);
     setTimeout(this.callAPi, 5000);
-    setTimeout(this.callAPi, 10000);
   };
 
   clearTemp = () => {
@@ -375,7 +394,19 @@ class CrearOrganizacion2Oficinas extends Component {
         <div className="o-contentTittle">
           <h3 className="o-contentTittle-principal">Lista de oficinas</h3>
           <div className="o-text-nameOrg">
-            {" "}
+            <Fade
+              in={this.state.loading}
+              style={{
+                transitionDelay: "200ms",
+                marginRight: "1rem",
+              }}
+              unmountOnExit
+            >
+              <div style={{ fontSize: "1rem" }}>
+                {"Cargando... "}
+                <CircularProgress size={"1rem"} thickness={6} />
+              </div>
+            </Fade>
             {"Organización: "}
             {this.props.name_org || ""}
           </div>
@@ -396,7 +427,7 @@ class CrearOrganizacion2Oficinas extends Component {
                 </TableHead>
                 <TableBody>
                   {this.state.ofices.map((obj, i) => (
-                    <TableRow key={i}>
+                    <TableRow key={i} hover={true}>
                       <StyledTableCell size="small">{obj.tipo}</StyledTableCell>
                       <StyledTableCell size="small">
                         {obj.ciudad} - {obj.pais}
@@ -417,7 +448,7 @@ class CrearOrganizacion2Oficinas extends Component {
                           style={{ color: "#47B14C" }}
                           onClick={() =>
                             this.setState(
-                              { temp_id_ofi: obj.id },
+                              { loadingDiag: true, temp_id_ofi: obj.id },
                               this.handleClickOpen
                             )
                           }
@@ -500,6 +531,21 @@ class CrearOrganizacion2Oficinas extends Component {
               <h5 className="o-diagTittle-sub">
                 campos marcados con * son obligatorios
               </h5>
+              <div className="o-text-nameOrg">
+                <Fade
+                  in={this.state.loadingDiag}
+                  style={{
+                    transitionDelay: "200ms",
+                    marginRight: "1rem",
+                  }}
+                  unmountOnExit
+                >
+                  <div style={{ fontSize: "1rem" }}>
+                    {"Cargando... "}
+                    <CircularProgress size={"1rem"} thickness={6} />
+                  </div>
+                </Fade>
+              </div>
             </div>
           </DialogTitle>
           <div className="o-diagContent"></div>
@@ -642,10 +688,7 @@ class CrearOrganizacion2Oficinas extends Component {
                     className="o-space"
                     style={{ marginBottom: BOX_SPACING }}
                   >
-                    <MenuItem
-                      visible={"false"}
-                      value="input_city_ofi"
-                    ></MenuItem>
+                    <MenuItem disabled={true} value="input_city_ofi"></MenuItem>
                     {this.state.city_ofi_api.map((obj, i) => {
                       return (
                         <MenuItem key={i} value={obj.id}>

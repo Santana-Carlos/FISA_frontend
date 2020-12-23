@@ -1,11 +1,14 @@
 import React from "react";
 import { HashRouter, Switch, Route, NavLink } from "react-router-dom";
 import { SideButton } from "../Buttons";
-//import { useSelector } from "react-redux";
+import { useSelector } from "react-redux";
+import ReporteOrganizacion from "../Reportes/ReporteOrganizacion";
+import ReporteContacto from "../Reportes/ReporteContactos";
+import ReporteFechas from "../Reportes/ReporteFechas";
 import "./Cards.css";
 
 const Reportes = () => {
-  //const token = useSelector((state) => state.token);
+  const token = useSelector((state) => state.token);
   return (
     <HashRouter>
       <div className="o-cards">
@@ -17,30 +20,33 @@ const Reportes = () => {
               activeClassName="o-btnSidebar o-btnSidebar-reportesActive"
               to="/reporte_organizaciones"
             >
-              <SideButton size="small">Organizaciones</SideButton>
+              <SideButton size="small">Reporte organizaciones</SideButton>
             </NavLink>
             <NavLink
               className="o-btnSidebar o-btnSidebar-reportes"
               activeClassName="o-btnSidebar o-btnSidebar-reportesActive"
               to="/reporte_contactos"
             >
-              <SideButton>Contactos</SideButton>
+              <SideButton>Reporte contactos</SideButton>
             </NavLink>
             <NavLink
               className="o-btnSidebar o-btnSidebar-reportes"
               activeClassName="o-btnSidebar o-btnSidebar-reportesActive"
-              to="/reporte_contactos"
+              to="/reporte_fechas"
             >
-              <SideButton>Fechas</SideButton>
+              <SideButton>Reporte temporadas</SideButton>
             </NavLink>
           </div>
           <div className="o-cardPlaceholder">
             <Switch>
               <Route path="/reporte_organizaciones">
-                <h5>Placeholder 1</h5>
+                <ReporteOrganizacion token={token} />
               </Route>
               <Route path="/reporte_contactos">
-                <h5>Placeholder 2</h5>
+                <ReporteContacto token={token} />
+              </Route>
+              <Route path="/reporte_fechas">
+                <ReporteFechas token={token} />
               </Route>
             </Switch>
           </div>

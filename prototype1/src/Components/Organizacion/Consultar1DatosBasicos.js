@@ -86,7 +86,7 @@ class Consultar1DatosBasicos extends Component {
   }
 
   componentDidMount() {
-    fetch("http://localhost:8000/api/auth/Organizacion/Data", {
+    fetch(process.env.REACT_APP_API_URL + "Organizacion/Data", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -120,15 +120,13 @@ class Consultar1DatosBasicos extends Component {
           }
         );
       })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
+      .catch((error) => {});
     this.callApi();
   }
 
   callApi = () => {
     const idOrg = this.props.dbid_org;
-    fetch("http://localhost:8000/api/auth/Organizacion/" + idOrg, {
+    fetch(process.env.REACT_APP_API_URL + "Organizacion/" + idOrg, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -169,7 +167,7 @@ class Consultar1DatosBasicos extends Component {
         );
       })
       .catch((error) => {
-        console.error("Error:", error);
+        this.setState({ loading: false });
       });
   };
 
@@ -177,7 +175,7 @@ class Consultar1DatosBasicos extends Component {
     const data = {
       sector_id: this.state.sectoreco_org,
     };
-    fetch("http://localhost:8000/api/auth/Subsector/Sector", {
+    fetch(process.env.REACT_APP_API_URL + "Subsector/Sector", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -322,7 +320,7 @@ class Consultar1DatosBasicos extends Component {
       subsector_id: this.state.subsececo_org,
       estado: this.state.estado_org,
     };
-    fetch("http://localhost:8000/api/auth/Organizacion/" + idOrg, {
+    fetch(process.env.REACT_APP_API_URL + "Organizacion/" + idOrg, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -339,8 +337,7 @@ class Consultar1DatosBasicos extends Component {
         }
       })
       .catch((error) => {
-        console.log(error);
-        this.setState({ createS: true, reqText: true });
+        this.setState({ loading: false, createS: true, reqText: true });
       });
   };
 
@@ -348,17 +345,14 @@ class Consultar1DatosBasicos extends Component {
     const tempCiiu = {
       organizacion_id: this.props.dbid_org,
     };
-    console.log(tempCiiu);
-    fetch("http://localhost:8000/api/auth/Organizacion/DelAct", {
+    fetch(process.env.REACT_APP_API_URL + "Organizacion/DelAct", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + this.props.token,
       },
       body: JSON.stringify(tempCiiu),
-    }).catch((error) => {
-      console.error("Error:", error);
-    });
+    }).catch((error) => {});
     this.addCiiuApi();
   };
 
@@ -367,8 +361,7 @@ class Consultar1DatosBasicos extends Component {
       organizacion_id: this.props.dbid_org,
       actividades: this.state.ciiu_org,
     };
-    console.log(tempCiiu);
-    fetch("http://localhost:8000/api/auth/ActividadEconomica", {
+    fetch(process.env.REACT_APP_API_URL + "ActividadEconomica", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -379,13 +372,10 @@ class Consultar1DatosBasicos extends Component {
       .then((response) => {
         return response.json();
       })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
+      .catch((error) => {});
 
     setTimeout(this.callApi, 2000);
     setTimeout(this.callApi, 5000);
-    setTimeout(this.callApi, 10000);
   };
 
   render() {

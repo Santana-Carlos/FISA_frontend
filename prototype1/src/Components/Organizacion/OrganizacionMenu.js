@@ -36,7 +36,7 @@ class OrganizacionMenu extends Component {
     const data = {
       org_id: this.props.dbid_org,
     };
-    fetch("http://localhost:8000/api/auth/Organizacion/EditOrg", {
+    fetch(process.env.REACT_APP_API_URL + "Organizacion/EditOrg", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -63,7 +63,7 @@ class OrganizacionMenu extends Component {
         }
       })
       .catch((error) => {
-        console.error("Error:", error);
+        this.setState({ loading: false });
       });
   };
 

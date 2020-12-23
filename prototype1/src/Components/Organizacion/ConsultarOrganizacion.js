@@ -26,7 +26,11 @@ import {
   RedButton,
   StyledTableCell,
 } from "../Buttons";
-import { Delete as IconDelete, Edit as IconEdit } from "@material-ui/icons";
+import {
+  Delete as IconDelete,
+  Edit as IconEdit,
+  Refresh as IconRefresh,
+} from "@material-ui/icons";
 import { Switch, Route } from "react-router-dom";
 import OrganizacionMenu from "./OrganizacionMenu";
 import "../Styles.css";
@@ -82,11 +86,11 @@ class ConsultarOrganizacion extends Component {
   }
 
   componentDidMount() {
-    setTimeout(this.callAPi, 400);
+    this.callAPi();
   }
 
   callAPi = () => {
-    fetch("http://localhost:8000/api/auth/Organizacion", {
+    fetch(process.env.REACT_APP_API_URL + "Organizacion", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -105,7 +109,8 @@ class ConsultarOrganizacion extends Component {
         }
       })
       .catch((error) => {
-        console.error("Error:", error);
+        this.setState({ loading: false });
+        alert("SERVIDOR NO DISPONIBLE\nConsulte a su gestor de servicios");
       });
   };
 
@@ -127,7 +132,7 @@ class ConsultarOrganizacion extends Component {
       palabras: [palabra1, palabra2, palabra3, palabra4],
     };
     if (tipo1 !== "" && palabra1 !== "") {
-      fetch("http://localhost:8000/api/auth/Organizacion/Search", {
+      fetch(process.env.REACT_APP_API_URL + "Organizacion/Search", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -147,11 +152,18 @@ class ConsultarOrganizacion extends Component {
             });
           }
         })
-        .catch((error) => {
-          console.error("Error:", error);
-        });
+        .catch((error) => {});
     } else {
       this.setState({ loading: false, reqText: true, createS: true });
+      this.callAPi();
+    }
+  };
+
+  apiRefresh = () => {
+    this.setState({ loading: true });
+    if (this.state.tipo1 !== "" && this.state.palabra1 !== "") {
+      this.apiSearch();
+    } else {
       this.callAPi();
     }
   };
@@ -165,7 +177,7 @@ class ConsultarOrganizacion extends Component {
     if (a) {
       if (this.state.delcheck) {
         this.setState({ loading: true });
-        fetch("http://localhost:8000/api/auth/Organizacion/" + idOrg, {
+        fetch(process.env.REACT_APP_API_URL + "Organizacion/" + idOrg, {
           method: "DELETE",
           headers: {
             "Content-Type": "application/json",
@@ -184,9 +196,7 @@ class ConsultarOrganizacion extends Component {
               });
             }
           })
-          .catch((error) => {
-            console.error("Error:", error);
-          });
+          .catch((error) => {});
       } else {
         this.setState({
           delcheckOpen: true,
@@ -200,7 +210,6 @@ class ConsultarOrganizacion extends Component {
     }
     setTimeout(this.callAPi, 2000);
     setTimeout(this.callAPi, 5000);
-    setTimeout(this.callAPi, 10000);
   };
 
   editOrg = () => {
@@ -473,6 +482,11 @@ class ConsultarOrganizacion extends Component {
                   <div className="o-btnConsultas">
                     <RedButton onClick={this.clearFunc}>Limpiar</RedButton>
                   </div>
+                  <div className="o-btnConsultas" style={{ width: "4rem" }}>
+                    <BlueButton onClick={this.apiRefresh}>
+                      <IconRefresh size="small" />
+                    </BlueButton>
+                  </div>
                 </div>
               </div>
               <TableContainer
@@ -493,7 +507,7 @@ class ConsultarOrganizacion extends Component {
                   </TableHead>
                   <TableBody>
                     {this.state.orgs.map((obj, i) => (
-                      <TableRow key={i}>
+                      <TableRow key={i} hover={true}>
                         <StyledTableCell size="small">
                           {obj.nombre}
                         </StyledTableCell>

@@ -62,7 +62,6 @@ const Login = () => {
         return response.json();
       })
       .then((data) => {
-        console.log(data);
         if (data.success) {
           dispatch(loginToken(data.token));
           dispatch(updateRol(data.rol));

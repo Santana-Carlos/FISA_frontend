@@ -17,6 +17,8 @@ import {
   TableHead,
   TableRow,
   Checkbox,
+  Fade,
+  CircularProgress,
 } from "@material-ui/core";
 import {
   Delete as IconDelete,
@@ -73,6 +75,8 @@ class CrearOrganizacion3Contactos extends Component {
       temp_estado_con: "",
       temp_subcat_con: [],
       temp_subcatFake_con: [],
+      loading: true,
+      loadingDiag: false,
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -80,7 +84,7 @@ class CrearOrganizacion3Contactos extends Component {
   }
 
   componentDidMount() {
-    fetch("http://localhost:8000/api/auth/Contacto/Data", {
+    fetch(process.env.REACT_APP_API_URL + "Contacto/Data", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -104,7 +108,7 @@ class CrearOrganizacion3Contactos extends Component {
     const data = {
       organizacion_id: this.state.dbid_org,
     };
-    fetch("http://localhost:8000/api/auth/Contacto/Org", {
+    fetch(process.env.REACT_APP_API_URL + "Contacto/Org", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -119,18 +123,21 @@ class CrearOrganizacion3Contactos extends Component {
         this.setState(
           {
             contacts: data.contactos,
+            loading: false,
           },
           this.callAPiOff
         );
       })
-      .catch((error) => {});
+      .catch((error) => {
+        this.setState({ loading: false });
+      });
   };
 
   callAPiOff = () => {
     const data = {
       organizacion_id: this.state.dbid_org,
     };
-    fetch("http://localhost:8000/api/auth/Oficina/Org", {
+    fetch(process.env.REACT_APP_API_URL + "Oficina/Org", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -152,7 +159,7 @@ class CrearOrganizacion3Contactos extends Component {
   handleClickOpen = () => {
     const idCon = this.state.temp_id_con;
     if (idCon !== "") {
-      fetch("http://localhost:8000/api/auth/Contacto/" + idCon, {
+      fetch(process.env.REACT_APP_API_URL + "Contacto/" + idCon, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -178,6 +185,7 @@ class CrearOrganizacion3Contactos extends Component {
               temp_nid_con: data.contacto.numero_documento,
               temp_sex_con: data.contacto.sexo,
               temp_estado_con: data.contacto.estado,
+              loadingDiag: false,
               temp_subcat_con:
                 data.categorias[0] === this.state.indexCat
                   ? []
@@ -186,7 +194,10 @@ class CrearOrganizacion3Contactos extends Component {
             this.subcatFake
           );
         })
-        .catch((error) => {});
+        .catch((error) => {
+          this.setState({ loadingDiag: false });
+          alert("SERVIDOR NO DISPONIBLE\nConsulte a su gestor de servicios");
+        });
     }
     this.setState({ addContact: true });
   };
@@ -220,15 +231,14 @@ class CrearOrganizacion3Contactos extends Component {
   handleCloseDel = (a) => {
     const idCon = this.state.temp_id_con;
     if (a) {
-      fetch("http://localhost:8000/api/auth/Contacto/" + idCon, {
+      this.setState({ loading: true });
+      fetch(process.env.REACT_APP_API_URL + "Contacto/" + idCon, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + this.props.token,
         },
-      }).catch((error) => {
-        console.error("Error:", error);
-      });
+      }).catch((error) => {});
     }
     this.setState({
       delContact: false,
@@ -236,10 +246,10 @@ class CrearOrganizacion3Contactos extends Component {
     });
     setTimeout(this.callAPi, 2000);
     setTimeout(this.callAPi, 5000);
-    setTimeout(this.callAPi, 10000);
   };
 
   callApipostContacto = () => {
+    this.setState({ loadingDiag: true });
     const idCon = this.state.temp_id_con;
     const data = {
       organizacion_id: this.state.dbid_org,
@@ -258,7 +268,7 @@ class CrearOrganizacion3Contactos extends Component {
       sexo: this.state.temp_sex_con,
     };
     if (idCon === "") {
-      fetch("http://localhost:8000/api/auth/Contacto/", {
+      fetch(process.env.REACT_APP_API_URL + "Contacto/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -273,6 +283,8 @@ class CrearOrganizacion3Contactos extends Component {
           if (data.success) {
             this.setState(
               {
+                loading: true,
+                loadingDiag: false,
                 temp_id_con: data.contacto.id,
                 addContact: false,
                 reqText: false,
@@ -283,10 +295,14 @@ class CrearOrganizacion3Contactos extends Component {
           }
         })
         .catch((error) => {
-          this.setState({ reqText: true, createS: true });
+          this.setState({
+            loadingDiag: false,
+            reqText: true,
+            createS: true,
+          });
         });
     } else {
-      fetch("http://localhost:8000/api/auth/Contacto/" + idCon, {
+      fetch(process.env.REACT_APP_API_URL + "Contacto/" + idCon, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -298,6 +314,8 @@ class CrearOrganizacion3Contactos extends Component {
           if (data.success) {
             this.setState(
               {
+                loading: true,
+                loadingDiag: false,
                 temp_id_con: data.contacto.id,
                 addContact: false,
                 reqText: false,
@@ -308,13 +326,12 @@ class CrearOrganizacion3Contactos extends Component {
           }
         })
         .catch((error) => {
-          this.setState({ reqText: true, createS: true });
+          this.setState({ loadingDiag: false, reqText: true, createS: true });
         });
       this.delSubcatApi();
     }
     setTimeout(this.callAPi, 2000);
     setTimeout(this.callAPi, 5000);
-    setTimeout(this.callAPi, 10000);
   };
 
   addSubcatApi = () => {
@@ -322,8 +339,7 @@ class CrearOrganizacion3Contactos extends Component {
       contacto_id: this.state.temp_id_con,
       categorias: this.state.temp_subcat_con,
     };
-    console.log(tempSubcat);
-    fetch("http://localhost:8000/api/auth/CategoriaContacto", {
+    fetch(process.env.REACT_APP_API_URL + "CategoriaContacto", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -336,16 +352,14 @@ class CrearOrganizacion3Contactos extends Component {
         this.clearTemp();
         return response.json();
       })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
+      .catch((error) => {});
   };
 
   delSubcatApi = () => {
     const tempSubcat = {
       contacto_id: this.state.temp_id_con,
     };
-    fetch("http://localhost:8000/api/auth/Contacto/DelSub", {
+    fetch(process.env.REACT_APP_API_URL + "Contacto/DelSub", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -356,9 +370,7 @@ class CrearOrganizacion3Contactos extends Component {
       .then((response) => {
         return response.json();
       })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
+      .catch((error) => {});
     if (this.state.temp_subcat_con[0] !== undefined) {
       this.addSubcatApi();
     }
@@ -460,7 +472,19 @@ class CrearOrganizacion3Contactos extends Component {
         <div className="o-contentTittle">
           <h3 className="o-contentTittle-principal">Lista de contactos</h3>
           <div className="o-text-nameOrg">
-            {" "}
+            <Fade
+              in={this.state.loading}
+              style={{
+                transitionDelay: "200ms",
+                marginRight: "1rem",
+              }}
+              unmountOnExit
+            >
+              <div style={{ fontSize: "1rem" }}>
+                {"Cargando... "}
+                <CircularProgress size={"1rem"} thickness={6} />
+              </div>
+            </Fade>
             {"Organización: "}
             {this.props.name_org || ""}
           </div>
@@ -482,7 +506,7 @@ class CrearOrganizacion3Contactos extends Component {
                 </TableHead>
                 <TableBody>
                   {this.state.contacts.map((obj, i) => (
-                    <TableRow key={i}>
+                    <TableRow key={i} hover={true}>
                       <StyledTableCell size="small">
                         {obj.nombres + " " + obj.apellidos}
                       </StyledTableCell>
@@ -508,7 +532,7 @@ class CrearOrganizacion3Contactos extends Component {
                           style={{ color: "#47B14C" }}
                           onClick={() =>
                             this.setState(
-                              { temp_id_con: obj.id },
+                              { loadingDiag: true, temp_id_con: obj.id },
                               this.handleClickOpen
                             )
                           }
@@ -588,6 +612,21 @@ class CrearOrganizacion3Contactos extends Component {
               <h5 className="o-diagTittle-sub">
                 campos marcados con * son obligatorios
               </h5>
+              <div className="o-text-nameOrg">
+                <Fade
+                  in={this.state.loadingDiag}
+                  style={{
+                    transitionDelay: "200ms",
+                    marginRight: "1rem",
+                  }}
+                  unmountOnExit
+                >
+                  <div style={{ fontSize: "1rem" }}>
+                    {"Cargando... "}
+                    <CircularProgress size={"1rem"} thickness={6} />
+                  </div>
+                </Fade>
+              </div>
             </div>
           </DialogTitle>
           <div className="o-diagContent"></div>
@@ -674,7 +713,7 @@ class CrearOrganizacion3Contactos extends Component {
                   <Select
                     labelId="demo-simple-select-outlined-label"
                     id="demo-simple-select-outlined"
-                    value={this.state.temp_sex_con}
+                    value={this.state.temp_sex_con || ""}
                     onChange={this.handleChange}
                     label="Sexo"
                     name="input_sex_con"
@@ -772,7 +811,7 @@ class CrearOrganizacion3Contactos extends Component {
                   <Select
                     labelId="demo-simple-select-outlined-label"
                     id="demo-simple-select-outlined"
-                    value={this.state.temp_idoffice_con}
+                    value={this.state.temp_idoffice_con || ""}
                     onChange={this.handleChange}
                     label="Oficina"
                     name="input_idoffice_con"

@@ -11,6 +11,8 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Fade,
+  CircularProgress,
 } from "@material-ui/core";
 import {
   Delete as IconDelete,
@@ -73,6 +75,7 @@ class Consultar5Files extends Component {
       files: [],
       delFile: false,
       createS: false,
+      loading: true,
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -86,7 +89,7 @@ class Consultar5Files extends Component {
     const data = {
       organizacion_id: this.state.dbid_org,
     };
-    fetch("http://localhost:8000/api/auth/Archivo/Org", {
+    fetch(process.env.REACT_APP_API_URL + "Archivo/Org", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -98,12 +101,15 @@ class Consultar5Files extends Component {
         return response.json();
       })
       .then((data) => {
-        this.setState({
-          files: data.archivos,
-        });
+        if (data.success) {
+          this.setState({
+            files: data.archivos,
+            loading: false,
+          });
+        }
       })
       .catch((error) => {
-        console.error("Error:", error);
+        this.setState({ loading: false });
       });
   };
 
@@ -112,11 +118,12 @@ class Consultar5Files extends Component {
   };
 
   callAPiDownload = () => {
+    this.setState({ loading: true });
     const nameFile = this.state.files[
       this.state.files.findIndex((x) => x.id === this.state.temp_id_fil)
     ].nombre;
     const idFile = this.state.temp_id_fil;
-    fetch("http://localhost:8000/api/auth/Archivo/" + idFile, {
+    fetch(process.env.REACT_APP_API_URL + "Archivo/" + idFile, {
       method: "GET",
       headers: {
         Authorization: "Bearer " + this.props.token,
@@ -126,17 +133,19 @@ class Consultar5Files extends Component {
         return response.blob();
       })
       .then((data) => {
+        this.setState({ loading: false });
         saveAs(data, nameFile);
       })
       .catch((error) => {
-        console.error("Error:", error);
+        this.setState({ loading: false });
       });
   };
 
   handleCloseDel = (a) => {
     const idFile = this.state.temp_id_fil;
     if (a) {
-      fetch("http://localhost:8000/api/auth/Archivo/" + idFile, {
+      this.setState({ loading: true });
+      fetch(process.env.REACT_APP_API_URL + "Archivo/" + idFile, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -147,9 +156,7 @@ class Consultar5Files extends Component {
           return response.json();
         })
         .then((data) => {})
-        .catch((error) => {
-          console.error("Error:", error);
-        });
+        .catch((error) => {});
     }
     this.setState({
       delFile: false,
@@ -157,7 +164,6 @@ class Consultar5Files extends Component {
     });
     setTimeout(this.callAPi, 2000);
     setTimeout(this.callAPi, 5000);
-    setTimeout(this.callAPi, 10000);
   };
 
   handleChange(event) {
@@ -166,7 +172,7 @@ class Consultar5Files extends Component {
 
     switch (name) {
       case "input_file_fil":
-        if (files.size !== undefined) {
+        if (files !== undefined && files !== null && files !== "") {
           this.setState({ temp_files_fil: files }, this.callApiUpFile);
         }
         break;
@@ -176,6 +182,7 @@ class Consultar5Files extends Component {
   }
 
   callApiUpFile = () => {
+    this.setState({ loading: true });
     const fileTemp = this.state.temp_files_fil;
 
     if (fileTemp.size < 5300000) {
@@ -183,7 +190,7 @@ class Consultar5Files extends Component {
       data.append("file", this.state.temp_files_fil);
       data.append("organizacion_id", this.state.dbid_org);
 
-      fetch("http://localhost:8000/api/auth/Archivo/Upload", {
+      fetch(process.env.REACT_APP_API_URL + "Archivo/Upload", {
         method: "POST",
         headers: {
           Authorization: "Bearer " + this.props.token,
@@ -194,16 +201,15 @@ class Consultar5Files extends Component {
           return response.json();
         })
         .then((data) => {
-          console.log(data);
           if (data.success) {
+            this.setState({ loading: false });
           }
         })
         .catch((error) => {
-          this.setState({ createS: true });
+          this.setState({ loading: false, createS: true });
         });
       setTimeout(this.callAPi, 2000);
       setTimeout(this.callAPi, 5000);
-      setTimeout(this.callAPi, 10000);
     } else {
       this.setState({ createS: true });
     }
@@ -216,7 +222,19 @@ class Consultar5Files extends Component {
         <div className="o-contentTittle">
           <h3 className="o-contentTittle-principal">Lista de archivos</h3>
           <div className="o-text-nameOrg">
-            {" "}
+            <Fade
+              in={this.state.loading}
+              style={{
+                transitionDelay: "200ms",
+                marginRight: "1rem",
+              }}
+              unmountOnExit
+            >
+              <div style={{ fontSize: "1rem" }}>
+                {"Cargando... "}
+                <CircularProgress size={"1rem"} thickness={6} />
+              </div>
+            </Fade>
             {"Organización: "}
             {this.props.name_org || ""}
           </div>
@@ -260,7 +278,7 @@ class Consultar5Files extends Component {
                 </TableHead>
                 <TableBody>
                   {this.state.files.map((obj, i) => (
-                    <TableRow key={i}>
+                    <TableRow key={i} hover={true}>
                       <StyledTableCellBig size="small">
                         {obj.nombre}
                       </StyledTableCellBig>

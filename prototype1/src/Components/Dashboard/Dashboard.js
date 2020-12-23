@@ -11,7 +11,13 @@ import Administracion from "../Cards/Administracion";
 import Seguridad from "../Cards/Seguridad";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { logOut, logoutToken, updateUser, updatePass } from "../../Actions";
+import {
+  logOut,
+  logoutToken,
+  updateUser,
+  updatePass,
+  updateRol,
+} from "../../Actions";
 import SwitchWithSlide from "../SwitchWithSlide/SwitchWithSlide";
 import "./Dashboard.css";
 
@@ -23,8 +29,8 @@ const Dashboard = () => {
   const isLog = useSelector((state) => state.isLog);
 
   const callApiLogout = () => {
-    clearInterval(window.refreshToken);
-    fetch("http://localhost:8000/api/auth/logout", {
+    window.clearInterval(window.refreshToken);
+    fetch(process.env.REACT_APP_API_URL + "logout", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -36,6 +42,7 @@ const Dashboard = () => {
     dispatch(logoutToken(""));
     dispatch(updateUser(""));
     dispatch(updatePass(""));
+    dispatch(updateRol(""));
     dispatch(logOut());
   };
 

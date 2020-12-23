@@ -12,6 +12,8 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  Fade,
+  CircularProgress,
 } from "@material-ui/core";
 import {
   MuiPickersUtilsProvider,
@@ -79,6 +81,7 @@ class CrearOrganizacion1DatosBasicos extends Component {
       ciiu_org_api: [],
       dbid_org: "",
       indexCat: -1,
+      loading: false,
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -86,7 +89,7 @@ class CrearOrganizacion1DatosBasicos extends Component {
   }
 
   componentDidMount() {
-    fetch("http://localhost:8000/api/auth/Organizacion/Data", {
+    fetch(process.env.REACT_APP_API_URL + "Organizacion/Data", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -122,16 +125,14 @@ class CrearOrganizacion1DatosBasicos extends Component {
           );
         }
       })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
+      .catch((error) => {});
   }
 
   callApiSubsector = () => {
     const data = {
       sector_id: this.state.sectoreco_org,
     };
-    fetch("http://localhost:8000/api/auth/Subsector/Sector", {
+    fetch(process.env.REACT_APP_API_URL + "Subsector/Sector", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -243,6 +244,7 @@ class CrearOrganizacion1DatosBasicos extends Component {
   };
 
   apiPost = (a) => {
+    this.setState({ loading: true });
     const data = {
       nombre: this.state.nomcom_org,
       tipo_documento_organizacion_id: this.state.tipoid_org,
@@ -264,7 +266,7 @@ class CrearOrganizacion1DatosBasicos extends Component {
       subsector_id: this.state.subsececo_org,
       estado: this.state.estado_org,
     };
-    fetch("http://localhost:8000/api/auth/Organizacion/", {
+    fetch(process.env.REACT_APP_API_URL + "Organizacion/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -278,7 +280,7 @@ class CrearOrganizacion1DatosBasicos extends Component {
       .then((data) => {
         if (data.success) {
           this.setState(
-            { dbid_org: data.organizacion.id, reqText: false },
+            { loading: false, dbid_org: data.organizacion.id, reqText: false },
             this.addCiiuApi
           );
           if (a) {
@@ -290,7 +292,7 @@ class CrearOrganizacion1DatosBasicos extends Component {
         }
       })
       .catch((error) => {
-        this.setState({ createS: true, reqText: true });
+        this.setState({ loading: false, createS: true, reqText: true });
       });
   };
 
@@ -298,7 +300,7 @@ class CrearOrganizacion1DatosBasicos extends Component {
     const data = {
       organizacion_id: this.state.dbid_org,
     };
-    fetch("http://localhost:8000/api/auth/InformacionFinanciera/", {
+    fetch(process.env.REACT_APP_API_URL + "InformacionFinanciera/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -340,8 +342,7 @@ class CrearOrganizacion1DatosBasicos extends Component {
       organizacion_id: this.state.dbid_org,
       actividades: this.state.ciiu_org,
     };
-    console.log(tempCiiu);
-    fetch("http://localhost:8000/api/auth/ActividadEconomica", {
+    fetch(process.env.REACT_APP_API_URL + "ActividadEconomica", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -352,9 +353,7 @@ class CrearOrganizacion1DatosBasicos extends Component {
       .then((response) => {
         return response.json();
       })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
+      .catch((error) => {});
   };
 
   render() {
@@ -368,6 +367,21 @@ class CrearOrganizacion1DatosBasicos extends Component {
               <h4 className="o-contentTittle-sub">
                 campos marcados con * son obligatorios
               </h4>
+              <div className="o-text-nameOrg">
+                <Fade
+                  in={this.state.loading}
+                  style={{
+                    transitionDelay: "200ms",
+                    marginRight: "1rem",
+                  }}
+                  unmountOnExit
+                >
+                  <div style={{ fontSize: "1rem" }}>
+                    {"Cargando... "}
+                    <CircularProgress size={"1rem"} thickness={6} />
+                  </div>
+                </Fade>
+              </div>
             </div>
             <div className="o-contentForm-big">
               <div className="o-contentForm">
