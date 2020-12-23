@@ -43,11 +43,33 @@ class ReporteFechas extends Component {
       dateStart: "",
       dateEnd: "",
       createS: false,
+      createZ: false,
       loading: false,
     };
 
     this.handleChange = this.handleChange.bind(this);
   }
+
+  apiReport = () => {
+    const dateStart = this.state.dateStart;
+    const dateEnd = this.state.dateEnd;
+    const tipo = this.state.tipoRep;
+
+    if (dateStart !== "" && dateEnd !== "") {
+      switch (tipo) {
+        case 1:
+          this.apiReportOrg();
+          break;
+        case 2:
+          this.apiReportCon();
+          break;
+        default:
+          break;
+      }
+    } else {
+      this.setState({ createS: true });
+    }
+  };
 
   apiReportOrg = () => {
     this.setState({ loading: true });
@@ -57,10 +79,11 @@ class ReporteFechas extends Component {
       fecha_inicio: dateStart,
       fecha_fin: dateEnd,
     };
-    if (dateStart !== "" && dateEnd !== "") {
+    if (dateStart < dateEnd) {
       fetch(process.env.REACT_APP_API_URL + "Organizacion/RepFec", {
         method: "POST",
         headers: {
+          "Content-Type": "application/json",
           Authorization: "Bearer " + this.props.token,
         },
         body: JSON.stringify(data),
@@ -76,7 +99,7 @@ class ReporteFechas extends Component {
           this.setState({ loading: false });
         });
     } else {
-      this.setState({ loading: false, createS: true });
+      this.setState({ loading: false, createZ: true });
     }
   };
 
@@ -88,10 +111,11 @@ class ReporteFechas extends Component {
       fecha_inicio: dateStart,
       fecha_fin: dateEnd,
     };
-    if (dateStart !== "" && dateEnd !== "") {
+    if (dateStart < dateEnd) {
       fetch(process.env.REACT_APP_API_URL + "Contacto/RepFec", {
         method: "POST",
         headers: {
+          "Content-Type": "application/json",
           Authorization: "Bearer " + this.props.token,
         },
         body: JSON.stringify(data),
@@ -107,7 +131,7 @@ class ReporteFechas extends Component {
           this.setState({ loading: false });
         });
     } else {
-      this.setState({ loading: false, createS: true });
+      this.setState({ loading: false, createZ: true });
     }
   };
 
@@ -144,7 +168,7 @@ class ReporteFechas extends Component {
 
   render() {
     const BOX_SIZE =
-      window.innerHeight > 900 ? "1rem 0 0 2rem" : "1rem 0 0 0.5rem";
+      window.innerHeight > 900 ? "1rem 0 0 2.5rem" : "1rem 0 0 0.5rem";
     return (
       <div className="o-cardContent">
         <div className="o-contentTittle">
@@ -285,13 +309,7 @@ class ReporteFechas extends Component {
                   width: "10rem",
                 }}
               >
-                <GreenButton
-                  onClick={
-                    this.state.tipoRep === 2
-                      ? this.apiReportCon
-                      : this.apiReportOrg
-                  }
-                >
+                <GreenButton onClick={this.apiReport}>
                   Reporte
                   <IconDownload style={{ marginLeft: "0.4rem" }} size="small" />
                 </GreenButton>
@@ -310,6 +328,22 @@ class ReporteFechas extends Component {
           <DialogActions style={{ justifyContent: "center" }}>
             <div className="o-btnBotNav-btnDiag3">
               <GreenButton onClick={() => this.setState({ createS: false })}>
+                {"Aceptar"}
+              </GreenButton>
+            </div>
+          </DialogActions>
+        </Dialog>
+
+        <Dialog open={this.state.createZ} maxWidth={false}>
+          <DialogTitle style={{ textAlign: "center" }}>
+            {"Fechas inválidas"}
+          </DialogTitle>
+          <DialogContent style={{ textAlign: "center" }}>
+            {"(La fecha de inicio debe ser anterior a la fecha final)"}
+          </DialogContent>
+          <DialogActions style={{ justifyContent: "center" }}>
+            <div className="o-btnBotNav-btnDiag3">
+              <GreenButton onClick={() => this.setState({ createZ: false })}>
                 {"Aceptar"}
               </GreenButton>
             </div>

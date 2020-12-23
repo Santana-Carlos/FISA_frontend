@@ -386,7 +386,7 @@ class ConsultarOrganizacion extends Component {
                     </Select>
                   </FormControl>
                 </div>
-                <div className="o-consultas">
+                <div className="o-consultas" style={{ marginRight: 0 }}>
                   <TextField
                     label="Buscar"
                     variant="outlined"
@@ -462,7 +462,7 @@ class ConsultarOrganizacion extends Component {
                     </Select>
                   </FormControl>
                 </div>
-                <div className="o-consultas">
+                <div className="o-consultas" style={{ marginRight: 0 }}>
                   <TextField
                     label="Buscar"
                     variant="outlined"

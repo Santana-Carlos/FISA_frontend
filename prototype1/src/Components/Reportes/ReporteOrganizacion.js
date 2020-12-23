@@ -207,10 +207,12 @@ class ReporteOrganizacion extends Component {
     const data = {
       ids: orgIdList,
     };
+    console.log(data);
 
     fetch(process.env.REACT_APP_API_URL + "Organizacion/RepBus", {
       method: "POST",
       headers: {
+        "Content-Type": "application/json",
         Authorization: "Bearer " + this.props.token,
       },
       body: JSON.stringify(data),
@@ -375,7 +377,7 @@ class ReporteOrganizacion extends Component {
                 </Select>
               </FormControl>
             </div>
-            <div className="o-consultas">
+            <div className="o-consultas" style={{ marginRight: 0 }}>
               <TextField
                 label="Buscar"
                 variant="outlined"
@@ -451,7 +453,7 @@ class ReporteOrganizacion extends Component {
                 </Select>
               </FormControl>
             </div>
-            <div className="o-consultas">
+            <div className="o-consultas" style={{ marginRight: 0 }}>
               <TextField
                 label="Buscar"
                 variant="outlined"
@@ -479,7 +481,7 @@ class ReporteOrganizacion extends Component {
               </div>
               <div
                 className="o-btnConsultas"
-                style={{ width: "8rem", marginLeft: "auto" }}
+                style={{ width: "8rem", marginLeft: "auto", marginRight: 0 }}
               >
                 <GreenButton
                   onClick={
