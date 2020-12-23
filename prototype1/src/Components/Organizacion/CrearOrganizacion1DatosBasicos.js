@@ -683,12 +683,14 @@ class CrearOrganizacion1DatosBasicos extends Component {
                       disableToolbar
                       inputVariant="outlined"
                       variant="inline"
-                      format="dd/MM/yy"
+                      format="dd/MM/yyyy"
                       margin="dense"
                       label="Fecha afiliacion"
                       value={this.state.fechaafi_org || null}
                       onChange={this.handleDateAfi}
                       className="o-space"
+                      invalidDateMessage={"Fecha inválida"}
+                      autoOk={true}
                       KeyboardButtonProps={{
                         "aria-label": "change date",
                       }}
@@ -804,18 +806,24 @@ class CrearOrganizacion1DatosBasicos extends Component {
                 </div>
                 {this.state.indexCat === this.state.cat_org ? (
                   <div>
-                    <div style={{ marginBottom: BOX_SPACING }}>
+                    <div
+                      style={{
+                        marginBottom: BOX_SPACING,
+                      }}
+                    >
                       <MuiPickersUtilsProvider utils={DateFnsUtils}>
                         <KeyboardDatePicker
                           disableToolbar
                           inputVariant="outlined"
                           variant="inline"
-                          format="dd/MM/yy"
+                          format="dd/MM/yyyy"
                           margin="dense"
                           label="Fecha desafiliación"
                           value={this.state.fechadesafi_org || null}
                           onChange={this.handleDateDesafi}
                           className="o-space"
+                          invalidDateMessage={"Fecha inválida"}
+                          autoOk={true}
                           KeyboardButtonProps={{
                             "aria-label": "change date",
                           }}

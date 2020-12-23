@@ -699,12 +699,14 @@ class Consultar1DatosBasicos extends Component {
                   disableToolbar
                   inputVariant="outlined"
                   variant="inline"
-                  format="dd/MM/yy"
+                  format="dd/MM/yyyy"
                   margin="dense"
                   label="Fecha afiliacion"
                   value={this.state.fechaafi_org || null}
                   onChange={this.handleDateAfi}
                   className="o-space"
+                  invalidDateMessage={"Fecha inválida"}
+                  autoOk={true}
                   KeyboardButtonProps={{
                     "aria-label": "change date",
                   }}
@@ -820,12 +822,14 @@ class Consultar1DatosBasicos extends Component {
                       disableToolbar
                       inputVariant="outlined"
                       variant="inline"
-                      format="dd/MM/yy"
+                      format="dd/MM/yyyy"
                       margin="dense"
                       label="Fecha desafiliación"
                       value={this.state.fechadesafi_org || null}
                       onChange={this.handleDateDesafi}
                       className="o-space"
+                      invalidDateMessage={"Fecha inválida"}
+                      autoOk={true}
                       KeyboardButtonProps={{
                         "aria-label": "change date",
                       }}

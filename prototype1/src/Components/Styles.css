@@ -371,3 +371,25 @@
   margin-top: 1.2rem;
   margin-right: 1.2rem;
 }
+
+.o-container-reporteFecha {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  margin: 0.3rem 1rem 0 0;
+  width: auto;
+}
+
+.o-container-reporteFechaLast {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  margin: 0.3rem 0 0;
+  width: auto;
+}
+
+.o-datepicker {
+  border-radius: 5px;
+  border: 1px solid lightgray;
+  overflow: hidden;
+}

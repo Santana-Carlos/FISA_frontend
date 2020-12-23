@@ -277,8 +277,8 @@ class ConsultarContacto extends Component {
   }
 
   render() {
-    const BOX_SPACING = window.innerHeight > 900 ? "0.4rem" : "0rem";
-    const BOX_SIZE = window.innerHeight > 900 ? "30rem" : "17rem";
+    const BOX_SPACING = window.innerHeight > 900 ? "0.6rem" : "0.2rem";
+    const BOX_SIZE = window.innerHeight > 900 ? "32rem" : "16.5rem";
     return (
       <Switch>
         <Route exact path="/consultar_contacto">
