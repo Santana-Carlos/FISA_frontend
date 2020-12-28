@@ -2,7 +2,7 @@ import React from "react";
 import { Route, NavLink, Redirect } from "react-router-dom";
 import { Button } from "@material-ui/core/";
 import { ExitToApp as IconExit } from "@material-ui/icons";
-import logo from "../../Assets/logo2.png";
+import logo from "../../Assets/FisaLogo.png";
 import Organizacion from "../Cards/Organizacion";
 import Contacto from "../Cards/Contacto";
 import Seguimiento from "../Cards/Seguimiento";

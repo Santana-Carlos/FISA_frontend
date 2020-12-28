@@ -1,6 +1,6 @@
 import React from "react";
 import "./Main.css";
-import logo from "../../Assets/logo2.png";
+import logo from "../../Assets/FisaLogo.png";
 import {
   TextField,
   Dialog,
