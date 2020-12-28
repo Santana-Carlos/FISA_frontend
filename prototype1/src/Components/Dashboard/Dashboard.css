@@ -1,7 +1,7 @@
 h1 {
   color: #3e3e3e;
   font-size: 32px;
-  margin: 2rem auto;
+  margin: auto auto 1rem;
 }
 
 .o-dashboard {
@@ -73,6 +73,16 @@ h1 {
   color: #ffffff;
   text-decoration-line: none;
   text-align: center;
+}
+
+.o-mainDashboard {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #3e3e3e;
 }
 
 .o-btnOrganizacion-active {

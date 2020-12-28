@@ -124,6 +124,18 @@ const Login = () => {
           </BlueButton>
         </div>
       </div>
+
+      <div
+        style={{
+          display: "flex",
+          margin: "auto 0.5rem 0.5rem auto",
+          fontSize: "0.8rem",
+          color: "#ffffff",
+        }}
+      >
+        {"FISA © 2020 v" + process.env.REACT_APP_VERSION}
+      </div>
+
       <Dialog
         disableBackdropClick
         disableEscapeKeyDown

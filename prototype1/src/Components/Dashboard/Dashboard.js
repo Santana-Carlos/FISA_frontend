@@ -115,18 +115,17 @@ const Dashboard = () => {
       </div>
       <SwitchWithSlide>
         <Route exact path="/dashboard/">
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              width: "100%",
-              height: "100%",
-              alignItems: "center",
-              color: "#3e3e3e",
-            }}
-          >
-            <h1>Bienvenido {user}</h1>
-            <h3>(Sesión iniciada como {rol})</h3>
+          <div className="o-mainDashboard">
+            <h1>{"Bienvenido " + user}</h1>
+            <h3>{"(Sesión iniciada como " + rol + ")"}</h3>
+
+            <div
+              style={{
+                margin: "auto 0 0.5rem",
+              }}
+            >
+              {"FISA © 2020 v" + process.env.REACT_APP_VERSION}
+            </div>
           </div>
         </Route>
         <Route path="/dashboard/organizacion">
