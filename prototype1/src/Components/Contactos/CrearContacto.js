@@ -242,6 +242,7 @@ class CrearContacto extends Component {
       temp_subcatFake_con: [],
       temp_estado_con: "",
       subcatSearch: "",
+      reqText: false,
     });
   };
 
