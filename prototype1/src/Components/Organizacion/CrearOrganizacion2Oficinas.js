@@ -391,7 +391,7 @@ class CrearOrganizacion2Oficinas extends Component {
   }
 
   render() {
-    const BOX_SPACING = window.innerHeight > 900 ? "0.4rem" : "0rem";
+    const BOX_SPACING = this.props.box_spacing;
     return (
       <div className="o-cardContent">
         {this.props.dbid_org === "" ? (

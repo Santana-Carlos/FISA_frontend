@@ -11,7 +11,6 @@ const Contacto = () => {
   return (
     <HashRouter>
       <div className="o-cards">
-        <div className="o-cardTitleCont">{"Administrar contactos"}</div>
         <div className="o-bigCard">
           <div className="o-sidebar o-sidebar-contacto">
             <NavLink

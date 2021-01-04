@@ -404,7 +404,7 @@ class EditarContacto extends Component {
   }
 
   render() {
-    const BOX_SPACING = window.innerHeight > 900 ? "0.4rem" : "0rem";
+    const BOX_SPACING = this.props.box_spacing;
     return (
       <div className="o-cardContent">
         {this.props.temp_id_con === "" ? (
@@ -746,7 +746,7 @@ class EditarContacto extends Component {
             {"Datos inválidos o insuficientes"}
           </DialogTitle>
           <DialogContent style={{ textAlign: "center" }}>
-            {"(Puede que el contacto ya exista, los correos deben ser únicos)"}
+            {"(Puede que el contacto ya exista)"}
           </DialogContent>
           <DialogActions style={{ justifyContent: "center" }}>
             <div className="o-btnBotNav-btnDiag3">

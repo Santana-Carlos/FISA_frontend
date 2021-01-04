@@ -13,7 +13,7 @@ export const SideButton = withStyles((theme) => ({
     fontSize: "1rem",
     fontWeight: 400,
     textAlign: "start",
-    paddingLeft: "1.2rem",
+    paddingLeft: "1.3rem",
     justifyContent: "flex-start",
     backgroundColor: "transparent",
     "&:hover": {
@@ -87,6 +87,50 @@ export const StyledTableCell = withStyles((theme) => ({
   body: {
     fontSize: "0.85rem",
     maxWidth: "6.8rem",
+    textOverflow: "ellipsis",
+    overflowX: "hidden",
+  },
+}))(TableCell);
+
+export const StyledTableCellTiny = withStyles((theme) => ({
+  head: {
+    backgroundColor: "#3E3E3E",
+    color: "#FFFFFF",
+    border: 0,
+    fontSize: "0.9rem",
+    maxWidth: "8.5rem",
+    paddingLeft: "0.5rem",
+    paddingRight: "0.5rem",
+    textOverflow: "ellipsis",
+    overflowX: "hidden",
+  },
+  body: {
+    fontSize: "0.85rem",
+    maxWidth: "8.5rem",
+    paddingLeft: "0.5rem",
+    paddingRight: "0.5rem",
+    textOverflow: "ellipsis",
+    overflowX: "hidden",
+  },
+}))(TableCell);
+
+export const StyledTableCellSuperTiny = withStyles((theme) => ({
+  head: {
+    backgroundColor: "#3E3E3E",
+    color: "#FFFFFF",
+    border: 0,
+    fontSize: "0.9rem",
+    maxWidth: "7rem",
+    paddingLeft: "0.4rem",
+    paddingRight: "0.4rem",
+    textOverflow: "ellipsis",
+    overflowX: "hidden",
+  },
+  body: {
+    fontSize: "0.8rem",
+    maxWidth: "7rem",
+    paddingLeft: "0.4rem",
+    paddingRight: "0.4rem",
     textOverflow: "ellipsis",
     overflowX: "hidden",
   },

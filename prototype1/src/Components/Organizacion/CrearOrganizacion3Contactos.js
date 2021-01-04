@@ -29,7 +29,7 @@ import {
   BlueButton,
   GreenButton,
   RedButton,
-  StyledTableCell,
+  StyledTableCellTiny as StyledTableCell,
 } from "../Buttons";
 import { Autocomplete } from "@material-ui/lab";
 import { Link, Redirect } from "react-router-dom";
@@ -43,9 +43,11 @@ class CrearOrganizacion3Contactos extends Component {
       dbid_org: props.dbid_org,
       reqText: false,
       temp_id_con: "",
+      temp_id_per: "",
       contacts: [],
       addContact: false,
       delContact: false,
+      createS: false,
       tipoid_con_api: [],
       subcat_con_api: [],
       ofices_api: [],
@@ -66,6 +68,7 @@ class CrearOrganizacion3Contactos extends Component {
       temp_cargo_con: "",
       temp_replegal_con: false,
       temp_tel_con: "",
+      temp_ext_con: "",
       temp_cel_con: "",
       temp_correo_con: "",
       temp_obs_con: "",
@@ -178,6 +181,7 @@ class CrearOrganizacion3Contactos extends Component {
               temp_cargo_con: data.contacto.cargo,
               temp_replegal_con: data.contacto.representante,
               temp_tel_con: data.contacto.telefono,
+              temp_ext_con: data.contacto.extension,
               temp_cel_con: data.contacto.celular,
               temp_correo_con: data.contacto.email,
               temp_obs_con: data.contacto.observaciones,
@@ -243,6 +247,7 @@ class CrearOrganizacion3Contactos extends Component {
     this.setState({
       delContact: false,
       temp_id_con: "",
+      temp_id_per: "",
     });
     setTimeout(this.callAPi, 2000);
     setTimeout(this.callAPi, 5000);
@@ -252,6 +257,7 @@ class CrearOrganizacion3Contactos extends Component {
     this.setState({ loadingDiag: true });
     const idCon = this.state.temp_id_con;
     const data = {
+      persona_id: this.state.temp_id_per,
       organizacion_id: this.state.dbid_org,
       oficina_id: this.state.temp_idoffice_con,
       nombres: this.state.temp_nombre_con,
@@ -259,6 +265,7 @@ class CrearOrganizacion3Contactos extends Component {
       cargo: this.state.temp_cargo_con,
       representante: this.state.temp_replegal_con,
       telefono: this.state.temp_tel_con,
+      extension: this.state.temp_ext_con,
       celular: this.state.temp_cel_con,
       email: this.state.temp_correo_con,
       estado: this.state.temp_estado_con,
@@ -266,6 +273,7 @@ class CrearOrganizacion3Contactos extends Component {
       tipo_documento_persona_id: this.state.temp_tipoid_con,
       numero_documento: this.state.temp_nid_con,
       sexo: this.state.temp_sex_con,
+      categorias: this.state.temp_subcat_con,
     };
     if (idCon === "") {
       fetch(process.env.REACT_APP_API_URL + "Contacto/", {
@@ -281,16 +289,12 @@ class CrearOrganizacion3Contactos extends Component {
         })
         .then((data) => {
           if (data.success) {
-            this.setState(
-              {
-                loading: true,
-                loadingDiag: false,
-                temp_id_con: data.contacto.id,
-                addContact: false,
-                reqText: false,
-              },
-              this.delSubcatApi
-            );
+            this.setState({
+              loading: true,
+              loadingDiag: false,
+              addContact: false,
+              reqText: false,
+            });
             this.clearTemp();
           }
         })
@@ -310,70 +314,27 @@ class CrearOrganizacion3Contactos extends Component {
         },
         body: JSON.stringify(data),
       })
+        .then((response) => {
+          return response.json();
+        })
         .then((data) => {
+          console.log(data);
           if (data.success) {
-            this.setState(
-              {
-                loading: true,
-                loadingDiag: false,
-                temp_id_con: data.contacto.id,
-                addContact: false,
-                reqText: false,
-              },
-              this.delSubcatApi
-            );
+            this.setState({
+              loading: true,
+              loadingDiag: false,
+              addContact: false,
+              reqText: false,
+            });
             this.clearTemp();
           }
         })
         .catch((error) => {
           this.setState({ loadingDiag: false, reqText: true, createS: true });
         });
-      this.delSubcatApi();
     }
     setTimeout(this.callAPi, 2000);
     setTimeout(this.callAPi, 5000);
-  };
-
-  addSubcatApi = () => {
-    const tempSubcat = {
-      contacto_id: this.state.temp_id_con,
-      categorias: this.state.temp_subcat_con,
-    };
-    fetch(process.env.REACT_APP_API_URL + "CategoriaContacto", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + this.props.token,
-      },
-      body: JSON.stringify(tempSubcat),
-    })
-      .then((response) => {
-        this.setState({ addContact: false, reqText: false });
-        this.clearTemp();
-        return response.json();
-      })
-      .catch((error) => {});
-  };
-
-  delSubcatApi = () => {
-    const tempSubcat = {
-      contacto_id: this.state.temp_id_con,
-    };
-    fetch(process.env.REACT_APP_API_URL + "Contacto/DelSub", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + this.props.token,
-      },
-      body: JSON.stringify(tempSubcat),
-    })
-      .then((response) => {
-        return response.json();
-      })
-      .catch((error) => {});
-    if (this.state.temp_subcat_con[0] !== undefined) {
-      this.addSubcatApi();
-    }
   };
 
   clearTemp = () => {
@@ -384,6 +345,7 @@ class CrearOrganizacion3Contactos extends Component {
       temp_cargo_con: "",
       temp_replegal_con: false,
       temp_tel_con: "",
+      temp_ext_con: "",
       temp_cel_con: "",
       temp_correo_con: "",
       temp_obs_con: "",
@@ -421,6 +383,9 @@ class CrearOrganizacion3Contactos extends Component {
       case "input_tel_con":
         this.setState({ temp_tel_con: value });
         break;
+      case "input_ext_con":
+        this.setState({ temp_ext_con: value });
+        break;
       case "input_cel_con":
         this.setState({ temp_cel_con: value });
         break;
@@ -443,7 +408,15 @@ class CrearOrganizacion3Contactos extends Component {
         this.setState({ temp_estado_con: value });
         break;
       case "input_idoffice_con":
-        this.setState({ temp_idoffice_con: value });
+        this.setState({ temp_idoffice_con: value }, () => {
+          this.setState({
+            temp_tel_con: this.state.ofices_api[
+              this.state.ofices_api.findIndex(
+                (x) => x.id === this.state.temp_idoffice_con
+              )
+            ].telefono_1,
+          });
+        });
         break;
       default:
         break;
@@ -463,7 +436,7 @@ class CrearOrganizacion3Contactos extends Component {
   }
 
   render() {
-    const BOX_SPACING = window.innerHeight > 900 ? "0.4rem" : "0rem";
+    const BOX_SPACING = this.props.box_spacing;
     return (
       <div className="o-cardContent">
         {this.props.dbid_org === "" ? (
@@ -489,97 +462,109 @@ class CrearOrganizacion3Contactos extends Component {
             {this.props.name_org || ""}
           </div>
         </div>
-        <div className="o-contentForm-big">
-          <div className="o-tableContainer">
-            <TableContainer className="o-tableBase">
-              <Table stickyHeader size="small">
-                <TableHead>
-                  <TableRow>
-                    <StyledTableCell>Nombre</StyledTableCell>
-                    <StyledTableCell>Cargo</StyledTableCell>
-                    <StyledTableCell>Subcategoria</StyledTableCell>
-                    <StyledTableCell>Correo</StyledTableCell>
-                    <StyledTableCell>Celular</StyledTableCell>
-                    <StyledTableCell></StyledTableCell>
-                    <StyledTableCell></StyledTableCell>
+        <div className="o-contentForm-big-consultas">
+          <TableContainer className="o-tableBase">
+            <Table stickyHeader size="small">
+              <TableHead>
+                <TableRow>
+                  <StyledTableCell>Nombre</StyledTableCell>
+                  <StyledTableCell>Cargo</StyledTableCell>
+                  <StyledTableCell>Teléfono</StyledTableCell>
+                  <StyledTableCell>Ext.</StyledTableCell>
+                  <StyledTableCell>Celular</StyledTableCell>
+                  <StyledTableCell>Correo</StyledTableCell>
+                  <StyledTableCell>Observaciones</StyledTableCell>
+                  <StyledTableCell></StyledTableCell>
+                  <StyledTableCell></StyledTableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {this.state.contacts.map((obj, i) => (
+                  <TableRow key={i} hover={true}>
+                    <StyledTableCell size="small">
+                      {obj.nombres + " " + obj.apellidos}
+                    </StyledTableCell>
+                    <StyledTableCell size="small">{obj.cargo}</StyledTableCell>
+                    <StyledTableCell size="small">
+                      {obj.telefono}
+                    </StyledTableCell>
+                    <StyledTableCell size="small">
+                      {obj.extension}
+                    </StyledTableCell>
+                    <StyledTableCell size="small">
+                      {obj.celular}
+                    </StyledTableCell>
+                    <StyledTableCell size="small">{obj.email}</StyledTableCell>
+                    <StyledTableCell size="small">
+                      {obj.observaciones}
+                    </StyledTableCell>
+                    <StyledTableCell
+                      size="small"
+                      style={{ paddingRight: "0.1rem" }}
+                    >
+                      <IconButton
+                        size="small"
+                        className="o-tinyBtn"
+                        style={{ color: "#47B14C" }}
+                        onClick={() =>
+                          this.setState(
+                            {
+                              loadingDiag: true,
+                              temp_id_con: obj.contacto_id,
+                              temp_id_per: obj.persona_id,
+                            },
+                            this.handleClickOpen
+                          )
+                        }
+                      >
+                        <IconEdit />
+                      </IconButton>
+                    </StyledTableCell>
+                    <StyledTableCell
+                      size="small"
+                      style={{ paddingLeft: "0.1rem" }}
+                    >
+                      <IconButton
+                        size="small"
+                        color="secondary"
+                        onClick={() =>
+                          this.setState(
+                            {
+                              temp_id_con: obj.contacto_id,
+                              temp_id_per: obj.persona_id,
+                            },
+                            this.handleClickOpenDel
+                          )
+                        }
+                      >
+                        <IconDelete />
+                      </IconButton>
+                    </StyledTableCell>
                   </TableRow>
-                </TableHead>
-                <TableBody>
-                  {this.state.contacts.map((obj, i) => (
-                    <TableRow key={i} hover={true}>
-                      <StyledTableCell size="small">
-                        {obj.nombres + " " + obj.apellidos}
-                      </StyledTableCell>
-                      <StyledTableCell size="small">
-                        {obj.cargo}
-                      </StyledTableCell>
-                      <StyledTableCell size="small">
-                        {obj.subcategoria}
-                      </StyledTableCell>
-                      <StyledTableCell size="small">
-                        {obj.email}
-                      </StyledTableCell>
-                      <StyledTableCell size="small">
-                        {obj.celular}
-                      </StyledTableCell>
-                      <StyledTableCell
-                        size="small"
-                        style={{ paddingRight: "0.1rem" }}
-                      >
-                        <IconButton
-                          size="small"
-                          className="o-tinyBtn"
-                          style={{ color: "#47B14C" }}
-                          onClick={() =>
-                            this.setState(
-                              { loadingDiag: true, temp_id_con: obj.id },
-                              this.handleClickOpen
-                            )
-                          }
-                        >
-                          <IconEdit />
-                        </IconButton>
-                      </StyledTableCell>
-                      <StyledTableCell
-                        size="small"
-                        style={{ paddingLeft: "0.1rem" }}
-                      >
-                        <IconButton
-                          size="small"
-                          color="secondary"
-                          onClick={() =>
-                            this.setState(
-                              { temp_id_con: obj.id },
-                              this.handleClickOpenDel
-                            )
-                          }
-                        >
-                          <IconDelete />
-                        </IconButton>
-                      </StyledTableCell>
-                    </TableRow>
-                  ))}
-                  {this.state.contacts[0] === undefined ? (
-                    <TableRow>
-                      <StyledTableCell>...</StyledTableCell>
-                    </TableRow>
-                  ) : null}
-                </TableBody>
-              </Table>
-            </TableContainer>
-            <div className="o-btnAnadirTable">
-              <BlueButton
-                onClick={() =>
-                  this.setState({ temp_id_con: "" }, this.handleClickOpen)
-                }
-              >
-                Añadir
-                <IconAdd
-                  style={{ marginLeft: "0.4rem", marginRight: 0 }}
-                  size="small"
-                />
-              </BlueButton>
-            </div>
+                ))}
+                {this.state.contacts[0] === undefined ? (
+                  <TableRow>
+                    <StyledTableCell>...</StyledTableCell>
+                  </TableRow>
+                ) : null}
+              </TableBody>
+            </Table>
+          </TableContainer>
+          <div className="o-btnAnadirTable">
+            <BlueButton
+              onClick={() =>
+                this.setState(
+                  { temp_id_con: "", temp_id_per: "" },
+                  this.handleClickOpen
+                )
+              }
+            >
+              Añadir
+              <IconAdd
+                style={{ marginLeft: "0.4rem", marginRight: 0 }}
+                size="small"
+              />
+            </BlueButton>
           </div>
         </div>
         <div className="o-btnBotNav">
@@ -845,15 +830,30 @@ class CrearOrganizacion3Contactos extends Component {
                   />
                 </div>
                 <div style={{ marginBottom: BOX_SPACING }}>
-                  <TextField
-                    label="Teléfono"
-                    variant="outlined"
-                    name="input_tel_con"
-                    value={this.state.temp_tel_con || ""}
-                    onChange={this.handleChange}
-                    className="o-space"
-                    margin="dense"
-                  />
+                  <div className="o-dobleInput">
+                    <div className="o-selectShort">
+                      <TextField
+                        label="Ext."
+                        variant="outlined"
+                        name="input_ext_con"
+                        value={this.state.temp_ext_con || ""}
+                        onChange={this.handleChange}
+                        className="o-space"
+                        margin="dense"
+                      />
+                    </div>
+                    <div className="o-inputShort">
+                      <TextField
+                        label="Teléfono"
+                        variant="outlined"
+                        name="input_tel_con"
+                        value={this.state.temp_tel_con || ""}
+                        onChange={this.handleChange}
+                        className="o-space"
+                        margin="dense"
+                      />
+                    </div>
+                  </div>
                 </div>
                 <div style={{ marginBottom: BOX_SPACING }}>
                   <TextField
@@ -963,7 +963,7 @@ class CrearOrganizacion3Contactos extends Component {
             {"Datos inválidos o insuficientes"}
           </DialogTitle>
           <DialogContent style={{ textAlign: "center" }}>
-            {"(Puede que el contacto ya exista, los correos deben ser únicos)"}
+            {"(Puede que el contacto ya exista)"}
           </DialogContent>
           <DialogActions style={{ justifyContent: "center" }}>
             <div className="o-btnBotNav-btnDiag3">

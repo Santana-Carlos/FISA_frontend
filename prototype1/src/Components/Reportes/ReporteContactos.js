@@ -75,13 +75,30 @@ class ReporteContacto extends Component {
       contacts: [],
       loading: true,
       searched: false,
+      box_spacing: window.innerHeight > 900 ? "0.6rem" : "0.2rem",
+      box_size: window.innerHeight > 900 ? "32rem" : "16.5rem",
+      winInterval: "",
     };
 
     this.handleChange = this.handleChange.bind(this);
   }
 
+  resizeBox = () => {
+    this.setState({
+      box_spacing: window.innerHeight > 900 ? "0.6rem" : "0.2rem",
+      box_size: window.innerHeight > 900 ? "32rem" : "16.5rem",
+    });
+  };
+
   componentDidMount() {
     this.callAPi();
+    this.setState({
+      winInterval: window.setInterval(this.resizeBox, 1000),
+    });
+  }
+
+  componentWillUnmount() {
+    window.clearInterval(this.state.winInterval);
   }
 
   callAPi = () => {
@@ -283,8 +300,8 @@ class ReporteContacto extends Component {
   }
 
   render() {
-    const BOX_SPACING = window.innerHeight > 900 ? "0.6rem" : "0.2rem";
-    const BOX_SIZE = window.innerHeight > 900 ? "32rem" : "16.5rem";
+    const BOX_SPACING = this.state.box_spacing;
+    const BOX_SIZE = this.state.box_size;
     return (
       <div className="o-cardContent">
         <div className="o-contentTittle">

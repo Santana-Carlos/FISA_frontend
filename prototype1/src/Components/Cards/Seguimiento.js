@@ -9,7 +9,6 @@ const Seguimiento = () => {
   return (
     <HashRouter>
       <div className="o-cards">
-        <div className="o-cardTitleCont">{"Administrar visitas y tareas"}</div>
         <div className="o-bigCard">
           <div className="o-sidebar o-sidebar-seguimiento">
             <NavLink

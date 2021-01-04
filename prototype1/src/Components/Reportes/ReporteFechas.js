@@ -45,9 +45,27 @@ class ReporteFechas extends Component {
       createS: false,
       createZ: false,
       loading: false,
+      box_size: window.innerHeight > 900 ? "1rem 0 0 2rem" : "0 0 0 1.5rem",
+      winInterval: "",
     };
 
     this.handleChange = this.handleChange.bind(this);
+  }
+
+  resizeBox = () => {
+    this.setState({
+      box_size: window.innerHeight > 900 ? "1rem 0 0 2rem" : "0 0 0 1.5rem",
+    });
+  };
+
+  componentDidMount() {
+    this.setState({
+      winInterval: window.setInterval(this.resizeBox, 1000),
+    });
+  }
+
+  componentWillUnmount() {
+    window.clearInterval(this.state.winInterval);
   }
 
   apiReport = () => {
@@ -111,7 +129,7 @@ class ReporteFechas extends Component {
       fecha_inicio: dateStart,
       fecha_fin: dateEnd,
     };
-    if (dateStart < dateEnd) {
+    if (dateStart <= dateEnd) {
       fetch(process.env.REACT_APP_API_URL + "Contacto/RepFec", {
         method: "POST",
         headers: {
@@ -167,8 +185,7 @@ class ReporteFechas extends Component {
   };
 
   render() {
-    const BOX_SIZE =
-      window.innerHeight > 900 ? "1rem 0 0 2.5rem" : "1rem 0 0 0.5rem";
+    const BOX_SIZE = this.state.box_size;
     return (
       <div className="o-cardContent">
         <div className="o-contentTittle">
@@ -233,6 +250,35 @@ class ReporteFechas extends Component {
                 }}
               />
             </MuiPickersUtilsProvider>
+            <FormControl
+              variant="outlined"
+              margin="dense"
+              style={{
+                marginTop: "0.7rem",
+              }}
+            >
+              <InputLabel id="demo-simple-select-outlined-label">
+                Tipo reporte
+              </InputLabel>
+              <Select
+                labelId="demo-simple-select-outlined-label"
+                id="demo-simple-select-outlined"
+                value={this.state.tipoRep || ""}
+                onChange={this.handleChange}
+                label="Tipo reporte"
+                name="input_tipoRep"
+                className="o-space"
+              >
+                <MenuItem disabled={true} value="input_tipoRep"></MenuItem>
+                {items.map((obj, i) => {
+                  return (
+                    <MenuItem key={i} value={obj.id}>
+                      {obj.nombre}
+                    </MenuItem>
+                  );
+                })}
+              </Select>
+            </FormControl>
           </div>
 
           <div className="o-container-reporteFecha">
@@ -270,50 +316,17 @@ class ReporteFechas extends Component {
                 }}
               />
             </MuiPickersUtilsProvider>
-          </div>
-
-          <div className="o-container-reporteFechaLast">
-            <FormControl variant="outlined" margin="dense">
-              <InputLabel id="demo-simple-select-outlined-label">
-                Tipo reporte
-              </InputLabel>
-              <Select
-                labelId="demo-simple-select-outlined-label"
-                id="demo-simple-select-outlined"
-                value={this.state.tipoRep || ""}
-                onChange={this.handleChange}
-                label="Tipo reporte"
-                name="input_tipoRep"
-                className="o-space"
-                style={{ width: "10rem" }}
-              >
-                <MenuItem disabled={true} value="input_tipoRep"></MenuItem>
-                {items.map((obj, i) => {
-                  return (
-                    <MenuItem key={i} value={obj.id}>
-                      {obj.nombre}
-                    </MenuItem>
-                  );
-                })}
-              </Select>
-            </FormControl>
-
             <div
-              className="o-consultas"
-              style={{ width: "10rem", marginRight: 0 }}
+              className="o-btnConsultas"
+              style={{
+                marginTop: "0.7rem",
+                width: "8rem",
+              }}
             >
-              <div
-                className="o-btnConsultas"
-                style={{
-                  marginTop: "0.2rem",
-                  width: "10rem",
-                }}
-              >
-                <GreenButton onClick={this.apiReport}>
-                  Reporte
-                  <IconDownload style={{ marginLeft: "0.4rem" }} size="small" />
-                </GreenButton>
-              </div>
+              <GreenButton onClick={this.apiReport}>
+                Reporte
+                <IconDownload style={{ marginLeft: "0.4rem" }} size="small" />
+              </GreenButton>
             </div>
           </div>
         </div>

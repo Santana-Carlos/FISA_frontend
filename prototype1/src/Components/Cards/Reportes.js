@@ -12,7 +12,6 @@ const Reportes = () => {
   return (
     <HashRouter>
       <div className="o-cards">
-        <div className="o-cardTitleCont">{"Generar reportes"}</div>
         <div className="o-bigCard">
           <div className="o-sidebar o-sidebar-reportes">
             <NavLink

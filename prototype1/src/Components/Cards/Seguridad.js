@@ -11,7 +11,6 @@ const Seguridad = () => {
   return (
     <HashRouter>
       <div className="o-cards">
-        <div className="o-cardTitleCont">{"Opciones de seguridad"}</div>
         <div className="o-bigCard">
           <div className="o-sidebar o-sidebar-seguridad">
             <NavLink

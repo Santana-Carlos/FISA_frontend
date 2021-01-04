@@ -22,7 +22,7 @@ import {
   BlueButton,
   GreenButton,
   RedButton,
-  StyledTableCell,
+  StyledTableCellSuperTiny as StyledTableCell,
 } from "../Buttons";
 import {
   Delete as IconDelete,
@@ -77,15 +77,35 @@ class ConsultarContacto extends Component {
       palabra4: "",
       contacts: [],
       temp_id_con: "",
+      temp_id_per: "",
       delCon: false,
       loading: true,
+      box_spacing: window.innerHeight > 900 ? "0.6rem" : "0.2rem",
+      box_size: window.innerHeight > 900 ? "32rem" : "16.5rem",
+      box_spacing_tiny: window.innerHeight > 900 ? "0.4rem" : "0rem",
+      winInterval: "",
     };
 
     this.handleChange = this.handleChange.bind(this);
   }
 
+  resizeBox = () => {
+    this.setState({
+      box_spacing: window.innerHeight > 900 ? "0.6rem" : "0.2rem",
+      box_size: window.innerHeight > 900 ? "32rem" : "16.5rem",
+      box_spacing_tiny: window.innerHeight > 900 ? "0.4rem" : "0rem",
+    });
+  };
+
   componentDidMount() {
     this.callAPi();
+    this.setState({
+      winInterval: window.setInterval(this.resizeBox, 1000),
+    });
+  }
+
+  componentWillUnmount() {
+    window.clearInterval(this.state.winInterval);
   }
 
   callAPi = () => {
@@ -277,8 +297,8 @@ class ConsultarContacto extends Component {
   }
 
   render() {
-    const BOX_SPACING = window.innerHeight > 900 ? "0.6rem" : "0.2rem";
-    const BOX_SIZE = window.innerHeight > 900 ? "32rem" : "16.5rem";
+    let BOX_SPACING = this.state.box_spacing;
+    let BOX_SIZE = this.state.box_size;
     return (
       <Switch>
         <Route exact path="/consultar_contacto">
@@ -486,11 +506,14 @@ class ConsultarContacto extends Component {
                 <Table stickyHeader size="small">
                   <TableHead>
                     <TableRow>
-                      <StyledTableCell>Organización</StyledTableCell>
+                      <StyledTableCell>Org.</StyledTableCell>
                       <StyledTableCell>Nombre</StyledTableCell>
                       <StyledTableCell>Cargo</StyledTableCell>
-                      <StyledTableCell>Correo</StyledTableCell>
+                      <StyledTableCell>Teléfono</StyledTableCell>
+                      <StyledTableCell>Ext.</StyledTableCell>
                       <StyledTableCell>Celular</StyledTableCell>
+                      <StyledTableCell>Correo</StyledTableCell>
+                      <StyledTableCell>Obser.</StyledTableCell>
                       <StyledTableCell></StyledTableCell>
                       <StyledTableCell></StyledTableCell>
                     </TableRow>
@@ -508,10 +531,19 @@ class ConsultarContacto extends Component {
                           {obj.cargo}
                         </StyledTableCell>
                         <StyledTableCell size="small">
-                          {obj.email}
+                          {obj.telefono}
+                        </StyledTableCell>
+                        <StyledTableCell size="small">
+                          {obj.extension}
                         </StyledTableCell>
                         <StyledTableCell size="small">
                           {obj.celular}
+                        </StyledTableCell>
+                        <StyledTableCell size="small">
+                          {obj.email}
+                        </StyledTableCell>
+                        <StyledTableCell size="small">
+                          {obj.observaciones}
                         </StyledTableCell>
                         <StyledTableCell
                           size="small"
@@ -523,8 +555,12 @@ class ConsultarContacto extends Component {
                             style={{ color: "#47B14C" }}
                             onClick={() =>
                               this.setState(
-                                { temp_id_con: obj.id },
-                                this.editCon
+                                {
+                                  loadingDiag: true,
+                                  temp_id_con: obj.contacto_id,
+                                  temp_id_per: obj.persona_id,
+                                },
+                                this.handleClickOpen
                               )
                             }
                           >
@@ -540,7 +576,10 @@ class ConsultarContacto extends Component {
                             color="secondary"
                             onClick={() =>
                               this.setState(
-                                { temp_id_con: obj.id },
+                                {
+                                  temp_id_con: obj.contacto_id,
+                                  temp_id_per: obj.persona_id,
+                                },
                                 this.handleClickOpenDel
                               )
                             }
@@ -609,6 +648,7 @@ class ConsultarContacto extends Component {
           <EditarContacto
             token={this.props.token}
             temp_id_con={this.state.temp_id_con}
+            box_spacing={this.state.box_spacing_tiny}
           />
         </Route>
       </Switch>

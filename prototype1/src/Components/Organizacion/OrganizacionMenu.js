@@ -209,6 +209,7 @@ class OrganizacionMenu extends Component {
             token={this.props.token}
             dbid_org={this.props.dbid_org}
             name_org={this.state.name_org}
+            box_spacing={this.props.box_spacing}
           />
         </Route>
         <Route path="/consultar_organizacion/editar/oficinas">
@@ -216,6 +217,7 @@ class OrganizacionMenu extends Component {
             token={this.props.token}
             dbid_org={this.props.dbid_org}
             name_org={this.state.name_org}
+            box_spacing={this.props.box_spacing}
           />
         </Route>
         <Route path="/consultar_organizacion/editar/contactos">
@@ -223,6 +225,7 @@ class OrganizacionMenu extends Component {
             token={this.props.token}
             dbid_org={this.props.dbid_org}
             name_org={this.state.name_org}
+            box_spacing={this.props.box_spacing}
           />
         </Route>
         <Route path="/consultar_organizacion/editar/finanzas">
@@ -230,6 +233,8 @@ class OrganizacionMenu extends Component {
             token={this.props.token}
             dbid_org={this.props.dbid_org}
             name_org={this.state.name_org}
+            box_spacing={this.props.box_spacing}
+            subtitle_spacing={this.props.subtitle_spacing}
           />
         </Route>
         <Route path="/consultar_organizacion/editar/archivos">
@@ -237,6 +242,7 @@ class OrganizacionMenu extends Component {
             token={this.props.token}
             dbid_org={this.props.dbid_org}
             name_org={this.state.name_org}
+            box_size={this.props.box_size}
           />
         </Route>
       </Switch>

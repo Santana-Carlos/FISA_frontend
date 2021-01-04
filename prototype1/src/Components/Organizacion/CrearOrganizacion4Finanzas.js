@@ -395,8 +395,8 @@ class CrearOrganizacion4Finanzas extends Component {
   }
 
   render() {
-    const BOX_SPACING = window.innerHeight > 900 ? "0.4rem" : "0rem";
-    const SUBTITLE_SPACING = window.innerHeight > 900 ? "2.1rem" : "1.7rem";
+    const BOX_SPACING = this.props.box_spacing;
+    const SUBTITLE_SPACING = this.props.subtitle_spacing;
     return (
       <div className="o-cardContent">
         {this.props.dbid_org === "" ? (

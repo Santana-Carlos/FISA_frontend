@@ -82,11 +82,23 @@ class CrearOrganizacion1DatosBasicos extends Component {
       dbid_org: "",
       indexCat: -1,
       loading: false,
+      box_spacing: window.innerHeight > 900 ? "0.4rem" : "0rem",
+      subtitle_spacing: window.innerHeight > 900 ? "2.1rem" : "1.7rem",
+      box_size: window.innerHeight > 900 ? "24rem" : "13rem",
+      winInterval: "",
     };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleChangeCiiu = this.handleChangeCiiu.bind(this);
   }
+
+  resizeBox = () => {
+    this.setState({
+      box_spacing: window.innerHeight > 900 ? "0.4rem" : "0rem",
+      subtitle_spacing: window.innerHeight > 900 ? "2.1rem" : "1.7rem",
+      box_size: window.innerHeight > 900 ? "24rem" : "13rem",
+    });
+  };
 
   componentDidMount() {
     fetch(process.env.REACT_APP_API_URL + "Organizacion/Data", {
@@ -126,6 +138,13 @@ class CrearOrganizacion1DatosBasicos extends Component {
         }
       })
       .catch((error) => {});
+    this.setState({
+      winInterval: window.setInterval(this.resizeBox, 1000),
+    });
+  }
+
+  componentWillUnmount() {
+    window.clearInterval(this.state.winInterval);
   }
 
   callApiSubsector = () => {
@@ -360,7 +379,7 @@ class CrearOrganizacion1DatosBasicos extends Component {
   };
 
   render() {
-    const BOX_SPACING = window.innerHeight > 900 ? "0.4rem" : "0rem";
+    const BOX_SPACING = this.state.box_spacing;
     return (
       <Switch>
         <Route exact path="/crear_organizacion">
@@ -895,6 +914,7 @@ class CrearOrganizacion1DatosBasicos extends Component {
             dbid_org={this.state.dbid_org}
             name_org={this.state.name_org}
             token={this.props.token}
+            box_spacing={this.state.box_spacing}
           />
         </Route>
         <Route path="/crear_organizacion/contactos">
@@ -902,6 +922,7 @@ class CrearOrganizacion1DatosBasicos extends Component {
             dbid_org={this.state.dbid_org}
             name_org={this.state.name_org}
             token={this.props.token}
+            box_spacing={this.state.box_spacing}
           />
         </Route>
         <Route path="/crear_organizacion/finanzas">
@@ -909,6 +930,8 @@ class CrearOrganizacion1DatosBasicos extends Component {
             dbid_org={this.state.dbid_org}
             name_org={this.state.name_org}
             token={this.props.token}
+            box_spacing={this.state.box_spacing}
+            subtitle_spacing={this.state.subtitle_spacing}
           />
         </Route>
         <Route path="/crear_organizacion/archivos">
@@ -916,6 +939,7 @@ class CrearOrganizacion1DatosBasicos extends Component {
             dbid_org={this.state.dbid_org}
             name_org={this.state.name_org}
             token={this.props.token}
+            box_size={this.state.box_size}
           />
         </Route>
       </Switch>

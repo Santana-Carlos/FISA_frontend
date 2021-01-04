@@ -63,12 +63,20 @@ class CrearContacto extends Component {
       temp_subcat_con: [],
       temp_subcatFake_con: [],
       loading: false,
+      box_spacing: window.innerHeight > 900 ? "0.4rem" : "0rem",
+      winInterval: "",
     };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleChangeOrg = this.handleChangeOrg.bind(this);
     this.handleChangeSubcat = this.handleChangeSubcat.bind(this);
   }
+
+  resizeBox = () => {
+    this.setState({
+      box_spacing: window.innerHeight > 900 ? "0.4rem" : "0rem",
+    });
+  };
 
   componentDidMount() {
     fetch(process.env.REACT_APP_API_URL + "Contacto/Data", {
@@ -89,6 +97,13 @@ class CrearContacto extends Component {
       })
       .catch((error) => {});
     this.callApiOrg();
+    this.setState({
+      winInterval: window.setInterval(this.resizeBox, 1000),
+    });
+  }
+
+  componentWillUnmount() {
+    window.clearInterval(this.state.winInterval);
   }
 
   callApiOrg = () => {
@@ -654,7 +669,7 @@ class CrearContacto extends Component {
             {"Datos inválidos o insuficientes"}
           </DialogTitle>
           <DialogContent style={{ textAlign: "center" }}>
-            {"(Puede que el contacto ya exista, los correos deben ser únicos)"}
+            {"(Puede que el contacto ya exista)"}
           </DialogContent>
           <DialogActions style={{ justifyContent: "center" }}>
             <div className="o-btnBotNav-btnDiag3">

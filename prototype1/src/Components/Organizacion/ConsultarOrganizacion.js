@@ -67,19 +67,50 @@ class ConsultarOrganizacion extends Component {
       numid_org: "",
       createS: false,
       reqText: false,
+      tipo1: "",
+      tipo2: "",
+      tipo3: "",
+      tipo4: "",
+      palabra1: "",
+      palabra2: "",
+      palabra3: "",
+      palabra4: "",
       orgs: [],
       temp_id_org: "",
       delOrg: false,
       delcheck: false,
       delcheckOpen: false,
       loading: true,
+      box_spacing: window.innerHeight > 900 ? "0.6rem" : "0.2rem",
+      box_size: window.innerHeight > 900 ? "32rem" : "16.5rem",
+      box_spacing_tiny: window.innerHeight > 900 ? "0.4rem" : "0rem",
+      subtitle_spacing: window.innerHeight > 900 ? "2.1rem" : "1.7rem",
+      box_size_tiny: window.innerHeight > 900 ? "24rem" : "13rem",
+      winInterval: "",
     };
 
     this.handleChange = this.handleChange.bind(this);
   }
 
+  resizeBox = () => {
+    this.setState({
+      box_spacing: window.innerHeight > 900 ? "0.6rem" : "0.2rem",
+      box_size: window.innerHeight > 900 ? "32rem" : "16.5rem",
+      box_spacing_tiny: window.innerHeight > 900 ? "0.4rem" : "0rem",
+      subtitle_spacing: window.innerHeight > 900 ? "2.1rem" : "1.7rem",
+      box_size_tiny: window.innerHeight > 900 ? "24rem" : "13rem",
+    });
+  };
+
   componentDidMount() {
     this.callAPi();
+    this.setState({
+      winInterval: window.setInterval(this.resizeBox, 1000),
+    });
+  }
+
+  componentWillUnmount() {
+    window.clearInterval(this.state.winInterval);
   }
 
   callAPi = () => {
@@ -280,8 +311,8 @@ class ConsultarOrganizacion extends Component {
   }
 
   render() {
-    const BOX_SPACING = window.innerHeight > 900 ? "0.6rem" : "0.2rem";
-    const BOX_SIZE = window.innerHeight > 900 ? "32rem" : "16.5rem";
+    let BOX_SPACING = this.state.box_spacing;
+    let BOX_SIZE = this.state.box_size;
     return (
       <Switch>
         <Route exact path="/consultar_organizacion">
@@ -670,6 +701,9 @@ class ConsultarOrganizacion extends Component {
           <OrganizacionMenu
             dbid_org={this.state.temp_id_org}
             token={this.props.token}
+            box_spacing={this.state.box_spacing_tiny}
+            subtitle_spacing={this.state.subtitle_spacing}
+            box_size={this.state.box_size_tiny}
           />
         </Route>
       </Switch>

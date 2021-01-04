@@ -214,7 +214,7 @@ class CrearOrganizacion5Files extends Component {
   };
 
   render() {
-    const BOX_SIZE = window.innerHeight > 900 ? "24rem" : "13rem";
+    const BOX_SIZE = this.props.box_size;
     return (
       <div className="o-cardContent">
         {this.props.dbid_org === "" ? (

@@ -11,7 +11,6 @@ const Organizacion = () => {
   return (
     <HashRouter>
       <div className="o-cards">
-        <div className="o-cardTitleCont">{"Administrar organizaciones"}</div>
         <div className="o-bigCard">
           <div className="o-sidebar o-sidebar-organizacion">
             <NavLink
