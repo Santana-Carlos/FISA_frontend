@@ -287,6 +287,7 @@ class CrearOrganizacion1DatosBasicos extends Component {
       sector_id: this.state.sectoreco_org,
       subsector_id: this.state.subsececo_org,
       estado: this.state.estado_org,
+      actividades: this.state.ciiu_org,
     };
     fetch(process.env.REACT_APP_API_URL + "Organizacion/", {
       method: "POST",
@@ -301,10 +302,11 @@ class CrearOrganizacion1DatosBasicos extends Component {
       })
       .then((data) => {
         if (data.success) {
-          this.setState(
-            { loading: false, dbid_org: data.organizacion.id, reqText: false },
-            this.addCiiuApi
-          );
+          this.setState({
+            loading: false,
+            dbid_org: data.organizacion.id,
+            reqText: false,
+          });
           if (a) {
             window.location.assign(
               "/dashboard/organizacion#/crear_organizacion/oficinas"
@@ -357,25 +359,6 @@ class CrearOrganizacion1DatosBasicos extends Component {
       ciiu_org: [],
       ciiuFake_org: [],
     });
-  };
-
-  addCiiuApi = () => {
-    const tempCiiu = {
-      organizacion_id: this.state.dbid_org,
-      actividades: this.state.ciiu_org,
-    };
-    fetch(process.env.REACT_APP_API_URL + "ActividadEconomica", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + this.props.token,
-      },
-      body: JSON.stringify(tempCiiu),
-    })
-      .then((response) => {
-        return response.json();
-      })
-      .catch((error) => {});
   };
 
   render() {

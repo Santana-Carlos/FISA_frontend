@@ -322,6 +322,7 @@ class Consultar1DatosBasicos extends Component {
       sector_id: this.state.sectoreco_org,
       subsector_id: this.state.subsececo_org,
       estado: this.state.estado_org,
+      actividades: this.state.ciiu_org,
     };
     fetch(process.env.REACT_APP_API_URL + "Organizacion/" + idOrg, {
       method: "PUT",
@@ -336,49 +337,12 @@ class Consultar1DatosBasicos extends Component {
       })
       .then((data) => {
         if (data.success) {
-          this.setState({ reqText: false }, this.delCiiuApi);
+          this.setState({ reqText: false, loading: false });
         }
       })
       .catch((error) => {
         this.setState({ loading: false, createS: true, reqText: true });
       });
-  };
-
-  delCiiuApi = () => {
-    const tempCiiu = {
-      organizacion_id: this.props.dbid_org,
-    };
-    fetch(process.env.REACT_APP_API_URL + "Organizacion/DelAct", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + this.props.token,
-      },
-      body: JSON.stringify(tempCiiu),
-    }).catch((error) => {});
-    this.addCiiuApi();
-  };
-
-  addCiiuApi = () => {
-    const tempCiiu = {
-      organizacion_id: this.props.dbid_org,
-      actividades: this.state.ciiu_org,
-    };
-    fetch(process.env.REACT_APP_API_URL + "ActividadEconomica", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + this.props.token,
-      },
-      body: JSON.stringify(tempCiiu),
-    })
-      .then((response) => {
-        return response.json();
-      })
-      .catch((error) => {});
-
-    setTimeout(this.callApi, 2000);
-    setTimeout(this.callApi, 5000);
   };
 
   render() {

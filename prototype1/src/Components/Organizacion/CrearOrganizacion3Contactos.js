@@ -463,14 +463,14 @@ class CrearOrganizacion3Contactos extends Component {
           </div>
         </div>
         <div className="o-contentForm-big-consultas">
-          <TableContainer className="o-tableBase">
+          <TableContainer className="o-tableBase" style={{ marginTop: "1rem" }}>
             <Table stickyHeader size="small">
               <TableHead>
                 <TableRow>
                   <StyledTableCell>Nombre</StyledTableCell>
                   <StyledTableCell>Cargo</StyledTableCell>
-                  <StyledTableCell>Teléfono</StyledTableCell>
                   <StyledTableCell>Ext.</StyledTableCell>
+                  <StyledTableCell>Teléfono</StyledTableCell>
                   <StyledTableCell>Celular</StyledTableCell>
                   <StyledTableCell>Correo</StyledTableCell>
                   <StyledTableCell>Observaciones</StyledTableCell>

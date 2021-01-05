@@ -127,7 +127,6 @@
   width: 100%;
   border: 1px solid #3e3e3e;
   border-radius: 5px;
-  margin-top: 1rem;
 }
 
 .o-tableBase-files {
@@ -286,8 +285,9 @@
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
-  margin: 0.3rem 0.5rem 0 0;
+  margin: 0.3rem 1rem 0 0;
   width: 28%;
+  max-width: 28%;
 }
 
 .o-consultas-btn {

@@ -509,8 +509,8 @@ class ConsultarContacto extends Component {
                       <StyledTableCell>Org.</StyledTableCell>
                       <StyledTableCell>Nombre</StyledTableCell>
                       <StyledTableCell>Cargo</StyledTableCell>
-                      <StyledTableCell>Teléfono</StyledTableCell>
                       <StyledTableCell>Ext.</StyledTableCell>
+                      <StyledTableCell>Teléfono</StyledTableCell>
                       <StyledTableCell>Celular</StyledTableCell>
                       <StyledTableCell>Correo</StyledTableCell>
                       <StyledTableCell>Obser.</StyledTableCell>
@@ -531,7 +531,7 @@ class ConsultarContacto extends Component {
                           {obj.cargo}
                         </StyledTableCell>
                         <StyledTableCell size="small">
-                          {obj.telefono}
+                          {obj.extension}
                         </StyledTableCell>
                         <StyledTableCell size="small">
                           {obj.extension}
