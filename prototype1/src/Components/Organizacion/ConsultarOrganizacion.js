@@ -163,7 +163,7 @@ class ConsultarOrganizacion extends Component {
       categorias: categoria,
       parametros: [palabra1, palabra2, palabra3],
     };
-    console.log(data);
+    //console.log(data);
     if (
       this.state.nid_org !== "" ||
       this.state.nomcom_org !== "" ||
@@ -408,46 +408,45 @@ class ConsultarOrganizacion extends Component {
                     margin="dense"
                   />
                 </div>
-                <div className="o-consultas" style={{ marginRight: 0 }}>
-                  <FormControl
-                    style={{ maxWidth: "100%" }}
-                    variant="outlined"
-                    margin="dense"
+                <FormControl
+                  className="o-consultas"
+                  style={{ margin: "0.8rem 0 0" }}
+                  variant="outlined"
+                  margin="dense"
+                >
+                  <InputLabel id="demo-mutiple-checkbox-label">
+                    Categoría
+                  </InputLabel>
+                  <Select
+                    id="demo-mutiple-checkbox"
+                    multiple
+                    label="Categoría"
+                    name="input_cat_org"
+                    className="o-space"
+                    value={this.state.cat_org || []}
+                    onChange={this.handleChange}
+                    MenuProps={{
+                      getContentAnchorEl: () => null,
+                    }}
+                    renderValue={(selected) =>
+                      selected.map((value) => value.nombre + ", ")
+                    }
+                    style={{ marginBottom: BOX_SPACING }}
                   >
-                    <InputLabel id="demo-mutiple-checkbox-label">
-                      Categoría
-                    </InputLabel>
-                    <Select
-                      id="demo-mutiple-checkbox"
-                      multiple
-                      label="Categoría"
-                      name="input_cat_org"
-                      className="o-space"
-                      value={this.state.cat_org || []}
-                      onChange={this.handleChange}
-                      MenuProps={{
-                        getContentAnchorEl: () => null,
-                      }}
-                      renderValue={(selected) =>
-                        selected.map((value) => value.nombre + ", ")
-                      }
-                      style={{ marginBottom: BOX_SPACING }}
-                    >
-                      {this.state.cat_org_api.map((obj, i) => (
-                        <MenuItem key={i} value={obj}>
-                          <Checkbox
-                            checked={
-                              this.state.cat_org.findIndex(
-                                (x) => x.id === obj.id
-                              ) > -1
-                            }
-                          />
-                          <ListItemText primary={obj.nombre} />
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-                </div>
+                    {this.state.cat_org_api.map((obj, i) => (
+                      <MenuItem key={i} value={obj}>
+                        <Checkbox
+                          checked={
+                            this.state.cat_org.findIndex(
+                              (x) => x.id === obj.id
+                            ) > -1
+                          }
+                        />
+                        <ListItemText primary={obj.nombre} />
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
               </div>
               <div className="o-consultas-container">
                 <div className="o-consultas-btn">

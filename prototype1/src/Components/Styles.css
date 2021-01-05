@@ -394,3 +394,21 @@
   border: 1px solid lightgray;
   overflow: hidden;
 }
+
+.o-diag-contactExist-big {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  width: 70rem;
+  height: 100%;
+  margin: 0;
+  padding: 1rem 1rem 0;
+}
+
+.o-diag-contactExist-column {
+  display: flex;
+  flex-direction: column;
+  width: 48%;
+  margin: 1rem;
+}

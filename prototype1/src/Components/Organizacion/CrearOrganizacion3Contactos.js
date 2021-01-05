@@ -409,13 +409,15 @@ class CrearOrganizacion3Contactos extends Component {
         break;
       case "input_idoffice_con":
         this.setState({ temp_idoffice_con: value }, () => {
-          this.setState({
-            temp_tel_con: this.state.ofices_api[
-              this.state.ofices_api.findIndex(
-                (x) => x.id === this.state.temp_idoffice_con
-              )
-            ].telefono_1,
-          });
+          if (this.state.temp_tel_con === "") {
+            this.setState({
+              temp_tel_con: this.state.ofices_api[
+                this.state.ofices_api.findIndex(
+                  (x) => x.id === this.state.temp_idoffice_con
+                )
+              ].telefono_1,
+            });
+          }
         });
         break;
       default:

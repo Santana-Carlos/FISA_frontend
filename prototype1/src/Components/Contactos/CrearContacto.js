@@ -6,17 +6,45 @@ import {
   FormControl,
   Select,
   TextField,
+  Table,
+  TableBody,
+  TableContainer,
+  TableHead,
+  TableRow,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
   Checkbox,
+  IconButton,
   Fade,
   CircularProgress,
 } from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
-import { GreenButton, RedButton } from "../Buttons";
+import {
+  GreenButton,
+  RedButton,
+  BlueButton,
+  StyledTableCellTiny as StyledTableCell,
+} from "../Buttons";
+import {
+  CheckCircle as IconCheck,
+  Refresh as IconRefresh,
+} from "@material-ui/icons";
 import "../Styles.css";
+
+const items = [
+  "personas.nombres",
+  "personas.apellidos",
+  "organizacions.nombre",
+  "contactos.cargo",
+  "contactos.email",
+  "pais.id",
+  "organizacions.categoria_id",
+  "detalle_categoria_personas.subcategoria_id",
+];
+
+const emptyCell = "-";
 
 class CrearContacto extends Component {
   constructor(props) {
@@ -26,9 +54,10 @@ class CrearContacto extends Component {
       dbid_org: "",
       dbidFake_org: null,
       createS: false,
+      contExist: false,
       reqText: false,
       orgSelect: false,
-      temp_id_con: "",
+      temp_id_per: "",
       contacts: [],
       addContact: false,
       delContact: false,
@@ -53,6 +82,7 @@ class CrearContacto extends Component {
       temp_cargo_con: "",
       temp_replegal_con: false,
       temp_tel_con: "",
+      temp_ext_con: "",
       temp_cel_con: "",
       temp_correo_con: "",
       temp_obs_con: "",
@@ -62,8 +92,15 @@ class CrearContacto extends Component {
       temp_estado_con: "",
       temp_subcat_con: [],
       temp_subcatFake_con: [],
+      search_nombre_org: "",
+      search_nombre_con: "",
+      search_apell_con: "",
+      search_cargo_con: "",
+      cat_org_api: [],
       loading: false,
+      loadingDiag: false,
       box_spacing: window.innerHeight > 900 ? "0.4rem" : "0rem",
+      box_size_table: window.innerHeight > 900 ? "36rem" : "22rem",
       winInterval: "",
     };
 
@@ -75,6 +112,7 @@ class CrearContacto extends Component {
   resizeBox = () => {
     this.setState({
       box_spacing: window.innerHeight > 900 ? "0.4rem" : "0rem",
+      box_size_table: window.innerHeight > 900 ? "36rem" : "22rem",
     });
   };
 
@@ -96,7 +134,24 @@ class CrearContacto extends Component {
         });
       })
       .catch((error) => {});
+    fetch(process.env.REACT_APP_API_URL + "Organizacion/Data", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + this.props.token,
+      },
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        this.setState({
+          cat_org_api: data.categorias,
+        });
+      })
+      .catch((error) => {});
     this.callApiOrg();
+    this.callApiCont();
     this.setState({
       winInterval: window.setInterval(this.resizeBox, 1000),
     });
@@ -125,6 +180,32 @@ class CrearContacto extends Component {
       .catch((error) => {});
   };
 
+  callApiCont = () => {
+    fetch(process.env.REACT_APP_API_URL + "Contacto", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + this.props.token,
+      },
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        if (data.success) {
+          this.setState({
+            contacts: data.contactos,
+            loadingDiag: false,
+          });
+        }
+      })
+      .catch((error) => {
+        this.setState({
+          loadingDiag: false,
+        });
+      });
+  };
+
   callAPiOff = () => {
     const data = {
       organizacion_id: this.state.dbid_org,
@@ -151,6 +232,7 @@ class CrearContacto extends Component {
   callApipostContacto = () => {
     this.setState({ loading: true });
     const data = {
+      persona_id: this.state.temp_id_per,
       organizacion_id: this.state.dbid_org,
       oficina_id: this.state.temp_idoffice_con,
       nombres: this.state.temp_nombre_con,
@@ -158,6 +240,7 @@ class CrearContacto extends Component {
       cargo: this.state.temp_cargo_con,
       representante: this.state.temp_replegal_con,
       telefono: this.state.temp_tel_con,
+      extension: this.state.temp_ext_con,
       celular: this.state.temp_cel_con,
       email: this.state.temp_correo_con,
       estado: this.state.temp_estado_con,
@@ -165,6 +248,7 @@ class CrearContacto extends Component {
       tipo_documento_persona_id: this.state.temp_tipoid_con,
       numero_documento: this.state.temp_nid_con,
       sexo: this.state.temp_sex_con,
+      categorias: this.state.temp_subcat_con,
     };
     fetch(process.env.REACT_APP_API_URL + "Contacto/", {
       method: "POST",
@@ -183,7 +267,6 @@ class CrearContacto extends Component {
             {
               loading: false,
               reqText: false,
-              temp_id_con: data.contacto.id,
             },
             this.delSubcatApi
           );
@@ -193,48 +276,6 @@ class CrearContacto extends Component {
       .catch((error) => {
         this.setState({ loading: false, reqText: true, createS: true });
       });
-  };
-
-  delSubcatApi = () => {
-    const tempSubcat = {
-      contacto_id: this.state.temp_id_con,
-    };
-    fetch(process.env.REACT_APP_API_URL + "Contacto/DelSub", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + this.props.token,
-      },
-      body: JSON.stringify(tempSubcat),
-    })
-      .then((response) => {
-        return response.json();
-      })
-      .catch((error) => {});
-    if (this.state.temp_subcat_con[0] !== undefined) {
-      this.addSubcatApi();
-    }
-  };
-
-  addSubcatApi = () => {
-    const tempSubcat = {
-      contacto_id: this.state.temp_id_con,
-      categorias: this.state.temp_subcat_con,
-    };
-    fetch(process.env.REACT_APP_API_URL + "CategoriaContacto", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + this.props.token,
-      },
-      body: JSON.stringify(tempSubcat),
-    })
-      .then((response) => {
-        this.setState({ addContact: false, reqText: false, temp_id_con: "" });
-        this.clearTemp();
-        return response.json();
-      })
-      .catch((error) => {});
   };
 
   clearTemp = () => {
@@ -247,6 +288,7 @@ class CrearContacto extends Component {
       temp_cargo_con: "",
       temp_replegal_con: false,
       temp_tel_con: "",
+      temp_ext_con: "",
       temp_cel_con: "",
       temp_correo_con: "",
       temp_obs_con: "",
@@ -259,6 +301,115 @@ class CrearContacto extends Component {
       subcatSearch: "",
       reqText: false,
     });
+  };
+
+  apiSearch = () => {
+    this.setState({ loadingDiag: true });
+    const nombreOrg = this.state.search_nombre_org + "%";
+    const nombreCon = this.state.search_nombre_con + "%";
+    const apellCon = this.state.search_apell_con + "%";
+    const cargo =
+      this.state.search_cargo_con === ""
+        ? "%"
+        : this.state.search_cargo_con + "%";
+    const email = "%";
+    const pais = "%";
+    const categoria = this.state.cat_org_api.map((obj) => obj.id);
+    const subcat = categoria;
+
+    const palabra1 = items[0];
+    const palabra2 = items[1];
+    const palabra3 = items[2];
+    const palabra4 = this.state.search_cargo_con === "" ? items[0] : items[3];
+    const palabra5 = items[0];
+    const palabra6 = items[0];
+    const palabra7 = items[6];
+    const palabra8 = items[6];
+    const palabra9 = "ilike";
+
+    const data = {
+      nombres: nombreCon,
+      apellidos: apellCon,
+      organizacion: nombreOrg,
+      cargo: cargo,
+      email: email,
+      pais: pais,
+      categorias: categoria,
+      subcategorias: subcat,
+      parametros: [
+        palabra1,
+        palabra2,
+        palabra3,
+        palabra4,
+        palabra5,
+        palabra6,
+        palabra7,
+        palabra8,
+        palabra9,
+      ],
+    };
+
+    console.log(data);
+    if (
+      this.state.nombre_org !== "" ||
+      this.state.nombre_con !== "" ||
+      this.state.apell_con !== "" ||
+      this.state.cargo_con !== ""
+    ) {
+      fetch(process.env.REACT_APP_API_URL + "Contacto/Search", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + this.props.token,
+        },
+        body: JSON.stringify(data),
+      })
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          console.log(data);
+          if (data.success) {
+            this.setState({
+              loadingDiag: false,
+              contacts: data.contactos,
+              reqText: false,
+            });
+          }
+        })
+        .catch((error) => {});
+    } else {
+      this.setState({ loadingDiag: false, reqText: true, createS: true });
+      this.callAPi();
+    }
+  };
+
+  apiRefresh = () => {
+    this.setState({ loadingDiag: true });
+    if (
+      this.state.nombre_org !== "" ||
+      this.state.nombre_con !== "" ||
+      this.state.apell_con !== "" ||
+      this.state.cargo_con !== ""
+    ) {
+      this.apiSearch();
+    } else {
+      this.callApiCont();
+    }
+  };
+
+  clearFunc = () => {
+    this.setState(
+      {
+        loadingDiag: true,
+        search_nombre_org: "",
+        search_nombre_con: "",
+        search_apell_con: "",
+        search_cargo_con: "",
+        reqText: false,
+      },
+      this.callApiCont()
+    );
   };
 
   handleChange(event) {
@@ -285,6 +436,9 @@ class CrearContacto extends Component {
       case "input_tel_con":
         this.setState({ temp_tel_con: value });
         break;
+      case "input_ext_con":
+        this.setState({ temp_ext_con: value });
+        break;
       case "input_cel_con":
         this.setState({ temp_cel_con: value });
         break;
@@ -307,7 +461,29 @@ class CrearContacto extends Component {
         this.setState({ temp_estado_con: value });
         break;
       case "input_idoffice_con":
-        this.setState({ temp_idoffice_con: value });
+        this.setState({ temp_idoffice_con: value }, () => {
+          if (this.state.temp_tel_con === "") {
+            this.setState({
+              temp_tel_con: this.state.ofices_api[
+                this.state.ofices_api.findIndex(
+                  (x) => x.id === this.state.temp_idoffice_con
+                )
+              ].telefono_1,
+            });
+          }
+        });
+        break;
+      case "input_search_nombre_org":
+        this.setState({ search_nombre_org: value });
+        break;
+      case "input_search_nombre_con":
+        this.setState({ search_nombre_con: value });
+        break;
+      case "input_search_apell_con":
+        this.setState({ search_apell_con: value });
+        break;
+      case "input_search_cargo_con":
+        this.setState({ search_cargo_con: value });
         break;
       default:
         break;
@@ -342,7 +518,8 @@ class CrearContacto extends Component {
   }
 
   render() {
-    const BOX_SPACING = window.innerHeight > 900 ? "0.4rem" : "0rem";
+    const BOX_SPACING = this.state.box_spacing;
+    const BOX_SIZE_TABLE = this.state.box_size_table;
     return (
       <div className="o-cardContent">
         <div className="o-contentTittle">
@@ -543,15 +720,30 @@ class CrearContacto extends Component {
               />
             </div>
             <div style={{ marginBottom: BOX_SPACING }}>
-              <TextField
-                label="Teléfono"
-                variant="outlined"
-                name="input_tel_con"
-                value={this.state.temp_tel_con || ""}
-                onChange={this.handleChange}
-                className="o-space"
-                margin="dense"
-              />
+              <div className="o-dobleInput">
+                <div className="o-selectShort">
+                  <TextField
+                    label="Ext."
+                    variant="outlined"
+                    name="input_ext_con"
+                    value={this.state.temp_ext_con || ""}
+                    onChange={this.handleChange}
+                    className="o-space"
+                    margin="dense"
+                  />
+                </div>
+                <div className="o-inputShort">
+                  <TextField
+                    label="Teléfono"
+                    variant="outlined"
+                    name="input_tel_con"
+                    value={this.state.temp_tel_con || ""}
+                    onChange={this.handleChange}
+                    className="o-space"
+                    margin="dense"
+                  />
+                </div>
+              </div>
             </div>
             <div style={{ marginBottom: BOX_SPACING }}>
               <TextField
@@ -652,7 +844,15 @@ class CrearContacto extends Component {
           </div>
         </div>
         <div className="o-btnBotNav">
-          <div style={{ color: "#FFFFFF" }}>{"Me encontraste!"}</div>
+          <div className="o-btnBotNav-btn" style={{ width: "10rem" }}>
+            <BlueButton
+              onClick={() => {
+                this.setState({ contExist: true });
+              }}
+            >
+              {"Añadir existente"}
+            </BlueButton>
+          </div>
           <div className="o-btnBotNavDoble">
             <div className="o-btnBotNav-btn">
               <RedButton onClick={this.clearTemp}>{"Limpiar"}</RedButton>
@@ -664,6 +864,170 @@ class CrearContacto extends Component {
             </div>
           </div>
         </div>
+        <Dialog open={this.state.contExist} maxWidth={false}>
+          <DialogTitle>
+            <div className="o-row">
+              <h3
+                className="o-contentTittle-principal"
+                style={{ fontWeight: 400, marginTop: "0.2rem" }}
+              >
+                {"Contactos existentes"}
+              </h3>
+              <div className="o-text-nameOrg">
+                <Fade
+                  in={this.state.loadingDiag}
+                  style={{
+                    transitionDelay: "200ms",
+                    marginRight: "1rem",
+                  }}
+                  unmountOnExit
+                >
+                  <div style={{ fontSize: "1rem" }}>
+                    {"Cargando... "}
+                    <CircularProgress size={"1rem"} thickness={6} />
+                  </div>
+                </Fade>
+              </div>
+            </div>
+          </DialogTitle>
+          <DialogContent style={{ textAlign: "center" }}>
+            <div className="o-diag-contactExist-big">
+              <div className="o-consultas-containerInit">
+                <div
+                  className="o-consultas"
+                  style={{ marginBottom: BOX_SPACING }}
+                >
+                  <TextField
+                    label="Organización"
+                    variant="outlined"
+                    name="input_search_nombre_org"
+                    value={this.state.search_nombre_org || ""}
+                    onChange={this.handleChange}
+                    className="o-space"
+                    margin="dense"
+                  />
+                </div>
+                <div
+                  className="o-consultas"
+                  style={{ marginBottom: BOX_SPACING }}
+                >
+                  <TextField
+                    label="Nombres"
+                    variant="outlined"
+                    name="input_search_nombre_con"
+                    value={this.state.search_nombre_con || ""}
+                    onChange={this.handleChange}
+                    className="o-space"
+                    margin="dense"
+                  />
+                </div>
+                <div
+                  className="o-consultas"
+                  style={{ marginBottom: BOX_SPACING }}
+                >
+                  <TextField
+                    label="Apellidos"
+                    variant="outlined"
+                    name="input_search_apell_con"
+                    value={this.state.search_apell_con || ""}
+                    onChange={this.handleChange}
+                    className="o-space"
+                    margin="dense"
+                  />
+                </div>
+                <div
+                  className="o-consultas"
+                  style={{ marginBottom: BOX_SPACING }}
+                >
+                  <TextField
+                    label="Cargo"
+                    variant="outlined"
+                    name="input_search_cargo_con"
+                    value={this.state.search_cargo_con || ""}
+                    onChange={this.handleChange}
+                    className="o-space"
+                    margin="dense"
+                  />
+                </div>
+              </div>
+              <div className="o-consultas-container">
+                <div className="o-consultas-btn">
+                  <div className="o-btnConsultas">
+                    <BlueButton onClick={this.apiSearch}>Buscar</BlueButton>
+                  </div>
+                  <div className="o-btnConsultas">
+                    <RedButton onClick={this.clearFunc}>Limpiar</RedButton>
+                  </div>
+                  <div className="o-btnConsultas" style={{ width: "4rem" }}>
+                    <BlueButton onClick={this.apiRefresh}>
+                      <IconRefresh size="small" />
+                    </BlueButton>
+                  </div>
+                </div>
+              </div>
+              <TableContainer
+                className="o-tableBase-consultas"
+                style={{ maxHeight: BOX_SIZE_TABLE }}
+              >
+                <Table stickyHeader size="small">
+                  <TableHead>
+                    <TableRow>
+                      <StyledTableCell>Org.</StyledTableCell>
+                      <StyledTableCell>Nombre</StyledTableCell>
+                      <StyledTableCell>Cargo</StyledTableCell>
+                      <StyledTableCell>Obser.</StyledTableCell>
+                      <StyledTableCell></StyledTableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {this.state.contacts.map((obj, i) => (
+                      <TableRow key={i} hover={true}>
+                        <StyledTableCell size="small">
+                          {obj.organizacion}
+                        </StyledTableCell>
+                        <StyledTableCell size="small">
+                          {obj.nombres + " " + obj.apellidos}
+                        </StyledTableCell>
+                        <StyledTableCell size="small">
+                          {obj.cargo === null ? emptyCell : obj.cargo}
+                        </StyledTableCell>
+                        <StyledTableCell size="small">
+                          {obj.observaciones === null
+                            ? emptyCell
+                            : obj.observaciones}
+                        </StyledTableCell>
+                        <StyledTableCell
+                          size="small"
+                          style={{ paddingRight: "1rem" }}
+                        >
+                          <IconButton
+                            size="small"
+                            className="o-tinyBtn2"
+                            color="primary"
+                          >
+                            <IconCheck />
+                          </IconButton>
+                        </StyledTableCell>
+                      </TableRow>
+                    ))}
+                    {this.state.contacts[0] === undefined ? (
+                      <TableRow>
+                        <StyledTableCell>...</StyledTableCell>
+                      </TableRow>
+                    ) : null}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </div>
+          </DialogContent>
+          <DialogActions style={{ justifyContent: "flex-end" }}>
+            <div className="o-btnBotNav-btnDiag2">
+              <RedButton onClick={() => this.setState({ contExist: false })}>
+                {"Cancelar"}
+              </RedButton>
+            </div>
+          </DialogActions>
+        </Dialog>
         <Dialog open={this.state.createS} maxWidth={false}>
           <DialogTitle style={{ textAlign: "center" }}>
             {"Datos inválidos o insuficientes"}
