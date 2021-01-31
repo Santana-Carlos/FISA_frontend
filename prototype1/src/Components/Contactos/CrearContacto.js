@@ -28,7 +28,7 @@ import {
   StyledTableCellTiny as StyledTableCell,
 } from "../Buttons";
 import {
-  CheckCircle as IconCheck,
+  AddCircleOutline as IconAdd,
   Refresh as IconRefresh,
 } from "@material-ui/icons";
 import "../Styles.css";
@@ -100,7 +100,7 @@ class CrearContacto extends Component {
       loading: false,
       loadingDiag: false,
       box_spacing: window.innerHeight > 900 ? "0.4rem" : "0rem",
-      box_size_table: window.innerHeight > 900 ? "36rem" : "22rem",
+      box_size_table: window.innerHeight > 900 ? "30rem" : "15rem",
       winInterval: "",
     };
 
@@ -112,7 +112,7 @@ class CrearContacto extends Component {
   resizeBox = () => {
     this.setState({
       box_spacing: window.innerHeight > 900 ? "0.4rem" : "0rem",
-      box_size_table: window.innerHeight > 900 ? "36rem" : "22rem",
+      box_size_table: window.innerHeight > 900 ? "30rem" : "15rem",
     });
   };
 
@@ -282,6 +282,8 @@ class CrearContacto extends Component {
     this.setState({
       dbid_org: "",
       dbidFake_org: null,
+      temp_id_con: "",
+      temp_id_per: "",
       temp_idoffice_con: "",
       temp_nombre_con: "",
       temp_apell_con: "",
@@ -349,12 +351,12 @@ class CrearContacto extends Component {
       ],
     };
 
-    console.log(data);
+    //console.log(data);
     if (
-      this.state.nombre_org !== "" ||
-      this.state.nombre_con !== "" ||
-      this.state.apell_con !== "" ||
-      this.state.cargo_con !== ""
+      this.state.search_nombre_org !== "" ||
+      this.state.search_nombre_con !== "" ||
+      this.state.search_apell_con !== "" ||
+      this.state.search_cargo_con !== ""
     ) {
       fetch(process.env.REACT_APP_API_URL + "Contacto/Search", {
         method: "POST",
@@ -368,7 +370,7 @@ class CrearContacto extends Component {
           return response.json();
         })
         .then((data) => {
-          console.log(data);
+          //console.log(data);
           if (data.success) {
             this.setState({
               loadingDiag: false,
@@ -387,10 +389,10 @@ class CrearContacto extends Component {
   apiRefresh = () => {
     this.setState({ loadingDiag: true });
     if (
-      this.state.nombre_org !== "" ||
-      this.state.nombre_con !== "" ||
-      this.state.apell_con !== "" ||
-      this.state.cargo_con !== ""
+      this.state.search_nombre_org !== "" ||
+      this.state.search_nombre_con !== "" ||
+      this.state.search_apell_con !== "" ||
+      this.state.search_cargo_con !== ""
     ) {
       this.apiSearch();
     } else {
@@ -410,6 +412,57 @@ class CrearContacto extends Component {
       },
       this.callApiCont()
     );
+  };
+
+  callApiPersona = () => {
+    this.setState({ loading: true, contExist: false });
+    const idCon = this.state.temp_id_con;
+    fetch(process.env.REACT_APP_API_URL + "Contacto/" + idCon, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + this.props.token,
+      },
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        this.setState(
+          {
+            temp_nombre_con: data.contacto.nombres,
+            temp_apell_con: data.contacto.apellidos,
+            temp_cel_con: data.contacto.celular,
+            temp_tipoid_con: data.contacto.tipo_documento_persona_id,
+            temp_nid_con: data.contacto.numero_documento,
+            temp_sex_con: data.contacto.sexo,
+            //userUpdated_con: data.usuario_actualizacion.usuario_actualizacion,
+            //fechaUpdated_con: data.contacto.updated_at,
+            loading: false,
+            temp_subcat_con:
+              data.categorias[0] === this.state.indexCat ? [] : data.categorias,
+          },
+          this.dataFake
+        );
+      })
+      .catch((error) => {
+        this.setState({ loading: false });
+      });
+  };
+
+  dataFake = () => {
+    const tempSubcat = this.state.subcat_con_api;
+    const tempSubFake = tempSubcat.filter((obj) => {
+      for (let j = 0; j < this.state.temp_subcat_con.length; j++) {
+        if (obj.id === this.state.temp_subcat_con[j]) {
+          return true;
+        }
+      }
+      return false;
+    });
+    this.setState({
+      temp_subcatFake_con: tempSubFake,
+    });
   };
 
   handleChange(event) {
@@ -721,23 +774,26 @@ class CrearContacto extends Component {
             </div>
             <div style={{ marginBottom: BOX_SPACING }}>
               <div className="o-dobleInput">
-                <div className="o-selectShort">
-                  <TextField
-                    label="Ext."
-                    variant="outlined"
-                    name="input_ext_con"
-                    value={this.state.temp_ext_con || ""}
-                    onChange={this.handleChange}
-                    className="o-space"
-                    margin="dense"
-                  />
-                </div>
-                <div className="o-inputShort">
+                <div className="o-inputShort" style={{ marginLeft: 0 }}>
                   <TextField
                     label="Teléfono"
                     variant="outlined"
                     name="input_tel_con"
                     value={this.state.temp_tel_con || ""}
+                    onChange={this.handleChange}
+                    className="o-space"
+                    margin="dense"
+                  />
+                </div>
+                <div
+                  className="o-selectShort"
+                  style={{ marginLeft: "0.8rem", marginRight: 0 }}
+                >
+                  <TextField
+                    label="Ext."
+                    variant="outlined"
+                    name="input_ext_con"
+                    value={this.state.temp_ext_con || ""}
                     onChange={this.handleChange}
                     className="o-space"
                     margin="dense"
@@ -937,7 +993,7 @@ class CrearContacto extends Component {
                 </div>
                 <div
                   className="o-consultas"
-                  style={{ marginBottom: BOX_SPACING }}
+                  style={{ marginBottom: BOX_SPACING, marginRight: 0 }}
                 >
                   <TextField
                     label="Cargo"
@@ -1004,8 +1060,17 @@ class CrearContacto extends Component {
                             size="small"
                             className="o-tinyBtn2"
                             color="primary"
+                            onClick={() =>
+                              this.setState(
+                                {
+                                  temp_id_per: obj.persona_id,
+                                  temp_id_con: obj.contacto_id,
+                                },
+                                this.callApiPersona
+                              )
+                            }
                           >
-                            <IconCheck />
+                            <IconAdd />
                           </IconButton>
                         </StyledTableCell>
                       </TableRow>

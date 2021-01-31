@@ -579,23 +579,26 @@ class EditarContacto extends Component {
             </div>
             <div style={{ marginBottom: BOX_SPACING }}>
               <div className="o-dobleInput">
-                <div className="o-selectShort">
-                  <TextField
-                    label="Ext."
-                    variant="outlined"
-                    name="input_ext_con"
-                    value={this.state.temp_ext_con || ""}
-                    onChange={this.handleChange}
-                    className="o-space"
-                    margin="dense"
-                  />
-                </div>
-                <div className="o-inputShort">
+                <div className="o-inputShort" style={{ marginLeft: 0 }}>
                   <TextField
                     label="Teléfono"
                     variant="outlined"
                     name="input_tel_con"
                     value={this.state.temp_tel_con || ""}
+                    onChange={this.handleChange}
+                    className="o-space"
+                    margin="dense"
+                  />
+                </div>
+                <div
+                  className="o-selectShort"
+                  style={{ marginLeft: "0.8rem", marginRight: 0 }}
+                >
+                  <TextField
+                    label="Ext."
+                    variant="outlined"
+                    name="input_ext_con"
+                    value={this.state.temp_ext_con || ""}
                     onChange={this.handleChange}
                     className="o-space"
                     margin="dense"

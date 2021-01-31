@@ -72,7 +72,7 @@ class ConsultarContacto extends Component {
       delCon: false,
       loading: true,
       box_spacing: window.innerHeight > 900 ? "0.6rem" : "0.2rem",
-      box_size: window.innerHeight > 900 ? "32rem" : "18.5rem",
+      box_size: window.innerHeight > 900 ? "32rem" : "16.5rem",
       box_spacing_tiny: window.innerHeight > 900 ? "0.4rem" : "0rem",
       winInterval: "",
     };
@@ -83,7 +83,7 @@ class ConsultarContacto extends Component {
   resizeBox = () => {
     this.setState({
       box_spacing: window.innerHeight > 900 ? "0.6rem" : "0.2rem",
-      box_size: window.innerHeight > 900 ? "32rem" : "18.5rem",
+      box_size: window.innerHeight > 900 ? "32rem" : "16.5rem",
       box_spacing_tiny: window.innerHeight > 900 ? "0.4rem" : "0rem",
     });
   };
@@ -209,6 +209,7 @@ class ConsultarContacto extends Component {
       ],
     };
 
+    //console.log(data);
     if (
       this.state.nombre_org !== "" ||
       this.state.nombre_con !== "" ||
@@ -592,8 +593,8 @@ class ConsultarContacto extends Component {
                       <StyledTableCell>Org.</StyledTableCell>
                       <StyledTableCell>Nombre</StyledTableCell>
                       <StyledTableCell>Cargo</StyledTableCell>
-                      <StyledTableCell>Ext.</StyledTableCell>
                       <StyledTableCell>Teléfono</StyledTableCell>
+                      <StyledTableCell>Ext.</StyledTableCell>
                       <StyledTableCell>Celular</StyledTableCell>
                       <StyledTableCell>Correo</StyledTableCell>
                       <StyledTableCell>Obser.</StyledTableCell>
@@ -614,10 +615,10 @@ class ConsultarContacto extends Component {
                           {obj.cargo === null ? emptyCell : obj.cargo}
                         </StyledTableCell>
                         <StyledTableCell size="small">
-                          {obj.extension === null ? emptyCell : obj.extension}
+                          {obj.telefono === null ? emptyCell : obj.telefono}
                         </StyledTableCell>
                         <StyledTableCell size="small">
-                          {obj.telefono === null ? emptyCell : obj.telefono}
+                          {obj.extension === null ? emptyCell : obj.extension}
                         </StyledTableCell>
                         <StyledTableCell size="small">
                           {obj.celular === null ? emptyCell : obj.celular}

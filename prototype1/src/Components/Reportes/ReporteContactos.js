@@ -4,7 +4,9 @@ import {
   InputLabel,
   MenuItem,
   FormControl,
+  ListItemText,
   Select,
+  Checkbox,
   TextField,
   Dialog,
   DialogActions,
@@ -31,31 +33,17 @@ import {
 import "../Styles.css";
 
 const items = [
-  {
-    id: "",
-    nombre: "Ninguno",
-  },
-  {
-    id: "organizacions.nombre",
-    nombre: "Organización",
-  },
-  {
-    id: "contactos.nombres",
-    nombre: "Nombres",
-  },
-  {
-    id: "contactos.apellidos",
-    nombre: "Apellidos",
-  },
-  {
-    id: "contactos.cargo",
-    nombre: "Cargo",
-  },
-  {
-    id: "contactos.celular",
-    nombre: "Celular",
-  },
+  "personas.nombres",
+  "personas.apellidos",
+  "organizacions.nombre",
+  "contactos.cargo",
+  "contactos.email",
+  "pais.id",
+  "organizacions.categoria_id",
+  "detalle_categoria_personas.subcategoria_id",
 ];
+
+const emptyCell = "-";
 
 class ReporteContacto extends Component {
   constructor(props) {
@@ -64,15 +52,18 @@ class ReporteContacto extends Component {
       token: props.token,
       createS: false,
       reqText: false,
-      tipo1: "",
-      tipo2: "",
-      tipo3: "",
-      tipo4: "",
-      palabra1: "",
-      palabra2: "",
-      palabra3: "",
-      palabra4: "",
       contacts: [],
+      nombre_org: "",
+      nombre_con: "",
+      apell_con: "",
+      cargo_con: "",
+      correo_con: "",
+      pais_ofi: "",
+      cat_org: [],
+      subcat_con: [],
+      pais_ofi_api: [],
+      cat_org_api: [],
+      subcat_con_api: [],
       loading: true,
       searched: false,
       box_spacing: window.innerHeight > 900 ? "0.6rem" : "0.2rem",
@@ -91,6 +82,39 @@ class ReporteContacto extends Component {
   };
 
   componentDidMount() {
+    fetch(process.env.REACT_APP_API_URL + "Organizacion/Data", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + this.props.token,
+      },
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        this.setState({
+          pais_ofi_api: data.paises,
+          cat_org_api: data.categorias,
+        });
+      })
+      .catch((error) => {});
+    fetch(process.env.REACT_APP_API_URL + "Contacto/Data", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + this.props.token,
+      },
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        this.setState({
+          subcat_con_api: data.subcategorias,
+        });
+      })
+      .catch((error) => {});
     this.callAPi();
     this.setState({
       winInterval: window.setInterval(this.resizeBox, 1000),
@@ -129,22 +153,67 @@ class ReporteContacto extends Component {
 
   apiSearch = () => {
     this.setState({ loading: true });
-    const tipo1 = this.state.tipo1;
-    const tipo2 = this.state.tipo2 === "" ? tipo1 : this.state.tipo2;
-    const tipo3 = this.state.tipo3 === "" ? tipo1 : this.state.tipo3;
-    const tipo4 = this.state.tipo4 === "" ? tipo1 : this.state.tipo4;
-    const palabra1 = this.state.palabra1 + "%";
-    const palabra2 =
-      this.state.palabra2 === "" ? palabra1 : this.state.palabra2 + "%";
-    const palabra3 =
-      this.state.palabra3 === "" ? "%" : this.state.palabra3 + "%";
-    const palabra4 =
-      this.state.palabra4 === "" ? "%" : this.state.palabra4 + "%";
+    const nombreOrg = this.state.nombre_org + "%";
+    const nombreCon = this.state.nombre_con + "%";
+    const apellCon = this.state.apell_con + "%";
+    const cargo =
+      this.state.cargo_con === "" ? "%" : this.state.cargo_con + "%";
+    const email =
+      this.state.correo_con === "" ? "%" : this.state.correo_con + "%";
+    const pais = this.state.pais_ofi === "" ? "%" : this.state.pais_ofi;
+    const categoria =
+      this.state.cat_org[0] === undefined
+        ? this.state.cat_org_api.map((obj) => obj.id)
+        : this.state.cat_org.map((obj) => obj.id);
+    const subcat =
+      this.state.subcat_con[0] === undefined
+        ? categoria
+        : this.state.subcat_con.map((obj) => obj.id);
+
+    const palabra1 = items[0];
+    const palabra2 = items[1];
+    const palabra3 = items[2];
+    const palabra4 = this.state.cargo_con === "" ? items[0] : items[3];
+    const palabra5 = this.state.correo_con === "" ? items[0] : items[4];
+    const palabra6 = this.state.pais_ofi === "" ? items[0] : items[5];
+    const palabra7 = items[6];
+    const palabra8 =
+      this.state.subcat_con[0] === undefined ? items[6] : items[7];
+    const palabra9 = this.state.pais_ofi === "" ? "ilike" : "=";
+
     const data = {
-      tipos: [tipo1, tipo2, tipo3, tipo4],
-      palabras: [palabra1, palabra2, palabra3, palabra4],
+      nombres: nombreCon,
+      apellidos: apellCon,
+      organizacion: nombreOrg,
+      cargo: cargo,
+      email: email,
+      pais: pais,
+      categorias: categoria,
+      subcategorias: subcat,
+      parametros: [
+        palabra1,
+        palabra2,
+        palabra3,
+        palabra4,
+        palabra5,
+        palabra6,
+        palabra7,
+        palabra8,
+        palabra9,
+      ],
     };
-    if (tipo1 !== "" && palabra1 !== "%") {
+
+    //console.log(data);
+    if (
+      this.state.nombre_org !== "" ||
+      this.state.nombre_con !== "" ||
+      this.state.apell_con !== "" ||
+      this.state.cargo_con !== "" ||
+      this.state.correo_con !== "" ||
+      this.state.pais_ofi !== "" ||
+      this.state.cat_org[0] !== undefined ||
+      this.state.subcat_con[0] !== undefined
+    ) {
       fetch(process.env.REACT_APP_API_URL + "Contacto/Search", {
         method: "POST",
         headers: {
@@ -175,7 +244,16 @@ class ReporteContacto extends Component {
 
   apiRefresh = () => {
     this.setState({ loading: true });
-    if (this.state.tipo1 !== "" && this.state.palabra1 !== "") {
+    if (
+      this.state.nombre_org !== "" ||
+      this.state.nombre_con !== "" ||
+      this.state.apell_con !== "" ||
+      this.state.cargo_con !== "" ||
+      this.state.correo_con !== "" ||
+      this.state.pais_ofi !== "" ||
+      this.state.cat_org[0] !== undefined ||
+      this.state.subcat_con[0] !== undefined
+    ) {
       this.apiSearch();
     } else {
       this.callAPi();
@@ -186,14 +264,14 @@ class ReporteContacto extends Component {
     this.setState(
       {
         loading: true,
-        tipo1: "",
-        tipo2: "",
-        tipo3: "",
-        tipo4: "",
-        palabra1: "",
-        palabra2: "",
-        palabra3: "",
-        palabra4: "",
+        nombre_org: "",
+        nombre_con: "",
+        apell_con: "",
+        cargo_con: "",
+        correo_con: "",
+        pais_ofi: "",
+        cat_org: [],
+        subcat_con: [],
         reqText: false,
       },
       this.callAPi()
@@ -224,7 +302,9 @@ class ReporteContacto extends Component {
     this.setState({ loading: true });
     const contactsList = this.state.contacts;
     const contactsIdList =
-      contactsList[0] !== undefined ? contactsList.map((obj) => obj.id) : [];
+      contactsList[0] !== undefined
+        ? contactsList.map((obj) => obj.contacto_id)
+        : [];
     const data = {
       ids: contactsIdList,
     };
@@ -252,47 +332,31 @@ class ReporteContacto extends Component {
   handleChange(event) {
     let value = event.target.value;
     let name = event.target.name;
-    let checked = event.target.checked;
 
     switch (name) {
-      case "input_tipo1":
-        this.setState({ tipo1: value });
-        if (value === "") {
-          this.setState({ palabra1: "" });
-        }
+      case "input_nombre_org":
+        this.setState({ nombre_org: value });
         break;
-      case "input_tipo2":
-        this.setState({ tipo2: value });
-        if (value === "") {
-          this.setState({ palabra2: "" });
-        }
+      case "input_nombre_con":
+        this.setState({ nombre_con: value });
         break;
-      case "input_tipo3":
-        this.setState({ tipo3: value });
-        if (value === "") {
-          this.setState({ palabra3: "" });
-        }
+      case "input_apell_con":
+        this.setState({ apell_con: value });
         break;
-      case "input_tipo4":
-        this.setState({ tipo4: value });
-        if (value === "") {
-          this.setState({ palabra4: "" });
-        }
+      case "input_cargo_con":
+        this.setState({ cargo_con: value });
         break;
-      case "input_palabra1":
-        this.setState({ palabra1: value });
+      case "input_correo_con":
+        this.setState({ correo_con: value });
         break;
-      case "input_palabra2":
-        this.setState({ palabra2: value });
+      case "input_pais_ofi":
+        this.setState({ pais_ofi: value });
         break;
-      case "input_palabra3":
-        this.setState({ palabra3: value });
+      case "input_cat_org":
+        this.setState({ cat_org: value });
         break;
-      case "input_palabra4":
-        this.setState({ palabra4: value });
-        break;
-      case "input_delcheck":
-        this.setState({ delcheck: checked });
+      case "input_subcat_con":
+        this.setState({ subcat_con: value });
         break;
       default:
         break;
@@ -329,80 +393,48 @@ class ReporteContacto extends Component {
         </div>
         <div className="o-contentForm-big-consultas">
           <div className="o-consultas-containerInit">
-            <div className="o-consultas">
-              <FormControl
-                variant="outlined"
-                margin="dense"
-                error={this.state.reqText && this.state.tipo1 === ""}
-              >
-                <InputLabel id="demo-simple-select-outlined-label">
-                  Añadir*
-                </InputLabel>
-                <Select
-                  labelId="demo-simple-select-outlined-label"
-                  id="demo-simple-select-outlined"
-                  value={this.state.tipo1 || ""}
-                  onChange={this.handleChange}
-                  label="Añadir*"
-                  name="input_tipo1"
-                  className="o-space"
-                  style={{ marginBottom: BOX_SPACING }}
-                >
-                  <MenuItem disabled={true} value="input_tipo1"></MenuItem>
-                  {items.map((obj, i) => {
-                    return (
-                      <MenuItem key={i} value={obj.id}>
-                        {obj.nombre}
-                      </MenuItem>
-                    );
-                  })}
-                </Select>
-              </FormControl>
-            </div>
-            <div className="o-consultas" style={{ marginRight: "2rem" }}>
+            <div className="o-consultas" style={{ marginBottom: BOX_SPACING }}>
               <TextField
-                label="Buscar*"
+                label="Organización"
                 variant="outlined"
-                name="input_palabra1"
-                value={this.state.palabra1 || ""}
+                name="input_nombre_org"
+                value={this.state.nombre_org || ""}
                 onChange={this.handleChange}
                 className="o-space"
                 margin="dense"
-                error={this.state.reqText && this.state.palabra1 === ""}
               />
             </div>
-            <div className="o-consultas">
-              <FormControl variant="outlined" margin="dense">
-                <InputLabel id="demo-simple-select-outlined-label">
-                  Filtrar
-                </InputLabel>
-                <Select
-                  labelId="demo-simple-select-outlined-label"
-                  id="demo-simple-select-outlined"
-                  value={this.state.tipo3 || ""}
-                  onChange={this.handleChange}
-                  label="Filtrar"
-                  name="input_tipo3"
-                  className="o-space"
-                  style={{ marginBottom: BOX_SPACING }}
-                >
-                  <MenuItem disabled={true} value="input_tipo3"></MenuItem>
-                  {items.map((obj, i) => {
-                    return (
-                      <MenuItem key={i} value={obj.id}>
-                        {obj.nombre}
-                      </MenuItem>
-                    );
-                  })}
-                </Select>
-              </FormControl>
-            </div>
-            <div className="o-consultas" style={{ marginRight: 0 }}>
+            <div className="o-consultas" style={{ marginBottom: BOX_SPACING }}>
               <TextField
-                label="Buscar"
+                label="Nombres"
                 variant="outlined"
-                name="input_palabra3"
-                value={this.state.palabra3 || ""}
+                name="input_nombre_con"
+                value={this.state.nombre_con || ""}
+                onChange={this.handleChange}
+                className="o-space"
+                margin="dense"
+              />
+            </div>
+            <div className="o-consultas" style={{ marginBottom: BOX_SPACING }}>
+              <TextField
+                label="Apellidos"
+                variant="outlined"
+                name="input_apell_con"
+                value={this.state.apell_con || ""}
+                onChange={this.handleChange}
+                className="o-space"
+                margin="dense"
+              />
+            </div>
+            <div
+              className="o-consultas"
+              style={{ marginRight: 0, marginBottom: BOX_SPACING }}
+            >
+              <TextField
+                label="Cargo"
+                variant="outlined"
+                name="input_cargo_con"
+                value={this.state.cargo_con || ""}
                 onChange={this.handleChange}
                 className="o-space"
                 margin="dense"
@@ -411,79 +443,122 @@ class ReporteContacto extends Component {
           </div>
           <div className="o-consultas-containerInit">
             <div className="o-consultas">
-              <FormControl variant="outlined" margin="dense">
-                <InputLabel id="demo-simple-select-outlined-label">
-                  Añadir
-                </InputLabel>
-                <Select
-                  labelId="demo-simple-select-outlined-label"
-                  id="demo-simple-select-outlined"
-                  value={this.state.tipo2 || ""}
-                  onChange={this.handleChange}
-                  label="Añadir"
-                  name="input_tipo2"
-                  className="o-space"
-                  style={{ marginBottom: BOX_SPACING }}
-                >
-                  <MenuItem disabled={true} value="input_tipo2"></MenuItem>
-                  {items.map((obj, i) => {
-                    return (
-                      <MenuItem key={i} value={obj.id}>
-                        {obj.nombre}
-                      </MenuItem>
-                    );
-                  })}
-                </Select>
-              </FormControl>
-            </div>
-            <div className="o-consultas" style={{ marginRight: "2rem" }}>
               <TextField
-                label="Buscar"
+                label="Correo"
                 variant="outlined"
-                name="input_palabra2"
-                value={this.state.palabra2 || ""}
+                name="input_correo_con"
+                value={this.state.correo_con || ""}
                 onChange={this.handleChange}
                 className="o-space"
                 margin="dense"
               />
             </div>
-            <div className="o-consultas">
-              <FormControl variant="outlined" margin="dense">
-                <InputLabel id="demo-simple-select-outlined-label">
-                  Filtrar
-                </InputLabel>
-                <Select
-                  labelId="demo-simple-select-outlined-label"
-                  id="demo-simple-select-outlined"
-                  value={this.state.tipo4}
-                  onChange={this.handleChange}
-                  label="Filtrar"
-                  name="input_tipo4"
-                  className="o-space"
-                  style={{ marginBottom: BOX_SPACING }}
-                >
-                  <MenuItem disabled={true} value="input_tipo4"></MenuItem>
-                  {items.map((obj, i) => {
-                    return (
-                      <MenuItem key={i} value={obj.id}>
-                        {obj.nombre}
-                      </MenuItem>
-                    );
-                  })}
-                </Select>
-              </FormControl>
-            </div>
-            <div className="o-consultas" style={{ marginRight: 0 }}>
-              <TextField
-                label="Buscar"
-                variant="outlined"
-                name="input_palabra4"
-                value={this.state.palabra4 || ""}
+            <FormControl
+              className="o-consultas"
+              style={{ marginTop: "0.8rem", marginRight: "1rem" }}
+              variant="outlined"
+              margin="dense"
+            >
+              <InputLabel id="demo-simple-select-outlined-label">
+                País
+              </InputLabel>
+              <Select
+                labelId="demo-simple-select-outlined-label"
+                id="demo-simple-select-outlined"
+                value={this.state.pais_ofi || ""}
                 onChange={this.handleChange}
+                label="País*"
+                name="input_pais_ofi"
                 className="o-space"
-                margin="dense"
-              />
-            </div>
+                style={{ marginBottom: BOX_SPACING }}
+              >
+                <MenuItem disabled={true} value="input_pais_ofi"></MenuItem>
+                {this.state.pais_ofi_api.map((obj, i) => {
+                  return (
+                    <MenuItem key={i} value={obj.id}>
+                      {obj.nombre}
+                    </MenuItem>
+                  );
+                })}
+              </Select>
+            </FormControl>
+            <FormControl
+              className="o-consultas"
+              style={{ marginTop: "0.8rem", marginRight: "1rem" }}
+              variant="outlined"
+              margin="dense"
+            >
+              <InputLabel id="demo-mutiple-checkbox-label">
+                Categoría Org.
+              </InputLabel>
+              <Select
+                id="demo-mutiple-checkbox"
+                multiple
+                label="Categoría Org."
+                name="input_cat_org"
+                className="o-space"
+                value={this.state.cat_org || []}
+                onChange={this.handleChange}
+                MenuProps={{
+                  getContentAnchorEl: () => null,
+                }}
+                renderValue={(selected) =>
+                  selected.map((value) => value.nombre + ", ")
+                }
+                style={{ marginBottom: BOX_SPACING }}
+              >
+                {this.state.cat_org_api.map((obj, i) => (
+                  <MenuItem key={i} value={obj}>
+                    <Checkbox
+                      checked={
+                        this.state.cat_org.findIndex((x) => x.id === obj.id) >
+                        -1
+                      }
+                    />
+                    <ListItemText primary={obj.nombre} />
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <FormControl
+              className="o-consultas"
+              style={{ marginTop: "0.8rem", marginRight: 0 }}
+              variant="outlined"
+              margin="dense"
+            >
+              <InputLabel id="demo-mutiple-checkbox-label">
+                Subcategoría
+              </InputLabel>
+              <Select
+                id="demo-mutiple-checkbox"
+                multiple
+                label="Subcategoría"
+                name="input_subcat_con"
+                className="o-space"
+                value={this.state.subcat_con || []}
+                onChange={this.handleChange}
+                MenuProps={{
+                  getContentAnchorEl: () => null,
+                }}
+                renderValue={(selected) =>
+                  selected.map((value) => value.nombre + ", ")
+                }
+                style={{ marginBottom: BOX_SPACING }}
+              >
+                {this.state.subcat_con_api.map((obj, i) => (
+                  <MenuItem key={i} value={obj}>
+                    <Checkbox
+                      checked={
+                        this.state.subcat_con.findIndex(
+                          (x) => x.id === obj.id
+                        ) > -1
+                      }
+                    />
+                    <ListItemText primary={obj.nombre} />
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
           </div>
           <div className="o-consultas-container">
             <div className="o-consultas-btn">
@@ -536,10 +611,14 @@ class ReporteContacto extends Component {
                     <StyledTableCell size="small">
                       {obj.nombres + " " + obj.apellidos}
                     </StyledTableCell>
-                    <StyledTableCell size="small">{obj.cargo}</StyledTableCell>
-                    <StyledTableCell size="small">{obj.email}</StyledTableCell>
                     <StyledTableCell size="small">
-                      {obj.celular}
+                      {obj.cargo === null ? emptyCell : obj.cargo}
+                    </StyledTableCell>
+                    <StyledTableCell size="small">
+                      {obj.email === null ? emptyCell : obj.email}
+                    </StyledTableCell>
+                    <StyledTableCell size="small">
+                      {obj.celular === null ? emptyCell : obj.celular}
                     </StyledTableCell>
                   </TableRow>
                 ))}

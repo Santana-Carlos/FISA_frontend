@@ -4,7 +4,9 @@ import {
   InputLabel,
   MenuItem,
   FormControl,
+  ListItemText,
   Select,
+  Checkbox,
   TextField,
   Dialog,
   DialogActions,
@@ -31,48 +33,44 @@ import {
 import "../Styles.css";
 
 const items = [
+  "organizacions.numero_documento",
+  "organizacions.nombre",
+  "organizacions.razon_social",
+];
+
+const reportType = [
   {
-    id: "",
-    nombre: "Ninguno",
+    id: 1,
+    nombre: "General",
   },
   {
-    id: "categorias.nombre",
-    nombre: "Categoria",
-  },
-  {
-    id: "organizacions.nombre",
-    nombre: "Nombre comercial",
-  },
-  {
-    id: "organizacions.razon_social",
-    nombre: "Razón social",
-  },
-  {
-    id: "subsectors.nombre",
-    nombre: "Subsector",
+    id: 2,
+    nombre: "Financiero",
   },
 ];
+
+const emptyCell = "-";
 
 class ReporteOrganizacion extends Component {
   constructor(props) {
     super();
     this.state = {
       token: props.token,
+      tipoid_org: "",
+      nid_org: "",
+      cat_org: [],
+      nomcom_org: "",
+      razsoc_org: "",
       createS: false,
       reqText: false,
-      tipo1: "",
-      tipo2: "",
-      tipo3: "",
-      tipo4: "",
-      palabra1: "",
-      palabra2: "",
-      palabra3: "",
-      palabra4: "",
+      reportType: reportType[0].id,
       orgs: [],
+      tipoid_org_api: [],
+      cat_org_api: [],
       loading: true,
       searched: false,
       box_spacing: window.innerHeight > 900 ? "0.6rem" : "0.2rem",
-      box_size: window.innerHeight > 900 ? "32rem" : "16.5rem",
+      box_size: window.innerHeight > 900 ? "36rem" : "20rem",
       winInterval: "",
     };
 
@@ -82,11 +80,28 @@ class ReporteOrganizacion extends Component {
   resizeBox = () => {
     this.setState({
       box_spacing: window.innerHeight > 900 ? "0.6rem" : "0.2rem",
-      box_size: window.innerHeight > 900 ? "32rem" : "16.5rem",
+      box_size: window.innerHeight > 900 ? "36rem" : "20rem",
     });
   };
 
   componentDidMount() {
+    fetch(process.env.REACT_APP_API_URL + "Organizacion/Data", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + this.props.token,
+      },
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        this.setState({
+          tipoid_org_api: data.documentos,
+          cat_org_api: data.categorias,
+        });
+      })
+      .catch((error) => {});
     this.callAPi();
     this.setState({
       winInterval: window.setInterval(this.resizeBox, 1000),
@@ -125,22 +140,39 @@ class ReporteOrganizacion extends Component {
 
   apiSearch = () => {
     this.setState({ loading: true });
-    const tipo1 = this.state.tipo1;
-    const tipo2 = this.state.tipo2 === "" ? tipo1 : this.state.tipo2;
-    const tipo3 = this.state.tipo3 === "" ? tipo1 : this.state.tipo3;
-    const tipo4 = this.state.tipo4 === "" ? tipo1 : this.state.tipo4;
-    const palabra1 = this.state.palabra1 + "%";
-    const palabra2 =
-      this.state.palabra2 === "" ? palabra1 : this.state.palabra2 + "%";
-    const palabra3 =
-      this.state.palabra3 === "" ? "%" : this.state.palabra3 + "%";
-    const palabra4 =
-      this.state.palabra4 === "" ? "%" : this.state.palabra4 + "%";
+
+    const numero = this.state.nid_org + "%";
+    const nombre = this.state.nomcom_org + "%";
+    const razon = this.state.razsoc_org + "%";
+    const documento =
+      this.state.tipoid_org === ""
+        ? this.state.tipoid_org_api.map((obj) => obj.id)
+        : [this.state.tipoid_org];
+    const categoria =
+      this.state.cat_org[0] === undefined
+        ? this.state.cat_org_api.map((obj) => obj.id)
+        : this.state.cat_org.map((obj) => obj.id);
+
+    const palabra1 = items[0];
+    const palabra2 = items[1];
+    const palabra3 = this.state.razsoc_org === "" ? items[1] : items[2];
+
     const data = {
-      tipos: [tipo1, tipo2, tipo3, tipo4],
-      palabras: [palabra1, palabra2, palabra3, palabra4],
+      numero_documento: numero,
+      nombre: nombre,
+      razon_social: razon,
+      documentos: documento,
+      categorias: categoria,
+      parametros: [palabra1, palabra2, palabra3],
     };
-    if (tipo1 !== "" && palabra1 !== "") {
+    //console.log(data);
+    if (
+      this.state.nid_org !== "" ||
+      this.state.nomcom_org !== "" ||
+      this.state.razsoc_org !== "" ||
+      this.state.tipoid_org !== "" ||
+      this.state.cat_org[0] !== undefined
+    ) {
       fetch(process.env.REACT_APP_API_URL + "Organizacion/Search", {
         method: "POST",
         headers: {
@@ -171,7 +203,13 @@ class ReporteOrganizacion extends Component {
 
   apiRefresh = () => {
     this.setState({ loading: true });
-    if (this.state.tipo1 !== "" && this.state.palabra1 !== "") {
+    if (
+      this.state.nid_org !== "" ||
+      this.state.nomcom_org !== "" ||
+      this.state.razsoc_org !== "" ||
+      this.state.tipoid_org !== "" ||
+      this.state.cat_org[0] !== undefined
+    ) {
       this.apiSearch();
     } else {
       this.callAPi();
@@ -182,18 +220,43 @@ class ReporteOrganizacion extends Component {
     this.setState(
       {
         loading: true,
-        tipo1: "",
-        tipo2: "",
-        tipo3: "",
-        tipo4: "",
-        palabra1: "",
-        palabra2: "",
-        palabra3: "",
-        palabra4: "",
+        tipoid_org: "",
+        nid_org: "",
+        nomcom_org: "",
+        razsoc_org: "",
+        cat_org: [],
         reqText: false,
       },
       this.callAPi()
     );
+  };
+
+  apiReportA = () => {
+    const tipo = this.state.reportType;
+    switch (tipo) {
+      case 1:
+        this.apiReportGen();
+        break;
+      case 2:
+        this.apiReportGenFin();
+        break;
+      default:
+        break;
+    }
+  };
+
+  apiReportB = () => {
+    const tipo = this.state.reportType;
+    switch (tipo) {
+      case 1:
+        this.apiReportBus();
+        break;
+      case 2:
+        this.apiReportBusFin();
+        break;
+      default:
+        break;
+    }
   };
 
   apiReportGen = () => {
@@ -224,7 +287,7 @@ class ReporteOrganizacion extends Component {
     const data = {
       ids: orgIdList,
     };
-    console.log(data);
+    //console.log(data);
 
     fetch(process.env.REACT_APP_API_URL + "Organizacion/RepBus", {
       method: "POST",
@@ -246,50 +309,78 @@ class ReporteOrganizacion extends Component {
       });
   };
 
+  apiReportGenFin = () => {
+    this.setState({ loading: true });
+    fetch(process.env.REACT_APP_API_URL + "InformacionFinanciera/RepGen", {
+      method: "GET",
+      headers: {
+        Authorization: "Bearer " + this.props.token,
+      },
+    })
+      .then((response) => {
+        return response.blob();
+      })
+      .then((data) => {
+        this.setState({ loading: false });
+        saveAs(data, "FINANCIERO_REPORTE_GENERAL");
+      })
+      .catch((error) => {
+        this.setState({ loading: false });
+      });
+  };
+
+  apiReportBusFin = () => {
+    this.setState({ loading: true });
+    const orgsList = this.state.orgs;
+    const orgIdList =
+      orgsList[0] !== undefined ? orgsList.map((obj) => obj.id) : [];
+    const data = {
+      ids: orgIdList,
+    };
+    //console.log(data);
+
+    fetch(process.env.REACT_APP_API_URL + "InformacionFinanciera/RepBus", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + this.props.token,
+      },
+      body: JSON.stringify(data),
+    })
+      .then((response) => {
+        return response.blob();
+      })
+      .then((data) => {
+        this.setState({ loading: false });
+        saveAs(data, "FINANCIERO_REPORTE");
+      })
+      .catch((error) => {
+        this.setState({ loading: false });
+      });
+  };
+
   handleChange(event) {
     let value = event.target.value;
     let name = event.target.name;
-    let checked = event.target.checked;
 
     switch (name) {
-      case "input_tipo1":
-        this.setState({ tipo1: value });
-        if (value === "") {
-          this.setState({ palabra1: "" });
-        }
+      case "input_tipoid_org":
+        this.setState({ tipoid_org: value, tipoid2_org: value });
         break;
-      case "input_tipo2":
-        this.setState({ tipo2: value });
-        if (value === "") {
-          this.setState({ palabra2: "" });
-        }
+      case "input_nid_org":
+        this.setState({ nid_org: value });
         break;
-      case "input_tipo3":
-        this.setState({ tipo3: value });
-        if (value === "") {
-          this.setState({ palabra3: "" });
-        }
+      case "input_cat_org":
+        this.setState({ cat_org: value });
         break;
-      case "input_tipo4":
-        this.setState({ tipo4: value });
-        if (value === "") {
-          this.setState({ palabra4: "" });
-        }
+      case "input_nomcom_org":
+        this.setState({ nomcom_org: value });
         break;
-      case "input_palabra1":
-        this.setState({ palabra1: value });
+      case "input_razsoc_org":
+        this.setState({ razsoc_org: value });
         break;
-      case "input_palabra2":
-        this.setState({ palabra2: value });
-        break;
-      case "input_palabra3":
-        this.setState({ palabra3: value });
-        break;
-      case "input_palabra4":
-        this.setState({ palabra4: value });
-        break;
-      case "input_delcheck":
-        this.setState({ delcheck: checked });
+      case "input_reportType":
+        this.setState({ reportType: value });
         break;
       default:
         break;
@@ -297,8 +388,8 @@ class ReporteOrganizacion extends Component {
   }
 
   render() {
-    const BOX_SPACING = window.innerHeight > 900 ? "0.6rem" : "0.2rem";
-    const BOX_SIZE = window.innerHeight > 900 ? "32rem" : "16.5rem";
+    let BOX_SPACING = this.state.box_spacing;
+    let BOX_SIZE = this.state.box_size;
     return (
       <div className="o-cardContent">
         <div className="o-contentTittle">
@@ -327,160 +418,116 @@ class ReporteOrganizacion extends Component {
         <div className="o-contentForm-big-consultas">
           <div className="o-consultas-containerInit">
             <div className="o-consultas">
-              <FormControl
+              <div style={{ marginBottom: BOX_SPACING }}>
+                <div className="o-dobleInput">
+                  <FormControl
+                    variant="outlined"
+                    margin="dense"
+                    className="o-selectShort"
+                    style={{ width: "7rem" }}
+                  >
+                    <InputLabel id="demo-simple-select-outlined-label">
+                      ID
+                    </InputLabel>
+                    <Select
+                      labelId="demo-simple-select-outlined-label"
+                      id="demo-simple-select-outlined"
+                      value={this.state.tipoid_org || ""}
+                      onChange={this.handleChange}
+                      label="ID"
+                      name="input_tipoid_org"
+                    >
+                      <MenuItem
+                        disabled={true}
+                        value="input_tipoid_org"
+                      ></MenuItem>
+                      <MenuItem value="">Ninguno</MenuItem>
+                      {this.state.tipoid_org_api.map((obj, i) => {
+                        return (
+                          <MenuItem key={i} value={obj.id}>
+                            {obj.nombre}
+                          </MenuItem>
+                        );
+                      })}
+                    </Select>
+                  </FormControl>
+                  <div
+                    className="o-inputShort"
+                    style={{ marginLeft: "0.5rem" }}
+                  >
+                    <TextField
+                      label="Número"
+                      variant="outlined"
+                      value={this.state.nid_org || ""}
+                      name="input_nid_org"
+                      onChange={this.handleChange}
+                      className="o-space"
+                      margin="dense"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="o-consultas">
+              <TextField
+                label="Nombre comercial"
                 variant="outlined"
+                name="input_nomcom_org"
+                value={this.state.nomcom_org || ""}
+                onChange={this.handleChange}
+                className="o-space"
                 margin="dense"
-                error={this.state.reqText && this.state.tipo1 === ""}
+              />
+            </div>
+            <div className="o-consultas">
+              <TextField
+                label="Razón social"
+                variant="outlined"
+                name="input_razsoc_org"
+                value={this.state.razsoc_org || ""}
+                onChange={this.handleChange}
+                className="o-space"
+                margin="dense"
+              />
+            </div>
+            <FormControl
+              className="o-consultas"
+              style={{ margin: "0.8rem 0 0" }}
+              variant="outlined"
+              margin="dense"
+            >
+              <InputLabel id="demo-mutiple-checkbox-label">
+                Categoría
+              </InputLabel>
+              <Select
+                id="demo-mutiple-checkbox"
+                multiple
+                label="Categoría"
+                name="input_cat_org"
+                className="o-space"
+                value={this.state.cat_org || []}
+                onChange={this.handleChange}
+                MenuProps={{
+                  getContentAnchorEl: () => null,
+                }}
+                renderValue={(selected) =>
+                  selected.map((value) => value.nombre + ", ")
+                }
+                style={{ marginBottom: BOX_SPACING }}
               >
-                <InputLabel id="demo-simple-select-outlined-label">
-                  Añadir*
-                </InputLabel>
-                <Select
-                  labelId="demo-simple-select-outlined-label"
-                  id="demo-simple-select-outlined"
-                  value={this.state.tipo1 || ""}
-                  onChange={this.handleChange}
-                  label="Añadir*"
-                  name="input_tipo1"
-                  className="o-space"
-                  style={{ marginBottom: BOX_SPACING }}
-                >
-                  <MenuItem disabled={true} value="input_tipo1"></MenuItem>
-                  {items.map((obj, i) => {
-                    return (
-                      <MenuItem key={i} value={obj.id}>
-                        {obj.nombre}
-                      </MenuItem>
-                    );
-                  })}
-                </Select>
-              </FormControl>
-            </div>
-            <div className="o-consultas" style={{ marginRight: "2rem" }}>
-              <TextField
-                label="Buscar*"
-                variant="outlined"
-                name="input_palabra1"
-                value={this.state.palabra1 || ""}
-                onChange={this.handleChange}
-                className="o-space"
-                margin="dense"
-                error={this.state.reqText && this.state.palabra1 === ""}
-              />
-            </div>
-            <div className="o-consultas">
-              <FormControl variant="outlined" margin="dense">
-                <InputLabel id="demo-simple-select-outlined-label">
-                  Filtrar
-                </InputLabel>
-                <Select
-                  labelId="demo-simple-select-outlined-label"
-                  id="demo-simple-select-outlined"
-                  value={this.state.tipo3 || ""}
-                  onChange={this.handleChange}
-                  label="Filtrar"
-                  name="input_tipo3"
-                  className="o-space"
-                  style={{ marginBottom: BOX_SPACING }}
-                >
-                  <MenuItem disabled={true} value="input_tipo3"></MenuItem>
-                  {items.map((obj, i) => {
-                    return (
-                      <MenuItem key={i} value={obj.id}>
-                        {obj.nombre}
-                      </MenuItem>
-                    );
-                  })}
-                </Select>
-              </FormControl>
-            </div>
-            <div className="o-consultas" style={{ marginRight: 0 }}>
-              <TextField
-                label="Buscar"
-                variant="outlined"
-                name="input_palabra3"
-                value={this.state.palabra3 || ""}
-                onChange={this.handleChange}
-                className="o-space"
-                margin="dense"
-              />
-            </div>
-          </div>
-          <div className="o-consultas-containerInit">
-            <div className="o-consultas">
-              <FormControl variant="outlined" margin="dense">
-                <InputLabel id="demo-simple-select-outlined-label">
-                  Añadir
-                </InputLabel>
-                <Select
-                  labelId="demo-simple-select-outlined-label"
-                  id="demo-simple-select-outlined"
-                  value={this.state.tipo2 || ""}
-                  onChange={this.handleChange}
-                  label="Añadir"
-                  name="input_tipo2"
-                  className="o-space"
-                  style={{ marginBottom: BOX_SPACING }}
-                >
-                  <MenuItem disabled={true} value="input_tipo2"></MenuItem>
-                  {items.map((obj, i) => {
-                    return (
-                      <MenuItem key={i} value={obj.id}>
-                        {obj.nombre}
-                      </MenuItem>
-                    );
-                  })}
-                </Select>
-              </FormControl>
-            </div>
-            <div className="o-consultas" style={{ marginRight: "2rem" }}>
-              <TextField
-                label="Buscar"
-                variant="outlined"
-                name="input_palabra2"
-                value={this.state.palabra2 || ""}
-                onChange={this.handleChange}
-                className="o-space"
-                margin="dense"
-              />
-            </div>
-            <div className="o-consultas">
-              <FormControl variant="outlined" margin="dense">
-                <InputLabel id="demo-simple-select-outlined-label">
-                  Filtrar
-                </InputLabel>
-                <Select
-                  labelId="demo-simple-select-outlined-label"
-                  id="demo-simple-select-outlined"
-                  value={this.state.tipo4}
-                  onChange={this.handleChange}
-                  label="Filtrar"
-                  name="input_tipo4"
-                  className="o-space"
-                  style={{ marginBottom: BOX_SPACING }}
-                >
-                  <MenuItem disabled={true} value="input_tipo4"></MenuItem>
-                  {items.map((obj, i) => {
-                    return (
-                      <MenuItem key={i} value={obj.id}>
-                        {obj.nombre}
-                      </MenuItem>
-                    );
-                  })}
-                </Select>
-              </FormControl>
-            </div>
-            <div className="o-consultas" style={{ marginRight: 0 }}>
-              <TextField
-                label="Buscar"
-                variant="outlined"
-                name="input_palabra4"
-                value={this.state.palabra4 || ""}
-                onChange={this.handleChange}
-                className="o-space"
-                margin="dense"
-              />
-            </div>
+                {this.state.cat_org_api.map((obj, i) => (
+                  <MenuItem key={i} value={obj}>
+                    <Checkbox
+                      checked={
+                        this.state.cat_org.findIndex((x) => x.id === obj.id) >
+                        -1
+                      }
+                    />
+                    <ListItemText primary={obj.nombre} />
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
           </div>
           <div className="o-consultas-container">
             <div className="o-consultas-btn">
@@ -490,23 +537,53 @@ class ReporteOrganizacion extends Component {
               <div className="o-btnConsultas">
                 <RedButton onClick={this.clearFunc}>Limpiar</RedButton>
               </div>
-
               <div className="o-btnConsultas" style={{ width: "4rem" }}>
                 <BlueButton onClick={this.apiRefresh}>
                   <IconRefresh size="small" />
                 </BlueButton>
               </div>
+              <FormControl
+                style={{
+                  width: "20%",
+                  marginTop: "0.8rem",
+                  marginLeft: "auto",
+                  marginRight: "0.6rem",
+                }}
+                variant="outlined"
+                margin="dense"
+              >
+                <InputLabel id="demo-simple-select-outlined-label">
+                  Reporte
+                </InputLabel>
+                <Select
+                  labelId="demo-simple-select-outlined-label"
+                  id="demo-simple-select-outlined"
+                  value={this.state.reportType || ""}
+                  onChange={this.handleChange}
+                  label="Reporte"
+                  name="input_reportType"
+                  className="o-space"
+                >
+                  <MenuItem disabled={true} value="input_reportType"></MenuItem>
+                  {reportType.map((obj, i) => {
+                    return (
+                      <MenuItem key={i} value={obj.id}>
+                        {obj.nombre}
+                      </MenuItem>
+                    );
+                  })}
+                </Select>
+              </FormControl>
               <div
                 className="o-btnConsultas"
-                style={{ width: "8rem", marginLeft: "auto", marginRight: 0 }}
+                style={{ width: "4rem", marginRight: 0 }}
               >
                 <GreenButton
                   onClick={
-                    this.state.searched ? this.apiReportBus : this.apiReportGen
+                    this.state.searched ? this.apiReportB : this.apiReportA
                   }
                 >
-                  Reporte
-                  <IconDownload style={{ marginLeft: "0.4rem" }} size="small" />
+                  <IconDownload size="small" />
                 </GreenButton>
               </div>
             </div>
@@ -535,13 +612,13 @@ class ReporteOrganizacion extends Component {
                         obj.numero_documento}
                     </StyledTableCell>
                     <StyledTableCell size="small">
-                      {obj.razon_social}
+                      {obj.razon_social === null ? emptyCell : obj.razon_social}
                     </StyledTableCell>
                     <StyledTableCell size="small">
                       {obj.categoria}
                     </StyledTableCell>
                     <StyledTableCell size="small">
-                      {obj.subsector}
+                      {obj.subsector === null ? emptyCell : obj.subsector}
                     </StyledTableCell>
                   </TableRow>
                 ))}

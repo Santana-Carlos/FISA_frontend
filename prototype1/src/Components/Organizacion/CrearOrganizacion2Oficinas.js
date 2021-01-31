@@ -32,6 +32,8 @@ import {
 import { Link, Redirect } from "react-router-dom";
 import "../Styles.css";
 
+const emptyCell = "-";
+
 class CrearOrganizacion2Oficinas extends Component {
   constructor(props) {
     super();
@@ -442,7 +444,7 @@ class CrearOrganizacion2Oficinas extends Component {
                         {obj.direccion}
                       </StyledTableCell>
                       <StyledTableCell size="small">
-                        {obj.telefono_1}
+                        {obj.telefono_1 === null ? emptyCell : obj.telefono_1}
                       </StyledTableCell>
                       <StyledTableCell
                         size="small"

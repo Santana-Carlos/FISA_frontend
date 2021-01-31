@@ -75,6 +75,7 @@ const Login = () => {
         }
       })
       .catch((error) => {
+        console.log(error);
         setloading(false);
         setDiagserver(true);
       });

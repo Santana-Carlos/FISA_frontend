@@ -50,6 +50,7 @@ class CrearOrganizacion4Finanzas extends Component {
       temp_anodec_fin: "",
       temp_cuorealano_fin: "",
       temp_cuorealafi_fin: "",
+      temp_cuopau_fin: "",
       temp_import_fin: [],
       temp_export_fin: [],
       temp_anocuota_fin: "",
@@ -117,8 +118,10 @@ class CrearOrganizacion4Finanzas extends Component {
             temp_ventas_fin: data.informacion.ventas_anuales,
             temp_totalpat_fin: data.informacion.patrimonio_total,
             temp_anodec_fin: data.informacion.temporada_declaracion,
-            temp_cuorealano_fin: data.informacion.cuota_real_anual,
-            temp_cuorealafi_fin: data.informacion.cuota_real_afiliacion,
+            temp_cuorealano_fin:
+              data.informacion.cuota_sostenimiento_real_pagada,
+            temp_cuorealafi_fin: data.informacion.cuota_real_pagada,
+            temp_cuopau_fin: data.informacion.cuota_pautas,
             userUpdated: data.usuario_actualizacion.editor,
             fechaUpdated: data.informacion.updated_at,
             temp_cuotaanual_fin: data.informacion.cuota_anual,
@@ -218,8 +221,9 @@ class CrearOrganizacion4Finanzas extends Component {
         regimen_id: this.state.temp_regimen_fin,
         temporada_declaracion: this.state.temp_anodec_fin,
         clasificacion_id: this.state.temp_clas_fin,
-        cuota_real_anual: this.state.temp_cuorealano_fin,
-        cuota_real_afiliacion: this.state.temp_cuorealafi_fin,
+        cuota_sostenimiento_real_pagada: this.state.temp_cuorealano_fin,
+        cuota_real_pagada: this.state.temp_cuorealafi_fin,
+        cuota_pautas: this.state.temp_cuopau_fin,
         temporada_cuota: this.state.temp_anocuota_fin,
         cuota_anual: this.state.temp_cuotaanual_fin,
       };
@@ -277,8 +281,9 @@ class CrearOrganizacion4Finanzas extends Component {
       regimen_id: this.state.temp_regimen_fin,
       temporada_declaracion: this.state.temp_anodec_fin,
       clasificacion_id: this.state.temp_clas_fin,
-      cuota_real_anual: this.state.temp_cuorealano_fin,
-      cuota_real_afiliacion: this.state.temp_cuorealafi_fin,
+      cuota_sostenimiento_real_pagada: this.state.temp_cuorealano_fin,
+      cuota_real_pagada: this.state.temp_cuorealafi_fin,
+      cuota_pautas: this.state.temp_cuopau_fin,
       temporada_cuota: this.state.temp_anocuota_fin,
       cuota_anual: this.state.temp_cuotaanual_fin,
     };
@@ -382,6 +387,9 @@ class CrearOrganizacion4Finanzas extends Component {
         break;
       case "input_cuorealafi_fin":
         this.setState({ temp_cuorealafi_fin: value });
+        break;
+      case "input_cuopau_fin":
+        this.setState({ temp_cuopau_fin: value });
         break;
       case "input_import_fin":
         this.setState({ temp_import_fin: value });
@@ -609,7 +617,7 @@ class CrearOrganizacion4Finanzas extends Component {
             </h3>
             <div style={{ marginBottom: BOX_SPACING }}>
               <TextField
-                label="Cuota real anual"
+                label="Cuota real sostenimiento"
                 variant="outlined"
                 value={this.state.temp_cuorealano_fin || ""}
                 name="input_cuorealano_fin"
@@ -620,10 +628,21 @@ class CrearOrganizacion4Finanzas extends Component {
             </div>
             <div style={{ marginBottom: BOX_SPACING }}>
               <TextField
-                label="Cuota real afiliación"
+                label="Cuota real pagada"
                 variant="outlined"
                 value={this.state.temp_cuorealafi_fin || ""}
                 name="input_cuorealafi_fin"
+                onChange={this.handleChange}
+                className="o-space"
+                margin="dense"
+              />
+            </div>
+            <div style={{ marginBottom: BOX_SPACING }}>
+              <TextField
+                label="Cuota pautas"
+                variant="outlined"
+                value={this.state.temp_cuopau_fin || ""}
+                name="input_cuopau_fin"
                 onChange={this.handleChange}
                 className="o-space"
                 margin="dense"

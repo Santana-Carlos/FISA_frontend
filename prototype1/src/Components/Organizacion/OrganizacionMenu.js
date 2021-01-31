@@ -226,6 +226,7 @@ class OrganizacionMenu extends Component {
             dbid_org={this.props.dbid_org}
             name_org={this.state.name_org}
             box_spacing={this.props.box_spacing}
+            box_size_table={this.props.box_size_table}
           />
         </Route>
         <Route path="/consultar_organizacion/editar/finanzas">

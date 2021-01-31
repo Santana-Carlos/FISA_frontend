@@ -26,10 +26,14 @@ import "../Styles.css";
 const items = [
   {
     id: 1,
-    nombre: "Organizaciones",
+    nombre: "Org. General",
   },
   {
     id: 2,
+    nombre: "Org. Financiero",
+  },
+  {
+    id: 3,
     nombre: "Contactos",
   },
 ];
@@ -39,7 +43,7 @@ class ReporteFechas extends Component {
     super();
     this.state = {
       token: props.token,
-      tipoRep: 1,
+      tipoRep: items[0].id,
       dateStart: "",
       dateEnd: "",
       createS: false,
@@ -79,6 +83,9 @@ class ReporteFechas extends Component {
           this.apiReportOrg();
           break;
         case 2:
+          this.apiReportFin();
+          break;
+        case 3:
           this.apiReportCon();
           break;
         default:
@@ -112,6 +119,38 @@ class ReporteFechas extends Component {
         .then((data) => {
           this.setState({ loading: false });
           saveAs(data, "ORGANIZACIONES_REPORTE_TEMPORADA");
+        })
+        .catch((error) => {
+          this.setState({ loading: false });
+        });
+    } else {
+      this.setState({ loading: false, createZ: true });
+    }
+  };
+
+  apiReportFin = () => {
+    this.setState({ loading: true });
+    const dateStart = this.state.dateStart;
+    const dateEnd = this.state.dateEnd;
+    const data = {
+      fecha_inicio: dateStart,
+      fecha_fin: dateEnd,
+    };
+    if (dateStart <= dateEnd) {
+      fetch(process.env.REACT_APP_API_URL + "InformacionFinanciera/RepFec", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + this.props.token,
+        },
+        body: JSON.stringify(data),
+      })
+        .then((response) => {
+          return response.blob();
+        })
+        .then((data) => {
+          this.setState({ loading: false });
+          saveAs(data, "FINANCIERO_REPORTE_TEMPORADA");
         })
         .catch((error) => {
           this.setState({ loading: false });

@@ -42,6 +42,8 @@ const items = [
   "organizacions.razon_social",
 ];
 
+const emptyCell = "-";
+
 class ConsultarOrganizacion extends Component {
   constructor(props) {
     super();
@@ -63,10 +65,11 @@ class ConsultarOrganizacion extends Component {
       delcheckOpen: false,
       loading: true,
       box_spacing: window.innerHeight > 900 ? "0.6rem" : "0.2rem",
-      box_size: window.innerHeight > 900 ? "36rem" : "22rem",
+      box_size: window.innerHeight > 900 ? "36rem" : "20rem",
       box_spacing_tiny: window.innerHeight > 900 ? "0.4rem" : "0rem",
       subtitle_spacing: window.innerHeight > 900 ? "2.1rem" : "1.7rem",
       box_size_tiny: window.innerHeight > 900 ? "24rem" : "13rem",
+      box_size_table: window.innerHeight > 900 ? "30rem" : "15rem",
       winInterval: "",
     };
 
@@ -76,10 +79,11 @@ class ConsultarOrganizacion extends Component {
   resizeBox = () => {
     this.setState({
       box_spacing: window.innerHeight > 900 ? "0.6rem" : "0.2rem",
-      box_size: window.innerHeight > 900 ? "36rem" : "22rem",
+      box_size: window.innerHeight > 900 ? "36rem" : "20rem",
       box_spacing_tiny: window.innerHeight > 900 ? "0.4rem" : "0rem",
       subtitle_spacing: window.innerHeight > 900 ? "2.1rem" : "1.7rem",
       box_size_tiny: window.innerHeight > 900 ? "24rem" : "13rem",
+      box_size_table: window.innerHeight > 900 ? "30rem" : "15rem",
     });
   };
 
@@ -281,6 +285,7 @@ class ConsultarOrganizacion extends Component {
   handleChange(event) {
     let value = event.target.value;
     let name = event.target.name;
+    let check = event.target.checked;
 
     switch (name) {
       case "input_tipoid_org":
@@ -297,6 +302,9 @@ class ConsultarOrganizacion extends Component {
         break;
       case "input_razsoc_org":
         this.setState({ razsoc_org: value });
+        break;
+      case "input_delcheck":
+        this.setState({ delcheck: check });
         break;
       default:
         break;
@@ -491,13 +499,15 @@ class ConsultarOrganizacion extends Component {
                             obj.numero_documento}
                         </StyledTableCell>
                         <StyledTableCell size="small">
-                          {obj.razon_social}
+                          {obj.razon_social === null
+                            ? emptyCell
+                            : obj.razon_social}
                         </StyledTableCell>
                         <StyledTableCell size="small">
                           {obj.categoria}
                         </StyledTableCell>
                         <StyledTableCell size="small">
-                          {obj.subsector}
+                          {obj.subsector === null ? emptyCell : obj.subsector}
                         </StyledTableCell>
                         <StyledTableCell
                           size="small"
@@ -654,6 +664,7 @@ class ConsultarOrganizacion extends Component {
             box_spacing={this.state.box_spacing_tiny}
             subtitle_spacing={this.state.subtitle_spacing}
             box_size={this.state.box_size_tiny}
+            box_size_table={this.state.box_size_table}
           />
         </Route>
       </Switch>

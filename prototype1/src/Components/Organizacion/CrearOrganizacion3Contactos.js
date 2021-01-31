@@ -24,6 +24,8 @@ import {
   Delete as IconDelete,
   Edit as IconEdit,
   Add as IconAdd,
+  AddCircleOutline as IconAddCircle,
+  Refresh as IconRefresh,
 } from "@material-ui/icons";
 import {
   BlueButton,
@@ -34,6 +36,19 @@ import {
 import { Autocomplete } from "@material-ui/lab";
 import { Link, Redirect } from "react-router-dom";
 import "../Styles.css";
+
+const items = [
+  "personas.nombres",
+  "personas.apellidos",
+  "organizacions.nombre",
+  "contactos.cargo",
+  "contactos.email",
+  "pais.id",
+  "organizacions.categoria_id",
+  "detalle_categoria_personas.subcategoria_id",
+];
+
+const emptyCell = "-";
 
 class CrearOrganizacion3Contactos extends Component {
   constructor(props) {
@@ -78,6 +93,13 @@ class CrearOrganizacion3Contactos extends Component {
       temp_estado_con: "",
       temp_subcat_con: [],
       temp_subcatFake_con: [],
+      contExist: false,
+      search_nombre_org: "",
+      search_nombre_con: "",
+      search_apell_con: "",
+      search_cargo_con: "",
+      contacts_api: [],
+      cat_org_api: [],
       loading: true,
       loadingDiag: false,
     };
@@ -104,6 +126,24 @@ class CrearOrganizacion3Contactos extends Component {
         });
       })
       .catch((error) => {});
+    fetch(process.env.REACT_APP_API_URL + "Organizacion/Data", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + this.props.token,
+      },
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        this.setState({
+          cat_org_api: data.categorias,
+        });
+      })
+      .catch((error) => {});
+    this.callApiOrg();
+    this.callApiCont();
     this.callAPi();
   }
 
@@ -136,6 +176,25 @@ class CrearOrganizacion3Contactos extends Component {
       });
   };
 
+  callApiOrg = () => {
+    fetch(process.env.REACT_APP_API_URL + "Organizacion/SimpList", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + this.props.token,
+      },
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        this.setState({
+          orgs_api: data.organizaciones,
+        });
+      })
+      .catch((error) => {});
+  };
+
   callAPiOff = () => {
     const data = {
       organizacion_id: this.state.dbid_org,
@@ -157,6 +216,32 @@ class CrearOrganizacion3Contactos extends Component {
         });
       })
       .catch((error) => {});
+  };
+
+  callApiCont = () => {
+    fetch(process.env.REACT_APP_API_URL + "Contacto", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + this.props.token,
+      },
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        if (data.success) {
+          this.setState({
+            contacts_api: data.contactos,
+            loadingDiag: false,
+          });
+        }
+      })
+      .catch((error) => {
+        this.setState({
+          loadingDiag: false,
+        });
+      });
   };
 
   handleClickOpen = () => {
@@ -200,7 +285,6 @@ class CrearOrganizacion3Contactos extends Component {
         })
         .catch((error) => {
           this.setState({ loadingDiag: false });
-          alert("SERVIDOR NO DISPONIBLE\nConsulte a su gestor de servicios");
         });
     }
     this.setState({ addContact: true });
@@ -339,6 +423,8 @@ class CrearOrganizacion3Contactos extends Component {
 
   clearTemp = () => {
     this.setState({
+      temp_id_con: "",
+      temp_id_per: "",
       temp_idoffice_con: "",
       temp_nombre_con: "",
       temp_apell_con: "",
@@ -357,6 +443,152 @@ class CrearOrganizacion3Contactos extends Component {
       temp_estado_con: "",
       subcatSearch: "",
     });
+  };
+
+  apiSearch = () => {
+    this.setState({ loadingDiag: true });
+    const nombreOrg = this.state.search_nombre_org + "%";
+    const nombreCon = this.state.search_nombre_con + "%";
+    const apellCon = this.state.search_apell_con + "%";
+    const cargo =
+      this.state.search_cargo_con === ""
+        ? "%"
+        : this.state.search_cargo_con + "%";
+    const email = "%";
+    const pais = "%";
+    const categoria = this.state.cat_org_api.map((obj) => obj.id);
+    const subcat = categoria;
+
+    const palabra1 = items[0];
+    const palabra2 = items[1];
+    const palabra3 = items[2];
+    const palabra4 = this.state.search_cargo_con === "" ? items[0] : items[3];
+    const palabra5 = items[0];
+    const palabra6 = items[0];
+    const palabra7 = items[6];
+    const palabra8 = items[6];
+    const palabra9 = "ilike";
+
+    const data = {
+      nombres: nombreCon,
+      apellidos: apellCon,
+      organizacion: nombreOrg,
+      cargo: cargo,
+      email: email,
+      pais: pais,
+      categorias: categoria,
+      subcategorias: subcat,
+      parametros: [
+        palabra1,
+        palabra2,
+        palabra3,
+        palabra4,
+        palabra5,
+        palabra6,
+        palabra7,
+        palabra8,
+        palabra9,
+      ],
+    };
+
+    //console.log(data);
+    if (
+      this.state.search_nombre_org !== "" ||
+      this.state.search_nombre_con !== "" ||
+      this.state.search_apell_con !== "" ||
+      this.state.search_cargo_con !== ""
+    ) {
+      fetch(process.env.REACT_APP_API_URL + "Contacto/Search", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + this.props.token,
+        },
+        body: JSON.stringify(data),
+      })
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          //console.log(data);
+          if (data.success) {
+            this.setState({
+              loadingDiag: false,
+              contacts_api: data.contactos,
+              reqText: false,
+            });
+          }
+        })
+        .catch((error) => {});
+    } else {
+      this.setState({ loadingDiag: false, reqText: true, createS: true });
+      this.callAPi();
+    }
+  };
+
+  apiRefresh = () => {
+    this.setState({ loadingDiag: true });
+    if (
+      this.state.search_nombre_org !== "" ||
+      this.state.search_nombre_con !== "" ||
+      this.state.search_apell_con !== "" ||
+      this.state.search_cargo_con !== ""
+    ) {
+      this.apiSearch();
+    } else {
+      this.callApiCont();
+    }
+  };
+
+  clearFunc = () => {
+    this.setState(
+      {
+        loadingDiag: true,
+        search_nombre_org: "",
+        search_nombre_con: "",
+        search_apell_con: "",
+        search_cargo_con: "",
+        reqText: false,
+      },
+      this.callApiCont()
+    );
+  };
+
+  callApiPersona = () => {
+    this.setState({ loadingDiag: true, contExist: false, addContact: true });
+    const idCon = this.state.temp_id_con;
+    this.setState({ temp_id_con: "" });
+    fetch(process.env.REACT_APP_API_URL + "Contacto/" + idCon, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + this.props.token,
+      },
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        this.setState(
+          {
+            temp_nombre_con: data.contacto.nombres,
+            temp_apell_con: data.contacto.apellidos,
+            temp_cel_con: data.contacto.celular,
+            temp_tipoid_con: data.contacto.tipo_documento_persona_id,
+            temp_nid_con: data.contacto.numero_documento,
+            temp_sex_con: data.contacto.sexo,
+            //userUpdated_con: data.usuario_actualizacion.usuario_actualizacion,
+            //fechaUpdated_con: data.contacto.updated_at,
+            loadingDiag: false,
+            temp_subcat_con:
+              data.categorias[0] === this.state.indexCat ? [] : data.categorias,
+          },
+          this.subcatFake
+        );
+      })
+      .catch((error) => {
+        this.setState({ loadingDiag: false });
+      });
   };
 
   handleChange(event) {
@@ -420,6 +652,18 @@ class CrearOrganizacion3Contactos extends Component {
           }
         });
         break;
+      case "input_search_nombre_org":
+        this.setState({ search_nombre_org: value });
+        break;
+      case "input_search_nombre_con":
+        this.setState({ search_nombre_con: value });
+        break;
+      case "input_search_apell_con":
+        this.setState({ search_apell_con: value });
+        break;
+      case "input_search_cargo_con":
+        this.setState({ search_cargo_con: value });
+        break;
       default:
         break;
     }
@@ -439,6 +683,8 @@ class CrearOrganizacion3Contactos extends Component {
 
   render() {
     const BOX_SPACING = this.props.box_spacing;
+    const BOX_SIZE_TABLE = this.props.box_size_table;
+
     return (
       <div className="o-cardContent">
         {this.props.dbid_org === "" ? (
@@ -471,8 +717,8 @@ class CrearOrganizacion3Contactos extends Component {
                 <TableRow>
                   <StyledTableCell>Nombre</StyledTableCell>
                   <StyledTableCell>Cargo</StyledTableCell>
-                  <StyledTableCell>Ext.</StyledTableCell>
                   <StyledTableCell>Teléfono</StyledTableCell>
+                  <StyledTableCell>Ext.</StyledTableCell>
                   <StyledTableCell>Celular</StyledTableCell>
                   <StyledTableCell>Correo</StyledTableCell>
                   <StyledTableCell>Observaciones</StyledTableCell>
@@ -486,19 +732,25 @@ class CrearOrganizacion3Contactos extends Component {
                     <StyledTableCell size="small">
                       {obj.nombres + " " + obj.apellidos}
                     </StyledTableCell>
-                    <StyledTableCell size="small">{obj.cargo}</StyledTableCell>
                     <StyledTableCell size="small">
-                      {obj.telefono}
+                      {obj.cargo === null ? emptyCell : obj.cargo}
                     </StyledTableCell>
                     <StyledTableCell size="small">
-                      {obj.extension}
+                      {obj.telefono === null ? emptyCell : obj.telefono}
                     </StyledTableCell>
                     <StyledTableCell size="small">
-                      {obj.celular}
+                      {obj.extension === null ? emptyCell : obj.extension}
                     </StyledTableCell>
-                    <StyledTableCell size="small">{obj.email}</StyledTableCell>
                     <StyledTableCell size="small">
-                      {obj.observaciones}
+                      {obj.celular === null ? emptyCell : obj.celular}
+                    </StyledTableCell>
+                    <StyledTableCell size="small">
+                      {obj.email === null ? emptyCell : obj.email}
+                    </StyledTableCell>
+                    <StyledTableCell size="small">
+                      {obj.observaciones === null
+                        ? emptyCell
+                        : obj.observaciones}
                     </StyledTableCell>
                     <StyledTableCell
                       size="small"
@@ -552,7 +804,16 @@ class CrearOrganizacion3Contactos extends Component {
               </TableBody>
             </Table>
           </TableContainer>
-          <div className="o-btnAnadirTable">
+          <div className="o-btnAnadirTable" style={{ width: "10rem" }}>
+            <BlueButton
+              onClick={() => {
+                this.setState({ contExist: true });
+              }}
+            >
+              {"Añadir existente"}
+            </BlueButton>
+          </div>
+          <div className="o-btnAnadirTable" style={{ marginLeft: "1rem" }}>
             <BlueButton
               onClick={() =>
                 this.setState(
@@ -561,7 +822,7 @@ class CrearOrganizacion3Contactos extends Component {
                 )
               }
             >
-              Añadir
+              {"Añadir"}
               <IconAdd
                 style={{ marginLeft: "0.4rem", marginRight: 0 }}
                 size="small"
@@ -833,23 +1094,26 @@ class CrearOrganizacion3Contactos extends Component {
                 </div>
                 <div style={{ marginBottom: BOX_SPACING }}>
                   <div className="o-dobleInput">
-                    <div className="o-selectShort">
-                      <TextField
-                        label="Ext."
-                        variant="outlined"
-                        name="input_ext_con"
-                        value={this.state.temp_ext_con || ""}
-                        onChange={this.handleChange}
-                        className="o-space"
-                        margin="dense"
-                      />
-                    </div>
-                    <div className="o-inputShort">
+                    <div className="o-inputShort" style={{ marginLeft: 0 }}>
                       <TextField
                         label="Teléfono"
                         variant="outlined"
                         name="input_tel_con"
                         value={this.state.temp_tel_con || ""}
+                        onChange={this.handleChange}
+                        className="o-space"
+                        margin="dense"
+                      />
+                    </div>
+                    <div
+                      className="o-selectShort"
+                      style={{ marginLeft: "0.8rem", marginRight: 0 }}
+                    >
+                      <TextField
+                        label="Ext."
+                        variant="outlined"
+                        name="input_ext_con"
+                        value={this.state.temp_ext_con || ""}
                         onChange={this.handleChange}
                         className="o-space"
                         margin="dense"
@@ -953,6 +1217,179 @@ class CrearOrganizacion3Contactos extends Component {
               <GreenButton onClick={() => this.handleCloseDel(false)}>
                 Cancelar
               </GreenButton>
+            </div>
+          </DialogActions>
+        </Dialog>
+        <Dialog open={this.state.contExist} maxWidth={false}>
+          <DialogTitle>
+            <div className="o-row">
+              <h3
+                className="o-contentTittle-principal"
+                style={{ fontWeight: 400, marginTop: "0.2rem" }}
+              >
+                {"Contactos existentes"}
+              </h3>
+              <div className="o-text-nameOrg">
+                <Fade
+                  in={this.state.loadingDiag}
+                  style={{
+                    transitionDelay: "200ms",
+                    marginRight: "1rem",
+                  }}
+                  unmountOnExit
+                >
+                  <div style={{ fontSize: "1rem" }}>
+                    {"Cargando... "}
+                    <CircularProgress size={"1rem"} thickness={6} />
+                  </div>
+                </Fade>
+              </div>
+            </div>
+          </DialogTitle>
+          <DialogContent style={{ textAlign: "center" }}>
+            <div className="o-diag-contactExist-big">
+              <div className="o-consultas-containerInit">
+                <div
+                  className="o-consultas"
+                  style={{ marginBottom: BOX_SPACING }}
+                >
+                  <TextField
+                    label="Organización"
+                    variant="outlined"
+                    name="input_search_nombre_org"
+                    value={this.state.search_nombre_org || ""}
+                    onChange={this.handleChange}
+                    className="o-space"
+                    margin="dense"
+                  />
+                </div>
+                <div
+                  className="o-consultas"
+                  style={{ marginBottom: BOX_SPACING }}
+                >
+                  <TextField
+                    label="Nombres"
+                    variant="outlined"
+                    name="input_search_nombre_con"
+                    value={this.state.search_nombre_con || ""}
+                    onChange={this.handleChange}
+                    className="o-space"
+                    margin="dense"
+                  />
+                </div>
+                <div
+                  className="o-consultas"
+                  style={{ marginBottom: BOX_SPACING }}
+                >
+                  <TextField
+                    label="Apellidos"
+                    variant="outlined"
+                    name="input_search_apell_con"
+                    value={this.state.search_apell_con || ""}
+                    onChange={this.handleChange}
+                    className="o-space"
+                    margin="dense"
+                  />
+                </div>
+                <div
+                  className="o-consultas"
+                  style={{ marginBottom: BOX_SPACING, marginRight: 0 }}
+                >
+                  <TextField
+                    label="Cargo"
+                    variant="outlined"
+                    name="input_search_cargo_con"
+                    value={this.state.search_cargo_con || ""}
+                    onChange={this.handleChange}
+                    className="o-space"
+                    margin="dense"
+                  />
+                </div>
+              </div>
+              <div className="o-consultas-container">
+                <div className="o-consultas-btn">
+                  <div className="o-btnConsultas">
+                    <BlueButton onClick={this.apiSearch}>Buscar</BlueButton>
+                  </div>
+                  <div className="o-btnConsultas">
+                    <RedButton onClick={this.clearFunc}>Limpiar</RedButton>
+                  </div>
+                  <div className="o-btnConsultas" style={{ width: "4rem" }}>
+                    <BlueButton onClick={this.apiRefresh}>
+                      <IconRefresh size="small" />
+                    </BlueButton>
+                  </div>
+                </div>
+              </div>
+              <TableContainer
+                className="o-tableBase-consultas"
+                style={{ maxHeight: BOX_SIZE_TABLE }}
+              >
+                <Table stickyHeader size="small">
+                  <TableHead>
+                    <TableRow>
+                      <StyledTableCell>Org.</StyledTableCell>
+                      <StyledTableCell>Nombre</StyledTableCell>
+                      <StyledTableCell>Cargo</StyledTableCell>
+                      <StyledTableCell>Obser.</StyledTableCell>
+                      <StyledTableCell></StyledTableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {this.state.contacts_api.map((obj, i) => (
+                      <TableRow key={i} hover={true}>
+                        <StyledTableCell size="small">
+                          {obj.organizacion}
+                        </StyledTableCell>
+                        <StyledTableCell size="small">
+                          {obj.nombres + " " + obj.apellidos}
+                        </StyledTableCell>
+                        <StyledTableCell size="small">
+                          {obj.cargo === null ? emptyCell : obj.cargo}
+                        </StyledTableCell>
+                        <StyledTableCell size="small">
+                          {obj.observaciones === null
+                            ? emptyCell
+                            : obj.observaciones}
+                        </StyledTableCell>
+                        <StyledTableCell
+                          size="small"
+                          style={{ paddingRight: "1rem" }}
+                        >
+                          <IconButton
+                            size="small"
+                            className="o-tinyBtn2"
+                            color="primary"
+                            onClick={() =>
+                              this.setState(
+                                {
+                                  temp_id_per: obj.persona_id,
+                                  temp_id_con: obj.contacto_id,
+                                },
+                                this.callApiPersona
+                              )
+                            }
+                          >
+                            <IconAddCircle />
+                          </IconButton>
+                        </StyledTableCell>
+                      </TableRow>
+                    ))}
+                    {this.state.contacts[0] === undefined ? (
+                      <TableRow>
+                        <StyledTableCell>...</StyledTableCell>
+                      </TableRow>
+                    ) : null}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </div>
+          </DialogContent>
+          <DialogActions style={{ justifyContent: "flex-end" }}>
+            <div className="o-btnBotNav-btnDiag2">
+              <RedButton onClick={() => this.setState({ contExist: false })}>
+                {"Cancelar"}
+              </RedButton>
             </div>
           </DialogActions>
         </Dialog>

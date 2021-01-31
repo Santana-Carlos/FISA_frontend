@@ -85,6 +85,7 @@ class CrearOrganizacion1DatosBasicos extends Component {
       box_spacing: window.innerHeight > 900 ? "0.4rem" : "0rem",
       subtitle_spacing: window.innerHeight > 900 ? "2.1rem" : "1.7rem",
       box_size: window.innerHeight > 900 ? "24rem" : "13rem",
+      box_size_table: window.innerHeight > 900 ? "30rem" : "15rem",
       winInterval: "",
     };
 
@@ -97,6 +98,7 @@ class CrearOrganizacion1DatosBasicos extends Component {
       box_spacing: window.innerHeight > 900 ? "0.4rem" : "0rem",
       subtitle_spacing: window.innerHeight > 900 ? "2.1rem" : "1.7rem",
       box_size: window.innerHeight > 900 ? "24rem" : "13rem",
+      box_size_table: window.innerHeight > 900 ? "30rem" : "15rem",
     });
   };
 
@@ -302,17 +304,19 @@ class CrearOrganizacion1DatosBasicos extends Component {
       })
       .then((data) => {
         if (data.success) {
-          this.setState({
-            loading: false,
-            dbid_org: data.organizacion.id,
-            reqText: false,
-          });
+          this.setState(
+            {
+              loading: false,
+              dbid_org: data.organizacion,
+              reqText: false,
+            },
+            this.callApiPostFin
+          );
           if (a) {
             window.location.assign(
               "/dashboard/organizacion#/crear_organizacion/oficinas"
             );
           }
-          setTimeout(this.callApiPostFin, 2000);
         }
       })
       .catch((error) => {
@@ -321,7 +325,7 @@ class CrearOrganizacion1DatosBasicos extends Component {
   };
 
   callApiPostFin = () => {
-    const data = {
+    const dataFin = {
       organizacion_id: this.state.dbid_org,
     };
     fetch(process.env.REACT_APP_API_URL + "InformacionFinanciera/", {
@@ -330,7 +334,7 @@ class CrearOrganizacion1DatosBasicos extends Component {
         "Content-Type": "application/json",
         Authorization: "Bearer " + this.props.token,
       },
-      body: JSON.stringify(data),
+      body: JSON.stringify(dataFin),
     }).catch((error) => {});
     this.clearApi();
   };
@@ -906,6 +910,7 @@ class CrearOrganizacion1DatosBasicos extends Component {
             name_org={this.state.name_org}
             token={this.props.token}
             box_spacing={this.state.box_spacing}
+            box_size_table={this.state.box_size_table}
           />
         </Route>
         <Route path="/crear_organizacion/finanzas">
