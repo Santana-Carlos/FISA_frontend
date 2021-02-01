@@ -185,6 +185,7 @@ class ReporteOrganizacion extends Component {
           return response.json();
         })
         .then((data) => {
+          //console.log(data);
           if (data.success) {
             this.setState({
               loading: false,
