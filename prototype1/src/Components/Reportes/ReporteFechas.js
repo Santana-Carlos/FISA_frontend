@@ -104,7 +104,6 @@ class ReporteFechas extends Component {
       fecha_inicio: dateStart,
       fecha_fin: dateEnd,
     };
-    console.log(data);
     if (dateStart <= dateEnd) {
       fetch(process.env.REACT_APP_API_URL + "Organizacion/RepFec", {
         method: "POST",
@@ -169,6 +168,7 @@ class ReporteFechas extends Component {
       fecha_inicio: dateStart,
       fecha_fin: dateEnd,
     };
+    console.log(data);
     if (dateStart <= dateEnd) {
       fetch(process.env.REACT_APP_API_URL + "Contacto/RepFec", {
         method: "POST",
@@ -209,8 +209,8 @@ class ReporteFechas extends Component {
   handleDateStart = (date) => {
     if (date !== null && date !== "") {
       date.setHours(0);
-      date.setMinutes(1);
-      date.setSeconds(0);
+      date.setMinutes(0);
+      date.setSeconds(1);
       this.setState({ dateStart: date });
     } else {
       this.setState({ dateStart: "" });
@@ -221,7 +221,7 @@ class ReporteFechas extends Component {
     if (date !== null && date !== "") {
       date.setHours(23);
       date.setMinutes(59);
-      date.setSeconds(0);
+      date.setSeconds(59);
       this.setState({ dateEnd: date });
     } else {
       this.setState({ dateEnd: "" });
