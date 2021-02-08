@@ -412,9 +412,6 @@ class CrearOrganizacion4Finanzas extends Component {
         ) : null}
         <div className="o-contentTittle">
           <h3 className="o-contentTittle-principal">Información financiera</h3>
-          <h4 className="o-contentTittle-sub">
-            campos marcados con * son obligatorios
-          </h4>
           <div className="o-text-nameOrg">
             <Fade
               in={this.state.loading}

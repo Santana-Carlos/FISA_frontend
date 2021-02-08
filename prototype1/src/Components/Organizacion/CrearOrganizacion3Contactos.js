@@ -402,7 +402,7 @@ class CrearOrganizacion3Contactos extends Component {
           return response.json();
         })
         .then((data) => {
-          console.log(data);
+          //console.log(data);
           if (data.success) {
             this.setState({
               loading: true,
@@ -521,8 +521,8 @@ class CrearOrganizacion3Contactos extends Component {
         })
         .catch((error) => {});
     } else {
-      this.setState({ loadingDiag: false, reqText: true, createS: true });
-      this.callAPi();
+      this.setState({ loadingDiag: false });
+      this.callApiCont();
     }
   };
 
@@ -928,7 +928,14 @@ class CrearOrganizacion3Contactos extends Component {
                 </div>
                 <div style={{ marginBottom: BOX_SPACING }}>
                   <TextField
-                    label="Nombres*"
+                    label={
+                      <div style={{ display: "flex", flexDirection: "row" }}>
+                        {"Nombres"}
+                        <div style={{ color: "#FF0000", marginLeft: "0.1rem" }}>
+                          {"*"}
+                        </div>
+                      </div>
+                    }
                     variant="outlined"
                     name="input_nombre_con"
                     value={this.state.temp_nombre_con || ""}
@@ -942,7 +949,14 @@ class CrearOrganizacion3Contactos extends Component {
                 </div>
                 <div style={{ marginBottom: BOX_SPACING }}>
                   <TextField
-                    label="Apellidos*"
+                    label={
+                      <div style={{ display: "flex", flexDirection: "row" }}>
+                        {"Apellidos"}
+                        <div style={{ color: "#FF0000", marginLeft: "0.1rem" }}>
+                          {"*"}
+                        </div>
+                      </div>
+                    }
                     variant="outlined"
                     name="input_apell_con"
                     value={this.state.temp_apell_con || ""}
@@ -1154,7 +1168,12 @@ class CrearOrganizacion3Contactos extends Component {
                   }
                 >
                   <InputLabel id="demo-simple-select-outlined-label">
-                    Estado*
+                    <div style={{ display: "flex", flexDirection: "row" }}>
+                      {"Estado"}
+                      <div style={{ color: "#FF0000", marginLeft: "0.1rem" }}>
+                        {"*"}
+                      </div>
+                    </div>
                   </InputLabel>
                   <Select
                     labelId="demo-simple-select-outlined-label"
@@ -1375,7 +1394,7 @@ class CrearOrganizacion3Contactos extends Component {
                         </StyledTableCell>
                       </TableRow>
                     ))}
-                    {this.state.contacts[0] === undefined ? (
+                    {this.state.contacts_api[0] === undefined ? (
                       <TableRow>
                         <StyledTableCell>...</StyledTableCell>
                       </TableRow>

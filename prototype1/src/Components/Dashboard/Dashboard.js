@@ -73,7 +73,7 @@ const Dashboard = () => {
           <NavLink
             className="o-btnBanner"
             activeClassName="o-btnBannerActive o-btnSeguimiento-active"
-            to="/dashboard/seguimiento#/placeholder_1"
+            to="/dashboard/seguimiento#/consultar_visitas"
           >
             <Button className="o-btnBanner-btn">Seguimiento</Button>
           </NavLink>

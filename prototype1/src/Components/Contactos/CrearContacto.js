@@ -641,7 +641,14 @@ class CrearContacto extends Component {
             </div>
             <div style={{ marginBottom: BOX_SPACING }}>
               <TextField
-                label="Nombres*"
+                label={
+                  <div style={{ display: "flex", flexDirection: "row" }}>
+                    {"Nombres"}
+                    <div style={{ color: "#FF0000", marginLeft: "0.1rem" }}>
+                      {"*"}
+                    </div>
+                  </div>
+                }
                 variant="outlined"
                 name="input_nombre_con"
                 value={this.state.temp_nombre_con || ""}
@@ -653,7 +660,14 @@ class CrearContacto extends Component {
             </div>
             <div style={{ marginBottom: BOX_SPACING }}>
               <TextField
-                label="Apellidos*"
+                label={
+                  <div style={{ display: "flex", flexDirection: "row" }}>
+                    {"Apellidos"}
+                    <div style={{ color: "#FF0000", marginLeft: "0.1rem" }}>
+                      {"*"}
+                    </div>
+                  </div>
+                }
                 variant="outlined"
                 name="input_apell_con"
                 value={this.state.temp_apell_con || ""}
@@ -722,7 +736,14 @@ class CrearContacto extends Component {
                 renderInput={(params) => (
                   <TextField
                     {...params}
-                    label="Organización*"
+                    label={
+                      <div style={{ display: "flex", flexDirection: "row" }}>
+                        {"Organización"}
+                        <div style={{ color: "#FF0000", marginLeft: "0.1rem" }}>
+                          {"*"}
+                        </div>
+                      </div>
+                    }
                     margin="dense"
                     className="o-space"
                     variant="outlined"
@@ -836,7 +857,12 @@ class CrearContacto extends Component {
               error={this.state.reqText && this.state.temp_estado_con === ""}
             >
               <InputLabel id="demo-simple-select-outlined-label">
-                Estado*
+                <div style={{ display: "flex", flexDirection: "row" }}>
+                  {"Estado"}
+                  <div style={{ color: "#FF0000", marginLeft: "0.1rem" }}>
+                    {"*"}
+                  </div>
+                </div>
               </InputLabel>
               <Select
                 labelId="demo-simple-select-outlined-label"

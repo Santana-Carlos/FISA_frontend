@@ -102,7 +102,7 @@ class Consultar4Finanzas extends Component {
         return response.json();
       })
       .then((data) => {
-        console.log(data);
+        //console.log(data);
         if (data.success) {
           this.setState({
             temp_id_fin: data.informacion.id,
@@ -388,9 +388,6 @@ class Consultar4Finanzas extends Component {
       <div className="o-cardContent">
         <div className="o-contentTittle">
           <h3 className="o-contentTittle-principal">Información financiera</h3>
-          <h4 className="o-contentTittle-sub">
-            campos marcados con * son obligatorios
-          </h4>
           <div className="o-text-nameOrg">
             <Fade
               in={this.state.loading}

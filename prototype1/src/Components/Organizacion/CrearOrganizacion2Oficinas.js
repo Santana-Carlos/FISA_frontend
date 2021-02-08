@@ -567,7 +567,12 @@ class CrearOrganizacion2Oficinas extends Component {
                   error={this.state.reqText && this.state.temp_tipo_ofi === ""}
                 >
                   <InputLabel id="demo-simple-select-outlined-label">
-                    Tipo*
+                    <div style={{ display: "flex", flexDirection: "row" }}>
+                      {"Tipo"}
+                      <div style={{ color: "#FF0000", marginLeft: "0.1rem" }}>
+                        {"*"}
+                      </div>
+                    </div>
                   </InputLabel>
                   <Select
                     labelId="demo-simple-select-outlined-label"
@@ -591,7 +596,14 @@ class CrearOrganizacion2Oficinas extends Component {
                 </FormControl>
                 <div style={{ marginBottom: BOX_SPACING }}>
                   <TextField
-                    label="Dirección*"
+                    label={
+                      <div style={{ display: "flex", flexDirection: "row" }}>
+                        {"Dirección"}
+                        <div style={{ color: "#FF0000", marginLeft: "0.1rem" }}>
+                          {"*"}
+                        </div>
+                      </div>
+                    }
                     variant="outlined"
                     name="input_dir_ofi"
                     value={this.state.temp_dir_ofi || ""}
@@ -621,7 +633,12 @@ class CrearOrganizacion2Oficinas extends Component {
                   error={this.state.reqText && this.state.temp_pais_ofi === ""}
                 >
                   <InputLabel id="demo-simple-select-outlined-label">
-                    País*
+                    <div style={{ display: "flex", flexDirection: "row" }}>
+                      {"País"}
+                      <div style={{ color: "#FF0000", marginLeft: "0.1rem" }}>
+                        {"*"}
+                      </div>
+                    </div>
                   </InputLabel>
                   <Select
                     labelId="demo-simple-select-outlined-label"
@@ -652,7 +669,12 @@ class CrearOrganizacion2Oficinas extends Component {
                   }
                 >
                   <InputLabel id="demo-simple-select-outlined-label">
-                    Departamento/Estado*
+                    <div style={{ display: "flex", flexDirection: "row" }}>
+                      {"Departamento/Estado"}
+                      <div style={{ color: "#FF0000", marginLeft: "0.1rem" }}>
+                        {"*"}
+                      </div>
+                    </div>
                   </InputLabel>
                   <Select
                     labelId="demo-simple-select-outlined-label"
@@ -684,7 +706,12 @@ class CrearOrganizacion2Oficinas extends Component {
                   error={this.state.reqText && this.state.temp_city_ofi === ""}
                 >
                   <InputLabel id="demo-simple-select-outlined-label">
-                    Ciudad*
+                    <div style={{ display: "flex", flexDirection: "row" }}>
+                      {"Ciudad"}
+                      <div style={{ color: "#FF0000", marginLeft: "0.1rem" }}>
+                        {"*"}
+                      </div>
+                    </div>
                   </InputLabel>
                   <Select
                     labelId="demo-simple-select-outlined-label"
@@ -751,7 +778,12 @@ class CrearOrganizacion2Oficinas extends Component {
                   }
                 >
                   <InputLabel id="demo-simple-select-outlined-label">
-                    Estado*
+                    <div style={{ display: "flex", flexDirection: "row" }}>
+                      {"Estado"}
+                      <div style={{ color: "#FF0000", marginLeft: "0.1rem" }}>
+                        {"*"}
+                      </div>
+                    </div>
                   </InputLabel>
                   <Select
                     labelId="demo-simple-select-outlined-label"

@@ -1,11 +1,12 @@
 import React from "react";
 import { HashRouter, Switch, Route, NavLink } from "react-router-dom";
 import { SideButton } from "../Buttons";
-//import { useSelector } from "react-redux";
+import { useSelector } from "react-redux";
+import CrearVisitas from "../Seguimiento/CrearVisitas";
 import "./Cards.css";
 
 const Seguimiento = () => {
-  //const token = useSelector((state) => state.token);
+  const token = useSelector((state) => state.token);
   return (
     <HashRouter>
       <div className="o-cards">
@@ -14,25 +15,25 @@ const Seguimiento = () => {
             <NavLink
               className="o-btnSidebar o-btnSidebar-seguimiento"
               activeClassName="o-btnSidebar o-btnSidebar-seguimientoActive"
-              to="/placeholder_1"
+              to="/consultar_visitas"
             >
-              <SideButton size="small">Placeholder 1</SideButton>
+              <SideButton size="small">Consultar visitas</SideButton>
             </NavLink>
             <NavLink
               className="o-btnSidebar o-btnSidebar-seguimiento"
               activeClassName="o-btnSidebar o-btnSidebar-seguimientoActive"
-              to="/placeholder_2"
+              to="/crear_visitas"
             >
-              <SideButton>Placeholder 2</SideButton>
+              <SideButton>Crear visitas</SideButton>
             </NavLink>
           </div>
           <div className="o-cardPlaceholder">
             <Switch>
-              <Route path="/placeholder_1">
-                <h5>Placeholder 1</h5>
+              <Route path="/consultar_visitas">
+                <h5>Placeholder</h5>
               </Route>
-              <Route path="/placeholder_2">
-                <h5>Placeholder 2</h5>
+              <Route path="/crear_visitas">
+                <CrearVisitas token={token} />
               </Route>
             </Switch>
           </div>

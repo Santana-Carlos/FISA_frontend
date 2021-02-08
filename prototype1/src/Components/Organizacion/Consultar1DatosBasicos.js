@@ -383,7 +383,12 @@ class Consultar1DatosBasicos extends Component {
                   error={this.state.reqText && this.state.tipoid_org === ""}
                 >
                   <InputLabel id="demo-simple-select-outlined-label">
-                    ID*
+                    <div style={{ display: "flex", flexDirection: "row" }}>
+                      {"ID"}
+                      <div style={{ color: "#FF0000", marginLeft: "0.1rem" }}>
+                        {"*"}
+                      </div>
+                    </div>
                   </InputLabel>
                   <Select
                     labelId="demo-simple-select-outlined-label"
@@ -408,7 +413,14 @@ class Consultar1DatosBasicos extends Component {
                 </FormControl>
                 <div className="o-inputShort">
                   <TextField
-                    label="Número*"
+                    label={
+                      <div style={{ display: "flex", flexDirection: "row" }}>
+                        {"Número"}
+                        <div style={{ color: "#FF0000", marginLeft: "0.1rem" }}>
+                          {"*"}
+                        </div>
+                      </div>
+                    }
                     variant="outlined"
                     value={this.state.nid_org || ""}
                     name="input_nid_org"
@@ -422,7 +434,14 @@ class Consultar1DatosBasicos extends Component {
             </div>
             <div style={{ marginBottom: BOX_SPACING }}>
               <TextField
-                label="Nombre comercial*"
+                label={
+                  <div style={{ display: "flex", flexDirection: "row" }}>
+                    {"Nombre comercial"}
+                    <div style={{ color: "#FF0000", marginLeft: "0.1rem" }}>
+                      {"*"}
+                    </div>
+                  </div>
+                }
                 variant="outlined"
                 name="input_nomcom_org"
                 value={this.state.nomcom_org || ""}
@@ -450,7 +469,12 @@ class Consultar1DatosBasicos extends Component {
               error={this.state.reqText && this.state.cat_org === ""}
             >
               <InputLabel id="demo-simple-select-outlined-label">
-                Categoría*
+                <div style={{ display: "flex", flexDirection: "row" }}>
+                  {"Nombre comercial"}
+                  <div style={{ color: "#FF0000", marginLeft: "0.1rem" }}>
+                    {"*"}
+                  </div>
+                </div>
               </InputLabel>
               <Select
                 labelId="demo-simple-select-outlined-label"
@@ -485,7 +509,7 @@ class Consultar1DatosBasicos extends Component {
                 id="demo-simple-select-outlined"
                 value={this.state.pais_org || ""}
                 onChange={this.handleChange}
-                label="País*"
+                label="País"
                 name="input_pais_org"
                 className="o-space"
                 style={{ marginBottom: BOX_SPACING }}
@@ -513,7 +537,7 @@ class Consultar1DatosBasicos extends Component {
                 id="demo-simple-select-outlined"
                 value={this.state.tipo_org || ""}
                 onChange={this.handleChange}
-                label="Tipo organización*"
+                label="Tipo organización"
                 name="input_tipo_org"
                 className="o-space"
                 style={{ marginBottom: BOX_SPACING }}
@@ -558,7 +582,7 @@ class Consultar1DatosBasicos extends Component {
                 id="demo-simple-select-outlined"
                 value={this.state.clase_org || ""}
                 onChange={this.handleChange}
-                label="Clase organización*"
+                label="Clase organización"
                 name="input_clase_org"
                 className="o-space"
                 style={{ marginBottom: BOX_SPACING }}
@@ -587,7 +611,7 @@ class Consultar1DatosBasicos extends Component {
                 id="demo-simple-select-outlined"
                 value={this.state.sectoreco_org || ""}
                 onChange={this.handleChange}
-                label="Sector económico*"
+                label="Sector económico"
                 name="input_sectoreco_org"
                 className="o-space"
                 style={{ marginBottom: BOX_SPACING }}
@@ -715,7 +739,12 @@ class Consultar1DatosBasicos extends Component {
               error={this.state.reqText && this.state.estado_org === ""}
             >
               <InputLabel id="demo-simple-select-outlined-label">
-                Estado*
+                <div style={{ display: "flex", flexDirection: "row" }}>
+                  {"Estado"}
+                  <div style={{ color: "#FF0000", marginLeft: "0.1rem" }}>
+                    {"*"}
+                  </div>
+                </div>
               </InputLabel>
               <Select
                 labelId="demo-simple-select-outlined-label"
