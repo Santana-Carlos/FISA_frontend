@@ -83,6 +83,7 @@ class CrearVisitas extends Component {
       contacto_org_api: [],
       oficina_org_api: [],
       estado_vis_api: [],
+      estado_tar_api: [],
       addVisit: false,
       loading: true,
       loadingDiag: false,
@@ -110,28 +111,24 @@ class CrearVisitas extends Component {
   };
 
   componentDidMount() {
-    this.setState({
-      users_api: [
-        {
-          id: 1,
-          nombre: "Administrador",
-        },
-        {
-          id: 2,
-          nombre: "Usuario",
-        },
-      ],
-      estado_vis_api: [
-        {
-          id: true,
-          nombre: "ACTIVO",
-        },
-        {
-          id: false,
-          nombre: "INACTIVO",
-        },
-      ],
-    });
+    fetch(process.env.REACT_APP_API_URL + "Visita/Data", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + this.props.token,
+      },
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        this.setState({
+          users_api: data.usuarios,
+          estado_vis_api: data.estadoVisitas,
+          estado_tar_api: data.estadoTareas,
+        });
+      })
+      .catch((error) => {});
     fetch(process.env.REACT_APP_API_URL + "Organizacion/Data", {
       method: "GET",
       headers: {
@@ -182,6 +179,30 @@ class CrearVisitas extends Component {
         this.setState({ loading: false });
         alert("SERVIDOR NO DISPONIBLE\nConsulte a su gestor de servicios");
       });
+  };
+
+  callApiOrg = () => {
+    const data = {
+      organizacion_id: this.state.temp_id_org,
+    };
+    fetch(process.env.REACT_APP_API_URL + "Visita/OrgData", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + this.props.token,
+      },
+      body: JSON.stringify(data),
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        this.setState({
+          contacto_org_api: data.contactos,
+          oficina_org_api: data.oficinas,
+        });
+      })
+      .catch((error) => {});
   };
 
   apiSearch = () => {
@@ -309,7 +330,7 @@ class CrearVisitas extends Component {
       observaciones: this.state.temp_obs_vis,
       resultado: this.state.temp_res_vis,
       usuario_asignado: this.state.temp_userasig_vis,
-      estado: this.state.temp_estado_vis,
+      estado_id: this.state.temp_estado_vis,
     };
 
     fetch(process.env.REACT_APP_API_URL + "Visita/", {
@@ -635,11 +656,14 @@ class CrearVisitas extends Component {
                             className="o-tinyBtn"
                             color="primary"
                             onClick={() =>
-                              this.setState({
-                                temp_id_org: obj.id,
-                                temp_name_org: obj.nombre,
-                                addVisit: true,
-                              })
+                              this.setState(
+                                {
+                                  temp_id_org: obj.id,
+                                  temp_name_org: obj.nombre,
+                                  addVisit: true,
+                                },
+                                this.callApiOrg
+                              )
                             }
                           >
                             <IconAddCircle />
@@ -737,6 +761,7 @@ class CrearVisitas extends Component {
                         value={this.state.temp_idFake_con || null}
                         onChange={this.handleChangeCon}
                         options={this.state.contacto_org_api || []}
+                        noOptionsText={null}
                         getOptionLabel={(option) =>
                           option.nombres +
                           option.apellidos +
@@ -944,12 +969,12 @@ class CrearVisitas extends Component {
                       >
                         <MenuItem
                           disabled={true}
-                          value="input_estado_con"
+                          value="input_estado_vis"
                         ></MenuItem>
                         {this.state.estado_vis_api.map((obj, i) => {
                           return (
                             <MenuItem key={i} value={obj.id}>
-                              {obj.nombre}
+                              {obj.usuario}
                             </MenuItem>
                           );
                         })}
@@ -1019,11 +1044,13 @@ class CrearVisitas extends Component {
             id_vis={this.state.temp_id_vis}
             data={this.state.visita_data}
             name_org={this.state.temp_name_org}
+            estado_tar_api={this.state.estado_tar_api}
             token={this.props.token}
             box_spacing={this.state.box_spacing_tiny}
             subtitle_spacing={this.state.subtitle_spacing}
             box_size={this.state.box_size_tiny}
             box_size_table={this.state.box_size_table}
+            backLink={"/crear_visita"}
           />
         </Route>
       </Switch>

@@ -29,6 +29,13 @@
   color: #ff0000;
 }
 
+.o-contentTittle-sub2 {
+  margin: 0.15rem 1rem 0 0;
+  text-align: start;
+  font-weight: 400;
+  font-size: 1em;
+}
+
 .o-text-nameOrg {
   display: flex;
   margin: 0.15rem 0 0 auto;
