@@ -185,6 +185,7 @@ class CrearVisitas extends Component {
     const data = {
       organizacion_id: this.state.temp_id_org,
     };
+    console.log(data);
     fetch(process.env.REACT_APP_API_URL + "Visita/OrgData", {
       method: "POST",
       headers: {
@@ -202,7 +203,9 @@ class CrearVisitas extends Component {
           oficina_org_api: data.oficinas,
         });
       })
-      .catch((error) => {});
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   apiSearch = () => {
@@ -933,7 +936,7 @@ class CrearVisitas extends Component {
                         {this.state.users_api.map((obj, i) => {
                           return (
                             <MenuItem key={i} value={obj.id}>
-                              {obj.nombre}
+                              {obj.usuario}
                             </MenuItem>
                           );
                         })}
@@ -974,7 +977,7 @@ class CrearVisitas extends Component {
                         {this.state.estado_vis_api.map((obj, i) => {
                           return (
                             <MenuItem key={i} value={obj.id}>
-                              {obj.usuario}
+                              {obj.nombre}
                             </MenuItem>
                           );
                         })}
@@ -1038,7 +1041,7 @@ class CrearVisitas extends Component {
             </Dialog>
           </div>
         </Route>
-        <Route path="/crear_visita/tareas">
+        <Route path="/crear_visitas/tareas">
           <CrearTareas
             dbid_org={this.state.temp_id_org}
             id_vis={this.state.temp_id_vis}
@@ -1050,7 +1053,6 @@ class CrearVisitas extends Component {
             subtitle_spacing={this.state.subtitle_spacing}
             box_size={this.state.box_size_tiny}
             box_size_table={this.state.box_size_table}
-            backLink={"/crear_visita"}
           />
         </Route>
       </Switch>

@@ -3,6 +3,7 @@ import { HashRouter, Switch, Route, NavLink } from "react-router-dom";
 import { SideButton } from "../Buttons";
 import { useSelector } from "react-redux";
 import CrearVisitas from "../Seguimiento/CrearVisitas";
+import ConsultarVisitas from "../Seguimiento/ConsultarVisitas";
 import "./Cards.css";
 
 const Seguimiento = () => {
@@ -30,7 +31,7 @@ const Seguimiento = () => {
           <div className="o-cardPlaceholder">
             <Switch>
               <Route path="/consultar_visitas">
-                <h5>Placeholder</h5>
+                <ConsultarVisitas token={token} />
               </Route>
               <Route path="/crear_visitas">
                 <CrearVisitas token={token} />

@@ -319,7 +319,14 @@
   flex-wrap: wrap;
   margin-top: 0.5rem;
   height: 100%;
+  width: 100%;
   overflow: hidden;
+}
+
+.o-contentForm-big-consultasHalf {
+  display: flex;
+  padding-top: 1.5rem;
+  width: 69.2%;
 }
 
 .o-tableBase-consultas {
@@ -419,4 +426,28 @@
   flex-direction: column;
   width: 48%;
   margin: 1rem;
+}
+
+.o-card-VisitaView {
+  display: flex;
+  border-radius: 5px;
+  margin: 4rem 0 0 1rem;
+  width: 24.6%;
+  border: 1px solid #3e3e3e;
+  padding: 0.5rem 1rem;
+  overflow: hidden;
+}
+
+.o-textMain2 {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  text-align: start;
+  font-size: 0.9em;
+  margin: 0 0 1rem 0;
+}
+
+.o-textSub2 {
+  margin-bottom: 0.3rem;
+  color: gray;
 }
