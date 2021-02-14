@@ -649,14 +649,6 @@ class ConsultarOrganizacion extends Component {
             </Dialog>
           </div>
         </Route>
-        <Route
-          exact
-          path="/consultar_organizacion/editar/3_14159265359/1_61803398874989"
-          render={() => {
-            const test = "VmllamEgY2Fjb3JyYSwgdmF5YSBhIHF1ZSBzZSBsYSBjb2phbi4=";
-            return <h1>{atob(test)}</h1>;
-          }}
-        />
         <Route path="/consultar_organizacion/editar">
           <OrganizacionMenu
             dbid_org={this.state.temp_id_org}

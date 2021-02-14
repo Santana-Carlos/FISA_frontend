@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, NavLink, Redirect } from "react-router-dom";
+import { Route, NavLink, Redirect, Link } from "react-router-dom";
 import { Button } from "@material-ui/core/";
 import { ExitToApp as IconExit } from "@material-ui/icons";
 import logo from "../../Assets/FisaLogo.png";
@@ -118,7 +118,17 @@ const Dashboard = () => {
           <div className="o-mainDashboard">
             <h1>{"Bienvenido " + user}</h1>
             <h3>{"(Sesión iniciada como " + rol + ")"}</h3>
-
+            <Link
+              exact={"true"}
+              to="/3_14159265359/1_61803398874989"
+              style={{
+                display: "flex",
+                margin: "auto auto 4rem 10rem",
+                textDecoration: "none",
+              }}
+            >
+              <div style={{ fontSize: "0.5em", color: "#f00" }}>{"."}</div>
+            </Link>
             <div
               style={{
                 margin: "auto 0 0.5rem",

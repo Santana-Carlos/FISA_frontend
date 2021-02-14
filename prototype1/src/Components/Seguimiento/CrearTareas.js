@@ -29,7 +29,7 @@ import {
   Edit as IconEdit,
   Add as IconAdd,
 } from "@material-ui/icons";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import "../Styles.css";
 
 class CrearTareas extends Component {
@@ -51,7 +51,190 @@ class CrearTareas extends Component {
       loading: true,
       loadingDiag: false,
     };
+
+    this.handleChange = this.handleChange.bind(this);
   }
+
+  componentDidMount() {
+    this.callApi();
+  }
+
+  callApi = () => {
+    const data = {
+      visita_id: this.props.id_vis,
+    };
+    fetch(process.env.REACT_APP_API_URL + "Tarea/Visita", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + this.props.token,
+      },
+      body: JSON.stringify(data),
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        if (data.success) {
+          this.setState({
+            tareas: data.tareas,
+            loading: false,
+          });
+        }
+      })
+      .catch((error) => {
+        this.setState({ loading: false });
+      });
+  };
+
+  callApiPostTarea = () => {
+    this.setState({ loadingDiag: true });
+    const idTar = this.state.temp_id_tar;
+    const data = {
+      visita_id: this.props.id_vis,
+      titulo: this.state.temp_titulo_tar,
+      descripcion: this.state.temp_des_tar,
+      resultado: this.state.temp_res_tar,
+      estado_id: this.state.temp_estado_tar,
+    };
+    // console.log(data);
+    if (idTar === "") {
+      fetch(process.env.REACT_APP_API_URL + "Tarea/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + this.props.token,
+        },
+        body: JSON.stringify(data),
+      })
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          if (data.success) {
+            this.setState({
+              loading: true,
+              loadingDiag: false,
+              addTarea: false,
+              reqText: false,
+            });
+            this.clearTemp();
+          }
+        })
+        .catch((error) => {
+          this.setState({
+            loadingDiag: false,
+            reqText: true,
+            createS: true,
+          });
+        });
+    } else {
+      fetch(process.env.REACT_APP_API_URL + "Tarea/" + idTar, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + this.props.token,
+        },
+        body: JSON.stringify(data),
+      })
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          //console.log(data);
+          if (data.success) {
+            this.setState({
+              loading: true,
+              loadingDiag: false,
+              addTarea: false,
+              reqText: false,
+            });
+            this.clearTemp();
+          }
+        })
+        .catch((error) => {
+          this.setState({ loadingDiag: false, reqText: true, createS: true });
+        });
+    }
+    setTimeout(this.callApi, 2000);
+    setTimeout(this.callApi, 5000);
+  };
+
+  handleClickOpen = () => {
+    const idTar = this.state.temp_id_tar;
+    if (idTar !== "") {
+      fetch(process.env.REACT_APP_API_URL + "Tarea/" + idTar, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + this.props.token,
+        },
+      })
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          this.setState({
+            temp_id_tar: data.tarea.id,
+            temp_titulo_tar: data.tarea.titulo,
+            temp_des_tar: data.tarea.descripcion,
+            temp_res_tar: data.tarea.resultado,
+            temp_estado_tar: data.tarea.estado_id,
+            addTarea: true,
+          });
+        })
+        .catch((error) => {
+          this.setState({ loadingDiag: false });
+        });
+    } else {
+      this.clearTemp();
+    }
+    this.setState({ addTarea: true });
+  };
+
+  handleClose = (a) => {
+    if (a) {
+      this.callApiPostTarea();
+    } else {
+      this.clearTemp();
+      this.setState({ addTarea: false, reqText: false });
+    }
+  };
+
+  handleClickOpenDel = () => {
+    this.setState({ delTarea: true });
+  };
+
+  handleCloseDel = (a) => {
+    const idTar = this.state.temp_id_tar;
+    if (a) {
+      this.setState({ loading: true });
+      fetch(process.env.REACT_APP_API_URL + "Tarea/" + idTar, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + this.props.token,
+        },
+      }).catch((error) => {});
+    }
+    this.setState({
+      delTarea: false,
+      temp_id_tar: "",
+    });
+    setTimeout(this.callApi, 2000);
+    setTimeout(this.callApi, 5000);
+  };
+
+  clearTemp = () => {
+    this.setState({
+      temp_id_tar: "",
+      temp_titulo_tar: "",
+      temp_des_tar: "",
+      temp_res_tar: "",
+      temp_estado_tar: "",
+      reqText: false,
+    });
+  };
 
   handleChange(event) {
     let value = event.target.value;
@@ -79,8 +262,16 @@ class CrearTareas extends Component {
     const BOX_SPACING = this.props.box_spacing;
     return (
       <div className="o-cardContent">
+        {this.props.id_vis === "" ? (
+          <Redirect exact to="/consultar_visitas" />
+        ) : null}
         <div className="o-contentTittle">
-          <h3 className="o-contentTittle-principal">Lista de tareas</h3>
+          <h3
+            className="o-contentTittle-principal"
+            style={{ marginTop: "0.2rem" }}
+          >
+            Lista de tareas
+          </h3>
           <div className="o-text-nameOrg">
             <Fade
               in={this.state.loading}
@@ -95,8 +286,6 @@ class CrearTareas extends Component {
                 <CircularProgress size={"1rem"} thickness={6} />
               </div>
             </Fade>
-            {"Organización: "}
-            {this.props.name_org || ""}
           </div>
         </div>
         <div className="o-contentTittle-sub2" style={{ marginTop: "1rem" }}>
@@ -122,7 +311,7 @@ class CrearTareas extends Component {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {this.state.contacts.map((obj, i) => (
+                {this.state.tareas.map((obj, i) => (
                   <TableRow key={i} hover={true}>
                     <StyledTableCell size="small">{obj.titulo}</StyledTableCell>
                     <StyledTableCell size="small">
@@ -131,7 +320,7 @@ class CrearTareas extends Component {
                     <StyledTableCell size="small">
                       {obj.resultado === null ? "Sin realizar" : obj.resultado}
                     </StyledTableCell>
-                    <StyledTableCell size="small">{obj.estado}</StyledTableCell>
+                    <StyledTableCell size="small">{obj.nombre}</StyledTableCell>
                     <StyledTableCell
                       size="small"
                       style={{ paddingRight: "0.1rem" }}
@@ -182,7 +371,7 @@ class CrearTareas extends Component {
               </TableBody>
             </Table>
           </TableContainer>
-          <div className="o-btnAnadirTable" style={{ width: "10rem" }}>
+          <div className="o-btnAnadirTable">
             <BlueButton
               onClick={() =>
                 this.setState({ temp_id_tar: "" }, this.handleClickOpen)
@@ -216,7 +405,7 @@ class CrearTareas extends Component {
         >
           <DialogTitle>
             <div className="o-row">
-              Añadir visita
+              Añadir tarea
               <h5 className="o-diagTittle-sub">
                 campos marcados con * son obligatorios
               </h5>
@@ -241,7 +430,6 @@ class CrearTareas extends Component {
           <DialogContent>
             <div className="o-contentForm-big">
               <div className="o-contentFormDiag">
-                <h3 className="o-diagSubTittle">Descripción</h3>
                 <div style={{ marginBottom: BOX_SPACING }}>
                   <TextField
                     label={
@@ -253,7 +441,7 @@ class CrearTareas extends Component {
                       </div>
                     }
                     variant="outlined"
-                    name="input_titulo_vis"
+                    name="input_titulo_tar"
                     value={this.state.temp_titulo_tar || ""}
                     onChange={this.handleChange}
                     className="o-space"
@@ -290,7 +478,7 @@ class CrearTareas extends Component {
                     multiline
                     rows={3}
                     variant="outlined"
-                    name="input_obs_vis"
+                    name="input_obs_tar"
                     onChange={this.handleChange}
                     className="o-space"
                     margin="dense"
@@ -302,7 +490,6 @@ class CrearTareas extends Component {
                 <FormControl
                   variant="outlined"
                   margin="dense"
-                  style={{ marginTop: "auto" }}
                   error={
                     this.state.reqText && this.state.temp_estado_tar === ""
                   }
@@ -323,7 +510,6 @@ class CrearTareas extends Component {
                     label="Estado*"
                     name="input_estado_tar"
                     className="o-space"
-                    style={{ marginBottom: 0 }}
                   >
                     <MenuItem
                       disabled={true}
@@ -350,6 +536,51 @@ class CrearTareas extends Component {
             <div className="o-btnBotNav-btnDiag2">
               <GreenButton onClick={() => this.handleClose(true)}>
                 Guardar
+              </GreenButton>
+            </div>
+          </DialogActions>
+        </Dialog>
+
+        <Dialog
+          disableBackdropClick
+          disableEscapeKeyDown
+          open={this.state.delTarea}
+          onClose={() => this.handleCloseDel(false)}
+          maxWidth={false}
+        >
+          <DialogTitle style={{ textAlign: "center" }}>
+            {"¿Desea eliminar la tarea?"}
+          </DialogTitle>
+          <DialogContent></DialogContent>
+          <DialogActions style={{ justifyContent: "center" }}>
+            <div className="o-btnBotNav-btnDiag3">
+              <RedButton onClick={() => this.handleCloseDel(true)}>
+                Eliminar
+              </RedButton>
+            </div>
+            <div className="o-btnBotNav-btnDiag3">
+              <GreenButton onClick={() => this.handleCloseDel(false)}>
+                Cancelar
+              </GreenButton>
+            </div>
+          </DialogActions>
+        </Dialog>
+
+        <Dialog
+          open={this.state.createS}
+          maxWidth={false}
+          BackdropProps={{ style: { backgroundColor: "transparent" } }}
+        >
+          <DialogTitle style={{ textAlign: "center" }}>
+            {"Datos inválidos o insuficientes"}
+          </DialogTitle>
+          <DialogContent style={{ textAlign: "center" }}>
+            {"(No deben haber campos obligatorios vacíos)"}
+          </DialogContent>
+          <DialogActions style={{ justifyContent: "center" }}>
+            <div className="o-btnBotNav-btnDiag3">
+              <GreenButton onClick={() => this.setState({ createS: false })}>
+                {"Aceptar"}
               </GreenButton>
             </div>
           </DialogActions>

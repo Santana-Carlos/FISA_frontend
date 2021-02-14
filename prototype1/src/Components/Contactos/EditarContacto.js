@@ -150,8 +150,8 @@ class EditarContacto extends Component {
             temp_nid_con: data.contacto.numero_documento,
             temp_sex_con: data.contacto.sexo,
             temp_estado_con: data.contacto.estado,
-            //userUpdated_con: data.usuario_actualizacion.usuario_actualizacion,
-            //fechaUpdated_con: data.contacto.updated_at,
+            userUpdated_con: data.usuario_actualizacion.usuario,
+            fechaUpdated_con: data.contacto.updated_at,
             loading: false,
             temp_subcat_con:
               data.categorias[0] === this.state.indexCat ? [] : data.categorias,
@@ -330,7 +330,10 @@ class EditarContacto extends Component {
         break;
       case "input_idoffice_con":
         this.setState({ temp_idoffice_con: value }, () => {
-          if (this.state.temp_tel_con === "") {
+          if (
+            this.state.temp_tel_con === "" ||
+            this.state.temp_tel_con === null
+          ) {
             this.setState({
               temp_tel_con: this.state.ofices_api[
                 this.state.ofices_api.findIndex(

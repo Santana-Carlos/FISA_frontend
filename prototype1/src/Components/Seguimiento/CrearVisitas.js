@@ -97,6 +97,7 @@ class CrearVisitas extends Component {
     };
 
     this.handleChange = this.handleChange.bind(this);
+    this.handleChangeCon = this.handleChangeCon.bind(this);
   }
 
   resizeBox = () => {
@@ -185,7 +186,7 @@ class CrearVisitas extends Component {
     const data = {
       organizacion_id: this.state.temp_id_org,
     };
-    console.log(data);
+    // console.log(data);
     fetch(process.env.REACT_APP_API_URL + "Visita/OrgData", {
       method: "POST",
       headers: {
@@ -204,7 +205,7 @@ class CrearVisitas extends Component {
         });
       })
       .catch((error) => {
-        console.log(error);
+        // console.log(error);
       });
   };
 
@@ -349,15 +350,16 @@ class CrearVisitas extends Component {
       })
       .then((data) => {
         if (data.success) {
+          // console.log(data);
           this.setState({
-            temp_id_vis: data.visita.id,
-            loading: true,
+            temp_id_vis: data.visita,
             loadingDiag: false,
-            addContact: false,
+            addVisit: false,
             reqText: false,
           });
-          this.clearTemp();
-          window.location.assign("dashboard/seguimiento#/crear_visitas/tareas");
+          window.location.assign(
+            "/dashboard/seguimiento#/crear_visitas/tareas"
+          );
         }
       })
       .catch((error) => {
@@ -381,6 +383,7 @@ class CrearVisitas extends Component {
       temp_res_vis: "",
       temp_userasig_vis: "",
       temp_estado_vis: "",
+      reqText: false,
     });
   };
 
@@ -767,13 +770,17 @@ class CrearVisitas extends Component {
                         noOptionsText={null}
                         getOptionLabel={(option) =>
                           option.nombres +
+                          " " +
                           option.apellidos +
-                          " - Cel. " +
-                          option.celular +
-                          "Tel." +
-                          option.telefono +
-                          "Ext. " +
-                          option.extension
+                          (option.celular === null
+                            ? ""
+                            : " - Cel. " + option.celular) +
+                          (option.telefono === null
+                            ? ""
+                            : " - Tel." + option.telefono) +
+                          (option.extension === null
+                            ? ""
+                            : " - Ext. " + option.extension)
                         }
                         renderInput={(params) => (
                           <TextField

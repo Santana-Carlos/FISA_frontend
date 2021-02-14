@@ -31,11 +31,7 @@ import {
   RedButton,
   StyledTableCell,
 } from "../Buttons";
-import {
-  Delete as IconDelete,
-  ZoomIn as IconSelect,
-  Refresh as IconRefresh,
-} from "@material-ui/icons";
+import { Delete as IconDelete, ZoomIn as IconSelect } from "@material-ui/icons";
 import { Switch, Route } from "react-router-dom";
 import CrearTareas from "./CrearTareas";
 import "../Styles.css";
@@ -87,7 +83,7 @@ class ConsultarVisitas extends Component {
       loading: true,
       loadingDiag: false,
       box_spacing: window.innerHeight > 900 ? "0.6rem" : "0.2rem",
-      box_size: window.innerHeight > 900 ? "36rem" : "20rem",
+      box_size: window.innerHeight > 900 ? "40rem" : "24rem",
       box_spacing_tiny: window.innerHeight > 900 ? "0.4rem" : "0rem",
       subtitle_spacing: window.innerHeight > 900 ? "2.1rem" : "1.7rem",
       box_size_tiny: window.innerHeight > 900 ? "24rem" : "13rem",
@@ -101,7 +97,7 @@ class ConsultarVisitas extends Component {
   resizeBox = () => {
     this.setState({
       box_spacing: window.innerHeight > 900 ? "0.6rem" : "0.2rem",
-      box_size: window.innerHeight > 900 ? "36rem" : "20rem",
+      box_size: window.innerHeight > 900 ? "40rem" : "24rem",
       box_spacing_tiny: window.innerHeight > 900 ? "0.4rem" : "0rem",
       subtitle_spacing: window.innerHeight > 900 ? "2.1rem" : "1.7rem",
       box_size_tiny: window.innerHeight > 900 ? "24rem" : "13rem",
@@ -168,7 +164,7 @@ class ConsultarVisitas extends Component {
       tipo: this.state.search_tipo,
       palabra: this.state.search_pal,
     };
-    console.log(data);
+    //console.log(data);
     if (this.state.search_tipo !== "" || this.state.search_pal !== "") {
       fetch(process.env.REACT_APP_API_URL + "Visita/Search", {
         method: "POST",
@@ -197,13 +193,29 @@ class ConsultarVisitas extends Component {
     }
   };
 
-  apiRefresh = () => {
+  apiToday = () => {
     this.setState({ loading: true });
-    if (this.state.search_tipo !== "" || this.state.search_pal !== "") {
-      this.apiSearch();
-    } else {
-      this.callAPi();
-    }
+    fetch(process.env.REACT_APP_API_URL + "Visita/Today", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + this.props.token,
+      },
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        if (data.success) {
+          this.setState({
+            loading: false,
+            visitas: data.visitas,
+          });
+        }
+      })
+      .catch((error) => {
+        this.setState({ loading: false });
+      });
   };
 
   handleClickOpenDel = () => {
@@ -235,7 +247,7 @@ class ConsultarVisitas extends Component {
         .catch((error) => {});
     } else {
       this.setState({
-        delOrg: false,
+        delVisit: false,
         temp_id_org: "",
       });
     }
@@ -272,7 +284,7 @@ class ConsultarVisitas extends Component {
         return response.json();
       })
       .then((data) => {
-        console.log(data);
+        //console.log(data);
         if (data.success) {
           this.setState(
             {
@@ -286,9 +298,16 @@ class ConsultarVisitas extends Component {
               temp_res_vis: data.visita.resultado,
               temp_userasig_vis: data.visita.usuario_asignado,
               temp_estado_vis: data.visita.estado_id,
-              temp_userUdate_vis: data.usuario_actualización,
+              temp_dateUdate_vis: data.visita.updated_at,
+              temp_userUdate_vis:
+                data.usuario_actualizacion.usuario_actualizacion,
+              visita_data: {
+                fecha_programada: data.visita.fecha_programada,
+                titulo: data.visita.titulo,
+              },
+              loading: false,
             },
-            this.dataFake
+            this.callApiOrg
           );
         }
       })
@@ -297,25 +316,11 @@ class ConsultarVisitas extends Component {
       });
   };
 
-  dataFake = () => {
-    const tempCon = this.state.contacto_org_api;
-    const tempConFake = tempCon.filter(
-      (obj) => obj.id === this.state.temp_id_con
-    );
-
-    this.setState(
-      {
-        temp_idFake_con: tempConFake[0],
-      },
-      this.callApiOrg
-    );
-  };
-
   callApiOrg = () => {
     const data = {
       organizacion_id: this.state.temp_id_org,
     };
-    console.log(data);
+    // console.log(data);
     fetch(process.env.REACT_APP_API_URL + "Visita/OrgData", {
       method: "POST",
       headers: {
@@ -328,24 +333,43 @@ class ConsultarVisitas extends Component {
         return response.json();
       })
       .then((data) => {
-        this.setState({
-          contacto_org_api: data.contactos,
-          oficina_org_api: data.oficinas,
-        });
+        this.setState(
+          {
+            contacto_org_api: data.contactos,
+            oficina_org_api: data.oficinas,
+          },
+          this.dataFake
+        );
       })
       .catch((error) => {
-        console.log(error);
+        // console.log(error);
       });
+  };
+
+  dataFake = () => {
+    const tempCon = this.state.contacto_org_api;
+    const tempConFake = tempCon.filter(
+      (obj) => obj.id === this.state.temp_id_con
+    );
+
+    this.setState({
+      temp_idFake_con: tempConFake[0],
+    });
+  };
+
+  handleClose = (a) => {
+    if (a) {
+      this.callApiPutVisita();
+    } else {
+      this.setState({ addVisit: false, reqText: false });
+    }
   };
 
   callApiPutVisita = () => {
     this.setState({
       loadingDiag: true,
-      visita_data: {
-        fecha_programada: this.state.temp_fecpro_vis,
-        titulo: this.state.temp_titulo_vis,
-      },
     });
+    const idVis = this.state.temp_id_vis;
     const data = {
       organizacion_id: this.state.temp_id_org,
       contacto_id: this.state.temp_id_con,
@@ -359,7 +383,7 @@ class ConsultarVisitas extends Component {
       estado_id: this.state.temp_estado_vis,
     };
 
-    fetch(process.env.REACT_APP_API_URL + "Visita/", {
+    fetch(process.env.REACT_APP_API_URL + "Visita/" + idVis, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -374,13 +398,10 @@ class ConsultarVisitas extends Component {
         if (data.success) {
           this.setState({
             temp_id_vis: data.visita.id,
-            loading: true,
             loadingDiag: false,
-            addContact: false,
+            addVisit: false,
             reqText: false,
           });
-          this.clearTemp();
-          window.location.assign("dashboard/seguimiento#/crear_visitas/tareas");
         }
       })
       .catch((error) => {
@@ -408,6 +429,9 @@ class ConsultarVisitas extends Component {
         break;
       case "input_obs_vis":
         this.setState({ temp_obs_vis: value });
+        break;
+      case "input_id_ofi":
+        this.setState({ temp_id_ofi: value });
         break;
       case "input_estado_vis":
         this.setState({ temp_estado_vis: value });
@@ -535,16 +559,14 @@ class ConsultarVisitas extends Component {
                     <RedButton onClick={this.clearFunc}>Limpiar</RedButton>
                   </div>
                   <div className="o-btnConsultas" style={{ width: "4rem" }}>
-                    <BlueButton onClick={this.apiRefresh}>
-                      <IconRefresh size="small" />
-                    </BlueButton>
+                    <BlueButton onClick={this.apiToday}>Hoy</BlueButton>
                   </div>
                 </div>
               </div>
               <div className="o-contentForm-big-consultasHalf">
                 <TableContainer
                   className="o-tableBase-consultas"
-                  style={{ maxHeight: BOX_SIZE }}
+                  style={{ maxHeight: BOX_SIZE, marginBottom: "auto" }}
                 >
                   <Table stickyHeader size="small">
                     <TableHead>
@@ -589,6 +611,7 @@ class ConsultarVisitas extends Component {
                                   {
                                     temp_id_vis: obj.id,
                                     temp_name_org: obj.organizacion,
+                                    loading: true,
                                   },
                                   this.selVisita
                                 )
@@ -630,13 +653,16 @@ class ConsultarVisitas extends Component {
                   </Table>
                 </TableContainer>
               </div>
-              <div className="o-card-VisitaView">
+              <div
+                className="o-card-VisitaView"
+                style={{ maxHeight: BOX_SIZE, marginBottom: "auto" }}
+              >
                 {this.state.temp_titulo_vis === "" ? (
                   <div style={{ margin: "3rem auto", color: "gray" }}>
                     {"Selecciona una visita"}
                   </div>
                 ) : (
-                  <div>
+                  <div style={{ width: "100%" }}>
                     <div
                       className="o-textMain2"
                       style={{ fontSize: "1.3rem", marginBottom: "0.4rem" }}
@@ -647,9 +673,9 @@ class ConsultarVisitas extends Component {
                       className="o-textMain2"
                       style={{
                         marginBottom: "1.2rem",
-                        maxHeight: "4rem",
+                        maxHeight: "2.3rem",
+                        overflowY: "scroll",
                         textOverflow: "ellipsis",
-                        overflow: "hidden",
                       }}
                     >
                       {this.state.temp_obs_vis === null
@@ -657,7 +683,14 @@ class ConsultarVisitas extends Component {
                         : this.state.temp_obs_vis}
                     </div>
 
-                    <div className="o-textMain2">
+                    <div
+                      className="o-textMain2"
+                      style={{
+                        maxHeight: "2.3rem",
+                        overflowY: "hidden",
+                        textOverflow: "ellipsis",
+                      }}
+                    >
                       <div>
                         <div className="o-textSub2">{"Organización: "}</div>
                         {this.state.temp_name_org}
@@ -669,10 +702,10 @@ class ConsultarVisitas extends Component {
                         <div className="o-textSub2">
                           {"Fecha programada/realizada:"}
                         </div>
-                        {this.state.temp_fecpro_vis + " / "}{" "}
+                        {this.state.temp_fecpro_vis + " / "}
                         {this.state.temp_feceje_vis === null
                           ? "Sin realizar"
-                          : this.state.temp_feceje_vis}
+                          : this.state.temp_feceje_vis + ""}
                       </div>
                     </div>
 
@@ -688,7 +721,9 @@ class ConsultarVisitas extends Component {
                         }
                       </div>
 
-                      <div style={{ marginLeft: "auto", paddingLeft: "1rem" }}>
+                      <div
+                        style={{ marginLeft: "0.5rem", paddingLeft: "1rem" }}
+                      >
                         <div className="o-textSub2">{"Estado:"}</div>
                         {
                           this.state.estado_vis_api[
@@ -697,6 +732,46 @@ class ConsultarVisitas extends Component {
                             )
                           ].nombre
                         }
+                      </div>
+                    </div>
+
+                    <div className="o-textMain2">
+                      <div>
+                        <div className="o-textSub2">
+                          {"última actualización:"}
+                        </div>
+                        {this.state.temp_userUdate_vis +
+                          " - " +
+                          this.state.temp_dateUdate_vis}
+                      </div>
+                    </div>
+
+                    <div className="o-btnBotNavDoble2">
+                      <div
+                        className="o-btnBotNav-btn"
+                        style={{ width: "6rem" }}
+                      >
+                        <GreenButton
+                          onClick={() => {
+                            this.setState({ addVisit: true });
+                          }}
+                        >
+                          {"Editar"}
+                        </GreenButton>
+                      </div>
+                      <div
+                        className="o-btnBotNav-btn"
+                        style={{ width: "6rem" }}
+                      >
+                        <BlueButton
+                          onClick={() => {
+                            window.location.assign(
+                              "/dashboard/seguimiento#/consultar_visitas/tareas"
+                            );
+                          }}
+                        >
+                          {"Tareas"}
+                        </BlueButton>
                       </div>
                     </div>
                   </div>
@@ -856,7 +931,7 @@ class ConsultarVisitas extends Component {
                         {this.state.oficina_org_api.map((obj, i) => {
                           return (
                             <MenuItem key={i} value={obj.id}>
-                              {obj.direccion}
+                              {obj.direccion} {obj.ciudad} - {obj.pais}
                             </MenuItem>
                           );
                         })}
@@ -957,7 +1032,7 @@ class ConsultarVisitas extends Component {
                         {this.state.users_api.map((obj, i) => {
                           return (
                             <MenuItem key={i} value={obj.id}>
-                              {obj.nombre}
+                              {obj.usuario}
                             </MenuItem>
                           );
                         })}
@@ -984,7 +1059,7 @@ class ConsultarVisitas extends Component {
                       <Select
                         labelId="demo-simple-select-outlined-label"
                         id="demo-simple-select-outlined"
-                        value={this.state.temp_estado_vis}
+                        value={this.state.temp_estado_vis || ""}
                         onChange={this.handleChange}
                         label="Estado*"
                         name="input_estado_vis"
@@ -998,7 +1073,7 @@ class ConsultarVisitas extends Component {
                         {this.state.estado_vis_api.map((obj, i) => {
                           return (
                             <MenuItem key={i} value={obj.id}>
-                              {obj.usuario}
+                              {obj.nombre}
                             </MenuItem>
                           );
                         })}
@@ -1046,14 +1121,16 @@ class ConsultarVisitas extends Component {
               </DialogActions>
             </Dialog>
 
-            <Dialog open={this.state.createS} maxWidth={false}>
+            <Dialog
+              open={this.state.createS}
+              maxWidth={false}
+              BackdropProps={{ style: { backgroundColor: "transparent" } }}
+            >
               <DialogTitle style={{ textAlign: "center" }}>
-                {"No se pudo buscar"}
+                {"Datos inválidos o insuficientes"}
               </DialogTitle>
               <DialogContent style={{ textAlign: "center" }}>
-                {
-                  "(Para realizar una busqueda debe ingresar al menos un parametro)"
-                }
+                {"(No deben haber campos obligatorios vacíos)"}
               </DialogContent>
               <DialogActions style={{ justifyContent: "center" }}>
                 <div className="o-btnBotNav-btnDiag3">
@@ -1067,14 +1144,6 @@ class ConsultarVisitas extends Component {
             </Dialog>
           </div>
         </Route>
-        <Route
-          exact
-          path="/consultar_organizacion/editar/3_14159265359/1_61803398874989"
-          render={() => {
-            const test = "VmllamEgY2Fjb3JyYSwgdmF5YSBhIHF1ZSBzZSBsYSBjb2phbi4=";
-            return <h1>{atob(test)}</h1>;
-          }}
-        />
         <Route path="/consultar_visitas/tareas">
           <CrearTareas
             dbid_org={this.state.temp_id_org}
