@@ -83,7 +83,7 @@ class ConsultarVisitas extends Component {
       loading: true,
       loadingDiag: false,
       box_spacing: window.innerHeight > 900 ? "0.6rem" : "0.2rem",
-      box_size: window.innerHeight > 900 ? "40rem" : "24rem",
+      box_size: window.innerHeight > 900 ? "39rem" : "23rem",
       box_spacing_tiny: window.innerHeight > 900 ? "0.4rem" : "0rem",
       subtitle_spacing: window.innerHeight > 900 ? "2.1rem" : "1.7rem",
       box_size_tiny: window.innerHeight > 900 ? "24rem" : "13rem",
@@ -97,7 +97,7 @@ class ConsultarVisitas extends Component {
   resizeBox = () => {
     this.setState({
       box_spacing: window.innerHeight > 900 ? "0.6rem" : "0.2rem",
-      box_size: window.innerHeight > 900 ? "40rem" : "24rem",
+      box_size: window.innerHeight > 900 ? "39rem" : "23rem",
       box_spacing_tiny: window.innerHeight > 900 ? "0.4rem" : "0rem",
       subtitle_spacing: window.innerHeight > 900 ? "2.1rem" : "1.7rem",
       box_size_tiny: window.innerHeight > 900 ? "24rem" : "13rem",
@@ -396,12 +396,14 @@ class ConsultarVisitas extends Component {
       })
       .then((data) => {
         if (data.success) {
-          this.setState({
-            temp_id_vis: data.visita.id,
-            loadingDiag: false,
-            addVisit: false,
-            reqText: false,
-          });
+          this.setState(
+            {
+              loadingDiag: false,
+              addVisit: false,
+              reqText: false,
+            },
+            this.selVisita
+          );
         }
       })
       .catch((error) => {
@@ -711,7 +713,7 @@ class ConsultarVisitas extends Component {
 
                     <div className="o-textMain2">
                       <div>
-                        <div className="o-textSub2">{"Usuario asignado:"}</div>
+                        <div className="o-textSub2">{"Asignado:"}</div>
                         {
                           this.state.users_api[
                             this.state.users_api.findIndex(
@@ -738,7 +740,7 @@ class ConsultarVisitas extends Component {
                     <div className="o-textMain2">
                       <div>
                         <div className="o-textSub2">
-                          {"última actualización:"}
+                          {"Última actualización:"}
                         </div>
                         {this.state.temp_userUdate_vis +
                           " - " +
