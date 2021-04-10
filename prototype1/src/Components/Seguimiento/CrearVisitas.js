@@ -818,9 +818,6 @@ class CrearVisitas extends Component {
                     <FormControl
                       variant="outlined"
                       margin="dense"
-                      error={
-                        this.state.reqText && this.state.temp_estado_vis === ""
-                      }
                     >
                       <InputLabel id="demo-simple-select-outlined-label">
                         Oficina

@@ -481,7 +481,7 @@ class Consultar1DatosBasicos extends Component {
                 id="demo-simple-select-outlined"
                 value={this.state.cat_org || ""}
                 onChange={this.handleChange}
-                label="Categoría*"
+                label="Nombre comercial*"
                 name="input_cat_org"
                 className="o-space"
                 style={{ marginBottom: BOX_SPACING }}

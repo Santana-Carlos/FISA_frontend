@@ -595,11 +595,14 @@ class ReporteContacto extends Component {
             <Table stickyHeader size="small">
               <TableHead>
                 <TableRow>
-                  <StyledTableCell>Organización</StyledTableCell>
+                  <StyledTableCell>Org.</StyledTableCell>
                   <StyledTableCell>Nombre</StyledTableCell>
                   <StyledTableCell>Cargo</StyledTableCell>
-                  <StyledTableCell>Correo</StyledTableCell>
+                  <StyledTableCell>Teléfono</StyledTableCell>
+                  <StyledTableCell>Ext.</StyledTableCell>
                   <StyledTableCell>Celular</StyledTableCell>
+                  <StyledTableCell>Correo</StyledTableCell>
+                  <StyledTableCell>Obser.</StyledTableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -615,10 +618,21 @@ class ReporteContacto extends Component {
                       {obj.cargo === null ? emptyCell : obj.cargo}
                     </StyledTableCell>
                     <StyledTableCell size="small">
-                      {obj.email === null ? emptyCell : obj.email}
+                      {obj.telefono === null ? emptyCell : obj.telefono}
+                    </StyledTableCell>
+                    <StyledTableCell size="small">
+                      {obj.extension === null ? emptyCell : obj.extension}
                     </StyledTableCell>
                     <StyledTableCell size="small">
                       {obj.celular === null ? emptyCell : obj.celular}
+                    </StyledTableCell>
+                    <StyledTableCell size="small">
+                      {obj.email === null ? emptyCell : obj.email}
+                    </StyledTableCell>
+                    <StyledTableCell size="small">
+                      {obj.observaciones === null
+                        ? emptyCell
+                        : obj.observaciones}
                     </StyledTableCell>
                   </TableRow>
                 ))}

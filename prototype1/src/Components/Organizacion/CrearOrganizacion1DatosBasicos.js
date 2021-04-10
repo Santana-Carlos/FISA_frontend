@@ -291,6 +291,7 @@ class CrearOrganizacion1DatosBasicos extends Component {
       estado: this.state.estado_org,
       actividades: this.state.ciiu_org,
     };
+    //console.log(data);
     fetch(process.env.REACT_APP_API_URL + "Organizacion/", {
       method: "POST",
       headers: {
@@ -303,6 +304,7 @@ class CrearOrganizacion1DatosBasicos extends Component {
         return response.json();
       })
       .then((data) => {
+        //console.log(data);
         if (data.success) {
           this.setState(
             {
@@ -320,6 +322,7 @@ class CrearOrganizacion1DatosBasicos extends Component {
         }
       })
       .catch((error) => {
+        //console.log(error);
         this.setState({ loading: false, createS: true, reqText: true });
       });
   };
