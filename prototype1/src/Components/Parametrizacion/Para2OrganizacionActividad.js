@@ -35,7 +35,6 @@ class Para2OrganizacionActividad extends Component {
       temp_tipo: "",
       temp_id: "",
       temp_idSec: "",
-      temp_idSub: "",
       temp_dato: "",
       temp_datosDesc: "",
       temp_accion: "",
@@ -289,7 +288,7 @@ class Para2OrganizacionActividad extends Component {
     }
 
     console.log(data);
-    fetch(process.env.REACT_APP_API_URL + tipo + "/", {
+    fetch(process.env.REACT_APP_API_URL + tipo, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -617,6 +616,7 @@ class Para2OrganizacionActividad extends Component {
                       <StyledTableCell>...</StyledTableCell>
                       <StyledTableCell></StyledTableCell>
                       <StyledTableCell></StyledTableCell>
+                      <StyledTableCell></StyledTableCell>
                     </TableRow>
                   ) : null}
                 </TableBody>
@@ -819,6 +819,7 @@ class Para2OrganizacionActividad extends Component {
                       <StyledTableCell>...</StyledTableCell>
                       <StyledTableCell></StyledTableCell>
                       <StyledTableCell></StyledTableCell>
+                      <StyledTableCell></StyledTableCell>
                     </TableRow>
                   ) : null}
                 </TableBody>
@@ -968,7 +969,7 @@ class Para2OrganizacionActividad extends Component {
                   label="Descripción"
                   value={this.state.temp_datosDesc || ""}
                   multiline
-                  rows={4}
+                  rows={5}
                   variant="outlined"
                   name="input_temp_datosDesc"
                   onChange={this.handleChange}
