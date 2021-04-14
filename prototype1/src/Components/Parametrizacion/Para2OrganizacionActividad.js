@@ -48,7 +48,7 @@ class Para2OrganizacionActividad extends Component {
       loadingDiag: false,
       box_spacing: window.innerHeight > 900 ? "0.6rem" : "0.2rem",
       box_size: window.innerHeight > 900 ? "21rem" : "14rem",
-      box_sizeBig: window.innerHeight > 900 ? "43.8rem" : "29.8rem",
+      box_sizeBig: window.innerHeight > 900 ? "43.95rem" : "29.95rem",
       winInterval: "",
     };
 
@@ -59,7 +59,7 @@ class Para2OrganizacionActividad extends Component {
     this.setState({
       box_spacing: window.innerHeight > 900 ? "0.6rem" : "0.2rem",
       box_size: window.innerHeight > 900 ? "21rem" : "14rem",
-      box_sizeBig: window.innerHeight > 900 ? "43.8rem" : "29.8rem",
+      box_sizeBig: window.innerHeight > 900 ? "43.95rem" : "29.95rem",
     });
   };
 

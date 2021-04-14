@@ -116,8 +116,26 @@ const Dashboard = () => {
       <SwitchWithSlide>
         <Route exact path="/dashboard/">
           <div className="o-mainDashboard">
-            <h1>{"Bienvenido " + user}</h1>
-            <h3>{"(Sesión iniciada como " + rol + ")"}</h3>
+            <div
+              style={{
+                margin: "auto 0 0",
+                fontSize: "2.5rem",
+                color: "#ffffff",
+                textShadow: "2px 2px 6px rgba(0, 0, 0, 0.4)",
+              }}
+            >
+              {"Bienvenido " + user}
+            </div>
+            <div
+              style={{
+                fontSize: "1.3rem",
+                marginTop: "0.8rem",
+                fontWeight: 200,
+                textShadow: "2px 2px 6px rgba(0, 0, 0, 0.4)",
+              }}
+            >
+              {"Sesión iniciada como: " + rol}
+            </div>
             <Link
               exact={"true"}
               to="/3_14159265359/1_61803398874989"

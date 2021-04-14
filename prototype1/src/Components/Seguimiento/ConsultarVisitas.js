@@ -568,7 +568,7 @@ class ConsultarVisitas extends Component {
               <div className="o-contentForm-big-consultasHalf">
                 <TableContainer
                   className="o-tableBase-consultas"
-                  style={{ maxHeight: BOX_SIZE, marginBottom: "auto" }}
+                  style={{ height: BOX_SIZE, marginBottom: "auto" }}
                 >
                   <Table stickyHeader size="small">
                     <TableHead>

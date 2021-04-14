@@ -45,7 +45,7 @@ class Para1OrganizacionVarios extends Component {
       loadingDiag: false,
       box_spacing: window.innerHeight > 900 ? "0.6rem" : "0.2rem",
       box_size: window.innerHeight > 900 ? "21rem" : "14rem",
-      box_sizeBig: window.innerHeight > 900 ? "43.8rem" : "29.8rem",
+      box_sizeBig: window.innerHeight > 900 ? "43.95rem" : "29.95rem",
       winInterval: "",
     };
 
@@ -56,7 +56,7 @@ class Para1OrganizacionVarios extends Component {
     this.setState({
       box_spacing: window.innerHeight > 900 ? "0.6rem" : "0.2rem",
       box_size: window.innerHeight > 900 ? "21rem" : "14rem",
-      box_sizeBig: window.innerHeight > 900 ? "43.8rem" : "29.8rem",
+      box_sizeBig: window.innerHeight > 900 ? "43.95rem" : "29.95rem",
     });
   };
 
@@ -482,7 +482,9 @@ class Para1OrganizacionVarios extends Component {
                   {this.state.api_tipoid.map((obj, i) => (
                     <TableRow key={i} hover={true}>
                       <StyledTableCell size="small">
-                        {obj.descripcion + " (" + obj.nombre + ")"}
+                        {obj.descripcion === null
+                          ? obj.nombre
+                          : obj.nombre + " - " + obj.descripcion}
                       </StyledTableCell>
                       <StyledTableCell
                         size="small"

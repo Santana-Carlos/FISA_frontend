@@ -82,7 +82,9 @@ h1 {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  color: #3e3e3e;
+  color: #ffffff;
+  background-image: url("../../Assets/login_Background.jpg");
+  background-size: cover;
 }
 
 .o-btnOrganizacion-active {
