@@ -1,11 +1,13 @@
 import React from "react";
 import { HashRouter, Switch, Route, NavLink } from "react-router-dom";
 import { SideButton } from "../Buttons";
-//import { useSelector } from "react-redux";
+import { useSelector } from "react-redux";
+import Para1OrganizacionVarios from "../Parametrizacion/Para1OrganizacionVarios";
+import Para2OrganizacionActividad from "../Parametrizacion/Para2OrganizacionActividad";
 import "./Cards.css";
 
 const Administracion = () => {
-  //const token = useSelector((state) => state.token);
+  const token = useSelector((state) => state.token);
   return (
     <HashRouter>
       <div className="o-cards">
@@ -14,25 +16,25 @@ const Administracion = () => {
             <NavLink
               className="o-btnSidebar o-btnSidebar-administracion"
               activeClassName="o-btnSidebar o-btnSidebar-administracionActive"
-              to="/placeholder_1"
+              to="/organizacion_varios"
             >
-              <SideButton size="small">Placeholder 1</SideButton>
+              <SideButton size="small">Organización (varios)</SideButton>
             </NavLink>
             <NavLink
               className="o-btnSidebar o-btnSidebar-administracion"
               activeClassName="o-btnSidebar o-btnSidebar-administracionActive"
-              to="/placeholder_2"
+              to="/organizacion_actividad"
             >
-              <SideButton>Placeholder 2</SideButton>
+              <SideButton>Organización (actividad)</SideButton>
             </NavLink>
           </div>
           <div className="o-cardPlaceholder">
             <Switch>
-              <Route path="/placeholder_1">
-                <h5>Placeholder 1</h5>
+              <Route path="/organizacion_varios">
+                <Para1OrganizacionVarios token={token} />
               </Route>
-              <Route path="/placeholder_2">
-                <h5>Placeholder 2</h5>
+              <Route path="/organizacion_actividad">
+                <Para2OrganizacionActividad token={token} />
               </Route>
             </Switch>
           </div>
