@@ -6,6 +6,7 @@ import Para1OrganizacionVarios from "../Parametrizacion/Para1OrganizacionVarios"
 import Para2OrganizacionActividad from "../Parametrizacion/Para2OrganizacionActividad";
 import Para4ContactosOficina from "../Parametrizacion/Para4ContactosOficina";
 import Para3InfoFinanciera from "../Parametrizacion/Para3InfoFinanciera";
+import Para5Ubicaciones from "../Parametrizacion/Para5Ubicaciones";
 import "./Cards.css";
 
 const Administracion = () => {
@@ -73,7 +74,7 @@ const Administracion = () => {
                 <Para4ContactosOficina token={token} />
               </Route>
               <Route path="/ubicacion">
-                <h3>{"Ubicación"}</h3>
+                <Para5Ubicaciones token={token} />
               </Route>
               <Route path="/seguimiento">
                 <h3>{"Seguimiento"}</h3>
