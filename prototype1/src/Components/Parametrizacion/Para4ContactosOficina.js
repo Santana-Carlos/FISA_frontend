@@ -44,8 +44,8 @@ class Para4ContactosOficina extends Component {
       loading: true,
       loadingDiag: false,
       box_spacing: window.innerHeight > 900 ? "0.6rem" : "0.2rem",
-      box_size: window.innerHeight > 900 ? "21rem" : "14rem",
-      box_sizeBig: window.innerHeight > 900 ? "43.95rem" : "29.95rem",
+      box_size: window.innerHeight > 900 ? "21rem" : "13.5rem",
+      box_sizeBig: window.innerHeight > 900 ? "42.95rem" : "28.95rem",
       winInterval: "",
     };
 
@@ -55,8 +55,8 @@ class Para4ContactosOficina extends Component {
   resizeBox = () => {
     this.setState({
       box_spacing: window.innerHeight > 900 ? "0.6rem" : "0.2rem",
-      box_size: window.innerHeight > 900 ? "21rem" : "14rem",
-      box_sizeBig: window.innerHeight > 900 ? "43.95rem" : "29.95rem",
+      box_size: window.innerHeight > 900 ? "21rem" : "13.5rem",
+      box_sizeBig: window.innerHeight > 900 ? "42.95rem" : "28.95rem",
     });
   };
 

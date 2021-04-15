@@ -82,6 +82,8 @@ class CrearOrganizacion3Contactos extends Component {
       temp_apell_con: "",
       temp_cargo_con: "",
       temp_replegal_con: false,
+      temp_tratodata_con: false,
+      temp_enviodata_con: false,
       temp_tel_con: "",
       temp_ext_con: "",
       temp_cel_con: "",
@@ -265,6 +267,8 @@ class CrearOrganizacion3Contactos extends Component {
               temp_apell_con: data.contacto.apellidos,
               temp_cargo_con: data.contacto.cargo,
               temp_replegal_con: data.contacto.representante,
+              temp_tratodata_con: data.contacto.control_informacion,
+              temp_enviodata_con: data.contacto.envio_informacion,
               temp_tel_con: data.contacto.telefono,
               temp_ext_con: data.contacto.extension,
               temp_cel_con: data.contacto.celular,
@@ -348,6 +352,8 @@ class CrearOrganizacion3Contactos extends Component {
       apellidos: this.state.temp_apell_con,
       cargo: this.state.temp_cargo_con,
       representante: this.state.temp_replegal_con,
+      control_informacion: this.state.temp_tratodata_con,
+      envio_informacion: this.state.temp_enviodata_con,
       telefono: this.state.temp_tel_con,
       extension: this.state.temp_ext_con,
       celular: this.state.temp_cel_con,
@@ -430,6 +436,8 @@ class CrearOrganizacion3Contactos extends Component {
       temp_apell_con: "",
       temp_cargo_con: "",
       temp_replegal_con: false,
+      temp_tratodata_con: false,
+      temp_enviodata_con: false,
       temp_tel_con: "",
       temp_ext_con: "",
       temp_cel_con: "",
@@ -611,6 +619,12 @@ class CrearOrganizacion3Contactos extends Component {
         if (checked && this.state.temp_cargo_con === "") {
           this.setState({ temp_cargo_con: "Representante legal" });
         }
+        break;
+      case "input_tratodata_con":
+        this.setState({ temp_tratodata_con: checked });
+        break;
+      case "input_enviodata_con":
+        this.setState({ temp_enviodata_con: checked });
         break;
       case "input_tel_con":
         this.setState({ temp_tel_con: value });
@@ -1202,6 +1216,40 @@ class CrearOrganizacion3Contactos extends Component {
             </div>
           </DialogContent>
           <DialogActions>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                marginLeft: 0,
+              }}
+            >
+              <FormControlLabel
+                style={{ margin: "0.5rem auto 0.2rem 0.6rem" }}
+                control={
+                  <Checkbox
+                    checked={this.state.temp_tratodata_con || false}
+                    color="primary"
+                    name="input_tratodata_con"
+                    onChange={this.handleChange}
+                  />
+                }
+                label="Autoriza manejo de información"
+                margin="dense"
+              />
+              <FormControlLabel
+                style={{ margin: "0.5rem auto 0.2rem 0.6rem" }}
+                control={
+                  <Checkbox
+                    checked={this.state.temp_enviodata_con || false}
+                    color="primary"
+                    name="input_enviodata_con"
+                    onChange={this.handleChange}
+                  />
+                }
+                label="Autoriza envío de información"
+                margin="dense"
+              />
+            </div>
             <div className="o-btnBotNav-btnDiag">
               <RedButton onClick={() => this.handleClose(false)}>
                 Cancelar
