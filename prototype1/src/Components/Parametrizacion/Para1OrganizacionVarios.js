@@ -85,7 +85,7 @@ class Para1OrganizacionVarios extends Component {
       .then((data) => {
         if (data.success) {
           this.setState({
-            api_tipoid: data.Tipos,
+            api_tipoid: data.tipos,
           });
         }
       })
@@ -123,7 +123,7 @@ class Para1OrganizacionVarios extends Component {
       .then((data) => {
         if (data.success) {
           this.setState({
-            api_tipoorg: data.Tipos,
+            api_tipoorg: data.tipos,
           });
         }
       })
@@ -170,7 +170,7 @@ class Para1OrganizacionVarios extends Component {
           switch (tipo) {
             case "TipoDocumentoOrganizacion":
               this.setState({
-                api_tipoid: data.Tipos,
+                api_tipoid: data.tipos,
                 loading: false,
               });
               break;
@@ -182,7 +182,7 @@ class Para1OrganizacionVarios extends Component {
               break;
             case "TipoOrganizacion":
               this.setState({
-                api_tipoorg: data.Tipos,
+                api_tipoorg: data.tipos,
                 loading: false,
               });
               break;
@@ -222,8 +222,8 @@ class Para1OrganizacionVarios extends Component {
           switch (tipo) {
             case "TipoDocumentoOrganizacion":
               this.setState({
-                temp_dato: data.Tipo.nombre,
-                temp_datosDesc: data.Tipo.descripcion,
+                temp_dato: data.tipo.nombre,
+                temp_datosDesc: data.tipo.descripcion,
                 addDato: true,
                 loadingDiag: false,
               });
@@ -238,8 +238,8 @@ class Para1OrganizacionVarios extends Component {
               break;
             case "TipoOrganizacion":
               this.setState({
-                temp_dato: data.Tipo.nombre,
-                temp_datosDesc: data.Tipo.descripcion,
+                temp_dato: data.tipo.nombre,
+                temp_datosDesc: data.tipo.descripcion,
                 addDato: true,
                 loadingDiag: false,
               });

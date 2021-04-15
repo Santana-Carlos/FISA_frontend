@@ -85,7 +85,7 @@ class Para4ContactosOficina extends Component {
       .then((data) => {
         if (data.success) {
           this.setState({
-            api_tipoid: data.Tipos,
+            api_tipoid: data.tipos,
           });
         }
       })
@@ -142,7 +142,7 @@ class Para4ContactosOficina extends Component {
       .then((data) => {
         if (data.success) {
           this.setState({
-            api_tipoofi: data.Tipos,
+            api_tipoofi: data.tipos,
             loading: false,
           });
         }
@@ -170,7 +170,7 @@ class Para4ContactosOficina extends Component {
           switch (tipo) {
             case "TipoDocumentoPersona":
               this.setState({
-                api_tipoid: data.Tipos,
+                api_tipoid: data.tipos,
                 loading: false,
               });
               break;
@@ -188,7 +188,7 @@ class Para4ContactosOficina extends Component {
               break;
             case "TipoOficina":
               this.setState({
-                api_tipoofi: data.Tipos,
+                api_tipoofi: data.tipos,
                 loading: false,
               });
               break;
@@ -222,8 +222,8 @@ class Para4ContactosOficina extends Component {
           switch (tipo) {
             case "TipoDocumentoPersona":
               this.setState({
-                temp_dato: data.Tipo.nombre,
-                temp_datosDesc: data.Tipo.descripcion,
+                temp_dato: data.tipo.nombre,
+                temp_datosDesc: data.tipo.descripcion,
                 addDato: true,
                 loadingDiag: false,
               });
@@ -246,8 +246,8 @@ class Para4ContactosOficina extends Component {
               break;
             case "TipoOficina":
               this.setState({
-                temp_dato: data.Tipo.nombre,
-                temp_datosDesc: data.Tipo.descripcion,
+                temp_dato: data.tipo.nombre,
+                temp_datosDesc: data.tipo.descripcion,
                 addDato: true,
                 loadingDiag: false,
               });
