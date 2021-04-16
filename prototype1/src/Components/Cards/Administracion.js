@@ -7,6 +7,7 @@ import Para2OrganizacionActividad from "../Parametrizacion/Para2OrganizacionActi
 import Para4ContactosOficina from "../Parametrizacion/Para4ContactosOficina";
 import Para3InfoFinanciera from "../Parametrizacion/Para3InfoFinanciera";
 import Para5Ubicaciones from "../Parametrizacion/Para5Ubicaciones";
+import Para6Seguimiento from "../Parametrizacion/Para6Seguimiento";
 import "./Cards.css";
 
 const Administracion = () => {
@@ -77,7 +78,7 @@ const Administracion = () => {
                 <Para5Ubicaciones token={token} />
               </Route>
               <Route path="/seguimiento">
-                <h3>{"Seguimiento"}</h3>
+                <Para6Seguimiento token={token} />
               </Route>
             </Switch>
           </div>
