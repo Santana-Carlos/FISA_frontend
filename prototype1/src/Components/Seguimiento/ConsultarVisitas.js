@@ -575,7 +575,7 @@ class ConsultarVisitas extends Component {
                     <TableHead>
                       <TableRow>
                         <StyledTableCell>Organización</StyledTableCell>
-                        <StyledTableCell>Fecha visita</StyledTableCell>
+                        <StyledTableCell>Fecha</StyledTableCell>
                         <StyledTableCell>Motivo</StyledTableCell>
                         <StyledTableCell>Estado</StyledTableCell>
                         <StyledTableCell></StyledTableCell>
@@ -954,6 +954,7 @@ class ConsultarVisitas extends Component {
                     <div style={{ marginBottom: BOX_SPACING }}>
                       <MuiPickersUtilsProvider utils={DateFnsUtils}>
                         <KeyboardDatePicker
+                          disableToolbar
                           inputVariant="outlined"
                           variant="inline"
                           format="dd/MM/yyyy - hh:mm a"
@@ -991,6 +992,7 @@ class ConsultarVisitas extends Component {
                     <div style={{ marginBottom: BOX_SPACING }}>
                       <MuiPickersUtilsProvider utils={DateFnsUtils}>
                         <KeyboardDatePicker
+                          disableToolbar
                           inputVariant="outlined"
                           variant="inline"
                           format="dd/MM/yyyy - hh:mm a"
