@@ -27,6 +27,24 @@ const Dashboard = () => {
   const rol = useSelector((state) => state.rol);
   const token = useSelector((state) => state.token);
   const isLog = useSelector((state) => state.isLog);
+  const callApiVis = () => {
+    fetch(process.env.REACT_APP_API_URL + "Visita/Today", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        if (data.success) {
+          console.log(data.visitas);
+        }
+      })
+      .catch((error) => {});
+  };
 
   const callApiLogout = () => {
     window.clearInterval(window.refreshToken);
@@ -52,7 +70,7 @@ const Dashboard = () => {
       <div className="o-bannerDash">
         <div className="o-bannerDash-btnContainer">
           <NavLink className="o-btnBannerLogo" to="/dashboard">
-            <Button className="o-btnBanner-btn">
+            <Button className="o-btnBanner-btn" onClick={callApiVis}>
               <img className="o-logoDash" src={logo} alt="Home" />
             </Button>
           </NavLink>
@@ -120,8 +138,6 @@ const Dashboard = () => {
               style={{
                 margin: "auto 0 0",
                 fontSize: "2.5rem",
-                color: "#ffffff",
-                textShadow: "2px 2px 6px rgba(0, 0, 0, 0.4)",
               }}
             >
               {"Bienvenido " + user}
@@ -131,7 +147,6 @@ const Dashboard = () => {
                 fontSize: "1.3rem",
                 marginTop: "0.8rem",
                 fontWeight: 200,
-                textShadow: "2px 2px 6px rgba(0, 0, 0, 0.4)",
               }}
             >
               {"Sesión iniciada como: " + rol}

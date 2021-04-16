@@ -449,7 +449,6 @@ class Para6Seguimiento extends Component {
               style={{
                 height: BOX_SIZE_BIG,
                 marginTop: "0.5rem",
-                marginRight: "auto",
               }}
             >
               <Table stickyHeader size="small">

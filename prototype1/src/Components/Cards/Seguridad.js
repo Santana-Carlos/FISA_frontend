@@ -24,9 +24,9 @@ const Seguridad = () => {
             <NavLink
               className="o-btnSidebar o-btnSidebar-seguridad"
               activeClassName="o-btnSidebar o-btnSidebar-seguridadActive"
-              to="/configuracion_de_roles"
+              to="/control_de_usuarios"
             >
-              <SideButton>Configuración de roles</SideButton>
+              <SideButton>Control de usuarios</SideButton>
             </NavLink>
             <NavLink
               className="o-btnSidebar o-btnSidebar-seguridad"
@@ -41,14 +41,8 @@ const Seguridad = () => {
               <Route path="/cambio_contraseña">
                 <h5>Cambio contraseña</h5>
               </Route>
-              <Route path="/cambio_de_campos_obligatorios">
-                <h5>Cambio campos obligatorios</h5>
-              </Route>
-              <Route path="/configuracion_de_menu">
-                <h5>Configuración de menú</h5>
-              </Route>
-              <Route path="/configuracion_de_roles">
-                <h5>Configuración de roles</h5>
+              <Route path="/control_de_usuarios">
+                <h5>Control de usuarios</h5>
               </Route>
               <Route path="/registro_de_usuario">
                 <RegistroUsuario />

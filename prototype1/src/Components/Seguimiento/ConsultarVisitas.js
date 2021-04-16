@@ -161,6 +161,7 @@ class ConsultarVisitas extends Component {
   };
 
   apiSearch = () => {
+    this.setState({ loading: true });
     const data = {
       tipo: this.state.search_tipo,
       palabra: this.state.search_pal,
@@ -1133,16 +1134,12 @@ class ConsultarVisitas extends Component {
               </DialogActions>
             </Dialog>
 
-            <Dialog
-              open={this.state.createS}
-              maxWidth={false}
-              BackdropProps={{ style: { backgroundColor: "transparent" } }}
-            >
+            <Dialog open={this.state.createS} maxWidth={false}>
               <DialogTitle style={{ textAlign: "center" }}>
-                {"Datos inválidos o insuficientes"}
+                {"No se pudo buscar"}
               </DialogTitle>
               <DialogContent style={{ textAlign: "center" }}>
-                {"(No deben haber campos obligatorios vacíos)"}
+                {"Selecciona un parámetro de filtrado"}
               </DialogContent>
               <DialogActions style={{ justifyContent: "center" }}>
                 <div className="o-btnBotNav-btnDiag3">
