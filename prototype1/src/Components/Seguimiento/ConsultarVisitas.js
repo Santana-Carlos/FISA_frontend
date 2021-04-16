@@ -561,8 +561,8 @@ class ConsultarVisitas extends Component {
                   <div className="o-btnConsultas">
                     <RedButton onClick={this.clearFunc}>Limpiar</RedButton>
                   </div>
-                  <div className="o-btnConsultas" style={{ width: "4rem" }}>
-                    <BlueButton onClick={this.apiToday}>Hoy</BlueButton>
+                  <div className="o-btnConsultas" style={{ width: "6.5rem" }}>
+                    <BlueButton onClick={this.apiToday}>Próximas</BlueButton>
                   </div>
                 </div>
               </div>
