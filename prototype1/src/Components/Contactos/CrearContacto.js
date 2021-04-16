@@ -81,10 +81,13 @@ class CrearContacto extends Component {
       temp_apell_con: "",
       temp_cargo_con: "",
       temp_replegal_con: false,
+      temp_tratodata_con: false,
+      temp_enviodata_con: false,
       temp_tel_con: "",
       temp_ext_con: "",
       temp_cel_con: "",
       temp_correo_con: "",
+      temp_correo2_con: "",
       temp_obs_con: "",
       temp_tipoid_con: "",
       temp_nid_con: "",
@@ -239,10 +242,13 @@ class CrearContacto extends Component {
       apellidos: this.state.temp_apell_con,
       cargo: this.state.temp_cargo_con,
       representante: this.state.temp_replegal_con,
+      control_informacion: this.state.temp_tratodata_con,
+      envio_informacion: this.state.temp_enviodata_con,
       telefono: this.state.temp_tel_con,
       extension: this.state.temp_ext_con,
       celular: this.state.temp_cel_con,
       email: this.state.temp_correo_con,
+      email_2: this.state.temp_correo2_con,
       estado: this.state.temp_estado_con,
       observaciones: this.state.temp_obs_con,
       tipo_documento_persona_id: this.state.temp_tipoid_con,
@@ -289,10 +295,13 @@ class CrearContacto extends Component {
       temp_apell_con: "",
       temp_cargo_con: "",
       temp_replegal_con: false,
+      temp_tratodata_con: false,
+      temp_enviodata_con: false,
       temp_tel_con: "",
       temp_ext_con: "",
       temp_cel_con: "",
       temp_correo_con: "",
+      temp_correo2_con: "",
       temp_obs_con: "",
       temp_tipoid_con: "",
       temp_nid_con: "",
@@ -486,6 +495,12 @@ class CrearContacto extends Component {
           this.setState({ temp_cargo_con: "Representante legal" });
         }
         break;
+      case "input_tratodata_con":
+        this.setState({ temp_tratodata_con: checked });
+        break;
+      case "input_enviodata_con":
+        this.setState({ temp_enviodata_con: checked });
+        break;
       case "input_tel_con":
         this.setState({ temp_tel_con: value });
         break;
@@ -497,6 +512,9 @@ class CrearContacto extends Component {
         break;
       case "input_correo_con":
         this.setState({ temp_correo_con: value });
+        break;
+      case "input_correo2_con":
+        this.setState({ temp_correo2_con: value });
         break;
       case "input_sex_con":
         this.setState({ temp_sex_con: value });
@@ -716,7 +734,10 @@ class CrearContacto extends Component {
                   checked={this.state.temp_replegal_con || false}
                   color="primary"
                   name="input_replegal_con"
-                  style={{ marginLeft: "0.6rem" }}
+                  style={{
+                    padding: "0.3rem",
+                    marginLeft: "0.6rem",
+                  }}
                   onChange={this.handleChange}
                 />
               }
@@ -833,6 +854,17 @@ class CrearContacto extends Component {
                 margin="dense"
               />
             </div>
+            <div style={{ marginBottom: BOX_SPACING }}>
+              <TextField
+                label="Correo alternativo"
+                variant="outlined"
+                name="input_correo2_con"
+                value={this.state.temp_correo2_con || ""}
+                onChange={this.handleChange}
+                className="o-space"
+                margin="dense"
+              />
+            </div>
           </div>
 
           <div className="o-contentForm">
@@ -926,6 +958,48 @@ class CrearContacto extends Component {
           </div>
         </div>
         <div className="o-btnBotNav">
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              marginLeft: 0,
+            }}
+          >
+            <FormControlLabel
+              style={{ margin: 0 }}
+              control={
+                <Checkbox
+                  checked={this.state.temp_tratodata_con || false}
+                  color="primary"
+                  name="input_tratodata_con"
+                  style={{
+                    padding: "0 0.4rem",
+                    marginLeft: "0.5rem",
+                  }}
+                  onChange={this.handleChange}
+                />
+              }
+              label="Autoriza manejo de información"
+              margin="dense"
+            />
+            <FormControlLabel
+              style={{ margin: 0 }}
+              control={
+                <Checkbox
+                  checked={this.state.temp_enviodata_con || false}
+                  color="primary"
+                  name="input_enviodata_con"
+                  style={{
+                    padding: "0 0.4rem",
+                    marginLeft: "0.5rem",
+                  }}
+                  onChange={this.handleChange}
+                />
+              }
+              label="Autoriza envío de información"
+              margin="dense"
+            />
+          </div>
           <div className="o-btnBotNav-btn" style={{ width: "10rem" }}>
             <BlueButton
               onClick={() => {

@@ -152,7 +152,7 @@ const Dashboard = () => {
                 margin: "auto 0 0.5rem",
               }}
             >
-              {"FISA © 2020 v" + process.env.REACT_APP_VERSION}
+              {"FISA © 2021 v" + process.env.REACT_APP_VERSION}
             </div>
           </div>
         </Route>

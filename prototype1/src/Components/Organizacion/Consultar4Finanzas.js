@@ -11,6 +11,7 @@ import {
   DialogTitle,
   ListItemText,
   Checkbox,
+  FormControlLabel,
   Fade,
   CircularProgress,
 } from "@material-ui/core";
@@ -53,6 +54,8 @@ class Consultar4Finanzas extends Component {
       fechaUpdated: "",
       temp_import_fin: [],
       temp_export_fin: [],
+      temp_importcheck_fin: false,
+      temp_exportcheck_fin: false,
       temp_anocuota_fin: "",
       temp_cuotaanual_fin: "",
       clas_fin_api: [],
@@ -127,6 +130,8 @@ class Consultar4Finanzas extends Component {
             fechaUpdated: data.informacion.updated_at,
             temp_cuotaanual_fin: data.informacion.cuota_anual,
             temp_anocuota_fin: data.informacion.temporada_cuota,
+            temp_importcheck_fin: data.informacion.importa,
+            temp_exportcheck_fin: data.informacion.exporta,
             temp_import_fin: data.importaciones,
             temp_export_fin: data.exportaciones,
             loading: false,
@@ -229,6 +234,8 @@ class Consultar4Finanzas extends Component {
       cuota_pautas: this.state.temp_cuopau_fin,
       temporada_cuota: this.state.temp_anocuota_fin,
       cuota_anual: this.state.temp_cuotaanual_fin,
+      importa: this.state.temp_importcheck_fin,
+      exporta: this.state.temp_exportcheck_fin,
     };
 
     fetch(process.env.REACT_APP_API_URL + "InformacionFinanciera/" + idFin, {
@@ -273,6 +280,8 @@ class Consultar4Finanzas extends Component {
       cuota_sostenimiento_real_pagada: this.state.temp_cuorealano_fin,
       cuota_real_pagada: this.state.temp_cuorealafi_fin,
       cuota_pautas: this.state.temp_cuopau_fin,
+      importa: this.state.temp_importcheck_fin,
+      exporta: this.state.temp_exportcheck_fin,
     };
 
     fetch(process.env.REACT_APP_API_URL + "InformacionFinanciera/", {
@@ -301,6 +310,7 @@ class Consultar4Finanzas extends Component {
   handleChange(event) {
     let value = event.target.value;
     let name = event.target.name;
+    let checked = event.target.checked;
 
     switch (name) {
       case "input_ingope_fin":
@@ -375,6 +385,12 @@ class Consultar4Finanzas extends Component {
         break;
       case "input_export_fin":
         this.setState({ temp_export_fin: value });
+        break;
+      case "input_importcheck_fin":
+        this.setState({ temp_importcheck_fin: checked });
+        break;
+      case "input_exportcheck_fin":
+        this.setState({ temp_exportcheck_fin: checked });
         break;
       default:
         break;
@@ -693,7 +709,49 @@ class Consultar4Finanzas extends Component {
           </div>
         </div>
         <div className="o-btnBotNav">
-          <div style={{ color: "#FFFFFF" }}>{"Me encontraste!"}</div>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              marginLeft: 0,
+            }}
+          >
+            <FormControlLabel
+              style={{ margin: 0 }}
+              control={
+                <Checkbox
+                  checked={this.state.temp_importcheck_fin || false}
+                  color="primary"
+                  name="input_importcheck_fin"
+                  style={{
+                    padding: "0 0.4rem",
+                    marginLeft: "0.5rem",
+                  }}
+                  onChange={this.handleChange}
+                />
+              }
+              label="Importa"
+              margin="dense"
+            />
+            <FormControlLabel
+              style={{ margin: 0 }}
+              control={
+                <Checkbox
+                  checked={this.state.temp_exportcheck_fin || false}
+                  color="primary"
+                  name="input_exportcheck_fin"
+                  style={{
+                    padding: "0 0.4rem",
+                    marginLeft: "1.5rem",
+                  }}
+                  onChange={this.handleChange}
+                />
+              }
+              label="Exporta"
+              margin="dense"
+            />
+          </div>
           <div className="o-btnBotNavDoble">
             <div className="o-btnBotNav-btn">
               <GreenButton

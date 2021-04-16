@@ -47,8 +47,8 @@ class Para2OrganizacionActividad extends Component {
       loading: true,
       loadingDiag: false,
       box_spacing: window.innerHeight > 900 ? "0.6rem" : "0.2rem",
-      box_size: window.innerHeight > 900 ? "21rem" : "14rem",
-      box_sizeBig: window.innerHeight > 900 ? "43.95rem" : "29.95rem",
+      box_size: window.innerHeight > 900 ? "22rem" : "13rem",
+      box_sizeBig: window.innerHeight > 900 ? "45.45rem" : "27.45rem",
       winInterval: "",
     };
 
@@ -58,8 +58,8 @@ class Para2OrganizacionActividad extends Component {
   resizeBox = () => {
     this.setState({
       box_spacing: window.innerHeight > 900 ? "0.6rem" : "0.2rem",
-      box_size: window.innerHeight > 900 ? "21rem" : "14rem",
-      box_sizeBig: window.innerHeight > 900 ? "43.95rem" : "29.95rem",
+      box_size: window.innerHeight > 900 ? "22rem" : "13rem",
+      box_sizeBig: window.innerHeight > 900 ? "45.45rem" : "27.45rem",
     });
   };
 
@@ -268,8 +268,8 @@ class Para2OrganizacionActividad extends Component {
     switch (tipo) {
       case "Sector":
         data = {
-          nombre: this.state.temp_dato,
           descripcion: this.state.temp_datosDesc,
+          nombre: this.state.temp_dato,
         };
         break;
       case "Subsector":
@@ -289,7 +289,7 @@ class Para2OrganizacionActividad extends Component {
         break;
     }
 
-    console.log(data);
+    console.log(JSON.stringify(data));
     fetch(process.env.REACT_APP_API_URL + tipo, {
       method: "POST",
       headers: {
@@ -370,7 +370,6 @@ class Para2OrganizacionActividad extends Component {
       default:
         break;
     }
-
     fetch(process.env.REACT_APP_API_URL + tipo + "/" + id, {
       method: "PUT",
       headers: {
@@ -498,7 +497,7 @@ class Para2OrganizacionActividad extends Component {
           <div className="o-contentForm-parametros30per">
             <TableContainer
               className="o-tableBase-consultas"
-              style={{ height: BOX_SIZE, marginTop: "1rem" }}
+              style={{ height: BOX_SIZE, marginTop: "0.5rem" }}
             >
               <Table stickyHeader size="small">
                 <TableHead>
@@ -617,7 +616,7 @@ class Para2OrganizacionActividad extends Component {
                   color: "gray",
                   width: "100%",
                   height: BOX_SIZE,
-                  marginTop: "1.8rem",
+                  marginTop: "1.3rem",
                   border: "1px solid #3e3e3e",
                   borderRadius: "5px",
                 }}
@@ -632,7 +631,7 @@ class Para2OrganizacionActividad extends Component {
             ) : (
               <TableContainer
                 className="o-tableBase-consultas"
-                style={{ height: BOX_SIZE, marginTop: "1.8rem" }}
+                style={{ height: BOX_SIZE, marginTop: "1.3rem" }}
               >
                 <Table stickyHeader size="small">
                   <TableHead>
@@ -721,7 +720,7 @@ class Para2OrganizacionActividad extends Component {
           <div className="o-contentForm-parametros60per">
             <TableContainer
               className="o-tableBase-consultas"
-              style={{ height: BOX_SIZE_BIG, marginTop: "1rem" }}
+              style={{ height: BOX_SIZE_BIG, marginTop: "0.5rem" }}
             >
               <Table stickyHeader size="small">
                 <TableHead>
@@ -852,10 +851,9 @@ class Para2OrganizacionActividad extends Component {
             >
               <div style={{ marginBottom: BOX_SPACING }}>
                 <TextField
-                  id="outlined-textarea"
                   label="Nombre"
-                  value={this.state.temp_dato || ""}
                   variant="outlined"
+                  value={this.state.temp_dato || ""}
                   name="input_temp_dato"
                   onChange={this.handleChange}
                   className="o-space"
@@ -864,7 +862,6 @@ class Para2OrganizacionActividad extends Component {
               </div>
               <div style={{ marginBottom: BOX_SPACING }}>
                 <TextField
-                  id="outlined-textarea"
                   label="Descripción"
                   value={this.state.temp_datosDesc || ""}
                   multiline
@@ -939,7 +936,6 @@ class Para2OrganizacionActividad extends Component {
             >
               <div style={{ marginBottom: BOX_SPACING }}>
                 <TextField
-                  id="outlined-textarea"
                   label="Código"
                   value={this.state.temp_dato || ""}
                   variant="outlined"
@@ -951,7 +947,6 @@ class Para2OrganizacionActividad extends Component {
               </div>
               <div style={{ marginBottom: BOX_SPACING }}>
                 <TextField
-                  id="outlined-textarea"
                   label="Descripción"
                   value={this.state.temp_datosDesc || ""}
                   multiline

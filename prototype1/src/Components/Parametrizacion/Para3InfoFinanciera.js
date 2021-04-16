@@ -45,8 +45,8 @@ class Para3InfoFinanciera extends Component {
       loading: true,
       loadingDiag: false,
       box_spacing: window.innerHeight > 900 ? "0.6rem" : "0.2rem",
-      box_size: window.innerHeight > 900 ? "21rem" : "13.5rem",
-      box_sizeBig: window.innerHeight > 900 ? "42.95rem" : "28.95rem",
+      box_size: window.innerHeight > 900 ? "22rem" : "13rem",
+      box_sizeBig: window.innerHeight > 900 ? "45.45rem" : "27.45rem",
       winInterval: "",
     };
 
@@ -56,8 +56,8 @@ class Para3InfoFinanciera extends Component {
   resizeBox = () => {
     this.setState({
       box_spacing: window.innerHeight > 900 ? "0.6rem" : "0.2rem",
-      box_size: window.innerHeight > 900 ? "21rem" : "13.5rem",
-      box_sizeBig: window.innerHeight > 900 ? "42.95rem" : "28.95rem",
+      box_size: window.innerHeight > 900 ? "22rem" : "13rem",
+      box_sizeBig: window.innerHeight > 900 ? "45.45rem" : "27.45rem",
     });
   };
 
@@ -410,7 +410,7 @@ class Para3InfoFinanciera extends Component {
           <div className="o-contentForm-parametros60per">
             <TableContainer
               className="o-tableBase-consultas"
-              style={{ height: BOX_SIZE_BIG, marginTop: "1rem" }}
+              style={{ height: BOX_SIZE_BIG, marginTop: "0.5rem" }}
             >
               <Table stickyHeader size="small">
                 <TableHead>
@@ -510,7 +510,7 @@ class Para3InfoFinanciera extends Component {
           <div className="o-contentForm-parametros30per">
             <TableContainer
               className="o-tableBase-consultas"
-              style={{ height: BOX_SIZE, marginTop: "1rem" }}
+              style={{ height: BOX_SIZE, marginTop: "0.5rem" }}
             >
               <Table stickyHeader size="small">
                 <TableHead>

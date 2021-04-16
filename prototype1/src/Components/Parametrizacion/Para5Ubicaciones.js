@@ -45,7 +45,7 @@ class Para5Ubicaciones extends Component {
       loading: true,
       loadingDiag: false,
       box_spacing: window.innerHeight > 900 ? "0.6rem" : "0.2rem",
-      box_sizeBig: window.innerHeight > 900 ? "42.95rem" : "28.95rem",
+      box_sizeBig: window.innerHeight > 900 ? "45.45rem" : "27.45rem",
       winInterval: "",
     };
 
@@ -55,7 +55,7 @@ class Para5Ubicaciones extends Component {
   resizeBox = () => {
     this.setState({
       box_spacing: window.innerHeight > 900 ? "0.6rem" : "0.2rem",
-      box_sizeBig: window.innerHeight > 900 ? "42.95rem" : "28.95rem",
+      box_sizeBig: window.innerHeight > 900 ? "45.45rem" : "27.45rem",
     });
   };
 
@@ -224,29 +224,11 @@ class Para5Ubicaciones extends Component {
   callApiAdd = () => {
     this.setState({ loadingDiag: true });
     const tipo = this.state.temp_tipo;
-    let data = {};
-
-    switch (tipo) {
-      case "Pais":
-        data = {
-          nombre: this.state.temp_dato,
-        };
-        break;
-      case "DepartamentoEstado":
-        data = {
-          pais_id: this.state.temp_idPais,
-          nombre: this.state.temp_dato,
-        };
-        break;
-      case "Ciudad":
-        data = {
-          departamento_estado_id: this.state.temp_idEst,
-          nombre: this.state.temp_dato,
-        };
-        break;
-      default:
-        break;
-    }
+    const data = {
+      nombre: this.state.temp_dato,
+      pais_id: this.state.temp_idPais,
+      departamento_estado_id: this.state.temp_idEst,
+    };
 
     console.log(data);
     fetch(process.env.REACT_APP_API_URL + tipo + "/", {
@@ -271,7 +253,7 @@ class Para5Ubicaciones extends Component {
                   loadingDiag: false,
                   loading: true,
                 },
-                this.callApiRefresh()
+                this.callApi()
               );
               break;
             case "DepartamentoEstado":
@@ -497,7 +479,7 @@ class Para5Ubicaciones extends Component {
           <div className="o-contentForm-parametros30per">
             <TableContainer
               className="o-tableBase-consultas"
-              style={{ height: BOX_SIZE_BIG, marginTop: "1rem" }}
+              style={{ height: BOX_SIZE_BIG, marginTop: "0.5rem" }}
             >
               <Table stickyHeader size="small">
                 <TableHead>
@@ -618,7 +600,7 @@ class Para5Ubicaciones extends Component {
                   color: "gray",
                   width: "100%",
                   height: BOX_SIZE_BIG,
-                  marginTop: "1rem",
+                  marginTop: "0.5rem",
                   border: "1px solid #3e3e3e",
                   borderRadius: "5px",
                 }}
@@ -631,12 +613,12 @@ class Para5Ubicaciones extends Component {
             ) : (
               <TableContainer
                 className="o-tableBase-consultas"
-                style={{ height: BOX_SIZE_BIG, marginTop: "1rem" }}
+                style={{ height: BOX_SIZE_BIG, marginTop: "0.5rem" }}
               >
                 <Table stickyHeader size="small">
                   <TableHead>
                     <TableRow>
-                      <StyledTableCell>Departamentos/Est.</StyledTableCell>
+                      <StyledTableCell>Estados/Dep.</StyledTableCell>
                       <StyledTableCell></StyledTableCell>
                       <StyledTableCell></StyledTableCell>
                       <StyledTableCell align="right">
@@ -753,7 +735,7 @@ class Para5Ubicaciones extends Component {
                   color: "gray",
                   width: "100%",
                   height: BOX_SIZE_BIG,
-                  marginTop: "1rem",
+                  marginTop: "0.5rem",
                   border: "1px solid #3e3e3e",
                   borderRadius: "5px",
                 }}
@@ -768,7 +750,7 @@ class Para5Ubicaciones extends Component {
             ) : (
               <TableContainer
                 className="o-tableBase-consultas"
-                style={{ height: BOX_SIZE_BIG, marginTop: "1rem" }}
+                style={{ height: BOX_SIZE_BIG, marginTop: "0.5rem" }}
               >
                 <Table stickyHeader size="small">
                   <TableHead>

@@ -113,6 +113,7 @@
   flex-direction: row;
   margin-top: auto;
   justify-content: space-between;
+  align-items: center;
   text-decoration: none;
 }
 
@@ -187,7 +188,7 @@
 .o-diagSubTittle2 {
   font-size: 1rem;
   font-weight: 400;
-  margin: 1rem 0 0.2rem;
+  margin: 1.3rem 0 0.2rem;
 }
 
 .o-row {
@@ -208,7 +209,7 @@
   flex-direction: column;
   flex-wrap: wrap;
   justify-content: flex-start;
-  margin: 0;
+  margin: -0;
   width: 37%;
 }
 
@@ -464,7 +465,7 @@
   flex-direction: column;
   width: 30%;
   max-height: 100%;
-  margin: 0.5rem auto 0;
+  margin: 0 auto;
 }
 
 .o-contentForm-parametros60per {
@@ -472,5 +473,5 @@
   flex-direction: column;
   width: 63%;
   max-height: 100%;
-  margin: 0.5rem auto 0;
+  margin: 0 auto;
 }

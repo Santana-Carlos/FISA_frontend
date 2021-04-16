@@ -180,6 +180,7 @@ class CrearTareas extends Component {
             temp_des_tar: data.tarea.descripcion,
             temp_res_tar: data.tarea.resultado,
             temp_estado_tar: data.tarea.estado_id,
+            loadingDiag: false,
             addTarea: true,
           });
         })

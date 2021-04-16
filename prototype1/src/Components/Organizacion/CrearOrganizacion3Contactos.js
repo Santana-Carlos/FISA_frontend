@@ -88,6 +88,7 @@ class CrearOrganizacion3Contactos extends Component {
       temp_ext_con: "",
       temp_cel_con: "",
       temp_correo_con: "",
+      temp_correo2_con: "",
       temp_obs_con: "",
       temp_tipoid_con: "",
       temp_nid_con: "",
@@ -273,6 +274,7 @@ class CrearOrganizacion3Contactos extends Component {
               temp_ext_con: data.contacto.extension,
               temp_cel_con: data.contacto.celular,
               temp_correo_con: data.contacto.email,
+              temp_correo2_con: data.contacto.email_2,
               temp_obs_con: data.contacto.observaciones,
               temp_tipoid_con: data.contacto.tipo_documento_persona_id,
               temp_nid_con: data.contacto.numero_documento,
@@ -358,6 +360,7 @@ class CrearOrganizacion3Contactos extends Component {
       extension: this.state.temp_ext_con,
       celular: this.state.temp_cel_con,
       email: this.state.temp_correo_con,
+      email_2: this.state.temp_correo2_con,
       estado: this.state.temp_estado_con,
       observaciones: this.state.temp_obs_con,
       tipo_documento_persona_id: this.state.temp_tipoid_con,
@@ -442,6 +445,7 @@ class CrearOrganizacion3Contactos extends Component {
       temp_ext_con: "",
       temp_cel_con: "",
       temp_correo_con: "",
+      temp_correo2_con: "",
       temp_obs_con: "",
       temp_tipoid_con: "",
       temp_nid_con: "",
@@ -637,6 +641,9 @@ class CrearOrganizacion3Contactos extends Component {
         break;
       case "input_correo_con":
         this.setState({ temp_correo_con: value });
+        break;
+      case "input_correo2_con":
+        this.setState({ temp_correo2_con: value });
         break;
       case "input_sex_con":
         this.setState({ temp_sex_con: value });
@@ -893,7 +900,7 @@ class CrearOrganizacion3Contactos extends Component {
           </DialogTitle>
           <div className="o-diagContent"></div>
           <DialogContent>
-            <div className="o-contentForm-big">
+            <div className="o-contentForm-big" style={{ margin: 0 }}>
               <div className="o-contentFormDiag">
                 <h3 className="o-diagSubTittle">Datos básicos</h3>
                 <div style={{ marginBottom: BOX_SPACING }}>
@@ -1021,13 +1028,54 @@ class CrearOrganizacion3Contactos extends Component {
                       checked={this.state.temp_replegal_con || false}
                       color="primary"
                       name="input_replegal_con"
-                      style={{ marginLeft: "0.6rem" }}
+                      style={{
+                        padding: "0.3rem",
+                        marginLeft: "0.6rem",
+                      }}
                       onChange={this.handleChange}
                     />
                   }
                   label="Representante legal"
                   margin="dense"
                 />
+                <FormControl
+                  variant="outlined"
+                  margin="dense"
+                  error={
+                    this.state.reqText && this.state.temp_estado_con === ""
+                  }
+                >
+                  <InputLabel id="demo-simple-select-outlined-label">
+                    <div style={{ display: "flex", flexDirection: "row" }}>
+                      {"Estado"}
+                      <div style={{ color: "#FF0000", marginLeft: "0.1rem" }}>
+                        {"*"}
+                      </div>
+                    </div>
+                  </InputLabel>
+                  <Select
+                    labelId="demo-simple-select-outlined-label"
+                    id="demo-simple-select-outlined"
+                    value={this.state.temp_estado_con}
+                    onChange={this.handleChange}
+                    label="Estado*"
+                    name="input_estado_con"
+                    className="o-space"
+                    style={{ marginBottom: BOX_SPACING }}
+                  >
+                    <MenuItem
+                      disabled={true}
+                      value="input_estado_con"
+                    ></MenuItem>
+                    {this.state.estado_con_api.map((obj, i) => {
+                      return (
+                        <MenuItem key={i} value={obj.id}>
+                          {obj.nombre}
+                        </MenuItem>
+                      );
+                    })}
+                  </Select>
+                </FormControl>
                 <div style={{ marginBottom: BOX_SPACING }}>
                   <Autocomplete
                     multiple
@@ -1162,11 +1210,22 @@ class CrearOrganizacion3Contactos extends Component {
                 </div>
                 <div style={{ marginBottom: BOX_SPACING }}>
                   <TextField
+                    label="Correo alternativo"
+                    variant="outlined"
+                    name="input_correo2_con"
+                    value={this.state.temp_correo2_con || ""}
+                    onChange={this.handleChange}
+                    className="o-space"
+                    margin="dense"
+                  />
+                </div>
+                <div style={{ marginBottom: BOX_SPACING }}>
+                  <TextField
                     id="outlined-textarea"
                     label="Observaciones"
                     value={this.state.temp_obs_con || ""}
                     multiline
-                    rows={2}
+                    rows={3}
                     variant="outlined"
                     name="input_obs_con"
                     onChange={this.handleChange}
@@ -1174,48 +1233,10 @@ class CrearOrganizacion3Contactos extends Component {
                     margin="dense"
                   />
                 </div>
-                <FormControl
-                  variant="outlined"
-                  margin="dense"
-                  error={
-                    this.state.reqText && this.state.temp_estado_con === ""
-                  }
-                >
-                  <InputLabel id="demo-simple-select-outlined-label">
-                    <div style={{ display: "flex", flexDirection: "row" }}>
-                      {"Estado"}
-                      <div style={{ color: "#FF0000", marginLeft: "0.1rem" }}>
-                        {"*"}
-                      </div>
-                    </div>
-                  </InputLabel>
-                  <Select
-                    labelId="demo-simple-select-outlined-label"
-                    id="demo-simple-select-outlined"
-                    value={this.state.temp_estado_con}
-                    onChange={this.handleChange}
-                    label="Estado*"
-                    name="input_estado_con"
-                    className="o-space"
-                    style={{ marginBottom: BOX_SPACING }}
-                  >
-                    <MenuItem
-                      disabled={true}
-                      value="input_estado_con"
-                    ></MenuItem>
-                    {this.state.estado_con_api.map((obj, i) => {
-                      return (
-                        <MenuItem key={i} value={obj.id}>
-                          {obj.nombre}
-                        </MenuItem>
-                      );
-                    })}
-                  </Select>
-                </FormControl>
               </div>
             </div>
           </DialogContent>
-          <DialogActions>
+          <DialogActions style={{ justifyContent: "space-between" }}>
             <div
               style={{
                 display: "flex",
@@ -1224,12 +1245,16 @@ class CrearOrganizacion3Contactos extends Component {
               }}
             >
               <FormControlLabel
-                style={{ margin: "0.5rem auto 0.2rem 0.6rem" }}
+                style={{ margin: 0 }}
                 control={
                   <Checkbox
                     checked={this.state.temp_tratodata_con || false}
                     color="primary"
                     name="input_tratodata_con"
+                    style={{
+                      padding: "0 0.4rem",
+                      marginLeft: "0.5rem",
+                    }}
                     onChange={this.handleChange}
                   />
                 }
@@ -1237,12 +1262,16 @@ class CrearOrganizacion3Contactos extends Component {
                 margin="dense"
               />
               <FormControlLabel
-                style={{ margin: "0.5rem auto 0.2rem 0.6rem" }}
+                style={{ margin: 0 }}
                 control={
                   <Checkbox
                     checked={this.state.temp_enviodata_con || false}
                     color="primary"
                     name="input_enviodata_con"
+                    style={{
+                      padding: "0 0.4rem",
+                      marginLeft: "0.5rem",
+                    }}
                     onChange={this.handleChange}
                   />
                 }
@@ -1250,15 +1279,17 @@ class CrearOrganizacion3Contactos extends Component {
                 margin="dense"
               />
             </div>
-            <div className="o-btnBotNav-btnDiag">
-              <RedButton onClick={() => this.handleClose(false)}>
-                Cancelar
-              </RedButton>
-            </div>
-            <div className="o-btnBotNav-btnDiag2">
-              <GreenButton onClick={() => this.handleClose(true)}>
-                Guardar
-              </GreenButton>
+            <div style={{ display: "flex", flexDirection: "row" }}>
+              <div className="o-btnBotNav-btnDiag">
+                <RedButton onClick={() => this.handleClose(false)}>
+                  Cancelar
+                </RedButton>
+              </div>
+              <div className="o-btnBotNav-btnDiag2">
+                <GreenButton onClick={() => this.handleClose(true)}>
+                  Guardar
+                </GreenButton>
+              </div>
             </div>
           </DialogActions>
         </Dialog>
