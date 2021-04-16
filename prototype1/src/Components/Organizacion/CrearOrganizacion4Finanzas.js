@@ -87,6 +87,7 @@ class CrearOrganizacion4Finanzas extends Component {
       })
       .catch((error) => {});
     this.callApi();
+    this.callApiOI();
   }
 
   callApi = () => {
@@ -131,13 +132,42 @@ class CrearOrganizacion4Finanzas extends Component {
             temp_anocuota_fin: data.informacion.temporada_cuota,
             temp_importcheck_fin: data.informacion.importa,
             temp_exportcheck_fin: data.informacion.exporta,
+            loading: false,
+          });
+        }
+      })
+      .catch((error) => {
+        this.setState({ loading: false });
+      });
+  };
+
+  callApiOI = () => {
+    const data = {
+      organizacion_id: this.props.dbid_org,
+    };
+    fetch(process.env.REACT_APP_API_URL + "InformacionFinanciera/Org", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + this.props.token,
+      },
+      body: JSON.stringify(data),
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        if (data.success) {
+          this.setState({
             temp_import_fin: data.importaciones,
             temp_export_fin: data.exportaciones,
             loading: false,
           });
         }
       })
-      .catch((error) => {});
+      .catch((error) => {
+        this.setState({ loading: false });
+      });
   };
 
   handleClose = (a) => {
@@ -149,9 +179,9 @@ class CrearOrganizacion4Finanzas extends Component {
         temp_export_fin: [],
         temp_import_fin: [],
       });
-      this.callApi();
+      this.callApiOI();
     }
-    setTimeout(this.callApi, 2000);
+    setTimeout(this.callApiOI, 2000);
     this.setState({ openInter: false });
   };
 
@@ -204,8 +234,8 @@ class CrearOrganizacion4Finanzas extends Component {
         return response.json();
       })
       .catch((error) => {});
-    setTimeout(this.callApi, 2000);
-    setTimeout(this.callApi, 5000);
+    setTimeout(this.callApiOI, 2000);
+    setTimeout(this.callApiOI, 5000);
   };
 
   callApiPost = (a) => {
