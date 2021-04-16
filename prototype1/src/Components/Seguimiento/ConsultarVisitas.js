@@ -922,7 +922,7 @@ class ConsultarVisitas extends Component {
                         value={this.state.temp_id_ofi}
                         onChange={this.handleChange}
                         label="Oficina"
-                        name="input_estado_vis"
+                        name="input_id_ofi"
                         className="o-space"
                         style={{ marginBottom: 0 }}
                       >

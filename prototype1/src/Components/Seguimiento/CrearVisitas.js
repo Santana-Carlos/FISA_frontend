@@ -25,7 +25,7 @@ import {
 import { Autocomplete } from "@material-ui/lab";
 import {
   MuiPickersUtilsProvider,
-  KeyboardDateTimePicker,
+  KeyboardDatePicker,
 } from "@material-ui/pickers";
 import {
   BlueButton,
@@ -412,6 +412,9 @@ class CrearVisitas extends Component {
         break;
       case "input_obs_vis":
         this.setState({ temp_obs_vis: value });
+        break;
+      case "input_id_ofi":
+        this.setState({ temp_id_ofi: value });
         break;
       case "input_estado_vis":
         this.setState({ temp_estado_vis: value });
@@ -815,10 +818,7 @@ class CrearVisitas extends Component {
                       />
                     </div>
 
-                    <FormControl
-                      variant="outlined"
-                      margin="dense"
-                    >
+                    <FormControl variant="outlined" margin="dense">
                       <InputLabel id="demo-simple-select-outlined-label">
                         Oficina
                       </InputLabel>
@@ -828,7 +828,7 @@ class CrearVisitas extends Component {
                         value={this.state.temp_id_ofi}
                         onChange={this.handleChange}
                         label="Oficina"
-                        name="input_estado_vis"
+                        name="input_id_ofi"
                         className="o-space"
                         style={{ marginBottom: 0 }}
                       >
@@ -851,7 +851,8 @@ class CrearVisitas extends Component {
                     <h3 className="o-diagSubTittle">Desarrollo</h3>
                     <div style={{ marginBottom: BOX_SPACING }}>
                       <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                        <KeyboardDateTimePicker
+                        <KeyboardDatePicker
+                          disableToolbar
                           inputVariant="outlined"
                           variant="inline"
                           format="dd/MM/yyyy - hh:mm a"
@@ -888,7 +889,8 @@ class CrearVisitas extends Component {
                     </div>
                     <div style={{ marginBottom: BOX_SPACING }}>
                       <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                        <KeyboardDateTimePicker
+                        <KeyboardDatePicker
+                          disableToolbar
                           inputVariant="outlined"
                           variant="inline"
                           format="dd/MM/yyyy - hh:mm a"
