@@ -37,7 +37,7 @@ class EditarContacto extends Component {
       subcat_con_api: [],
       ofices_api: [],
       orgs_api: [],
-      sex_con_api: ["Masculino", "Femenino", "Otro"],
+      sex_con_api: [],
       estado_con_api: [
         {
           id: true,
@@ -95,6 +95,7 @@ class EditarContacto extends Component {
         this.setState({
           tipoid_con_api: data.tipos,
           subcat_con_api: data.subcategorias,
+          sex_con_api: data.sexos,
         });
       })
       .catch((error) => {});
@@ -154,7 +155,7 @@ class EditarContacto extends Component {
             temp_obs_con: data.contacto.observaciones,
             temp_tipoid_con: data.contacto.tipo_documento_persona_id,
             temp_nid_con: data.contacto.numero_documento,
-            temp_sex_con: data.contacto.sexo,
+            temp_sex_con: data.contacto.sexo_id,
             temp_estado_con: data.contacto.estado,
             userUpdated_con: data.usuario_actualizacion.usuario,
             fechaUpdated_con: data.contacto.updated_at,
@@ -236,7 +237,7 @@ class EditarContacto extends Component {
       observaciones: this.state.temp_obs_con,
       tipo_documento_persona_id: this.state.temp_tipoid_con,
       numero_documento: this.state.temp_nid_con,
-      sexo: this.state.temp_sex_con,
+      sexo_id: this.state.temp_sex_con,
       categorias: this.state.temp_subcat_con,
     };
     fetch(process.env.REACT_APP_API_URL + "Contacto/" + idCon, {
@@ -523,8 +524,8 @@ class EditarContacto extends Component {
                 <MenuItem disabled={true} value="input_sex_con"></MenuItem>
                 {this.state.sex_con_api.map((obj, i) => {
                   return (
-                    <MenuItem key={i} value={obj}>
-                      {obj}
+                    <MenuItem key={i} value={obj.id}>
+                      {obj.nombre}
                     </MenuItem>
                   );
                 })}
