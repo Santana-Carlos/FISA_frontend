@@ -818,7 +818,11 @@ class CrearVisitas extends Component {
                       />
                     </div>
 
-                    <FormControl variant="outlined" margin="dense">
+                    <FormControl
+                      variant="outlined"
+                      margin="dense"
+                      style={{ maxWidth: "100%" }}
+                    >
                       <InputLabel id="demo-simple-select-outlined-label">
                         Oficina
                       </InputLabel>
@@ -839,7 +843,9 @@ class CrearVisitas extends Component {
                         {this.state.oficina_org_api.map((obj, i) => {
                           return (
                             <MenuItem key={i} value={obj.id}>
-                              {obj.direccion}
+                              {obj.direccion}{" "}
+                              {obj.ciudad + " " + obj.departamento_estado} -{" "}
+                              {obj.pais}
                             </MenuItem>
                           );
                         })}

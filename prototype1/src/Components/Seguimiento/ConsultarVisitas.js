@@ -23,7 +23,7 @@ import {
 import { Autocomplete } from "@material-ui/lab";
 import {
   MuiPickersUtilsProvider,
-  KeyboardDateTimePicker,
+  KeyboardDatePicker,
 } from "@material-ui/pickers";
 import {
   BlueButton,
@@ -92,6 +92,7 @@ class ConsultarVisitas extends Component {
     };
 
     this.handleChange = this.handleChange.bind(this);
+    this.handleChangeCon = this.handleChangeCon.bind(this);
   }
 
   resizeBox = () => {
@@ -865,13 +866,17 @@ class ConsultarVisitas extends Component {
                         noOptionsText={null}
                         getOptionLabel={(option) =>
                           option.nombres +
+                          " " +
                           option.apellidos +
-                          " - Cel. " +
-                          option.celular +
-                          "Tel." +
-                          option.telefono +
-                          "Ext. " +
-                          option.extension
+                          (option.celular === null
+                            ? ""
+                            : " - Cel. " + option.celular) +
+                          (option.telefono === null
+                            ? ""
+                            : " - Tel." + option.telefono) +
+                          (option.extension === null
+                            ? ""
+                            : " - Ext. " + option.extension)
                         }
                         renderInput={(params) => (
                           <TextField
@@ -909,6 +914,7 @@ class ConsultarVisitas extends Component {
                     <FormControl
                       variant="outlined"
                       margin="dense"
+                      style={{ maxWidth: "100%" }}
                       error={
                         this.state.reqText && this.state.temp_estado_vis === ""
                       }
@@ -933,7 +939,9 @@ class ConsultarVisitas extends Component {
                         {this.state.oficina_org_api.map((obj, i) => {
                           return (
                             <MenuItem key={i} value={obj.id}>
-                              {obj.direccion} {obj.ciudad} - {obj.pais}
+                              {obj.direccion}{" "}
+                              {obj.ciudad + " " + obj.departamento_estado} -{" "}
+                              {obj.pais}
                             </MenuItem>
                           );
                         })}
@@ -945,7 +953,7 @@ class ConsultarVisitas extends Component {
                     <h3 className="o-diagSubTittle">Desarrollo</h3>
                     <div style={{ marginBottom: BOX_SPACING }}>
                       <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                        <KeyboardDateTimePicker
+                        <KeyboardDatePicker
                           inputVariant="outlined"
                           variant="inline"
                           format="dd/MM/yyyy - hh:mm a"
@@ -982,7 +990,7 @@ class ConsultarVisitas extends Component {
                     </div>
                     <div style={{ marginBottom: BOX_SPACING }}>
                       <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                        <KeyboardDateTimePicker
+                        <KeyboardDatePicker
                           inputVariant="outlined"
                           variant="inline"
                           format="dd/MM/yyyy - hh:mm a"
