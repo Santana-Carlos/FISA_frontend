@@ -17,7 +17,6 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  IconButton,
   Checkbox,
   Fade,
   CircularProgress,
@@ -32,6 +31,7 @@ import {
   GreenButton,
   RedButton,
   StyledTableCell,
+  StyledIconButton as IconButton,
 } from "../Buttons";
 import {
   AddCircleOutline as IconAddCircle,
@@ -656,13 +656,9 @@ class CrearVisitas extends Component {
                         <StyledTableCell size="small">
                           {obj.subsector === null ? emptyCell : obj.subsector}
                         </StyledTableCell>
-                        <StyledTableCell
-                          size="small"
-                          style={{ paddingRight: "0.1rem" }}
-                        >
+                        <StyledTableCell size="small" align="right">
                           <IconButton
                             size="small"
-                            className="o-tinyBtn"
                             color="primary"
                             onClick={() =>
                               this.setState(
@@ -683,6 +679,11 @@ class CrearVisitas extends Component {
                     {this.state.orgs[0] === undefined ? (
                       <TableRow>
                         <StyledTableCell>...</StyledTableCell>
+                        <StyledTableCell></StyledTableCell>
+                        <StyledTableCell></StyledTableCell>
+                        <StyledTableCell></StyledTableCell>
+                        <StyledTableCell></StyledTableCell>
+                        <StyledTableCell></StyledTableCell>
                       </TableRow>
                     ) : null}
                   </TableBody>

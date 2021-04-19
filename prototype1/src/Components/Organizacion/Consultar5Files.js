@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { saveAs } from "file-saver";
 import {
-  IconButton,
   Dialog,
   DialogActions,
   DialogContent,
@@ -25,6 +24,7 @@ import {
   RedButton,
   StyledTableCell,
   StyledTableCellBig,
+  StyledIconButton as IconButton,
 } from "../Buttons";
 import { Link } from "react-router-dom";
 import TxtIcon from "../../Assets/01_ext.png";
@@ -275,7 +275,6 @@ class Consultar5Files extends Component {
                     <StyledTableCell>Tipo</StyledTableCell>
                     <StyledTableCell>Creación</StyledTableCell>
                     <StyledTableCell></StyledTableCell>
-                    <StyledTableCell></StyledTableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -295,47 +294,42 @@ class Consultar5Files extends Component {
                       <StyledTableCell size="small">
                         {obj.creacion}
                       </StyledTableCell>
-                      <StyledTableCell
-                        size="small"
-                        style={{ paddingRight: "0.1rem" }}
-                      >
-                        <IconButton
-                          size="small"
-                          className="o-tinyBtn"
-                          color="primary"
-                          onClick={() =>
-                            this.setState(
-                              { temp_id_fil: obj.id },
-                              this.callAPiDownload
-                            )
-                          }
-                        >
-                          <IconDownload />
-                        </IconButton>
-                      </StyledTableCell>
-                      <StyledTableCell
-                        size="small"
-                        className="o-tinyBtn"
-                        style={{ paddingLeft: "0.1rem" }}
-                      >
-                        <IconButton
-                          size="small"
-                          color="secondary"
-                          onClick={() =>
-                            this.setState(
-                              { temp_id_fil: obj.id },
-                              this.handleClickOpenDel
-                            )
-                          }
-                        >
-                          <IconDelete />
-                        </IconButton>
+                      <StyledTableCell size="small" align="right">
+                        <div className="o-row-btnIcon">
+                          <IconButton
+                            size="small"
+                            color="primary"
+                            onClick={() =>
+                              this.setState(
+                                { temp_id_fil: obj.id },
+                                this.callAPiDownload
+                              )
+                            }
+                          >
+                            <IconDownload />
+                          </IconButton>
+                          <IconButton
+                            size="small"
+                            color="secondary"
+                            onClick={() =>
+                              this.setState(
+                                { temp_id_fil: obj.id },
+                                this.handleClickOpenDel
+                              )
+                            }
+                          >
+                            <IconDelete />
+                          </IconButton>
+                        </div>
                       </StyledTableCell>
                     </TableRow>
                   ))}
                   {this.state.files[0] === undefined ? (
                     <TableRow>
                       <StyledTableCell>...</StyledTableCell>
+                      <StyledTableCell></StyledTableCell>
+                      <StyledTableCell></StyledTableCell>
+                      <StyledTableCell></StyledTableCell>
                     </TableRow>
                   ) : null}
                 </TableBody>

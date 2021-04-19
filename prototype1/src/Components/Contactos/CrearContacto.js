@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import {
   InputLabel,
+  IconButton,
   FormControlLabel,
   MenuItem,
   FormControl,
@@ -16,7 +17,6 @@ import {
   DialogContent,
   DialogTitle,
   Checkbox,
-  IconButton,
   Fade,
   CircularProgress,
 } from "@material-ui/core";

@@ -15,7 +15,6 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  IconButton,
   FormControlLabel,
   Checkbox,
   Fade,
@@ -26,6 +25,7 @@ import {
   GreenButton,
   RedButton,
   StyledTableCell,
+  StyledIconButton as IconButton,
 } from "../Buttons";
 import {
   Delete as IconDelete,
@@ -484,7 +484,6 @@ class ConsultarOrganizacion extends Component {
                       <StyledTableCell>Categoría</StyledTableCell>
                       <StyledTableCell>Subsector</StyledTableCell>
                       <StyledTableCell></StyledTableCell>
-                      <StyledTableCell></StyledTableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -509,46 +508,44 @@ class ConsultarOrganizacion extends Component {
                         <StyledTableCell size="small">
                           {obj.subsector === null ? emptyCell : obj.subsector}
                         </StyledTableCell>
-                        <StyledTableCell
-                          size="small"
-                          style={{ paddingRight: "0.1rem" }}
-                        >
-                          <IconButton
-                            size="small"
-                            className="o-tinyBtn"
-                            style={{ color: "#47B14C" }}
-                            onClick={() =>
-                              this.setState(
-                                { temp_id_org: obj.id },
-                                this.editOrg
-                              )
-                            }
-                          >
-                            <IconEdit />
-                          </IconButton>
-                        </StyledTableCell>
-                        <StyledTableCell
-                          size="small"
-                          style={{ paddingLeft: "0.1rem" }}
-                        >
-                          <IconButton
-                            size="small"
-                            color="secondary"
-                            onClick={() =>
-                              this.setState(
-                                { temp_id_org: obj.id },
-                                this.handleClickOpenDel
-                              )
-                            }
-                          >
-                            <IconDelete />
-                          </IconButton>
+                        <StyledTableCell size="small" align="right">
+                          <div className="o-row-btnIcon">
+                            <IconButton
+                              size="small"
+                              style={{ color: "#47B14C" }}
+                              onClick={() =>
+                                this.setState(
+                                  { temp_id_org: obj.id },
+                                  this.editOrg
+                                )
+                              }
+                            >
+                              <IconEdit />
+                            </IconButton>
+                            <IconButton
+                              size="small"
+                              color="secondary"
+                              onClick={() =>
+                                this.setState(
+                                  { temp_id_org: obj.id },
+                                  this.handleClickOpenDel
+                                )
+                              }
+                            >
+                              <IconDelete />
+                            </IconButton>
+                          </div>
                         </StyledTableCell>
                       </TableRow>
                     ))}
                     {this.state.orgs[0] === undefined ? (
                       <TableRow>
                         <StyledTableCell>...</StyledTableCell>
+                        <StyledTableCell></StyledTableCell>
+                        <StyledTableCell></StyledTableCell>
+                        <StyledTableCell></StyledTableCell>
+                        <StyledTableCell></StyledTableCell>
+                        <StyledTableCell></StyledTableCell>
                       </TableRow>
                     ) : null}
                   </TableBody>

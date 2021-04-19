@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import {
-  IconButton,
   InputLabel,
   MenuItem,
   FormControl,
@@ -28,6 +27,7 @@ import {
   GreenButton,
   RedButton,
   StyledTableCell,
+  StyledIconButton as IconButton,
 } from "../Buttons";
 import { Link, Redirect } from "react-router-dom";
 import "../Styles.css";
@@ -430,7 +430,6 @@ class CrearOrganizacion2Oficinas extends Component {
                     <StyledTableCell>Dirección</StyledTableCell>
                     <StyledTableCell>Teléfono</StyledTableCell>
                     <StyledTableCell></StyledTableCell>
-                    <StyledTableCell></StyledTableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -446,46 +445,43 @@ class CrearOrganizacion2Oficinas extends Component {
                       <StyledTableCell size="small">
                         {obj.telefono_1 === null ? emptyCell : obj.telefono_1}
                       </StyledTableCell>
-                      <StyledTableCell
-                        size="small"
-                        style={{ paddingRight: "0.1rem" }}
-                      >
-                        <IconButton
-                          size="small"
-                          className="o-tinyBtn"
-                          style={{ color: "#47B14C" }}
-                          onClick={() =>
-                            this.setState(
-                              { loadingDiag: true, temp_id_ofi: obj.id },
-                              this.handleClickOpen
-                            )
-                          }
-                        >
-                          <IconEdit />
-                        </IconButton>
-                      </StyledTableCell>
-                      <StyledTableCell
-                        size="small"
-                        style={{ paddingLeft: "0.1rem" }}
-                      >
-                        <IconButton
-                          size="small"
-                          color="secondary"
-                          onClick={() =>
-                            this.setState(
-                              { temp_id_ofi: obj.id },
-                              this.handleClickOpenDel
-                            )
-                          }
-                        >
-                          <IconDelete />
-                        </IconButton>
+                      <StyledTableCell size="small" align="right">
+                        <div className="o-row-btnIcon">
+                          <IconButton
+                            size="small"
+                            style={{ color: "#47B14C" }}
+                            onClick={() =>
+                              this.setState(
+                                { loadingDiag: true, temp_id_ofi: obj.id },
+                                this.handleClickOpen
+                              )
+                            }
+                          >
+                            <IconEdit />
+                          </IconButton>
+                          <IconButton
+                            size="small"
+                            color="secondary"
+                            onClick={() =>
+                              this.setState(
+                                { temp_id_ofi: obj.id },
+                                this.handleClickOpenDel
+                              )
+                            }
+                          >
+                            <IconDelete />
+                          </IconButton>
+                        </div>
                       </StyledTableCell>
                     </TableRow>
                   ))}
                   {this.state.ofices[0] === undefined ? (
                     <TableRow>
                       <StyledTableCell>...</StyledTableCell>
+                      <StyledTableCell></StyledTableCell>
+                      <StyledTableCell></StyledTableCell>
+                      <StyledTableCell></StyledTableCell>
+                      <StyledTableCell></StyledTableCell>
                     </TableRow>
                   ) : null}
                 </TableBody>

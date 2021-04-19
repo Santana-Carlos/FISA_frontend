@@ -16,7 +16,6 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  IconButton,
   Fade,
   CircularProgress,
 } from "@material-ui/core";
@@ -30,6 +29,7 @@ import {
   GreenButton,
   RedButton,
   StyledTableCell,
+  StyledIconButton as IconButton,
 } from "../Buttons";
 import { Delete as IconDelete, ZoomIn as IconSelect } from "@material-ui/icons";
 import { Switch, Route } from "react-router-dom";
@@ -580,7 +580,6 @@ class ConsultarVisitas extends Component {
                         <StyledTableCell>Motivo</StyledTableCell>
                         <StyledTableCell>Estado</StyledTableCell>
                         <StyledTableCell></StyledTableCell>
-                        <StyledTableCell></StyledTableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
@@ -602,51 +601,43 @@ class ConsultarVisitas extends Component {
                           <StyledTableCell size="small">
                             {obj.nombre}
                           </StyledTableCell>
-                          <StyledTableCell
-                            size="small"
-                            style={{ paddingRight: "0.1rem" }}
-                          >
-                            <IconButton
-                              size="small"
-                              className="o-tinyBtn"
-                              color="primary"
-                              onClick={() =>
-                                this.setState(
-                                  {
-                                    temp_id_vis: obj.id,
-                                    temp_name_org: obj.organizacion,
-                                    loading: true,
-                                  },
-                                  this.selVisita
-                                )
-                              }
-                            >
-                              <IconSelect />
-                            </IconButton>
-                          </StyledTableCell>
-                          <StyledTableCell
-                            size="small"
-                            style={{ paddingLeft: "0.1rem" }}
-                          >
-                            <IconButton
-                              size="small"
-                              color="secondary"
-                              onClick={() =>
-                                this.setState(
-                                  { temp_id_vis: obj.id },
-                                  this.handleClickOpenDel
-                                )
-                              }
-                            >
-                              <IconDelete />
-                            </IconButton>
+                          <StyledTableCell size="small" align="right">
+                            <div className="o-row-bntIcon">
+                              <IconButton
+                                size="small"
+                                color="primary"
+                                onClick={() =>
+                                  this.setState(
+                                    {
+                                      temp_id_vis: obj.id,
+                                      temp_name_org: obj.organizacion,
+                                      loading: true,
+                                    },
+                                    this.selVisita
+                                  )
+                                }
+                              >
+                                <IconSelect />
+                              </IconButton>
+                              <IconButton
+                                size="small"
+                                color="secondary"
+                                onClick={() =>
+                                  this.setState(
+                                    { temp_id_vis: obj.id },
+                                    this.handleClickOpenDel
+                                  )
+                                }
+                              >
+                                <IconDelete />
+                              </IconButton>
+                            </div>
                           </StyledTableCell>
                         </TableRow>
                       ))}
                       {this.state.visitas[0] === undefined ? (
                         <TableRow>
                           <StyledTableCell>...</StyledTableCell>
-                          <StyledTableCell></StyledTableCell>
                           <StyledTableCell></StyledTableCell>
                           <StyledTableCell></StyledTableCell>
                           <StyledTableCell></StyledTableCell>

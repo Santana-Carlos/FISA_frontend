@@ -10,7 +10,6 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  IconButton,
   Fade,
   CircularProgress,
 } from "@material-ui/core";
@@ -18,6 +17,7 @@ import {
   GreenButton,
   RedButton,
   StyledTableCellTiny as StyledTableCell,
+  StyledIconButton as IconButton,
 } from "../Buttons";
 import {
   Delete as IconDelete,
@@ -418,11 +418,9 @@ class Para3InfoFinanciera extends Component {
                     <StyledTableCell>Clasificación</StyledTableCell>
                     <StyledTableCell>Cuota Anual</StyledTableCell>
                     <StyledTableCell>Temp. Cuota</StyledTableCell>
-                    <StyledTableCell></StyledTableCell>
                     <StyledTableCell align="right">
                       <IconButton
                         size="small"
-                        className="o-tinyBtn"
                         style={{ color: "#ffffff", marginRight: 0 }}
                         onClick={() =>
                           this.setState({
@@ -449,54 +447,45 @@ class Para3InfoFinanciera extends Component {
                       <StyledTableCell size="small">
                         {obj.temporada_cuota}
                       </StyledTableCell>
-                      <StyledTableCell
-                        size="small"
-                        style={{ paddingRight: "0.1rem" }}
-                        align="right"
-                      >
-                        <IconButton
-                          size="small"
-                          className="o-tinyBtn"
-                          style={{ color: "#47B14C" }}
-                          onClick={() => {
-                            this.setState(
-                              {
-                                temp_id: obj.id,
+                      <StyledTableCell size="small" align="right">
+                        <div className="o-row-btnIcon">
+                          <IconButton
+                            size="small"
+                            className="o-tinyBtn"
+                            style={{ color: "#47B14C" }}
+                            onClick={() => {
+                              this.setState(
+                                {
+                                  temp_id: obj.id,
+                                  temp_tipo: "Clasificacion",
+                                  temp_accion: "e",
+                                },
+                                this.callApiGet
+                              );
+                            }}
+                          >
+                            <IconEdit />
+                          </IconButton>
+                          <IconButton
+                            size="small"
+                            color="secondary"
+                            onClick={() =>
+                              this.setState({
                                 temp_tipo: "Clasificacion",
-                                temp_accion: "e",
-                              },
-                              this.callApiGet
-                            );
-                          }}
-                        >
-                          <IconEdit />
-                        </IconButton>
-                      </StyledTableCell>
-                      <StyledTableCell
-                        size="small"
-                        style={{ paddingLeft: "0.1rem" }}
-                        align="center"
-                      >
-                        <IconButton
-                          size="small"
-                          color="secondary"
-                          onClick={() =>
-                            this.setState({
-                              temp_tipo: "Clasificacion",
-                              temp_id: obj.id,
-                              delDato: true,
-                            })
-                          }
-                        >
-                          <IconDelete />
-                        </IconButton>
+                                temp_id: obj.id,
+                                delDato: true,
+                              })
+                            }
+                          >
+                            <IconDelete />
+                          </IconButton>
+                        </div>
                       </StyledTableCell>
                     </TableRow>
                   ))}
                   {this.state.api_clas[0] === undefined ? (
                     <TableRow>
                       <StyledTableCell>...</StyledTableCell>
-                      <StyledTableCell></StyledTableCell>
                       <StyledTableCell></StyledTableCell>
                       <StyledTableCell></StyledTableCell>
                       <StyledTableCell></StyledTableCell>
@@ -516,11 +505,9 @@ class Para3InfoFinanciera extends Component {
                 <TableHead>
                   <TableRow>
                     <StyledTableCell>Regimen</StyledTableCell>
-                    <StyledTableCell></StyledTableCell>
                     <StyledTableCell align="right">
                       <IconButton
                         size="small"
-                        className="o-tinyBtn"
                         style={{ color: "#ffffff", marginRight: 0 }}
                         onClick={() =>
                           this.setState({
@@ -545,48 +532,44 @@ class Para3InfoFinanciera extends Component {
                         size="small"
                         style={{ paddingRight: "0.1rem" }}
                       >
-                        <IconButton
-                          size="small"
-                          className="o-tinyBtn"
-                          style={{ color: "#47B14C" }}
-                          onClick={() => {
-                            this.setState(
-                              {
-                                temp_id: obj.id,
+                        <div className="o-row-btnIcon">
+                          <IconButton
+                            size="small"
+                            className="o-tinyBtn"
+                            style={{ color: "#47B14C" }}
+                            onClick={() => {
+                              this.setState(
+                                {
+                                  temp_id: obj.id,
+                                  temp_tipo: "Regimen",
+                                  temp_accion: "e",
+                                },
+                                this.callApiGet
+                              );
+                            }}
+                          >
+                            <IconEdit />
+                          </IconButton>
+                          <IconButton
+                            size="small"
+                            color="secondary"
+                            onClick={() =>
+                              this.setState({
                                 temp_tipo: "Regimen",
-                                temp_accion: "e",
-                              },
-                              this.callApiGet
-                            );
-                          }}
-                        >
-                          <IconEdit />
-                        </IconButton>
-                      </StyledTableCell>
-                      <StyledTableCell
-                        size="small"
-                        style={{ paddingLeft: "0.1rem" }}
-                      >
-                        <IconButton
-                          size="small"
-                          color="secondary"
-                          onClick={() =>
-                            this.setState({
-                              temp_tipo: "Regimen",
-                              temp_id: obj.id,
-                              delDato: true,
-                            })
-                          }
-                        >
-                          <IconDelete />
-                        </IconButton>
+                                temp_id: obj.id,
+                                delDato: true,
+                              })
+                            }
+                          >
+                            <IconDelete />
+                          </IconButton>
+                        </div>
                       </StyledTableCell>
                     </TableRow>
                   ))}
                   {this.state.api_reg[0] === undefined ? (
                     <TableRow>
                       <StyledTableCell>...</StyledTableCell>
-                      <StyledTableCell></StyledTableCell>
                       <StyledTableCell></StyledTableCell>
                     </TableRow>
                   ) : null}

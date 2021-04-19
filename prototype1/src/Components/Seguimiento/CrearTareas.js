@@ -14,7 +14,6 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  IconButton,
   Fade,
   CircularProgress,
 } from "@material-ui/core";
@@ -23,6 +22,7 @@ import {
   GreenButton,
   RedButton,
   StyledTableCell,
+  StyledIconButton as IconButton,
 } from "../Buttons";
 import {
   Delete as IconDelete,
@@ -308,7 +308,6 @@ class CrearTareas extends Component {
                   <StyledTableCell>Resultado</StyledTableCell>
                   <StyledTableCell>Estado</StyledTableCell>
                   <StyledTableCell></StyledTableCell>
-                  <StyledTableCell></StyledTableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -322,13 +321,9 @@ class CrearTareas extends Component {
                       {obj.resultado === null ? "Sin realizar" : obj.resultado}
                     </StyledTableCell>
                     <StyledTableCell size="small">{obj.nombre}</StyledTableCell>
-                    <StyledTableCell
-                      size="small"
-                      style={{ paddingRight: "0.1rem" }}
-                    >
+                    <StyledTableCell size="small" align="right">
                       <IconButton
                         size="small"
-                        className="o-tinyBtn"
                         style={{ color: "#47B14C" }}
                         onClick={() =>
                           this.setState(
@@ -367,6 +362,10 @@ class CrearTareas extends Component {
                 {this.state.tareas[0] === undefined ? (
                   <TableRow>
                     <StyledTableCell>...</StyledTableCell>
+                    <StyledTableCell></StyledTableCell>
+                    <StyledTableCell></StyledTableCell>
+                    <StyledTableCell></StyledTableCell>
+                    <StyledTableCell></StyledTableCell>
                   </TableRow>
                 ) : null}
               </TableBody>

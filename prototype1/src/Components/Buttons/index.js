@@ -1,5 +1,5 @@
 import { withStyles } from "@material-ui/core/styles";
-import { Button, TableCell, Chip } from "@material-ui/core";
+import { Button, TableCell, Chip, IconButton } from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
 
 export const SideButton = withStyles((theme) => ({
@@ -10,8 +10,8 @@ export const SideButton = withStyles((theme) => ({
     textTransform: "none",
     color: "#FFFFFF",
     borderRadius: 0,
-    fontSize: "1rem",
-    fontWeight: 400,
+    fontSize: "1.06rem",
+    fontWeight: "lighter",
     textAlign: "start",
     paddingLeft: "1.3rem",
     justifyContent: "flex-start",
@@ -171,3 +171,9 @@ export const CustomAutocomplete = withStyles((theme) => ({
     maxWidth: "5rem",
   },
 }))(Autocomplete);
+
+export const StyledIconButton = withStyles((theme) => ({
+  root: {
+    margin: "0 0 0 0.5rem",
+  },
+}))(IconButton);

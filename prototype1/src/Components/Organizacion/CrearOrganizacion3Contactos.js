@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import {
-  IconButton,
   InputLabel,
   FormControlLabel,
   MenuItem,
@@ -32,6 +31,7 @@ import {
   GreenButton,
   RedButton,
   StyledTableCellTiny as StyledTableCell,
+  StyledIconButton as IconButton,
 } from "../Buttons";
 import { Autocomplete } from "@material-ui/lab";
 import { Link, Redirect } from "react-router-dom";
@@ -745,7 +745,6 @@ class CrearOrganizacion3Contactos extends Component {
                   <StyledTableCell>Correo</StyledTableCell>
                   <StyledTableCell>Observaciones</StyledTableCell>
                   <StyledTableCell></StyledTableCell>
-                  <StyledTableCell></StyledTableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -774,53 +773,53 @@ class CrearOrganizacion3Contactos extends Component {
                         ? emptyCell
                         : obj.observaciones}
                     </StyledTableCell>
-                    <StyledTableCell
-                      size="small"
-                      style={{ paddingRight: "0.1rem" }}
-                    >
-                      <IconButton
-                        size="small"
-                        className="o-tinyBtn"
-                        style={{ color: "#47B14C" }}
-                        onClick={() =>
-                          this.setState(
-                            {
-                              loadingDiag: true,
-                              temp_id_con: obj.contacto_id,
-                              temp_id_per: obj.persona_id,
-                            },
-                            this.handleClickOpen
-                          )
-                        }
-                      >
-                        <IconEdit />
-                      </IconButton>
-                    </StyledTableCell>
-                    <StyledTableCell
-                      size="small"
-                      style={{ paddingLeft: "0.1rem" }}
-                    >
-                      <IconButton
-                        size="small"
-                        color="secondary"
-                        onClick={() =>
-                          this.setState(
-                            {
-                              temp_id_con: obj.contacto_id,
-                              temp_id_per: obj.persona_id,
-                            },
-                            this.handleClickOpenDel
-                          )
-                        }
-                      >
-                        <IconDelete />
-                      </IconButton>
+                    <StyledTableCell size="small" align="right">
+                      <div className="o-row-btnIcon">
+                        <IconButton
+                          size="small"
+                          style={{ color: "#47B14C" }}
+                          onClick={() =>
+                            this.setState(
+                              {
+                                loadingDiag: true,
+                                temp_id_con: obj.contacto_id,
+                                temp_id_per: obj.persona_id,
+                              },
+                              this.handleClickOpen
+                            )
+                          }
+                        >
+                          <IconEdit />
+                        </IconButton>
+                        <IconButton
+                          size="small"
+                          color="secondary"
+                          onClick={() =>
+                            this.setState(
+                              {
+                                temp_id_con: obj.contacto_id,
+                                temp_id_per: obj.persona_id,
+                              },
+                              this.handleClickOpenDel
+                            )
+                          }
+                        >
+                          <IconDelete />
+                        </IconButton>
+                      </div>
                     </StyledTableCell>
                   </TableRow>
                 ))}
                 {this.state.contacts[0] === undefined ? (
                   <TableRow>
                     <StyledTableCell>...</StyledTableCell>
+                    <StyledTableCell></StyledTableCell>
+                    <StyledTableCell></StyledTableCell>
+                    <StyledTableCell></StyledTableCell>
+                    <StyledTableCell></StyledTableCell>
+                    <StyledTableCell></StyledTableCell>
+                    <StyledTableCell></StyledTableCell>
+                    <StyledTableCell></StyledTableCell>
                   </TableRow>
                 ) : null}
               </TableBody>

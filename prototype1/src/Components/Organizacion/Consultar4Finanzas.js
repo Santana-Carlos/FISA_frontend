@@ -122,8 +122,7 @@ class Consultar4Finanzas extends Component {
             temp_ventas_fin: data.informacion.ventas_anuales,
             temp_totalpat_fin: data.informacion.patrimonio_total,
             temp_anodec_fin: data.informacion.temporada_declaracion,
-            temp_cuorealano_fin:
-              data.informacion.cuota_sostenimiento_real_pagada,
+            temp_cuorealano_fin: data.informacion.cuota_unica_ingreso,
             temp_cuorealafi_fin: data.informacion.cuota_real_pagada,
             temp_cuopau_fin: data.informacion.cuota_pautas,
             userUpdated: data.usuario_actualizacion.editor,
@@ -256,7 +255,7 @@ class Consultar4Finanzas extends Component {
       regimen_id: this.state.temp_regimen_fin,
       temporada_declaracion: this.state.temp_anodec_fin,
       clasificacion_id: this.state.temp_clas_fin,
-      cuota_sostenimiento_real_pagada: this.state.temp_cuorealano_fin,
+      cuota_unica_ingreso: this.state.temp_cuorealano_fin,
       cuota_real_pagada: this.state.temp_cuorealafi_fin,
       cuota_pautas: this.state.temp_cuopau_fin,
       temporada_cuota: this.state.temp_anocuota_fin,
@@ -304,7 +303,7 @@ class Consultar4Finanzas extends Component {
       regimen_id: this.state.temp_regimen_fin,
       temporada_declaracion: this.state.temp_anodec_fin,
       clasificacion_id: this.state.temp_clas_fin,
-      cuota_sostenimiento_real_pagada: this.state.temp_cuorealano_fin,
+      cuota_unica_ingreso: this.state.temp_cuorealano_fin,
       cuota_real_pagada: this.state.temp_cuorealafi_fin,
       cuota_pautas: this.state.temp_cuopau_fin,
       importa: this.state.temp_importcheck_fin,
@@ -633,7 +632,7 @@ class Consultar4Finanzas extends Component {
             </h3>
             <div style={{ marginBottom: BOX_SPACING }}>
               <TextField
-                label="Cuota real sostenimiento"
+                label="Cuota única ingreso"
                 variant="outlined"
                 value={this.state.temp_cuorealano_fin || ""}
                 name="input_cuorealano_fin"
@@ -821,6 +820,7 @@ class Consultar4Finanzas extends Component {
                   variant="outlined"
                   margin="dense"
                   className="o-space"
+                  disabled={!this.state.temp_importcheck_fin}
                 >
                   <InputLabel id="demo-simple-select-outlined-label">
                     Importaciones
@@ -879,6 +879,7 @@ class Consultar4Finanzas extends Component {
                   variant="outlined"
                   margin="dense"
                   className="o-space"
+                  disabled={!this.state.temp_exportcheck_fin}
                 >
                   <InputLabel id="demo-simple-select-outlined-label">
                     Exportaciones

@@ -10,7 +10,6 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  IconButton,
   Fade,
   CircularProgress,
 } from "@material-ui/core";
@@ -18,6 +17,7 @@ import {
   GreenButton,
   RedButton,
   StyledTableCellTiny as StyledTableCell,
+  StyledIconButton as IconButton,
 } from "../Buttons";
 import {
   Delete as IconDelete,
@@ -485,8 +485,6 @@ class Para5Ubicaciones extends Component {
                 <TableHead>
                   <TableRow>
                     <StyledTableCell>Países</StyledTableCell>
-                    <StyledTableCell></StyledTableCell>
-                    <StyledTableCell></StyledTableCell>
                     <StyledTableCell align="right">
                       <IconButton
                         size="small"
@@ -515,74 +513,60 @@ class Para5Ubicaciones extends Component {
                       <StyledTableCell size="small">
                         {obj.nombre}
                       </StyledTableCell>
-                      <StyledTableCell
-                        size="small"
-                        style={{ paddingRight: "0.1rem" }}
-                      >
-                        <IconButton
-                          size="small"
-                          className="o-tinyBtn"
-                          color="primary"
-                          onClick={() => {
-                            this.setState(
-                              {
-                                temp_idPais: obj.id,
-                                loading: true,
-                              },
-                              this.callApiGetEst
-                            );
-                          }}
-                        >
-                          <IconSelect />
-                        </IconButton>
-                      </StyledTableCell>
-                      <StyledTableCell
-                        size="small"
-                        style={{ paddingRight: "0.1rem" }}
-                      >
-                        <IconButton
-                          size="small"
-                          className="o-tinyBtn"
-                          style={{ color: "#47B14C" }}
-                          onClick={() => {
-                            this.setState(
-                              {
-                                temp_id: obj.id,
+                      <StyledTableCell size="small" align="right">
+                        <div className="o-row-btnIcon">
+                          <IconButton
+                            size="small"
+                            color="primary"
+                            onClick={() => {
+                              this.setState(
+                                {
+                                  temp_idPais: obj.id,
+                                  loading: true,
+                                },
+                                this.callApiGetEst
+                              );
+                            }}
+                          >
+                            <IconSelect />
+                          </IconButton>
+                          <IconButton
+                            size="small"
+                            className="o-tinyBtn"
+                            style={{ color: "#47B14C" }}
+                            onClick={() => {
+                              this.setState(
+                                {
+                                  temp_id: obj.id,
+                                  temp_tipo: "Pais",
+                                  temp_accion: "e",
+                                },
+                                this.callApiGet
+                              );
+                            }}
+                          >
+                            <IconEdit />
+                          </IconButton>
+                          <IconButton
+                            size="small"
+                            color="secondary"
+                            onClick={() =>
+                              this.setState({
                                 temp_tipo: "Pais",
-                                temp_accion: "e",
-                              },
-                              this.callApiGet
-                            );
-                          }}
-                        >
-                          <IconEdit />
-                        </IconButton>
-                      </StyledTableCell>
-                      <StyledTableCell
-                        size="small"
-                        style={{ paddingLeft: "0.1rem" }}
-                      >
-                        <IconButton
-                          size="small"
-                          color="secondary"
-                          onClick={() =>
-                            this.setState({
-                              temp_tipo: "Pais",
-                              temp_id: obj.id,
-                              delDato: true,
-                            })
-                          }
-                        >
-                          <IconDelete />
-                        </IconButton>
+                                temp_id: obj.id,
+                                delDato: true,
+                              })
+                            }
+                          >
+                            <IconDelete />
+                          </IconButton>
+                        </div>
                       </StyledTableCell>
                     </TableRow>
                   ))}
                   {this.state.api_pais[0] === undefined ? (
                     <TableRow>
                       <StyledTableCell>...</StyledTableCell>
-                      <StyledTableCell></StyledTableCell>
-                      <StyledTableCell></StyledTableCell>
                       <StyledTableCell></StyledTableCell>
                     </TableRow>
                   ) : null}
@@ -619,12 +603,9 @@ class Para5Ubicaciones extends Component {
                   <TableHead>
                     <TableRow>
                       <StyledTableCell>Estados/Dep.</StyledTableCell>
-                      <StyledTableCell></StyledTableCell>
-                      <StyledTableCell></StyledTableCell>
                       <StyledTableCell align="right">
                         <IconButton
                           size="small"
-                          className="o-tinyBtn"
                           style={{ color: "#ffffff", marginRight: 0 }}
                           onClick={() =>
                             this.setState({
@@ -649,74 +630,61 @@ class Para5Ubicaciones extends Component {
                         <StyledTableCell size="small">
                           {obj.nombre}
                         </StyledTableCell>
-                        <StyledTableCell
-                          size="small"
-                          style={{ paddingRight: "0.1rem" }}
-                        >
-                          <IconButton
-                            size="small"
-                            className="o-tinyBtn"
-                            color="primary"
-                            onClick={() => {
-                              this.setState(
-                                {
-                                  temp_idEst: obj.id,
-                                  loading: true,
-                                },
-                                this.callApiGetCiu
-                              );
-                            }}
-                          >
-                            <IconSelect />
-                          </IconButton>
-                        </StyledTableCell>
-                        <StyledTableCell
-                          size="small"
-                          style={{ paddingRight: "0.1rem" }}
-                        >
-                          <IconButton
-                            size="small"
-                            className="o-tinyBtn"
-                            style={{ color: "#47B14C" }}
-                            onClick={() => {
-                              this.setState(
-                                {
-                                  temp_id: obj.id,
+                        <StyledTableCell size="small" align="right">
+                          <div className="o-row-btnIcon">
+                            <IconButton
+                              size="small"
+                              className="o-tinyBtn"
+                              color="primary"
+                              onClick={() => {
+                                this.setState(
+                                  {
+                                    temp_idEst: obj.id,
+                                    loading: true,
+                                  },
+                                  this.callApiGetCiu
+                                );
+                              }}
+                            >
+                              <IconSelect />
+                            </IconButton>
+                            <IconButton
+                              size="small"
+                              className="o-tinyBtn"
+                              style={{ color: "#47B14C" }}
+                              onClick={() => {
+                                this.setState(
+                                  {
+                                    temp_id: obj.id,
+                                    temp_tipo: "DepartamentoEstado",
+                                    temp_accion: "e",
+                                  },
+                                  this.callApiGet
+                                );
+                              }}
+                            >
+                              <IconEdit />
+                            </IconButton>
+                            <IconButton
+                              size="small"
+                              color="secondary"
+                              onClick={() =>
+                                this.setState({
                                   temp_tipo: "DepartamentoEstado",
-                                  temp_accion: "e",
-                                },
-                                this.callApiGet
-                              );
-                            }}
-                          >
-                            <IconEdit />
-                          </IconButton>
-                        </StyledTableCell>
-                        <StyledTableCell
-                          size="small"
-                          style={{ paddingLeft: "0.1rem" }}
-                        >
-                          <IconButton
-                            size="small"
-                            color="secondary"
-                            onClick={() =>
-                              this.setState({
-                                temp_tipo: "DepartamentoEstado",
-                                temp_id: obj.id,
-                                delDato: true,
-                              })
-                            }
-                          >
-                            <IconDelete />
-                          </IconButton>
+                                  temp_id: obj.id,
+                                  delDato: true,
+                                })
+                              }
+                            >
+                              <IconDelete />
+                            </IconButton>
+                          </div>
                         </StyledTableCell>
                       </TableRow>
                     ))}
                     {this.state.api_estado[0] === undefined ? (
                       <TableRow>
                         <StyledTableCell>...</StyledTableCell>
-                        <StyledTableCell></StyledTableCell>
-                        <StyledTableCell></StyledTableCell>
                         <StyledTableCell></StyledTableCell>
                       </TableRow>
                     ) : null}
@@ -756,11 +724,9 @@ class Para5Ubicaciones extends Component {
                   <TableHead>
                     <TableRow>
                       <StyledTableCell>Ciudades</StyledTableCell>
-                      <StyledTableCell></StyledTableCell>
                       <StyledTableCell align="right">
                         <IconButton
                           size="small"
-                          className="o-tinyBtn"
                           style={{ color: "#ffffff", marginRight: 0 }}
                           onClick={() =>
                             this.setState({
@@ -783,8 +749,9 @@ class Para5Ubicaciones extends Component {
                         </StyledTableCell>
                         <StyledTableCell
                           size="small"
-                          style={{ paddingRight: "0.1rem" }}
+                          align="right"
                         >
+                          <div className="o-row-btnIcon">
                           <IconButton
                             size="small"
                             className="o-tinyBtn"
@@ -802,11 +769,6 @@ class Para5Ubicaciones extends Component {
                           >
                             <IconEdit />
                           </IconButton>
-                        </StyledTableCell>
-                        <StyledTableCell
-                          size="small"
-                          style={{ paddingLeft: "0.1rem" }}
-                        >
                           <IconButton
                             size="small"
                             color="secondary"
@@ -820,13 +782,13 @@ class Para5Ubicaciones extends Component {
                           >
                             <IconDelete />
                           </IconButton>
+                          </div>
                         </StyledTableCell>
                       </TableRow>
                     ))}
                     {this.state.api_ciudad[0] === undefined ? (
                       <TableRow>
                         <StyledTableCell>...</StyledTableCell>
-                        <StyledTableCell></StyledTableCell>
                         <StyledTableCell></StyledTableCell>
                       </TableRow>
                     ) : null}
