@@ -320,7 +320,14 @@ class CrearVisitas extends Component {
     this.setState({
       loadingDiag: true,
       visita_data: {
-        fecha_programada: this.state.temp_fecpro_vis,
+        fecha_programada:
+          this.state.temp_fecpro_vis === ""
+            ? this.state.temp_fecpro_vis
+            : this.state.temp_fecpro_vis.getFullYear() +
+              "-" +
+              this.state.temp_fecpro_vis.getDate() +
+              "-" +
+              this.state.temp_fecpro_vis.getDay(),
         titulo: this.state.temp_titulo_vis,
       },
     });

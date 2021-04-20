@@ -294,8 +294,9 @@ class CrearTareas extends Component {
             this.props.name_org +
             " - " +
             this.props.data.titulo +
-            " " +
-            this.props.data.fecha_programada}
+            " (" +
+            this.props.data.fecha_programada +
+            ")"}
         </div>
 
         <div className="o-contentForm-big-consultas">
@@ -322,40 +323,37 @@ class CrearTareas extends Component {
                     </StyledTableCell>
                     <StyledTableCell size="small">{obj.nombre}</StyledTableCell>
                     <StyledTableCell size="small" align="right">
-                      <IconButton
-                        size="small"
-                        style={{ color: "#47B14C" }}
-                        onClick={() =>
-                          this.setState(
-                            {
-                              loadingDiag: true,
-                              temp_id_tar: obj.id,
-                            },
-                            this.handleClickOpen
-                          )
-                        }
-                      >
-                        <IconEdit />
-                      </IconButton>
-                    </StyledTableCell>
-                    <StyledTableCell
-                      size="small"
-                      style={{ paddingLeft: "0.1rem" }}
-                    >
-                      <IconButton
-                        size="small"
-                        color="secondary"
-                        onClick={() =>
-                          this.setState(
-                            {
-                              temp_id_tar: obj.id,
-                            },
-                            this.handleClickOpenDel
-                          )
-                        }
-                      >
-                        <IconDelete />
-                      </IconButton>
+                      <div className="o-row-btnIcon">
+                        <IconButton
+                          size="small"
+                          style={{ color: "#47B14C" }}
+                          onClick={() =>
+                            this.setState(
+                              {
+                                loadingDiag: true,
+                                temp_id_tar: obj.id,
+                              },
+                              this.handleClickOpen
+                            )
+                          }
+                        >
+                          <IconEdit />
+                        </IconButton>
+                        <IconButton
+                          size="small"
+                          color="secondary"
+                          onClick={() =>
+                            this.setState(
+                              {
+                                temp_id_tar: obj.id,
+                              },
+                              this.handleClickOpenDel
+                            )
+                          }
+                        >
+                          <IconDelete />
+                        </IconButton>
+                      </div>
                     </StyledTableCell>
                   </TableRow>
                 ))}
@@ -478,7 +476,7 @@ class CrearTareas extends Component {
                     multiline
                     rows={3}
                     variant="outlined"
-                    name="input_obs_tar"
+                    name="input_res_tar"
                     onChange={this.handleChange}
                     className="o-space"
                     margin="dense"

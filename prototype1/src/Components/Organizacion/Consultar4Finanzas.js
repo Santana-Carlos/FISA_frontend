@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import "date-fns";
+import DateFnsUtils from "@date-io/date-fns";
 import {
   InputLabel,
   MenuItem,
@@ -15,6 +17,10 @@ import {
   Fade,
   CircularProgress,
 } from "@material-ui/core";
+import {
+  MuiPickersUtilsProvider,
+  KeyboardDatePicker,
+} from "@material-ui/pickers";
 import { Edit as IconEdit } from "@material-ui/icons";
 import {
   BlueButton,
@@ -50,6 +56,8 @@ class Consultar4Finanzas extends Component {
       temp_cuorealano_fin: "",
       temp_cuorealafi_fin: "",
       temp_cuopau_fin: "",
+      temp_fecpau_fin: "",
+      temp_pendfac_fin: "",
       userUpdated: "",
       fechaUpdated: "",
       temp_import_fin: [],
@@ -125,6 +133,8 @@ class Consultar4Finanzas extends Component {
             temp_cuorealano_fin: data.informacion.cuota_unica_ingreso,
             temp_cuorealafi_fin: data.informacion.cuota_real_pagada,
             temp_cuopau_fin: data.informacion.cuota_pautas,
+            temp_fecpau_fin: data.informacion.fecha_edicion_pauta,
+            temp_pendfac_fin: data.informacion.pendiente_facturacion,
             userUpdated: data.usuario_actualizacion.editor,
             fechaUpdated: data.informacion.updated_at,
             temp_cuotaanual_fin: data.informacion.cuota_anual,
@@ -260,6 +270,8 @@ class Consultar4Finanzas extends Component {
       cuota_pautas: this.state.temp_cuopau_fin,
       temporada_cuota: this.state.temp_anocuota_fin,
       cuota_anual: this.state.temp_cuotaanual_fin,
+      fecha_edicion_pauta: this.state.temp_fecpau_fin,
+      pendiente_facturacion: this.state.temp_pendfac_fin,
       importa: this.state.temp_importcheck_fin,
       exporta: this.state.temp_exportcheck_fin,
     };
@@ -306,6 +318,8 @@ class Consultar4Finanzas extends Component {
       cuota_unica_ingreso: this.state.temp_cuorealano_fin,
       cuota_real_pagada: this.state.temp_cuorealafi_fin,
       cuota_pautas: this.state.temp_cuopau_fin,
+      fecha_edicion_pauta: this.state.temp_fecpau_fin,
+      pendiente_facturacion: this.state.temp_pendfac_fin,
       importa: this.state.temp_importcheck_fin,
       exporta: this.state.temp_exportcheck_fin,
     };
@@ -418,10 +432,22 @@ class Consultar4Finanzas extends Component {
       case "input_exportcheck_fin":
         this.setState({ temp_exportcheck_fin: checked });
         break;
+      case "input_pendfac_fin":
+        this.setState({ temp_pendfac_fin: value });
+        break;
       default:
         break;
     }
   }
+
+  handleDatePau = (date) => {
+    if (date !== null && date !== "") {
+      date.setHours(12);
+      this.setState({ temp_fecpau_fin: date });
+    } else {
+      this.setState({ temp_fecpau_fin: "" });
+    }
+  };
 
   render() {
     const BOX_SPACING = this.props.box_spacing;
@@ -527,28 +553,6 @@ class Consultar4Finanzas extends Component {
 
           <div className="o-contentForm">
             <h3 className="o-innerSubTittle">Otra información financiera</h3>
-            <div style={{ marginBottom: BOX_SPACING }}>
-              <TextField
-                label="Total activos"
-                variant="outlined"
-                value={this.state.temp_totalact_fin || ""}
-                name="input_totalact_fin"
-                onChange={this.handleChange}
-                className="o-space"
-                margin="dense"
-              />
-            </div>
-            <div style={{ marginBottom: BOX_SPACING }}>
-              <TextField
-                label="Total pasivos"
-                variant="outlined"
-                value={this.state.temp_totalpas_fin || ""}
-                name="input_totalpas_fin"
-                onChange={this.handleChange}
-                className="o-space"
-                margin="dense"
-              />
-            </div>
             <FormControl
               style={{ maxWidth: "100%" }}
               variant="outlined"
@@ -577,6 +581,41 @@ class Consultar4Finanzas extends Component {
                 })}
               </Select>
             </FormControl>
+            <div className="o-row">
+              <div
+                style={{
+                  maxWidth: "46%",
+                  marginLeft: 0,
+                  marginBottom: BOX_SPACING,
+                }}
+              >
+                <TextField
+                  label="Ttl. activos"
+                  variant="outlined"
+                  value={this.state.temp_totalact_fin || ""}
+                  name="input_totalact_fin"
+                  onChange={this.handleChange}
+                  className="o-space"
+                  margin="dense"
+                />
+              </div>
+              <div
+                style={{
+                  marginLeft: "1rem",
+                  marginBottom: BOX_SPACING,
+                }}
+              >
+                <TextField
+                  label="Ttl. pasivos"
+                  variant="outlined"
+                  value={this.state.temp_totalpas_fin || ""}
+                  name="input_totalpas_fin"
+                  onChange={this.handleChange}
+                  className="o-space"
+                  margin="dense"
+                />
+              </div>
+            </div>
             <div style={{ marginBottom: BOX_SPACING }}>
               <TextField
                 label="Total patrimonio"
@@ -588,23 +627,74 @@ class Consultar4Finanzas extends Component {
                 margin="dense"
               />
             </div>
-            <div style={{ marginBottom: BOX_SPACING }}>
-              <TextField
-                label="Año de declaración"
-                variant="outlined"
-                value={this.state.temp_anodec_fin || ""}
-                name="input_anodec_fin"
-                onChange={this.handleChange}
-                className="o-space"
-                margin="dense"
-              />
+            <div className="o-row">
+              <div
+                style={{
+                  maxWidth: "46%",
+                  marginLeft: 0,
+                  marginBottom: BOX_SPACING,
+                }}
+              >
+                <TextField
+                  label="Ventas anls."
+                  variant="outlined"
+                  value={this.state.temp_ventas_fin || ""}
+                  name="input_ventas_fin"
+                  onChange={this.handleChange}
+                  className="o-space"
+                  margin="dense"
+                />
+              </div>
+              <div
+                style={{
+                  marginLeft: "1rem",
+                  marginBottom: BOX_SPACING,
+                }}
+              >
+                <TextField
+                  label="Año decl."
+                  variant="outlined"
+                  value={this.state.temp_anodec_fin || ""}
+                  name="input_anodec_fin"
+                  onChange={this.handleChange}
+                  className="o-space"
+                  margin="dense"
+                />
+              </div>
             </div>
+            <FormControl
+              style={{ maxWidth: "100%" }}
+              variant="outlined"
+              margin="dense"
+            >
+              <InputLabel id="demo-simple-select-outlined-label">
+                Clasificación
+              </InputLabel>
+              <Select
+                labelId="demo-simple-select-outlined-label"
+                id="demo-simple-select-outlined"
+                value={this.state.temp_clas_fin || ""}
+                onChange={this.handleChange}
+                label="Clasificación"
+                name="input_clas_fin"
+                className="o-space"
+              >
+                <MenuItem disabled={true} value=""></MenuItem>
+                {this.state.clas_fin_api.map((obj, i) => {
+                  return (
+                    <MenuItem key={i} value={obj.id}>
+                      {obj.nombre}
+                    </MenuItem>
+                  );
+                })}
+              </Select>
+            </FormControl>
             <div style={{ marginBottom: BOX_SPACING }}>
               <TextField
-                label="Ventas anuales"
+                label="Pendiente facturación"
                 variant="outlined"
-                value={this.state.temp_ventas_fin || ""}
-                name="input_ventas_fin"
+                value={this.state.temp_pendfac_fin || ""}
+                name="input_pendfac_fin"
                 onChange={this.handleChange}
                 className="o-space"
                 margin="dense"
@@ -663,33 +753,26 @@ class Consultar4Finanzas extends Component {
                 margin="dense"
               />
             </div>
-            <FormControl
-              style={{ maxWidth: "100%" }}
-              variant="outlined"
-              margin="dense"
-            >
-              <InputLabel id="demo-simple-select-outlined-label">
-                Clasificación
-              </InputLabel>
-              <Select
-                labelId="demo-simple-select-outlined-label"
-                id="demo-simple-select-outlined"
-                value={this.state.temp_clas_fin || ""}
-                onChange={this.handleChange}
-                label="Clasificación"
-                name="input_clas_fin"
-                className="o-space"
-              >
-                <MenuItem disabled={true} value=""></MenuItem>
-                {this.state.clas_fin_api.map((obj, i) => {
-                  return (
-                    <MenuItem key={i} value={obj.id}>
-                      {obj.nombre}
-                    </MenuItem>
-                  );
-                })}
-              </Select>
-            </FormControl>
+            <div style={{ marginBottom: BOX_SPACING }}>
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <KeyboardDatePicker
+                  disableToolbar
+                  inputVariant="outlined"
+                  variant="inline"
+                  format="dd/MM/yyyy"
+                  margin="dense"
+                  label="Fecha edición pauta"
+                  value={this.state.temp_fecpau_fin || null}
+                  onChange={this.handleDatePau}
+                  className="o-space"
+                  invalidDateMessage={"Fecha inválida"}
+                  autoOk={true}
+                  KeyboardButtonProps={{
+                    "aria-label": "change date",
+                  }}
+                />
+              </MuiPickersUtilsProvider>
+            </div>
             <div
               style={{
                 display: "flex",
