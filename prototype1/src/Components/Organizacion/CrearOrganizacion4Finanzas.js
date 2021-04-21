@@ -6,7 +6,7 @@ import {
   MenuItem,
   FormControl,
   Select,
-  TextField,
+  TextField as TextFieldNormal,
   Dialog,
   DialogActions,
   DialogContent,
@@ -21,6 +21,7 @@ import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
 } from "@material-ui/pickers";
+import TextField from "@unicef/material-ui-currency-textfield";
 import { Edit as IconEdit } from "@material-ui/icons";
 import {
   BlueButton,
@@ -371,35 +372,35 @@ class CrearOrganizacion4Finanzas extends Component {
     setTimeout(this.callApi, 5000);
   };
 
-  handleChange(event) {
+  handleChange(event, value2) {
     let value = event.target.value;
     let name = event.target.name;
     let checked = event.target.checked;
 
     switch (name) {
       case "input_ingope_fin":
-        this.setState({ temp_ingope_fin: value });
+        this.setState({ temp_ingope_fin: value2 });
         break;
       case "input_ingnoo_fin":
-        this.setState({ temp_ingnoo_fin: value });
+        this.setState({ temp_ingnoo_fin: value2 });
         break;
       case "input_totaling_fin":
-        this.setState({ temp_totaling_fin: value });
+        this.setState({ temp_totaling_fin: value2 });
         break;
       case "input_egrope_fin":
-        this.setState({ temp_egrope_fin: value });
+        this.setState({ temp_egrope_fin: value2 });
         break;
       case "input_egrnoo_fin":
-        this.setState({ temp_egrnoo_fin: value });
+        this.setState({ temp_egrnoo_fin: value2 });
         break;
       case "input_totalegr_fin":
-        this.setState({ temp_totalegr_fin: value });
+        this.setState({ temp_totalegr_fin: value2 });
         break;
       case "input_totalact_fin":
-        this.setState({ temp_totalact_fin: value });
+        this.setState({ temp_totalact_fin: value2 });
         break;
       case "input_totalpas_fin":
-        this.setState({ temp_totalpas_fin: value });
+        this.setState({ temp_totalpas_fin: value2 });
         break;
       case "input_clas_fin":
         this.setState({ temp_clas_fin: value }, () => {
@@ -427,22 +428,22 @@ class CrearOrganizacion4Finanzas extends Component {
         this.setState({ temp_regimen_fin: value });
         break;
       case "input_ventas_fin":
-        this.setState({ temp_ventas_fin: value });
+        this.setState({ temp_ventas_fin: value2 });
         break;
       case "input_totalpat_fin":
-        this.setState({ temp_totalpat_fin: value });
+        this.setState({ temp_totalpat_fin: value2 });
         break;
       case "input_anodec_fin":
         this.setState({ temp_anodec_fin: value });
         break;
       case "input_cuorealano_fin":
-        this.setState({ temp_cuorealano_fin: value });
+        this.setState({ temp_cuorealano_fin: value2 });
         break;
       case "input_cuorealafi_fin":
-        this.setState({ temp_cuorealafi_fin: value });
+        this.setState({ temp_cuorealafi_fin: value2 });
         break;
       case "input_cuopau_fin":
-        this.setState({ temp_cuopau_fin: value });
+        this.setState({ temp_cuopau_fin: value2 });
         break;
       case "input_import_fin":
         this.setState({ temp_import_fin: value });
@@ -457,7 +458,7 @@ class CrearOrganizacion4Finanzas extends Component {
         this.setState({ temp_exportcheck_fin: checked });
         break;
       case "input_pendfac_fin":
-        this.setState({ temp_pendfac_fin: value });
+        this.setState({ temp_pendfac_fin: value2 });
         break;
       default:
         break;
@@ -508,6 +509,9 @@ class CrearOrganizacion4Finanzas extends Component {
               <TextField
                 label="Ingresos operacionales"
                 variant="outlined"
+                decimalPlaces={0}
+                maximumValue={"999999999999999999999999"}
+                minimumValue={"-999999999999999999999999"}
                 value={this.state.temp_ingope_fin || ""}
                 name="input_ingope_fin"
                 onChange={this.handleChange}
@@ -517,8 +521,11 @@ class CrearOrganizacion4Finanzas extends Component {
             </div>
             <div style={{ marginBottom: BOX_SPACING }}>
               <TextField
-                label="Ingreso no operacionales"
+                label="Ingresos no operacionales"
                 variant="outlined"
+                decimalPlaces={0}
+                maximumValue={"999999999999999999999999"}
+                minimumValue={"-999999999999999999999999"}
                 value={this.state.temp_ingnoo_fin || ""}
                 name="input_ingnoo_fin"
                 onChange={this.handleChange}
@@ -530,6 +537,9 @@ class CrearOrganizacion4Finanzas extends Component {
               <TextField
                 label="Total ingresos"
                 variant="outlined"
+                decimalPlaces={0}
+                maximumValue={"999999999999999999999999"}
+                minimumValue={"-999999999999999999999999"}
                 value={this.state.temp_totaling_fin || ""}
                 name="input_totaling_fin"
                 onChange={this.handleChange}
@@ -547,6 +557,9 @@ class CrearOrganizacion4Finanzas extends Component {
               <TextField
                 label="Egresos operacionales"
                 variant="outlined"
+                decimalPlaces={0}
+                maximumValue={"999999999999999999999999"}
+                minimumValue={"-999999999999999999999999"}
                 value={this.state.temp_egrope_fin || ""}
                 name="input_egrope_fin"
                 onChange={this.handleChange}
@@ -558,6 +571,9 @@ class CrearOrganizacion4Finanzas extends Component {
               <TextField
                 label="Egresos no operacionales"
                 variant="outlined"
+                decimalPlaces={0}
+                maximumValue={"999999999999999999999999"}
+                minimumValue={"-999999999999999999999999"}
                 value={this.state.temp_egrnoo_fin || ""}
                 name="input_egrnoo_fin"
                 onChange={this.handleChange}
@@ -569,6 +585,9 @@ class CrearOrganizacion4Finanzas extends Component {
               <TextField
                 label="Total egresos"
                 variant="outlined"
+                decimalPlaces={0}
+                maximumValue={"999999999999999999999999"}
+                minimumValue={"-999999999999999999999999"}
                 value={this.state.temp_totalegr_fin || ""}
                 name="input_totalegr_fin"
                 onChange={this.handleChange}
@@ -619,6 +638,9 @@ class CrearOrganizacion4Finanzas extends Component {
                 <TextField
                   label="Ttl. activos"
                   variant="outlined"
+                  decimalPlaces={0}
+                  maximumValue={"999999999999999999999999"}
+                  minimumValue={"-999999999999999999999999"}
                   value={this.state.temp_totalact_fin || ""}
                   name="input_totalact_fin"
                   onChange={this.handleChange}
@@ -635,6 +657,9 @@ class CrearOrganizacion4Finanzas extends Component {
                 <TextField
                   label="Ttl. pasivos"
                   variant="outlined"
+                  decimalPlaces={0}
+                  maximumValue={"999999999999999999999999"}
+                  minimumValue={"-999999999999999999999999"}
                   value={this.state.temp_totalpas_fin || ""}
                   name="input_totalpas_fin"
                   onChange={this.handleChange}
@@ -647,6 +672,9 @@ class CrearOrganizacion4Finanzas extends Component {
               <TextField
                 label="Total patrimonio"
                 variant="outlined"
+                decimalPlaces={0}
+                maximumValue={"999999999999999999999999"}
+                minimumValue={"-999999999999999999999999"}
                 value={this.state.temp_totalpat_fin || ""}
                 name="input_totalpat_fin"
                 onChange={this.handleChange}
@@ -665,6 +693,9 @@ class CrearOrganizacion4Finanzas extends Component {
                 <TextField
                   label="Ventas anls."
                   variant="outlined"
+                  decimalPlaces={0}
+                  maximumValue={"999999999999999999999999"}
+                  minimumValue={"-999999999999999999999999"}
                   value={this.state.temp_ventas_fin || ""}
                   name="input_ventas_fin"
                   onChange={this.handleChange}
@@ -678,7 +709,7 @@ class CrearOrganizacion4Finanzas extends Component {
                   marginBottom: BOX_SPACING,
                 }}
               >
-                <TextField
+                <TextFieldNormal
                   label="Año decl."
                   variant="outlined"
                   value={this.state.temp_anodec_fin || ""}
@@ -720,6 +751,9 @@ class CrearOrganizacion4Finanzas extends Component {
               <TextField
                 label="Pendiente facturación"
                 variant="outlined"
+                decimalPlaces={0}
+                maximumValue={"999999999999999999999999"}
+                minimumValue={"-999999999999999999999999"}
                 value={this.state.temp_pendfac_fin || ""}
                 name="input_pendfac_fin"
                 onChange={this.handleChange}
@@ -751,6 +785,9 @@ class CrearOrganizacion4Finanzas extends Component {
               <TextField
                 label="Cuota única ingreso"
                 variant="outlined"
+                decimalPlaces={0}
+                maximumValue={"999999999999999999999999"}
+                minimumValue={"-999999999999999999999999"}
                 value={this.state.temp_cuorealano_fin || ""}
                 name="input_cuorealano_fin"
                 onChange={this.handleChange}
@@ -762,6 +799,9 @@ class CrearOrganizacion4Finanzas extends Component {
               <TextField
                 label="Cuota real pagada"
                 variant="outlined"
+                decimalPlaces={0}
+                maximumValue={"999999999999999999999999"}
+                minimumValue={"-999999999999999999999999"}
                 value={this.state.temp_cuorealafi_fin || ""}
                 name="input_cuorealafi_fin"
                 onChange={this.handleChange}
@@ -773,6 +813,9 @@ class CrearOrganizacion4Finanzas extends Component {
               <TextField
                 label="Cuota pautas"
                 variant="outlined"
+                decimalPlaces={0}
+                maximumValue={"999999999999999999999999"}
+                minimumValue={"-999999999999999999999999"}
                 value={this.state.temp_cuopau_fin || ""}
                 name="input_cuopau_fin"
                 onChange={this.handleChange}
