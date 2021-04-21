@@ -417,7 +417,7 @@ class Para3InfoFinanciera extends Component {
                   <TableRow>
                     <StyledTableCell>Clasificación</StyledTableCell>
                     <StyledTableCell>Cuota Anual</StyledTableCell>
-                    <StyledTableCell>Temp. Cuota</StyledTableCell>
+                    <StyledTableCell>Año Cuota</StyledTableCell>
                     <StyledTableCell align="right">
                       <IconButton
                         size="small"
