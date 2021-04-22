@@ -1491,7 +1491,9 @@ class Consultar3Contactos extends Component {
             {"Datos inválidos o insuficientes"}
           </DialogTitle>
           <DialogContent style={{ textAlign: "center" }}>
-            {"(Puede que el contacto ya exista)"}
+            {
+              "Puede haber superado el número máximo de caracteres en algún campo"
+            }
           </DialogContent>
           <DialogActions style={{ justifyContent: "center" }}>
             <div className="o-btnBotNav-btnDiag3">

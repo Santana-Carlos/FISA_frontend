@@ -1078,12 +1078,12 @@ class CrearOrganizacion4Finanzas extends Component {
           <DialogActions>
             <div className="o-btnBotNav-btnDiag">
               <RedButton onClick={() => this.handleClose(false)}>
-                Cancelar
+                {"Cancelar"}
               </RedButton>
             </div>
             <div className="o-btnBotNav-btnDiag2">
               <GreenButton onClick={() => this.handleClose(true)}>
-                Guardar
+                {"Guardar"}
               </GreenButton>
             </div>
           </DialogActions>
@@ -1094,7 +1094,9 @@ class CrearOrganizacion4Finanzas extends Component {
             {"Datos inválidos"}
           </DialogTitle>
           <DialogContent style={{ textAlign: "center" }}>
-            (Solo se permiten números)
+            {
+              "Puede haber superado el número máximo de caracteres en algún campo"
+            }
           </DialogContent>
           <DialogActions style={{ justifyContent: "center" }}>
             <div className="o-btnBotNav-btnDiag3">

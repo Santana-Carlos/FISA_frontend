@@ -515,10 +515,7 @@ class CrearOrganizacion1DatosBasicos extends Component {
                     className="o-space"
                     style={{ marginBottom: BOX_SPACING }}
                   >
-                    <MenuItem
-                      visible={"false"}
-                      value="input_cat_org"
-                    ></MenuItem>
+                    <MenuItem disabled={true} value="input_cat_org"></MenuItem>
                     {this.state.cat_org_api.map((obj, i) => {
                       return (
                         <MenuItem key={i} value={obj.id}>
@@ -902,12 +899,12 @@ class CrearOrganizacion1DatosBasicos extends Component {
               <div className="o-btnBotNavDoble">
                 <div className="o-btnBotNav-btn">
                   <GreenButton onClick={() => this.apiPost(false)}>
-                    Finalizar
+                    {"Finalizar"}
                   </GreenButton>
                 </div>
                 <div className="o-btnBotNav-btn">
                   <BlueButton onClick={() => this.apiPost(true)}>
-                    Siguiente
+                    {"Siguiente"}
                   </BlueButton>
                 </div>
               </div>
@@ -919,15 +916,19 @@ class CrearOrganizacion1DatosBasicos extends Component {
               maxWidth={false}
             >
               <DialogTitle style={{ textAlign: "center" }}>
-                Datos inválidos o insuficientes
+                {"Datos inválidos o insuficientes"}
               </DialogTitle>
-              <DialogContent></DialogContent>
+              <DialogContent>
+                {
+                  "Puede haber superado el número máximo de caracteres en algún campo"
+                }
+              </DialogContent>
               <DialogActions style={{ justifyContent: "center" }}>
                 <div className="o-btnBotNav-btnDiag3">
                   <GreenButton
                     onClick={() => this.setState({ createS: false })}
                   >
-                    Aceptar
+                    {"Aceptar"}
                   </GreenButton>
                 </div>
               </DialogActions>

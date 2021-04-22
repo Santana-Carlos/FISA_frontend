@@ -470,7 +470,7 @@ class Consultar1DatosBasicos extends Component {
             >
               <InputLabel id="demo-simple-select-outlined-label">
                 <div style={{ display: "flex", flexDirection: "row" }}>
-                  {"Nombre comercial"}
+                  {"Categoría"}
                   <div style={{ color: "#FF0000", marginLeft: "0.1rem" }}>
                     {"*"}
                   </div>
@@ -481,12 +481,12 @@ class Consultar1DatosBasicos extends Component {
                 id="demo-simple-select-outlined"
                 value={this.state.cat_org || ""}
                 onChange={this.handleChange}
-                label="Nombre comercial*"
+                label="Categoría*"
                 name="input_cat_org"
                 className="o-space"
                 style={{ marginBottom: BOX_SPACING }}
               >
-                <MenuItem visible={"false"} value="input_cat_org"></MenuItem>
+                <MenuItem disabled={true} value="input_cat_org"></MenuItem>
                 {this.state.cat_org_api.map((obj, i) => {
                   return (
                     <MenuItem key={i} value={obj.id}>
@@ -869,7 +869,7 @@ class Consultar1DatosBasicos extends Component {
               to="/consultar_organizacion/editar"
               className="o-btnBotNav-btn"
             >
-              <BlueButton>Volver</BlueButton>
+              <BlueButton>{"Volver"}</BlueButton>
             </Link>
           </div>
         </div>
@@ -880,13 +880,17 @@ class Consultar1DatosBasicos extends Component {
           maxWidth={false}
         >
           <DialogTitle style={{ textAlign: "center" }}>
-            Datos inválidos o insuficientes
+            {"Datos inválidos o insuficientes"}
           </DialogTitle>
-          <DialogContent></DialogContent>
+          <DialogContent>
+            {
+              "Puede haber superado el número máximo de caracteres en algún campo"
+            }
+          </DialogContent>
           <DialogActions style={{ justifyContent: "center" }}>
             <div className="o-btnBotNav-btnDiag3">
               <GreenButton onClick={() => this.setState({ createS: false })}>
-                Aceptar
+                {"Aceptar"}
               </GreenButton>
             </div>
           </DialogActions>

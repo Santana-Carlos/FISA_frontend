@@ -620,7 +620,7 @@ class ConsultarOrganizacion extends Component {
                   <GreenButton
                     onClick={() => this.setState({ delcheckOpen: false })}
                   >
-                    Aceptar
+                    {"Aceptar"}
                   </GreenButton>
                 </div>
               </DialogActions>
@@ -631,7 +631,7 @@ class ConsultarOrganizacion extends Component {
               </DialogTitle>
               <DialogContent style={{ textAlign: "center" }}>
                 {
-                  "(Para realizar una busqueda debe ingresar al menos un parametro)"
+                  "Para realizar una busqueda debe ingresar al menos un parametro"
                 }
               </DialogContent>
               <DialogActions style={{ justifyContent: "center" }}>

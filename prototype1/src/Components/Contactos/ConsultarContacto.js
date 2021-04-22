@@ -699,12 +699,12 @@ class ConsultarContacto extends Component {
               <DialogActions style={{ justifyContent: "center" }}>
                 <div className="o-btnBotNav-btnDiag3">
                   <RedButton onClick={() => this.handleCloseDel(true)}>
-                    Eliminar
+                    {"Eliminar"}
                   </RedButton>
                 </div>
                 <div className="o-btnBotNav-btnDiag3">
                   <GreenButton onClick={() => this.handleCloseDel(false)}>
-                    Cancelar
+                    {"Cancelar"}
                   </GreenButton>
                 </div>
               </DialogActions>
@@ -716,7 +716,7 @@ class ConsultarContacto extends Component {
               </DialogTitle>
               <DialogContent style={{ textAlign: "center" }}>
                 {
-                  "(Para realizar una busqueda debe ingresar al menos el primer parametro)"
+                  "Para realizar una busqueda debe ingresar al menos el primer parametro"
                 }
               </DialogContent>
               <DialogActions style={{ justifyContent: "center" }}>

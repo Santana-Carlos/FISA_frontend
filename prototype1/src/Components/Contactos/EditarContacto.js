@@ -839,7 +839,11 @@ class EditarContacto extends Component {
           <DialogTitle style={{ textAlign: "center" }}>
             {"Datos inválidos o insuficientes"}
           </DialogTitle>
-          <DialogContent style={{ textAlign: "center" }}></DialogContent>
+          <DialogContent style={{ textAlign: "center" }}>
+            {
+              "Puede haber superado el número máximo de caracteres en algún campo"
+            }
+          </DialogContent>
           <DialogActions style={{ justifyContent: "center" }}>
             <div className="o-btnBotNav-btnDiag3">
               <GreenButton onClick={() => this.setState({ createS: false })}>

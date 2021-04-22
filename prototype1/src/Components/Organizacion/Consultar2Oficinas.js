@@ -700,10 +700,7 @@ class Consultar2Oficinas extends Component {
                     className="o-space"
                     style={{ marginBottom: BOX_SPACING }}
                   >
-                    <MenuItem
-                      visible={"false"}
-                      value="input_city_ofi"
-                    ></MenuItem>
+                    <MenuItem disabled={true} value="input_city_ofi"></MenuItem>
                     {this.state.city_ofi_api.map((obj, i) => {
                       return (
                         <MenuItem key={i} value={obj.id}>
@@ -716,7 +713,7 @@ class Consultar2Oficinas extends Component {
               </div>
 
               <div className="o-contentFormDiag">
-                <h3 className="o-diagSubTittle">Otros datos</h3>
+                <h3 className="o-diagSubTittle">{"Otros datos"}</h3>
                 <div style={{ marginBottom: BOX_SPACING }}>
                   <TextField
                     label="Teléfono"
@@ -794,12 +791,12 @@ class Consultar2Oficinas extends Component {
           <DialogActions>
             <div className="o-btnBotNav-btnDiag">
               <RedButton onClick={() => this.handleClose(false)}>
-                Cancelar
+                {"Cancelar"}
               </RedButton>
             </div>
             <div className="o-btnBotNav-btnDiag2">
               <GreenButton onClick={() => this.handleClose(true)}>
-                Guardar
+                {"Guardar"}
               </GreenButton>
             </div>
           </DialogActions>
@@ -813,18 +810,18 @@ class Consultar2Oficinas extends Component {
           maxWidth={false}
         >
           <DialogTitle style={{ textAlign: "center" }}>
-            ¿Desea eliminar la oficina?
+            {"¿Desea eliminar la oficina?"}
           </DialogTitle>
           <DialogContent></DialogContent>
           <DialogActions style={{ justifyContent: "center" }}>
             <div className="o-btnBotNav-btnDiag3">
               <RedButton onClick={() => this.handleCloseDel(true)}>
-                Eliminar
+                {"Eliminar"}
               </RedButton>
             </div>
             <div className="o-btnBotNav-btnDiag3">
               <GreenButton onClick={() => this.handleCloseDel(false)}>
-                Cancelar
+                {"Cancelar"}
               </GreenButton>
             </div>
           </DialogActions>
@@ -839,7 +836,9 @@ class Consultar2Oficinas extends Component {
             {"Datos inválidos o insuficientes"}
           </DialogTitle>
           <DialogContent style={{ textAlign: "center" }}>
-            {"(Puede que la oficina ya exista)"}
+            {
+              "Puede haber superado el número máximo de caracteres en algún campo"
+            }
           </DialogContent>
           <DialogActions style={{ justifyContent: "center" }}>
             <div className="o-btnBotNav-btnDiag3">

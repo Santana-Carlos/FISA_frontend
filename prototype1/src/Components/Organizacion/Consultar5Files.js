@@ -367,18 +367,18 @@ class Consultar5Files extends Component {
           maxWidth={false}
         >
           <DialogTitle style={{ textAlign: "center" }}>
-            ¿Desea eliminar el archivo?
+            {"¿Desea eliminar el archivo?"}
           </DialogTitle>
           <DialogContent></DialogContent>
           <DialogActions style={{ justifyContent: "center" }}>
             <div className="o-btnBotNav-btnDiag3">
               <RedButton onClick={() => this.handleCloseDel(true)}>
-                Eliminar
+                {"Eliminar"}
               </RedButton>
             </div>
             <div className="o-btnBotNav-btnDiag3">
               <GreenButton onClick={() => this.handleCloseDel(false)}>
-                Cancelar
+                {"Cancelar"}
               </GreenButton>
             </div>
           </DialogActions>
@@ -388,7 +388,7 @@ class Consultar5Files extends Component {
             {"El archivo no se pudo subir"}
           </DialogTitle>
           <DialogContent style={{ textAlign: "center" }}>
-            (Tipo de archivo inválido o demasiado pesado)
+            {"Tipo de archivo inválido o demasiado pesado"}
           </DialogContent>
           <DialogActions style={{ justifyContent: "center" }}>
             <div className="o-btnBotNav-btnDiag3">
