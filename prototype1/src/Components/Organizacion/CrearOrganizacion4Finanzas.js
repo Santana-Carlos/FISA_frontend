@@ -64,7 +64,9 @@ class CrearOrganizacion4Finanzas extends Component {
       temp_import_fin: [],
       temp_export_fin: [],
       temp_importcheck_fin: false,
+      temp_importcheckn_fin: false,
       temp_exportcheck_fin: false,
+      temp_exportcheckn_fin: false,
       temp_anocuota_fin: "",
       temp_cuotaanual_fin: "",
       clas_fin_api: [],
@@ -140,8 +142,22 @@ class CrearOrganizacion4Finanzas extends Component {
             fechaUpdated: data.informacion.updated_at,
             temp_cuotaanual_fin: data.informacion.cuota_anual,
             temp_anocuota_fin: data.informacion.temporada_cuota,
-            temp_importcheck_fin: data.informacion.importa,
-            temp_exportcheck_fin: data.informacion.exporta,
+            temp_importcheck_fin:
+              data.informacion.importa === null
+                ? false
+                : data.informacion.importa,
+            temp_importcheckn_fin:
+              data.informacion.importa === null
+                ? false
+                : !data.informacion.importa,
+            temp_exportcheck_fin:
+              data.informacion.exporta === null
+                ? false
+                : data.informacion.exporta,
+            temp_exportcheckn_fin:
+              data.informacion.exporta === null
+                ? false
+                : !data.informacion.exporta,
             loading: false,
           });
         }
@@ -269,12 +285,16 @@ class CrearOrganizacion4Finanzas extends Component {
         cuota_unica_ingreso: this.state.temp_cuorealano_fin,
         cuota_real_pagada: this.state.temp_cuorealafi_fin,
         cuota_pautas: this.state.temp_cuopau_fin,
-        temporada_cuota: this.state.temp_anocuota_fin,
-        cuota_anual: this.state.temp_cuotaanual_fin,
         fecha_edicion_pauta: this.state.temp_fecpau_fin,
         pendiente_facturacion: this.state.temp_pendfac_fin,
-        importa: this.state.temp_importcheck_fin,
-        exporta: this.state.temp_exportcheck_fin,
+        importa:
+          this.state.temp_importcheck_fin || this.state.temp_importcheckn_fin
+            ? this.state.temp_importcheck_fin
+            : null,
+        exporta:
+          this.state.temp_exportcheck_fin || this.state.temp_exportcheckn_fin
+            ? this.state.temp_exportcheck_fin
+            : null,
       };
 
       fetch(process.env.REACT_APP_API_URL + "InformacionFinanciera/", {
@@ -333,12 +353,16 @@ class CrearOrganizacion4Finanzas extends Component {
       cuota_unica_ingreso: this.state.temp_cuorealano_fin,
       cuota_real_pagada: this.state.temp_cuorealafi_fin,
       cuota_pautas: this.state.temp_cuopau_fin,
-      temporada_cuota: this.state.temp_anocuota_fin,
-      cuota_anual: this.state.temp_cuotaanual_fin,
       fecha_edicion_pauta: this.state.temp_fecpau_fin,
       pendiente_facturacion: this.state.temp_pendfac_fin,
-      importa: this.state.temp_importcheck_fin,
-      exporta: this.state.temp_exportcheck_fin,
+      importa:
+        this.state.temp_importcheck_fin || this.state.temp_importcheckn_fin
+          ? this.state.temp_importcheck_fin
+          : null,
+      exporta:
+        this.state.temp_exportcheck_fin || this.state.temp_exportcheckn_fin
+          ? this.state.temp_exportcheck_fin
+          : null,
     };
 
     fetch(process.env.REACT_APP_API_URL + "InformacionFinanciera/" + idFin, {
@@ -452,10 +476,28 @@ class CrearOrganizacion4Finanzas extends Component {
         this.setState({ temp_export_fin: value });
         break;
       case "input_importcheck_fin":
+        if (checked) {
+          this.setState({ temp_importcheckn_fin: !checked });
+        }
         this.setState({ temp_importcheck_fin: checked });
         break;
+      case "input_importcheckn_fin":
+        if (checked) {
+          this.setState({ temp_importcheck_fin: !checked });
+        }
+        this.setState({ temp_importcheckn_fin: checked });
+        break;
       case "input_exportcheck_fin":
+        if (checked) {
+          this.setState({ temp_exportcheckn_fin: !checked });
+        }
         this.setState({ temp_exportcheck_fin: checked });
+        break;
+      case "input_exportcheckn_fin":
+        if (checked) {
+          this.setState({ temp_exportcheck_fin: !checked });
+        }
+        this.setState({ temp_exportcheckn_fin: checked });
         break;
       case "input_pendfac_fin":
         this.setState({ temp_pendfac_fin: value2 });
@@ -894,33 +936,61 @@ class CrearOrganizacion4Finanzas extends Component {
             <FormControlLabel
               style={{ margin: 0 }}
               control={
-                <Checkbox
-                  checked={this.state.temp_importcheck_fin || false}
-                  color="primary"
-                  name="input_importcheck_fin"
-                  style={{
-                    padding: "0 0.4rem",
-                    marginLeft: "0.5rem",
-                  }}
-                  onChange={this.handleChange}
-                />
+                <div className="o-row-check">
+                  S
+                  <Checkbox
+                    checked={this.state.temp_importcheck_fin || false}
+                    color="primary"
+                    name="input_importcheck_fin"
+                    style={{
+                      padding: 0,
+                      margin: "0 0.4rem 0 0",
+                    }}
+                    onChange={this.handleChange}
+                  />
+                  N
+                  <Checkbox
+                    checked={this.state.temp_importcheckn_fin || false}
+                    color="primary"
+                    name="input_importcheckn_fin"
+                    style={{
+                      padding: 0,
+                      margin: "0 0.4rem 0 0",
+                    }}
+                    onChange={this.handleChange}
+                  />
+                </div>
               }
               label="Importa"
               margin="dense"
             />
             <FormControlLabel
-              style={{ margin: 0 }}
+              style={{ margin: "0 0 0 2rem" }}
               control={
-                <Checkbox
-                  checked={this.state.temp_exportcheck_fin || false}
-                  color="primary"
-                  name="input_exportcheck_fin"
-                  style={{
-                    padding: "0 0.4rem",
-                    marginLeft: "1.5rem",
-                  }}
-                  onChange={this.handleChange}
-                />
+                <div className="o-row-check">
+                  S
+                  <Checkbox
+                    checked={this.state.temp_exportcheck_fin || false}
+                    color="primary"
+                    name="input_exportcheck_fin"
+                    style={{
+                      padding: 0,
+                      margin: "0 0.4rem 0 0",
+                    }}
+                    onChange={this.handleChange}
+                  />
+                  N
+                  <Checkbox
+                    checked={this.state.temp_exportcheckn_fin || false}
+                    color="primary"
+                    name="input_exportcheckn_fin"
+                    style={{
+                      padding: 0,
+                      margin: "0 0.4rem 0 0",
+                    }}
+                    onChange={this.handleChange}
+                  />
+                </div>
               }
               label="Exporta"
               margin="dense"

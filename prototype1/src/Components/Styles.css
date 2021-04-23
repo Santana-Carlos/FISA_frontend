@@ -204,6 +204,13 @@
   justify-content: flex-end;
 }
 
+.o-row-check {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
 .o-diagTittle-sub {
   margin: 0.2rem 1rem;
   font-weight: 400;
