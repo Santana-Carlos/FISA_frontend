@@ -140,8 +140,22 @@ class Consultar4Finanzas extends Component {
             temp_pendfac_fin: data.informacion.pendiente_facturacion,
             userUpdated: data.usuario_actualizacion.editor,
             fechaUpdated: data.informacion.updated_at,
-            temp_cuotaanual_fin: data.informacion.cuota_anual,
-            temp_anocuota_fin: data.informacion.temporada_cuota,
+            temp_cuotaanual_fin:
+              data.informacion.clasificacion_id === null
+                ? ""
+                : this.state.clas_fin_api[
+                    this.state.clas_fin_api.findIndex(
+                      (x) => x.id === data.informacion.clasificacion_id
+                    )
+                  ].cuota_anual,
+            temp_anocuota_fin:
+              data.informacion.clasificacion_id === null
+                ? ""
+                : this.state.clas_fin_api[
+                    this.state.clas_fin_api.findIndex(
+                      (x) => x.id === data.informacion.clasificacion_id
+                    )
+                  ].temporada_cuota,
             temp_importcheck_fin:
               data.informacion.importa === null
                 ? false

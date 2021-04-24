@@ -54,7 +54,9 @@ class EditarContacto extends Component {
       temp_cargo_con: "",
       temp_replegal_con: false,
       temp_tratodata_con: false,
+      temp_tratodatan_con: false,
       temp_enviodata_con: false,
+      temp_enviodatan_con: false,
       temp_tel_con: "",
       temp_ext_con: "",
       temp_cel_con: "",
@@ -145,8 +147,22 @@ class EditarContacto extends Component {
             temp_apell_con: data.contacto.apellidos,
             temp_cargo_con: data.contacto.cargo,
             temp_replegal_con: data.contacto.representante,
-            temp_tratodata_con: data.contacto.control_informacion,
-            temp_enviodata_con: data.contacto.envio_informacion,
+            temp_tratodata_con:
+              data.contacto.control_informacion === null
+                ? false
+                : data.contacto.control_informacion,
+            temp_tratodatan_con:
+              data.contacto.control_informacion === null
+                ? false
+                : !data.contacto.control_informacion,
+            temp_enviodata_con:
+              data.contacto.envio_informacion === null
+                ? false
+                : data.contacto.envio_informacion,
+            temp_enviodatan_con:
+              data.contacto.envio_informacion === null
+                ? false
+                : !data.contacto.envio_informacion,
             temp_tel_con: data.contacto.telefono,
             temp_ext_con: data.contacto.extension,
             temp_cel_con: data.contacto.celular,
@@ -226,8 +242,14 @@ class EditarContacto extends Component {
       apellidos: this.state.temp_apell_con,
       cargo: this.state.temp_cargo_con,
       representante: this.state.temp_replegal_con,
-      control_informacion: this.state.temp_tratodata_con,
-      envio_informacion: this.state.temp_enviodata_con,
+      control_informacion:
+        this.state.temp_tratodata_con || this.state.temp_tratodatan_con
+          ? this.state.temp_tratodata_con
+          : null,
+      envio_informacion:
+        this.state.temp_enviodata_con || this.state.temp_enviodatan_con
+          ? this.state.temp_enviodata_con
+          : null,
       telefono: this.state.temp_tel_con,
       extension: this.state.temp_ext_con,
       celular: this.state.temp_cel_con,
@@ -275,6 +297,8 @@ class EditarContacto extends Component {
       temp_replegal_con: false,
       temp_tratodata_con: false,
       temp_enviodata_con: false,
+      temp_tratodatan_con: false,
+      temp_enviodatan_con: false,
       temp_tel_con: "",
       temp_ext_con: "",
       temp_cel_con: "",
@@ -315,10 +339,28 @@ class EditarContacto extends Component {
         }
         break;
       case "input_tratodata_con":
+        if (checked) {
+          this.setState({ temp_tratodatan_con: !checked });
+        }
         this.setState({ temp_tratodata_con: checked });
         break;
+      case "input_tratodatan_con":
+        if (checked) {
+          this.setState({ temp_tratodata_con: !checked });
+        }
+        this.setState({ temp_tratodatan_con: checked });
+        break;
       case "input_enviodata_con":
+        if (checked) {
+          this.setState({ temp_enviodatan_con: !checked });
+        }
         this.setState({ temp_enviodata_con: checked });
+        break;
+      case "input_enviodatan_con":
+        if (checked) {
+          this.setState({ temp_enviodata_con: !checked });
+        }
+        this.setState({ temp_enviodatan_con: checked });
         break;
       case "input_tel_con":
         this.setState({ temp_tel_con: value });
@@ -786,35 +828,63 @@ class EditarContacto extends Component {
             }}
           >
             <FormControlLabel
-              style={{ margin: 0 }}
+              style={{ margin: "0 0 0.1rem 0.5rem" }}
               control={
-                <Checkbox
-                  checked={this.state.temp_tratodata_con || false}
-                  color="primary"
-                  name="input_tratodata_con"
-                  style={{
-                    padding: "0 0.4rem",
-                    marginLeft: "0.5rem",
-                  }}
-                  onChange={this.handleChange}
-                />
+                <div className="o-row-check">
+                  S
+                  <Checkbox
+                    checked={this.state.temp_tratodata_con || false}
+                    color="primary"
+                    name="input_tratodata_con"
+                    style={{
+                      padding: 0,
+                      margin: "0 0.3rem 0 0",
+                    }}
+                    onChange={this.handleChange}
+                  />
+                  N
+                  <Checkbox
+                    checked={this.state.temp_tratodatan_con || false}
+                    color="primary"
+                    name="input_tratodatan_con"
+                    style={{
+                      padding: 0,
+                      margin: "0 0.3rem 0 0",
+                    }}
+                    onChange={this.handleChange}
+                  />
+                </div>
               }
               label="Autoriza manejo de información"
               margin="dense"
             />
             <FormControlLabel
-              style={{ margin: 0 }}
+              style={{ margin: "0 0 0 0.5rem" }}
               control={
-                <Checkbox
-                  checked={this.state.temp_enviodata_con || false}
-                  color="primary"
-                  name="input_enviodata_con"
-                  style={{
-                    padding: "0 0.4rem",
-                    marginLeft: "0.5rem",
-                  }}
-                  onChange={this.handleChange}
-                />
+                <div className="o-row-check">
+                  S
+                  <Checkbox
+                    checked={this.state.temp_enviodata_con || false}
+                    color="primary"
+                    name="input_enviodata_con"
+                    style={{
+                      padding: 0,
+                      margin: "0 0.3rem 0 0",
+                    }}
+                    onChange={this.handleChange}
+                  />
+                  N
+                  <Checkbox
+                    checked={this.state.temp_enviodatan_con || false}
+                    color="primary"
+                    name="input_enviodatan_con"
+                    style={{
+                      padding: 0,
+                      margin: "0 0.3rem 0 0",
+                    }}
+                    onChange={this.handleChange}
+                  />
+                </div>
               }
               label="Autoriza envío de información"
               margin="dense"
