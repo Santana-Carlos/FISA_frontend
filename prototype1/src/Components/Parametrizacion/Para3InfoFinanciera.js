@@ -73,7 +73,7 @@ class Para3InfoFinanciera extends Component {
   }
 
   callApi = () => {
-    fetch(process.env.REACT_APP_API_URL + "Clasificacion", {
+    fetch(process.env.REACT_APP_API_URL + "Administracion/InfoFinan", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -87,24 +87,6 @@ class Para3InfoFinanciera extends Component {
         if (data.success) {
           this.setState({
             api_clas: data.clasificaciones,
-          });
-        }
-      })
-      .catch((error) => {});
-
-    fetch(process.env.REACT_APP_API_URL + "Regimen", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + this.props.token,
-      },
-    })
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        if (data.success) {
-          this.setState({
             api_reg: data.regimenes,
             loading: false,
           });

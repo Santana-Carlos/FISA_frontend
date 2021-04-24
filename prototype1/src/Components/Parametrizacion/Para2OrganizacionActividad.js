@@ -75,7 +75,7 @@ class Para2OrganizacionActividad extends Component {
   }
 
   callApi = () => {
-    fetch(process.env.REACT_APP_API_URL + "Sector", {
+    fetch(process.env.REACT_APP_API_URL + "Administracion/Actividad", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -89,24 +89,6 @@ class Para2OrganizacionActividad extends Component {
         if (data.success) {
           this.setState({
             api_sec: data.sectores,
-          });
-        }
-      })
-      .catch((error) => {});
-
-    fetch(process.env.REACT_APP_API_URL + "Ciiu", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + this.props.token,
-      },
-    })
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        if (data.success) {
-          this.setState({
             api_ciiu: data.ciius,
             loading: false,
           });

@@ -72,7 +72,7 @@ class Para4ContactosOficina extends Component {
   }
 
   callApi = () => {
-    fetch(process.env.REACT_APP_API_URL + "TipoDocumentoPersona", {
+    fetch(process.env.REACT_APP_API_URL + "Administracion/OfiCont", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -85,64 +85,10 @@ class Para4ContactosOficina extends Component {
       .then((data) => {
         if (data.success) {
           this.setState({
-            api_tipoid: data.tipos,
-          });
-        }
-      })
-      .catch((error) => {});
-
-    fetch(process.env.REACT_APP_API_URL + "Subcategoria", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + this.props.token,
-      },
-    })
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        if (data.success) {
-          this.setState({
+            api_tipoid: data.tipo_documentos,
             api_subcat: data.subcategorias,
-          });
-        }
-      })
-      .catch((error) => {});
-
-    fetch(process.env.REACT_APP_API_URL + "Sexo", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + this.props.token,
-      },
-    })
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        if (data.success) {
-          this.setState({
             api_sex: data.sexos,
-          });
-        }
-      })
-      .catch((error) => {});
-
-    fetch(process.env.REACT_APP_API_URL + "TipoOficina", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + this.props.token,
-      },
-    })
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        if (data.success) {
-          this.setState({
-            api_tipoofi: data.tipos,
+            api_tipoofi: data.tipo_oficinas,
             loading: false,
           });
         }

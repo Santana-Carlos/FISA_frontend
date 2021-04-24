@@ -67,7 +67,7 @@ class Para6Seguimiento extends Component {
   }
 
   callApi = () => {
-    fetch(process.env.REACT_APP_API_URL + "EstadoVisita", {
+    fetch(process.env.REACT_APP_API_URL + "Administracion/Seguimiento", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -80,28 +80,8 @@ class Para6Seguimiento extends Component {
       .then((data) => {
         if (data.success) {
           this.setState({
-            api_estvisita: data.estados,
-            loading: false,
-          });
-        }
-      })
-      .catch((error) => {
-        this.setState({ loading: false });
-      });
-    fetch(process.env.REACT_APP_API_URL + "EstadoTarea", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + this.props.token,
-      },
-    })
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        if (data.success) {
-          this.setState({
-            api_esttarea: data.estados,
+            api_estvisita: data.visitas,
+            api_esttarea: data.tareas,
             loading: false,
           });
         }

@@ -72,7 +72,7 @@ class Para1OrganizacionVarios extends Component {
   }
 
   callApi = () => {
-    fetch(process.env.REACT_APP_API_URL + "TipoDocumentoOrganizacion", {
+    fetch(process.env.REACT_APP_API_URL + "Administracion/Varios", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -85,63 +85,9 @@ class Para1OrganizacionVarios extends Component {
       .then((data) => {
         if (data.success) {
           this.setState({
-            api_tipoid: data.tipos,
-          });
-        }
-      })
-      .catch((error) => {});
-
-    fetch(process.env.REACT_APP_API_URL + "Categoria", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + this.props.token,
-      },
-    })
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        if (data.success) {
-          this.setState({
+            api_tipoid: data.tipo_documentos,
             api_cat: data.categorias,
-          });
-        }
-      })
-      .catch((error) => {});
-
-    fetch(process.env.REACT_APP_API_URL + "TipoOrganizacion", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + this.props.token,
-      },
-    })
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        if (data.success) {
-          this.setState({
-            api_tipoorg: data.tipos,
-          });
-        }
-      })
-      .catch((error) => {});
-
-    fetch(process.env.REACT_APP_API_URL + "Clase", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + this.props.token,
-      },
-    })
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        if (data.success) {
-          this.setState({
+            api_tipoorg: data.tipo_organizaciones,
             api_claseorg: data.clases,
             loading: false,
           });
