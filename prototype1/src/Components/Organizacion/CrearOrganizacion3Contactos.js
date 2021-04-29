@@ -592,7 +592,7 @@ class CrearOrganizacion3Contactos extends Component {
             temp_cel_con: data.contacto.celular,
             temp_tipoid_con: data.contacto.tipo_documento_persona_id,
             temp_nid_con: data.contacto.numero_documento,
-            temp_sex_con: data.contacto.sexo,
+            temp_sex_con: data.contacto.sexo_id,
             //userUpdated_con: data.usuario_actualizacion.usuario_actualizacion,
             //fechaUpdated_con: data.contacto.updated_at,
             loadingDiag: false,
