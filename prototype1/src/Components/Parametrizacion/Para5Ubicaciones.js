@@ -747,41 +747,38 @@ class Para5Ubicaciones extends Component {
                         <StyledTableCell size="small">
                           {obj.nombre}
                         </StyledTableCell>
-                        <StyledTableCell
-                          size="small"
-                          align="right"
-                        >
+                        <StyledTableCell size="small" align="right">
                           <div className="o-row-btnIcon">
-                          <IconButton
-                            size="small"
-                            className="o-tinyBtn"
-                            style={{ color: "#47B14C" }}
-                            onClick={() => {
-                              this.setState(
-                                {
-                                  temp_id: obj.id,
+                            <IconButton
+                              size="small"
+                              className="o-tinyBtn"
+                              style={{ color: "#47B14C" }}
+                              onClick={() => {
+                                this.setState(
+                                  {
+                                    temp_id: obj.id,
+                                    temp_tipo: "Ciudad",
+                                    temp_accion: "e",
+                                  },
+                                  this.callApiGet
+                                );
+                              }}
+                            >
+                              <IconEdit />
+                            </IconButton>
+                            <IconButton
+                              size="small"
+                              color="secondary"
+                              onClick={() =>
+                                this.setState({
                                   temp_tipo: "Ciudad",
-                                  temp_accion: "e",
-                                },
-                                this.callApiGet
-                              );
-                            }}
-                          >
-                            <IconEdit />
-                          </IconButton>
-                          <IconButton
-                            size="small"
-                            color="secondary"
-                            onClick={() =>
-                              this.setState({
-                                temp_tipo: "Ciudad",
-                                temp_id: obj.id,
-                                delDato: true,
-                              })
-                            }
-                          >
-                            <IconDelete />
-                          </IconButton>
+                                  temp_id: obj.id,
+                                  delDato: true,
+                                })
+                              }
+                            >
+                              <IconDelete />
+                            </IconButton>
                           </div>
                         </StyledTableCell>
                       </TableRow>

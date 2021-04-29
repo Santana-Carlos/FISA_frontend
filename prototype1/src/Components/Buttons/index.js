@@ -55,6 +55,10 @@ export const GreenButton = withStyles((theme) => ({
     "&:hover": {
       backgroundColor: "#36973A",
     },
+    "&:disabled": {
+      backgroundColor: "#8CE190",
+      color: "#FFFFFF",
+    },
   },
 }))(Button);
 
@@ -70,6 +74,10 @@ export const RedButton = withStyles((theme) => ({
     backgroundColor: "#DC004E",
     "&:hover": {
       backgroundColor: "#9A0036",
+    },
+    "&:disabled": {
+      backgroundColor: "#FF8AB3",
+      color: "#FFFFFF",
     },
   },
 }))(Button);

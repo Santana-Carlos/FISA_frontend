@@ -20,6 +20,7 @@ import {
   Fade,
   CircularProgress,
 } from "@material-ui/core";
+import { MuiTriStateCheckbox as CheckboxTri } from "mui-tri-state-checkbox";
 import { Autocomplete } from "@material-ui/lab";
 import {
   GreenButton,
@@ -30,6 +31,8 @@ import {
 import {
   AddCircleOutline as IconAdd,
   Refresh as IconRefresh,
+  CheckBoxOutlineBlank,
+  IndeterminateCheckBox,
 } from "@material-ui/icons";
 import "../Styles.css";
 
@@ -81,10 +84,8 @@ class CrearContacto extends Component {
       temp_apell_con: "",
       temp_cargo_con: "",
       temp_replegal_con: false,
-      temp_tratodata_con: false,
-      temp_tratodatan_con: false,
-      temp_enviodata_con: false,
-      temp_enviodatan_con: false,
+      temp_tratodata_con: null,
+      temp_enviodata_con: null,
       temp_tel_con: "",
       temp_ext_con: "",
       temp_cel_con: "",
@@ -104,7 +105,7 @@ class CrearContacto extends Component {
       cat_org_api: [],
       loading: false,
       loadingDiag: false,
-      box_spacing: window.innerHeight > 900 ? "0.4rem" : "0rem",
+      box_spacing: window.innerHeight > 900 ? "0.8rem" : "0rem",
       box_size_table: window.innerHeight > 900 ? "30rem" : "15rem",
       winInterval: "",
     };
@@ -116,7 +117,7 @@ class CrearContacto extends Component {
 
   resizeBox = () => {
     this.setState({
-      box_spacing: window.innerHeight > 900 ? "0.4rem" : "0rem",
+      box_spacing: window.innerHeight > 900 ? "0.8rem" : "0rem",
       box_size_table: window.innerHeight > 900 ? "30rem" : "15rem",
     });
   };
@@ -245,14 +246,8 @@ class CrearContacto extends Component {
       apellidos: this.state.temp_apell_con,
       cargo: this.state.temp_cargo_con,
       representante: this.state.temp_replegal_con,
-      control_informacion:
-        this.state.temp_tratodata_con || this.state.temp_tratodatan_con
-          ? this.state.temp_tratodata_con
-          : null,
-      envio_informacion:
-        this.state.temp_enviodata_con || this.state.temp_enviodatan_con
-          ? this.state.temp_enviodata_con
-          : null,
+      control_informacion: this.state.temp_tratodata_con,
+      envio_informacion: this.state.temp_enviodata_con,
       telefono: this.state.temp_tel_con,
       extension: this.state.temp_ext_con,
       celular: this.state.temp_cel_con,
@@ -304,10 +299,8 @@ class CrearContacto extends Component {
       temp_apell_con: "",
       temp_cargo_con: "",
       temp_replegal_con: false,
-      temp_tratodata_con: false,
-      temp_enviodata_con: false,
-      temp_tratodatan_con: false,
-      temp_enviodatan_con: false,
+      temp_tratodata_con: null,
+      temp_enviodata_con: null,
       temp_tel_con: "",
       temp_ext_con: "",
       temp_cel_con: "",
@@ -485,7 +478,7 @@ class CrearContacto extends Component {
     });
   };
 
-  handleChange(event) {
+  handleChange(event, value2) {
     let value = event.target.value;
     let name = event.target.name;
     let checked = event.target.checked;
@@ -507,28 +500,10 @@ class CrearContacto extends Component {
         }
         break;
       case "input_tratodata_con":
-        if (checked) {
-          this.setState({ temp_tratodatan_con: !checked });
-        }
-        this.setState({ temp_tratodata_con: checked });
-        break;
-      case "input_tratodatan_con":
-        if (checked) {
-          this.setState({ temp_tratodata_con: !checked });
-        }
-        this.setState({ temp_tratodatan_con: checked });
+        this.setState({ temp_tratodata_con: value2 });
         break;
       case "input_enviodata_con":
-        if (checked) {
-          this.setState({ temp_enviodatan_con: !checked });
-        }
-        this.setState({ temp_enviodata_con: checked });
-        break;
-      case "input_enviodatan_con":
-        if (checked) {
-          this.setState({ temp_enviodata_con: !checked });
-        }
-        this.setState({ temp_enviodatan_con: checked });
+        this.setState({ temp_enviodata_con: value2 });
         break;
       case "input_tel_con":
         this.setState({ temp_tel_con: value });
@@ -997,30 +972,18 @@ class CrearContacto extends Component {
             <FormControlLabel
               style={{ margin: "0 0 0.1rem 0.5rem" }}
               control={
-                <div className="o-row-check">
-                  S
-                  <Checkbox
-                    checked={this.state.temp_tratodata_con || false}
-                    color="primary"
-                    name="input_tratodata_con"
-                    style={{
-                      padding: 0,
-                      margin: "0 0.3rem 0 0",
-                    }}
-                    onChange={this.handleChange}
-                  />
-                  N
-                  <Checkbox
-                    checked={this.state.temp_tratodatan_con || false}
-                    color="primary"
-                    name="input_tratodatan_con"
-                    style={{
-                      padding: 0,
-                      margin: "0 0.3rem 0 0",
-                    }}
-                    onChange={this.handleChange}
-                  />
-                </div>
+                <CheckboxTri
+                  checked={this.state.temp_tratodata_con}
+                  icon={<IndeterminateCheckBox color="secondary" />}
+                  indeterminateIcon={<CheckBoxOutlineBlank />}
+                  color="primary"
+                  name="input_tratodata_con"
+                  style={{
+                    padding: 0,
+                    margin: "0 0.3rem 0 0",
+                  }}
+                  onChange={this.handleChange}
+                />
               }
               label="Autoriza manejo de información"
               margin="dense"
@@ -1028,30 +991,18 @@ class CrearContacto extends Component {
             <FormControlLabel
               style={{ margin: "0 0 0 0.5rem" }}
               control={
-                <div className="o-row-check">
-                  S
-                  <Checkbox
-                    checked={this.state.temp_enviodata_con || false}
-                    color="primary"
-                    name="input_enviodata_con"
-                    style={{
-                      padding: 0,
-                      margin: "0 0.3rem 0 0",
-                    }}
-                    onChange={this.handleChange}
-                  />
-                  N
-                  <Checkbox
-                    checked={this.state.temp_enviodatan_con || false}
-                    color="primary"
-                    name="input_enviodatan_con"
-                    style={{
-                      padding: 0,
-                      margin: "0 0.3rem 0 0",
-                    }}
-                    onChange={this.handleChange}
-                  />
-                </div>
+                <CheckboxTri
+                  checked={this.state.temp_enviodata_con}
+                  icon={<IndeterminateCheckBox color="secondary" />}
+                  indeterminateIcon={<CheckBoxOutlineBlank />}
+                  color="primary"
+                  name="input_enviodata_con"
+                  style={{
+                    padding: 0,
+                    margin: "0 0.3rem 0 0",
+                  }}
+                  onChange={this.handleChange}
+                />
               }
               label="Autoriza envío de información"
               margin="dense"

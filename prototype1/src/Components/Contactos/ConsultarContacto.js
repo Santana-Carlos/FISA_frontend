@@ -73,7 +73,7 @@ class ConsultarContacto extends Component {
       loading: true,
       box_spacing: window.innerHeight > 900 ? "0.6rem" : "0.2rem",
       box_size: window.innerHeight > 900 ? "32rem" : "16.5rem",
-      box_spacing_tiny: window.innerHeight > 900 ? "0.4rem" : "0rem",
+      box_spacing_tiny: window.innerHeight > 900 ? "0.8rem" : "0rem",
       winInterval: "",
     };
 
@@ -84,7 +84,7 @@ class ConsultarContacto extends Component {
     this.setState({
       box_spacing: window.innerHeight > 900 ? "0.6rem" : "0.2rem",
       box_size: window.innerHeight > 900 ? "32rem" : "16.5rem",
-      box_spacing_tiny: window.innerHeight > 900 ? "0.4rem" : "0rem",
+      box_spacing_tiny: window.innerHeight > 900 ? "0.8rem" : "0rem",
     });
   };
 

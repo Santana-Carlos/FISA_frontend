@@ -12,17 +12,22 @@ import {
   DialogContent,
   DialogTitle,
   ListItemText,
-  Checkbox,
   FormControlLabel,
+  Checkbox,
   Fade,
   CircularProgress,
 } from "@material-ui/core";
+import { MuiTriStateCheckbox as CheckboxTri } from "mui-tri-state-checkbox";
 import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
 } from "@material-ui/pickers";
 import TextField from "@unicef/material-ui-currency-textfield";
-import { Edit as IconEdit } from "@material-ui/icons";
+import {
+  Edit as IconEdit,
+  CheckBoxOutlineBlank,
+  IndeterminateCheckBox,
+} from "@material-ui/icons";
 import {
   BlueButton,
   GreenButton,
@@ -63,10 +68,8 @@ class Consultar4Finanzas extends Component {
       fechaUpdated: "",
       temp_import_fin: [],
       temp_export_fin: [],
-      temp_importcheck_fin: false,
-      temp_importcheckn_fin: false,
-      temp_exportcheck_fin: false,
-      temp_exportcheckn_fin: false,
+      temp_importcheck_fin: null,
+      temp_exportcheck_fin: null,
       temp_anocuota_fin: "",
       temp_cuotaanual_fin: "",
       clas_fin_api: [],
@@ -156,22 +159,8 @@ class Consultar4Finanzas extends Component {
                       (x) => x.id === data.informacion.clasificacion_id
                     )
                   ].temporada_cuota,
-            temp_importcheck_fin:
-              data.informacion.importa === null
-                ? false
-                : data.informacion.importa,
-            temp_importcheckn_fin:
-              data.informacion.importa === null
-                ? false
-                : !data.informacion.importa,
-            temp_exportcheck_fin:
-              data.informacion.exporta === null
-                ? false
-                : data.informacion.exporta,
-            temp_exportcheckn_fin:
-              data.informacion.exporta === null
-                ? false
-                : !data.informacion.exporta,
+            temp_importcheck_fin: data.informacion.importa,
+            temp_exportcheck_fin: data.informacion.exporta,
             loading: false,
           });
         }
@@ -301,14 +290,8 @@ class Consultar4Finanzas extends Component {
       cuota_pautas: this.state.temp_cuopau_fin,
       fecha_edicion_pauta: this.state.temp_fecpau_fin,
       pendiente_facturacion: this.state.temp_pendfac_fin,
-      importa:
-        this.state.temp_importcheck_fin || this.state.temp_importcheckn_fin
-          ? this.state.temp_importcheck_fin
-          : null,
-      exporta:
-        this.state.temp_exportcheck_fin || this.state.temp_exportcheckn_fin
-          ? this.state.temp_exportcheck_fin
-          : null,
+      importa: this.state.temp_importcheck_fin,
+      exporta: this.state.temp_exportcheck_fin,
     };
 
     fetch(process.env.REACT_APP_API_URL + "InformacionFinanciera/" + idFin, {
@@ -355,14 +338,8 @@ class Consultar4Finanzas extends Component {
       cuota_pautas: this.state.temp_cuopau_fin,
       fecha_edicion_pauta: this.state.temp_fecpau_fin,
       pendiente_facturacion: this.state.temp_pendfac_fin,
-      importa:
-        this.state.temp_importcheck_fin || this.state.temp_importcheckn_fin
-          ? this.state.temp_importcheck_fin
-          : null,
-      exporta:
-        this.state.temp_exportcheck_fin || this.state.temp_exportcheckn_fin
-          ? this.state.temp_exportcheck_fin
-          : null,
+      importa: this.state.temp_importcheck_fin,
+      exporta: this.state.temp_exportcheck_fin,
     };
 
     fetch(process.env.REACT_APP_API_URL + "InformacionFinanciera/", {
@@ -391,7 +368,6 @@ class Consultar4Finanzas extends Component {
   handleChange(event, value2) {
     let value = event.target.value;
     let name = event.target.name;
-    let checked = event.target.checked;
 
     switch (name) {
       case "input_ingope_fin":
@@ -468,28 +444,10 @@ class Consultar4Finanzas extends Component {
         this.setState({ temp_export_fin: value });
         break;
       case "input_importcheck_fin":
-        if (checked) {
-          this.setState({ temp_importcheckn_fin: !checked });
-        }
-        this.setState({ temp_importcheck_fin: checked });
-        break;
-      case "input_importcheckn_fin":
-        if (checked) {
-          this.setState({ temp_importcheck_fin: !checked });
-        }
-        this.setState({ temp_importcheckn_fin: checked });
+        this.setState({ temp_importcheck_fin: value2 });
         break;
       case "input_exportcheck_fin":
-        if (checked) {
-          this.setState({ temp_exportcheckn_fin: !checked });
-        }
-        this.setState({ temp_exportcheck_fin: checked });
-        break;
-      case "input_exportcheckn_fin":
-        if (checked) {
-          this.setState({ temp_exportcheck_fin: !checked });
-        }
-        this.setState({ temp_exportcheckn_fin: checked });
+        this.setState({ temp_exportcheck_fin: value2 });
         break;
       case "input_pendfac_fin":
         this.setState({ temp_pendfac_fin: value2 });
@@ -930,30 +888,18 @@ class Consultar4Finanzas extends Component {
             <FormControlLabel
               style={{ margin: 0 }}
               control={
-                <div className="o-row-check">
-                  S
-                  <Checkbox
-                    checked={this.state.temp_importcheck_fin || false}
-                    color="primary"
-                    name="input_importcheck_fin"
-                    style={{
-                      padding: 0,
-                      margin: "0 0.4rem 0 0",
-                    }}
-                    onChange={this.handleChange}
-                  />
-                  N
-                  <Checkbox
-                    checked={this.state.temp_importcheckn_fin || false}
-                    color="primary"
-                    name="input_importcheckn_fin"
-                    style={{
-                      padding: 0,
-                      margin: "0 0.4rem 0 0",
-                    }}
-                    onChange={this.handleChange}
-                  />
-                </div>
+                <CheckboxTri
+                  checked={this.state.temp_importcheck_fin}
+                  icon={<IndeterminateCheckBox color="secondary" />}
+                  indeterminateIcon={<CheckBoxOutlineBlank />}
+                  color="primary"
+                  name="input_importcheck_fin"
+                  style={{
+                    padding: 0,
+                    margin: "0 0.4rem 0 0",
+                  }}
+                  onChange={this.handleChange}
+                />
               }
               label="Importa"
               margin="dense"
@@ -961,30 +907,18 @@ class Consultar4Finanzas extends Component {
             <FormControlLabel
               style={{ margin: "0 0 0 2rem" }}
               control={
-                <div className="o-row-check">
-                  S
-                  <Checkbox
-                    checked={this.state.temp_exportcheck_fin || false}
-                    color="primary"
-                    name="input_exportcheck_fin"
-                    style={{
-                      padding: 0,
-                      margin: "0 0.4rem 0 0",
-                    }}
-                    onChange={this.handleChange}
-                  />
-                  N
-                  <Checkbox
-                    checked={this.state.temp_exportcheckn_fin || false}
-                    color="primary"
-                    name="input_exportcheckn_fin"
-                    style={{
-                      padding: 0,
-                      margin: "0 0.4rem 0 0",
-                    }}
-                    onChange={this.handleChange}
-                  />
-                </div>
+                <CheckboxTri
+                  checked={this.state.temp_exportcheck_fin}
+                  icon={<IndeterminateCheckBox color="secondary" />}
+                  indeterminateIcon={<CheckBoxOutlineBlank />}
+                  color="primary"
+                  name="input_exportcheck_fin"
+                  style={{
+                    padding: 0,
+                    margin: "0 0.4rem 0 0",
+                  }}
+                  onChange={this.handleChange}
+                />
               }
               label="Exporta"
               margin="dense"

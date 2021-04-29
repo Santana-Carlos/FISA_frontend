@@ -66,7 +66,7 @@ class ConsultarOrganizacion extends Component {
       loading: true,
       box_spacing: window.innerHeight > 900 ? "0.6rem" : "0.2rem",
       box_size: window.innerHeight > 900 ? "36rem" : "20rem",
-      box_spacing_tiny: window.innerHeight > 900 ? "0.4rem" : "0rem",
+      box_spacing_tiny: window.innerHeight > 900 ? "0.8rem" : "0rem",
       subtitle_spacing: window.innerHeight > 900 ? "2.1rem" : "1.7rem",
       box_size_tiny: window.innerHeight > 900 ? "24rem" : "13rem",
       box_size_table: window.innerHeight > 900 ? "30rem" : "15rem",
@@ -80,7 +80,7 @@ class ConsultarOrganizacion extends Component {
     this.setState({
       box_spacing: window.innerHeight > 900 ? "0.6rem" : "0.2rem",
       box_size: window.innerHeight > 900 ? "36rem" : "20rem",
-      box_spacing_tiny: window.innerHeight > 900 ? "0.4rem" : "0rem",
+      box_spacing_tiny: window.innerHeight > 900 ? "0.8rem" : "0rem",
       subtitle_spacing: window.innerHeight > 900 ? "2.1rem" : "1.7rem",
       box_size_tiny: window.innerHeight > 900 ? "24rem" : "13rem",
       box_size_table: window.innerHeight > 900 ? "30rem" : "15rem",

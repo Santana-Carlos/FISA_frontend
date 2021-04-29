@@ -82,7 +82,7 @@ class CrearOrganizacion1DatosBasicos extends Component {
       dbid_org: "",
       indexCat: -1,
       loading: false,
-      box_spacing: window.innerHeight > 900 ? "0.4rem" : "0rem",
+      box_spacing: window.innerHeight > 900 ? "0.8rem" : "0rem",
       subtitle_spacing: window.innerHeight > 900 ? "2.1rem" : "1.7rem",
       box_size: window.innerHeight > 900 ? "24rem" : "13rem",
       box_size_table: window.innerHeight > 900 ? "30rem" : "15rem",
@@ -95,7 +95,7 @@ class CrearOrganizacion1DatosBasicos extends Component {
 
   resizeBox = () => {
     this.setState({
-      box_spacing: window.innerHeight > 900 ? "0.4rem" : "0rem",
+      box_spacing: window.innerHeight > 900 ? "0.8rem" : "0rem",
       subtitle_spacing: window.innerHeight > 900 ? "2.1rem" : "1.7rem",
       box_size: window.innerHeight > 900 ? "24rem" : "13rem",
       box_size_table: window.innerHeight > 900 ? "30rem" : "15rem",
