@@ -301,19 +301,14 @@ class ReporteFechas extends Component {
                 marginTop: "0.7rem",
               }}
             >
-              <InputLabel id="demo-simple-select-outlined-label">
-                Tipo reporte
-              </InputLabel>
+              <InputLabel>Tipo reporte</InputLabel>
               <Select
-                labelId="demo-simple-select-outlined-label"
-                id="demo-simple-select-outlined"
                 value={this.state.tipoRep || ""}
                 onChange={this.handleChange}
                 label="Tipo reporte"
                 name="input_tipoRep"
                 className="o-space"
               >
-                <MenuItem disabled={true} value="input_tipoRep"></MenuItem>
                 {items.map((obj, i) => {
                   return (
                     <MenuItem key={i} value={obj.id}>

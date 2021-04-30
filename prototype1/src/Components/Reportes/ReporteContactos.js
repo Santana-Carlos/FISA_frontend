@@ -459,12 +459,8 @@ class ReporteContacto extends Component {
               variant="outlined"
               margin="dense"
             >
-              <InputLabel id="demo-simple-select-outlined-label">
-                País
-              </InputLabel>
+              <InputLabel>País</InputLabel>
               <Select
-                labelId="demo-simple-select-outlined-label"
-                id="demo-simple-select-outlined"
                 value={this.state.pais_ofi || ""}
                 onChange={this.handleChange}
                 label="País*"
@@ -472,7 +468,6 @@ class ReporteContacto extends Component {
                 className="o-space"
                 style={{ marginBottom: BOX_SPACING }}
               >
-                <MenuItem disabled={true} value="input_pais_ofi"></MenuItem>
                 {this.state.pais_ofi_api.map((obj, i) => {
                   return (
                     <MenuItem key={i} value={obj.id}>
@@ -488,11 +483,8 @@ class ReporteContacto extends Component {
               variant="outlined"
               margin="dense"
             >
-              <InputLabel id="demo-mutiple-checkbox-label">
-                Categoría Org.
-              </InputLabel>
+              <InputLabel>Categoría Org.</InputLabel>
               <Select
-                id="demo-mutiple-checkbox"
                 multiple
                 label="Categoría Org."
                 name="input_cat_org"
@@ -526,11 +518,8 @@ class ReporteContacto extends Component {
               variant="outlined"
               margin="dense"
             >
-              <InputLabel id="demo-mutiple-checkbox-label">
-                Subcategoría
-              </InputLabel>
+              <InputLabel>Subcategoría</InputLabel>
               <Select
-                id="demo-mutiple-checkbox"
                 multiple
                 label="Subcategoría"
                 name="input_subcat_con"

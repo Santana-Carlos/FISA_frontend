@@ -593,12 +593,8 @@ class Consultar4Finanzas extends Component {
               variant="outlined"
               margin="dense"
             >
-              <InputLabel id="demo-simple-select-outlined-label">
-                Régimen tributario
-              </InputLabel>
+              <InputLabel>Régimen tributario</InputLabel>
               <Select
-                labelId="demo-simple-select-outlined-label"
-                id="demo-simple-select-outlined"
                 value={this.state.temp_regimen_fin || ""}
                 onChange={this.handleChange}
                 label="Régimen tributario"
@@ -606,7 +602,6 @@ class Consultar4Finanzas extends Component {
                 className="o-space"
                 style={{ marginBottom: BOX_SPACING }}
               >
-                <MenuItem disabled={true} value=""></MenuItem>
                 {this.state.regimen_fin_api.map((obj, i) => {
                   return (
                     <MenuItem key={i} value={obj.id}>
@@ -714,19 +709,14 @@ class Consultar4Finanzas extends Component {
               variant="outlined"
               margin="dense"
             >
-              <InputLabel id="demo-simple-select-outlined-label">
-                Clasificación
-              </InputLabel>
+              <InputLabel>Clasificación</InputLabel>
               <Select
-                labelId="demo-simple-select-outlined-label"
-                id="demo-simple-select-outlined"
                 value={this.state.temp_clas_fin || ""}
                 onChange={this.handleChange}
                 label="Clasificación"
                 name="input_clas_fin"
                 className="o-space"
               >
-                <MenuItem disabled={true} value=""></MenuItem>
                 {this.state.clas_fin_api.map((obj, i) => {
                   return (
                     <MenuItem key={i} value={obj.id}>
@@ -768,7 +758,7 @@ class Consultar4Finanzas extends Component {
 
           <div className="o-contentForm">
             <h3 className="o-innerSubTittle" style={{ color: "#FFFFFF" }}>
-              ¡Me encontraste!
+              .
             </h3>
             <div style={{ marginBottom: BOX_SPACING }}>
               <TextField
@@ -968,12 +958,8 @@ class Consultar4Finanzas extends Component {
                   className="o-space"
                   disabled={!this.state.temp_importcheck_fin}
                 >
-                  <InputLabel id="demo-simple-select-outlined-label">
-                    Importaciones
-                  </InputLabel>
+                  <InputLabel>Importaciones</InputLabel>
                   <Select
-                    labelId="demo-simple-select-outlined-label"
-                    id="grouped-select"
                     multiple
                     value={this.state.temp_import_fin || []}
                     onChange={this.handleChange}
@@ -1001,10 +987,6 @@ class Consultar4Finanzas extends Component {
                       </div>
                     )}
                   >
-                    <MenuItem
-                      disabled={true}
-                      value="input_import_fin"
-                    ></MenuItem>
                     {this.state.pais_fin_api.map((obj, i) => (
                       <MenuItem key={i} value={obj.id}>
                         <Checkbox
@@ -1027,12 +1009,8 @@ class Consultar4Finanzas extends Component {
                   className="o-space"
                   disabled={!this.state.temp_exportcheck_fin}
                 >
-                  <InputLabel id="demo-simple-select-outlined-label">
-                    Exportaciones
-                  </InputLabel>
+                  <InputLabel>Exportaciones</InputLabel>
                   <Select
-                    labelId="demo-simple-select-outlined-label"
-                    id="grouped-select"
                     multiple
                     value={this.state.temp_export_fin || []}
                     onChange={this.handleChange}
@@ -1060,10 +1038,6 @@ class Consultar4Finanzas extends Component {
                       </div>
                     )}
                   >
-                    <MenuItem
-                      disabled={true}
-                      value="input_export_fin"
-                    ></MenuItem>
                     {this.state.pais_fin_api.map((obj, i) => (
                       <MenuItem key={i} value={obj.id}>
                         <Checkbox

@@ -449,8 +449,6 @@ class CrearContacto extends Component {
             temp_tipoid_con: data.contacto.tipo_documento_persona_id,
             temp_nid_con: data.contacto.numero_documento,
             temp_sex_con: data.contacto.sexo_id,
-            //userUpdated_con: data.usuario_actualizacion.usuario_actualizacion,
-            //fechaUpdated_con: data.contacto.updated_at,
             loading: false,
             temp_subcat_con:
               data.categorias[0] === this.state.indexCat ? [] : data.categorias,
@@ -627,19 +625,14 @@ class CrearContacto extends Component {
                 margin="dense"
                 className="o-selectShort"
               >
-                <InputLabel id="demo-simple-select-outlined-label">
-                  ID
-                </InputLabel>
+                <InputLabel>ID</InputLabel>
                 <Select
-                  labelId="demo-simple-select-outlined-label"
-                  id="demo-simple-select-outlined"
                   value={this.state.temp_tipoid_con || ""}
                   onChange={this.handleChange}
                   label="ID"
                   name="input_tipoid_con"
                   style={{ marginBottom: BOX_SPACING }}
                 >
-                  <MenuItem disabled={true} value="input_tipoid_con"></MenuItem>
                   {this.state.tipoid_con_api.map((obj, i) => {
                     return (
                       <MenuItem key={i} value={obj.id}>
@@ -700,12 +693,8 @@ class CrearContacto extends Component {
               />
             </div>
             <FormControl variant="outlined" margin="dense">
-              <InputLabel id="demo-simple-select-outlined-label">
-                Sexo
-              </InputLabel>
+              <InputLabel>Sexo</InputLabel>
               <Select
-                labelId="demo-simple-select-outlined-label"
-                id="demo-simple-select-outlined"
                 value={this.state.temp_sex_con || ""}
                 onChange={this.handleChange}
                 label="Sexo"
@@ -713,7 +702,6 @@ class CrearContacto extends Component {
                 className="o-space"
                 style={{ marginBottom: BOX_SPACING }}
               >
-                <MenuItem disabled={true} value="input_sex_con"></MenuItem>
                 {this.state.sex_con_api.map((obj, i) => {
                   return (
                     <MenuItem key={i} value={obj.id}>
@@ -781,13 +769,9 @@ class CrearContacto extends Component {
             </div>
 
             <FormControl className="o-space" variant="outlined" margin="dense">
-              <InputLabel id="demo-simple-select-outlined-label">
-                Oficina
-              </InputLabel>
+              <InputLabel>Oficina</InputLabel>
               <Select
                 disabled={this.state.dbid_org === ""}
-                labelId="demo-simple-select-outlined-label"
-                id="demo-simple-select-outlined"
                 value={this.state.temp_idoffice_con || ""}
                 onChange={this.handleChange}
                 label="Oficina*"
@@ -795,7 +779,6 @@ class CrearContacto extends Component {
                 className="o-space"
                 style={{ marginBottom: BOX_SPACING }}
               >
-                <MenuItem disabled={true} value="input_idoffice_con"></MenuItem>
                 {this.state.ofices_api.map((obj, i) => {
                   return (
                     <MenuItem key={i} value={obj.id}>
@@ -875,7 +858,6 @@ class CrearContacto extends Component {
             <h3 className="o-innerSubTittle">Otros datos</h3>
             <div style={{ marginBottom: BOX_SPACING }}>
               <TextField
-                id="outlined-textarea"
                 label="Observaciones"
                 value={this.state.temp_obs_con || ""}
                 multiline
@@ -892,7 +874,7 @@ class CrearContacto extends Component {
               margin="dense"
               error={this.state.reqText && this.state.temp_estado_con === ""}
             >
-              <InputLabel id="demo-simple-select-outlined-label">
+              <InputLabel>
                 <div style={{ display: "flex", flexDirection: "row" }}>
                   {"Estado"}
                   <div style={{ color: "#FF0000", marginLeft: "0.1rem" }}>
@@ -901,8 +883,6 @@ class CrearContacto extends Component {
                 </div>
               </InputLabel>
               <Select
-                labelId="demo-simple-select-outlined-label"
-                id="demo-simple-select-outlined"
                 value={this.state.temp_estado_con}
                 onChange={this.handleChange}
                 label="Estado*"
@@ -910,7 +890,6 @@ class CrearContacto extends Component {
                 className="o-space"
                 style={{ marginBottom: BOX_SPACING }}
               >
-                <MenuItem disabled={true} value="input_estado_con"></MenuItem>
                 {this.state.estado_con_api.map((obj, i) => {
                   return (
                     <MenuItem key={i} value={obj.id}>
@@ -1008,7 +987,10 @@ class CrearContacto extends Component {
               margin="dense"
             />
           </div>
-          <div className="o-btnBotNav-btn" style={{ width: "10rem" }}>
+          <div
+            className="o-btnBotNav-btn"
+            style={{ width: "10rem", marginLeft: "auto" }}
+          >
             <BlueButton
               onClick={() => {
                 this.setState({ contExist: true });
@@ -1017,7 +999,7 @@ class CrearContacto extends Component {
               {"Añadir existente"}
             </BlueButton>
           </div>
-          <div className="o-btnBotNavDoble">
+          <div className="o-btnBotNavDoble" style={{ marginLeft: "0.5rem" }}>
             <div className="o-btnBotNav-btn">
               <RedButton onClick={this.clearTemp}>{"Limpiar"}</RedButton>
             </div>

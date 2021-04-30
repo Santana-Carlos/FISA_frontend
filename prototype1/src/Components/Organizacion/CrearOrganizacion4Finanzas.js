@@ -617,12 +617,8 @@ class CrearOrganizacion4Finanzas extends Component {
               variant="outlined"
               margin="dense"
             >
-              <InputLabel id="demo-simple-select-outlined-label">
-                Régimen tributario
-              </InputLabel>
+              <InputLabel>Régimen tributario</InputLabel>
               <Select
-                labelId="demo-simple-select-outlined-label"
-                id="demo-simple-select-outlined"
                 value={this.state.temp_regimen_fin || ""}
                 onChange={this.handleChange}
                 label="Régimen tributario"
@@ -630,7 +626,6 @@ class CrearOrganizacion4Finanzas extends Component {
                 className="o-space"
                 style={{ marginBottom: BOX_SPACING }}
               >
-                <MenuItem disabled={true} value=""></MenuItem>
                 {this.state.regimen_fin_api.map((obj, i) => {
                   return (
                     <MenuItem key={i} value={obj.id}>
@@ -738,19 +733,14 @@ class CrearOrganizacion4Finanzas extends Component {
               variant="outlined"
               margin="dense"
             >
-              <InputLabel id="demo-simple-select-outlined-label">
-                Clasificación
-              </InputLabel>
+              <InputLabel>Clasificación</InputLabel>
               <Select
-                labelId="demo-simple-select-outlined-label"
-                id="demo-simple-select-outlined"
                 value={this.state.temp_clas_fin || ""}
                 onChange={this.handleChange}
                 label="Clasificación"
                 name="input_clas_fin"
                 className="o-space"
               >
-                <MenuItem disabled={true} value=""></MenuItem>
                 {this.state.clas_fin_api.map((obj, i) => {
                   return (
                     <MenuItem key={i} value={obj.id}>
@@ -792,7 +782,7 @@ class CrearOrganizacion4Finanzas extends Component {
 
           <div className="o-contentForm">
             <h3 className="o-innerSubTittle" style={{ color: "#FFFFFF" }}>
-              ¡Me encontraste!
+              .
             </h3>
             <div style={{ marginBottom: BOX_SPACING }}>
               <TextField

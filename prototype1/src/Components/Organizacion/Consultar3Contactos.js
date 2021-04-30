@@ -594,8 +594,6 @@ class Consultar3Contactos extends Component {
             temp_tipoid_con: data.contacto.tipo_documento_persona_id,
             temp_nid_con: data.contacto.numero_documento,
             temp_sex_con: data.contacto.sexo_id,
-            //userUpdated_con: data.usuario_actualizacion.usuario_actualizacion,
-            //fechaUpdated_con: data.contacto.updated_at,
             loadingDiag: false,
             temp_subcat_con:
               data.categorias[0] === this.state.indexCat ? [] : data.categorias,
@@ -904,21 +902,13 @@ class Consultar3Contactos extends Component {
                       margin="dense"
                       className="o-selectShort"
                     >
-                      <InputLabel id="demo-simple-select-outlined-label">
-                        ID
-                      </InputLabel>
+                      <InputLabel>ID</InputLabel>
                       <Select
-                        labelId="demo-simple-select-outlined-label"
-                        id="demo-simple-select-outlined"
                         value={this.state.temp_tipoid_con || ""}
                         onChange={this.handleChange}
                         label="ID"
                         name="input_tipoid_con"
                       >
-                        <MenuItem
-                          disabled={true}
-                          value="input_tipoid_org"
-                        ></MenuItem>
                         {this.state.tipoid_con_api.map((obj, i) => {
                           return (
                             <MenuItem key={i} value={obj.id}>
@@ -984,12 +974,8 @@ class Consultar3Contactos extends Component {
                   />
                 </div>
                 <FormControl variant="outlined" margin="dense">
-                  <InputLabel id="demo-simple-select-outlined-label">
-                    Sexo
-                  </InputLabel>
+                  <InputLabel>Sexo</InputLabel>
                   <Select
-                    labelId="demo-simple-select-outlined-label"
-                    id="demo-simple-select-outlined"
                     value={this.state.temp_sex_con || ""}
                     onChange={this.handleChange}
                     label="Sexo"
@@ -997,7 +983,6 @@ class Consultar3Contactos extends Component {
                     className="o-space"
                     style={{ marginBottom: BOX_SPACING }}
                   >
-                    <MenuItem disabled={true} value="input_sex_con"></MenuItem>
                     {this.state.sex_con_api.map((obj, i) => {
                       return (
                         <MenuItem key={i} value={obj.id}>
@@ -1039,7 +1024,7 @@ class Consultar3Contactos extends Component {
                     this.state.reqText && this.state.temp_estado_con === ""
                   }
                 >
-                  <InputLabel id="demo-simple-select-outlined-label">
+                  <InputLabel>
                     <div style={{ display: "flex", flexDirection: "row" }}>
                       {"Estado"}
                       <div style={{ color: "#FF0000", marginLeft: "0.1rem" }}>
@@ -1048,8 +1033,6 @@ class Consultar3Contactos extends Component {
                     </div>
                   </InputLabel>
                   <Select
-                    labelId="demo-simple-select-outlined-label"
-                    id="demo-simple-select-outlined"
                     value={this.state.temp_estado_con}
                     onChange={this.handleChange}
                     label="Estado*"
@@ -1057,10 +1040,6 @@ class Consultar3Contactos extends Component {
                     className="o-space"
                     style={{ marginBottom: BOX_SPACING }}
                   >
-                    <MenuItem
-                      disabled={true}
-                      value="input_estado_con"
-                    ></MenuItem>
                     {this.state.estado_con_api.map((obj, i) => {
                       return (
                         <MenuItem key={i} value={obj.id}>
@@ -1123,12 +1102,8 @@ class Consultar3Contactos extends Component {
                   variant="outlined"
                   margin="dense"
                 >
-                  <InputLabel id="demo-simple-select-outlined-label">
-                    Oficina
-                  </InputLabel>
+                  <InputLabel>Oficina</InputLabel>
                   <Select
-                    labelId="demo-simple-select-outlined-label"
-                    id="demo-simple-select-outlined"
                     value={this.state.temp_idoffice_con || ""}
                     onChange={this.handleChange}
                     label="Oficina"
@@ -1136,10 +1111,6 @@ class Consultar3Contactos extends Component {
                     className="o-space"
                     style={{ marginBottom: BOX_SPACING }}
                   >
-                    <MenuItem
-                      disabled={true}
-                      value="input_idoffice_con"
-                    ></MenuItem>
                     {this.state.ofices_api.map((obj, i) => {
                       return (
                         <MenuItem key={i} value={obj.id}>
@@ -1215,7 +1186,6 @@ class Consultar3Contactos extends Component {
                 </div>
                 <div style={{ marginBottom: BOX_SPACING }}>
                   <TextField
-                    id="outlined-textarea"
                     label="Observaciones"
                     value={this.state.temp_obs_con || ""}
                     multiline

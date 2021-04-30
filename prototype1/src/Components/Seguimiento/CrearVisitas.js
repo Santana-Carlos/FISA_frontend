@@ -507,21 +507,13 @@ class CrearVisitas extends Component {
                         className="o-selectShort"
                         style={{ width: "7rem" }}
                       >
-                        <InputLabel id="demo-simple-select-outlined-label">
-                          ID
-                        </InputLabel>
+                        <InputLabel>ID</InputLabel>
                         <Select
-                          labelId="demo-simple-select-outlined-label"
-                          id="demo-simple-select-outlined"
                           value={this.state.tipoid_org || ""}
                           onChange={this.handleChange}
                           label="ID"
                           name="input_tipoid_org"
                         >
-                          <MenuItem
-                            disabled={true}
-                            value="input_tipoid_org"
-                          ></MenuItem>
                           <MenuItem value="">Ninguno</MenuItem>
                           {this.state.tipoid_org_api.map((obj, i) => {
                             return (
@@ -577,11 +569,8 @@ class CrearVisitas extends Component {
                   variant="outlined"
                   margin="dense"
                 >
-                  <InputLabel id="demo-mutiple-checkbox-label">
-                    Categoría
-                  </InputLabel>
+                  <InputLabel>Categoría</InputLabel>
                   <Select
-                    id="demo-mutiple-checkbox"
                     multiple
                     label="Categoría"
                     name="input_cat_org"
@@ -760,7 +749,6 @@ class CrearVisitas extends Component {
                     </div>
                     <div style={{ marginBottom: BOX_SPACING }}>
                       <TextField
-                        id="outlined-textarea"
                         label="Observaciones"
                         value={this.state.temp_obs_vis || ""}
                         multiline
@@ -831,12 +819,8 @@ class CrearVisitas extends Component {
                       margin="dense"
                       style={{ maxWidth: "100%" }}
                     >
-                      <InputLabel id="demo-simple-select-outlined-label">
-                        Oficina
-                      </InputLabel>
+                      <InputLabel>Oficina</InputLabel>
                       <Select
-                        labelId="demo-simple-select-outlined-label"
-                        id="demo-simple-select-outlined"
                         value={this.state.temp_id_ofi}
                         onChange={this.handleChange}
                         label="Oficina"
@@ -844,10 +828,6 @@ class CrearVisitas extends Component {
                         className="o-space"
                         style={{ marginBottom: 0 }}
                       >
-                        <MenuItem
-                          disabled={true}
-                          value="input_id_ofi"
-                        ></MenuItem>
                         {this.state.oficina_org_api.map((obj, i) => {
                           return (
                             <MenuItem key={i} value={obj.id}>
@@ -929,7 +909,7 @@ class CrearVisitas extends Component {
                         this.state.temp_userasig_vis === ""
                       }
                     >
-                      <InputLabel id="demo-simple-select-outlined-label">
+                      <InputLabel>
                         <div style={{ display: "flex", flexDirection: "row" }}>
                           {"Usuario asignado"}
                           <div
@@ -940,8 +920,6 @@ class CrearVisitas extends Component {
                         </div>
                       </InputLabel>
                       <Select
-                        labelId="demo-simple-select-outlined-label"
-                        id="demo-simple-select-outlined"
                         value={this.state.temp_userasig_vis || ""}
                         onChange={this.handleChange}
                         label="Usuario asignado*"
@@ -949,10 +927,6 @@ class CrearVisitas extends Component {
                         className="o-space"
                         style={{ marginBottom: BOX_SPACING }}
                       >
-                        <MenuItem
-                          disabled={true}
-                          value="input_userasig_vis"
-                        ></MenuItem>
                         {this.state.users_api.map((obj, i) => {
                           return (
                             <MenuItem key={i} value={obj.id}>
@@ -970,7 +944,7 @@ class CrearVisitas extends Component {
                         this.state.reqText && this.state.temp_estado_vis === ""
                       }
                     >
-                      <InputLabel id="demo-simple-select-outlined-label">
+                      <InputLabel>
                         <div style={{ display: "flex", flexDirection: "row" }}>
                           {"Estado"}
                           <div
@@ -981,8 +955,6 @@ class CrearVisitas extends Component {
                         </div>
                       </InputLabel>
                       <Select
-                        labelId="demo-simple-select-outlined-label"
-                        id="demo-simple-select-outlined"
                         value={this.state.temp_estado_vis}
                         onChange={this.handleChange}
                         label="Estado*"
@@ -990,10 +962,6 @@ class CrearVisitas extends Component {
                         className="o-space"
                         style={{ marginBottom: 0 }}
                       >
-                        <MenuItem
-                          disabled={true}
-                          value="input_estado_vis"
-                        ></MenuItem>
                         {this.state.estado_vis_api.map((obj, i) => {
                           return (
                             <MenuItem key={i} value={obj.id}>

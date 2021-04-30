@@ -518,12 +518,8 @@ class ConsultarVisitas extends Component {
                   variant="outlined"
                   margin="dense"
                 >
-                  <InputLabel id="demo-simple-select-outlined-label">
-                    Filtrar por
-                  </InputLabel>
+                  <InputLabel>Filtrar por</InputLabel>
                   <Select
-                    labelId="demo-simple-select-outlined-label"
-                    id="demo-simple-select-outlined"
                     value={this.state.search_tipo || ""}
                     onChange={this.handleChange}
                     label="Filtrar por"
@@ -531,10 +527,6 @@ class ConsultarVisitas extends Component {
                     className="o-space"
                     style={{ marginBottom: BOX_SPACING }}
                   >
-                    <MenuItem
-                      disabled={true}
-                      value="input_search_tipo"
-                    ></MenuItem>
                     {items.map((obj, i) => {
                       return (
                         <MenuItem key={i} value={obj.id}>
@@ -837,7 +829,6 @@ class ConsultarVisitas extends Component {
                     </div>
                     <div style={{ marginBottom: BOX_SPACING }}>
                       <TextField
-                        id="outlined-textarea"
                         label="Observaciones"
                         value={this.state.temp_obs_vis || ""}
                         multiline
@@ -911,12 +902,8 @@ class ConsultarVisitas extends Component {
                         this.state.reqText && this.state.temp_estado_vis === ""
                       }
                     >
-                      <InputLabel id="demo-simple-select-outlined-label">
-                        Oficina
-                      </InputLabel>
+                      <InputLabel>Oficina</InputLabel>
                       <Select
-                        labelId="demo-simple-select-outlined-label"
-                        id="demo-simple-select-outlined"
                         value={this.state.temp_id_ofi}
                         onChange={this.handleChange}
                         label="Oficina"
@@ -924,10 +911,6 @@ class ConsultarVisitas extends Component {
                         className="o-space"
                         style={{ marginBottom: 0 }}
                       >
-                        <MenuItem
-                          disabled={true}
-                          value="input_id_ofi"
-                        ></MenuItem>
                         {this.state.oficina_org_api.map((obj, i) => {
                           return (
                             <MenuItem key={i} value={obj.id}>
@@ -1009,7 +992,7 @@ class ConsultarVisitas extends Component {
                         this.state.temp_userasig_vis === ""
                       }
                     >
-                      <InputLabel id="demo-simple-select-outlined-label">
+                      <InputLabel>
                         <div style={{ display: "flex", flexDirection: "row" }}>
                           {"Usuario asignado"}
                           <div
@@ -1020,8 +1003,6 @@ class ConsultarVisitas extends Component {
                         </div>
                       </InputLabel>
                       <Select
-                        labelId="demo-simple-select-outlined-label"
-                        id="demo-simple-select-outlined"
                         value={this.state.temp_userasig_vis || ""}
                         onChange={this.handleChange}
                         label="Usuario asignado*"
@@ -1029,10 +1010,6 @@ class ConsultarVisitas extends Component {
                         className="o-space"
                         style={{ marginBottom: BOX_SPACING }}
                       >
-                        <MenuItem
-                          disabled={true}
-                          value="input_userasig_vis"
-                        ></MenuItem>
                         {this.state.users_api.map((obj, i) => {
                           return (
                             <MenuItem key={i} value={obj.id}>
@@ -1050,7 +1027,7 @@ class ConsultarVisitas extends Component {
                         this.state.reqText && this.state.temp_estado_vis === ""
                       }
                     >
-                      <InputLabel id="demo-simple-select-outlined-label">
+                      <InputLabel>
                         <div style={{ display: "flex", flexDirection: "row" }}>
                           {"Estado"}
                           <div
@@ -1061,8 +1038,6 @@ class ConsultarVisitas extends Component {
                         </div>
                       </InputLabel>
                       <Select
-                        labelId="demo-simple-select-outlined-label"
-                        id="demo-simple-select-outlined"
                         value={this.state.temp_estado_vis || ""}
                         onChange={this.handleChange}
                         label="Estado*"
@@ -1070,10 +1045,6 @@ class ConsultarVisitas extends Component {
                         className="o-space"
                         style={{ marginBottom: 0 }}
                       >
-                        <MenuItem
-                          disabled={true}
-                          value="input_estado_vis"
-                        ></MenuItem>
                         {this.state.estado_vis_api.map((obj, i) => {
                           return (
                             <MenuItem key={i} value={obj.id}>

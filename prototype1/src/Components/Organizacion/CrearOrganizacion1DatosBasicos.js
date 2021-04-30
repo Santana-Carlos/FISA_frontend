@@ -405,7 +405,7 @@ class CrearOrganizacion1DatosBasicos extends Component {
                       className="o-selectShort"
                       error={this.state.reqText && this.state.tipoid_org === ""}
                     >
-                      <InputLabel id="demo-simple-select-outlined-label">
+                      <InputLabel>
                         <div style={{ display: "flex", flexDirection: "row" }}>
                           {"ID"}
                           <div
@@ -416,17 +416,11 @@ class CrearOrganizacion1DatosBasicos extends Component {
                         </div>
                       </InputLabel>
                       <Select
-                        labelId="demo-simple-select-outlined-label"
-                        id="demo-simple-select-outlined"
                         value={this.state.tipoid_org || ""}
                         onChange={this.handleChange}
                         label="ID*"
                         name="input_tipoid_org"
                       >
-                        <MenuItem
-                          disabled={true}
-                          value="input_tipoid_org"
-                        ></MenuItem>
                         {this.state.tipoid_org_api.map((obj, i) => {
                           return (
                             <MenuItem key={i} value={obj.id}>
@@ -497,7 +491,7 @@ class CrearOrganizacion1DatosBasicos extends Component {
                   margin="dense"
                   error={this.state.reqText && this.state.cat_org === ""}
                 >
-                  <InputLabel id="demo-simple-select-outlined-label">
+                  <InputLabel>
                     <div style={{ display: "flex", flexDirection: "row" }}>
                       {"Categoría"}
                       <div style={{ color: "#FF0000", marginLeft: "0.1rem" }}>
@@ -506,8 +500,6 @@ class CrearOrganizacion1DatosBasicos extends Component {
                     </div>
                   </InputLabel>
                   <Select
-                    labelId="demo-simple-select-outlined-label"
-                    id="demo-simple-select-outlined"
                     value={this.state.cat_org || ""}
                     onChange={this.handleChange}
                     label="Categoría*"
@@ -515,7 +507,6 @@ class CrearOrganizacion1DatosBasicos extends Component {
                     className="o-space"
                     style={{ marginBottom: BOX_SPACING }}
                   >
-                    <MenuItem disabled={true} value="input_cat_org"></MenuItem>
                     {this.state.cat_org_api.map((obj, i) => {
                       return (
                         <MenuItem key={i} value={obj.id}>
@@ -530,12 +521,8 @@ class CrearOrganizacion1DatosBasicos extends Component {
                   variant="outlined"
                   margin="dense"
                 >
-                  <InputLabel id="demo-simple-select-outlined-label">
-                    País
-                  </InputLabel>
+                  <InputLabel>País</InputLabel>
                   <Select
-                    labelId="demo-simple-select-outlined-label"
-                    id="demo-simple-select-outlined"
                     value={this.state.pais_org || ""}
                     onChange={this.handleChange}
                     label="País"
@@ -543,7 +530,6 @@ class CrearOrganizacion1DatosBasicos extends Component {
                     className="o-space"
                     style={{ marginBottom: BOX_SPACING }}
                   >
-                    <MenuItem disabled={true} value="input_pais_org"></MenuItem>
                     {this.state.pais_org_api.map((obj, i) => {
                       return (
                         <MenuItem key={i} value={obj.id}>
@@ -558,12 +544,8 @@ class CrearOrganizacion1DatosBasicos extends Component {
                   variant="outlined"
                   margin="dense"
                 >
-                  <InputLabel id="demo-simple-select-outlined-label">
-                    Tipo organización
-                  </InputLabel>
+                  <InputLabel>Tipo organización</InputLabel>
                   <Select
-                    labelId="demo-simple-select-outlined-label"
-                    id="demo-simple-select-outlined"
                     value={this.state.tipo_org || ""}
                     onChange={this.handleChange}
                     label="Tipo organización"
@@ -571,7 +553,6 @@ class CrearOrganizacion1DatosBasicos extends Component {
                     className="o-space"
                     style={{ marginBottom: BOX_SPACING }}
                   >
-                    <MenuItem disabled={true} value="input_tipo_org"></MenuItem>
                     {this.state.tipo_org_api.map((obj, i) => {
                       return (
                         <MenuItem key={i} value={obj.id}>
@@ -583,7 +564,6 @@ class CrearOrganizacion1DatosBasicos extends Component {
                 </FormControl>
                 <div style={{ marginBottom: BOX_SPACING }}>
                   <TextField
-                    id="outlined-textarea"
                     label="Observaciones"
                     value={this.state.obs_org || ""}
                     multiline
@@ -603,12 +583,8 @@ class CrearOrganizacion1DatosBasicos extends Component {
                   variant="outlined"
                   margin="dense"
                 >
-                  <InputLabel id="demo-simple-select-outlined-label">
-                    Clase organización
-                  </InputLabel>
+                  <InputLabel>Clase organización</InputLabel>
                   <Select
-                    labelId="demo-simple-select-outlined-label"
-                    id="demo-simple-select-outlined"
                     value={this.state.clase_org || ""}
                     onChange={this.handleChange}
                     label="Clase organización"
@@ -616,10 +592,6 @@ class CrearOrganizacion1DatosBasicos extends Component {
                     className="o-space"
                     style={{ marginBottom: BOX_SPACING }}
                   >
-                    <MenuItem
-                      disabled={true}
-                      value="input_clase_org"
-                    ></MenuItem>
                     {this.state.clase_org_api.map((obj, i) => {
                       return (
                         <MenuItem key={i} value={obj.id}>
@@ -635,12 +607,8 @@ class CrearOrganizacion1DatosBasicos extends Component {
                   variant="outlined"
                   margin="dense"
                 >
-                  <InputLabel id="demo-simple-select-outlined-label">
-                    Sector económico
-                  </InputLabel>
+                  <InputLabel>Sector económico</InputLabel>
                   <Select
-                    labelId="demo-simple-select-outlined-label"
-                    id="demo-simple-select-outlined"
                     value={this.state.sectoreco_org || ""}
                     onChange={this.handleChange}
                     label="Sector económico"
@@ -648,10 +616,6 @@ class CrearOrganizacion1DatosBasicos extends Component {
                     className="o-space"
                     style={{ marginBottom: BOX_SPACING }}
                   >
-                    <MenuItem
-                      disabled={true}
-                      value="input_sectoreco_org"
-                    ></MenuItem>
                     {this.state.sectoreco_org_api.map((obj, i) => {
                       return (
                         <MenuItem key={i} value={obj.id}>
@@ -668,12 +632,8 @@ class CrearOrganizacion1DatosBasicos extends Component {
                   margin="dense"
                   disabled={this.state.sectoreco_org === ""}
                 >
-                  <InputLabel id="demo-simple-select-outlined-label">
-                    Subsector económico
-                  </InputLabel>
+                  <InputLabel>Subsector económico</InputLabel>
                   <Select
-                    labelId="demo-simple-select-outlined-label"
-                    id="demo-simple-select-outlined"
                     value={this.state.subsececo_org || ""}
                     onChange={this.handleChange}
                     label="Subsector económico"
@@ -681,10 +641,6 @@ class CrearOrganizacion1DatosBasicos extends Component {
                     className="o-space"
                     style={{ marginBottom: BOX_SPACING }}
                   >
-                    <MenuItem
-                      disabled={true}
-                      value="input_subsececo_org"
-                    ></MenuItem>
                     {this.state.subsececo_org_api.map((obj, i) => {
                       return (
                         <MenuItem key={i} value={obj.id}>
@@ -738,7 +694,6 @@ class CrearOrganizacion1DatosBasicos extends Component {
                 </div>
                 <div style={{ marginBottom: BOX_SPACING }}>
                   <TextField
-                    id="outlined-textarea"
                     label="Motivo afiliación"
                     value={this.state.motivoafi_org || ""}
                     multiline
@@ -770,7 +725,7 @@ class CrearOrganizacion1DatosBasicos extends Component {
                   margin="dense"
                   error={this.state.reqText && this.state.estado_org === ""}
                 >
-                  <InputLabel id="demo-simple-select-outlined-label">
+                  <InputLabel>
                     <div style={{ display: "flex", flexDirection: "row" }}>
                       {"Estado"}
                       <div style={{ color: "#FF0000", marginLeft: "0.1rem" }}>
@@ -779,8 +734,6 @@ class CrearOrganizacion1DatosBasicos extends Component {
                     </div>
                   </InputLabel>
                   <Select
-                    labelId="demo-simple-select-outlined-label"
-                    id="demo-simple-select-outlined"
                     value={this.state.estado_org}
                     onChange={this.handleChange}
                     label="Estado*"
@@ -788,10 +741,6 @@ class CrearOrganizacion1DatosBasicos extends Component {
                     className="o-space"
                     style={{ marginBottom: BOX_SPACING }}
                   >
-                    <MenuItem
-                      disabled={true}
-                      value="input_estado_org"
-                    ></MenuItem>
                     {this.state.estado_org_api.map((obj, i) => {
                       return (
                         <MenuItem key={i} value={obj.id}>
@@ -876,7 +825,6 @@ class CrearOrganizacion1DatosBasicos extends Component {
                     </div>
                     <div style={{ marginBottom: BOX_SPACING }}>
                       <TextField
-                        id="outlined-textarea"
                         label="Motivo desafiliación"
                         value={this.state.motivodesafi_org || ""}
                         multiline

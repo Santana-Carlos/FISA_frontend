@@ -350,7 +350,7 @@ class Consultar5Files extends Component {
           </div>
         </div>
         <div className="o-btnBotNav">
-          <div style={{ color: "#FFFFFF" }}>{"Me encontraste!"}</div>
+          <div style={{ color: "#FFFFFF" }}>{"."}</div>
           <Link
             exact={"true"}
             to="/consultar_organizacion/editar"

@@ -492,7 +492,7 @@ class CrearTareas extends Component {
                     this.state.reqText && this.state.temp_estado_tar === ""
                   }
                 >
-                  <InputLabel id="demo-simple-select-outlined-label">
+                  <InputLabel>
                     <div style={{ display: "flex", flexDirection: "row" }}>
                       {"Estado"}
                       <div style={{ color: "#FF0000", marginLeft: "0.1rem" }}>
@@ -501,18 +501,12 @@ class CrearTareas extends Component {
                     </div>
                   </InputLabel>
                   <Select
-                    labelId="demo-simple-select-outlined-label"
-                    id="demo-simple-select-outlined"
                     value={this.state.temp_estado_tar}
                     onChange={this.handleChange}
                     label="Estado*"
                     name="input_estado_tar"
                     className="o-space"
                   >
-                    <MenuItem
-                      disabled={true}
-                      value="input_estado_tar"
-                    ></MenuItem>
                     {this.state.estado_tar_api.map((obj, i) => {
                       return (
                         <MenuItem key={i} value={obj.id}>

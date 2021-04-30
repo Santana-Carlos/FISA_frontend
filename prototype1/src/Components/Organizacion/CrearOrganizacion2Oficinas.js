@@ -562,7 +562,7 @@ class CrearOrganizacion2Oficinas extends Component {
                   margin="dense"
                   error={this.state.reqText && this.state.temp_tipo_ofi === ""}
                 >
-                  <InputLabel id="demo-simple-select-outlined-label">
+                  <InputLabel>
                     <div style={{ display: "flex", flexDirection: "row" }}>
                       {"Tipo"}
                       <div style={{ color: "#FF0000", marginLeft: "0.1rem" }}>
@@ -571,8 +571,6 @@ class CrearOrganizacion2Oficinas extends Component {
                     </div>
                   </InputLabel>
                   <Select
-                    labelId="demo-simple-select-outlined-label"
-                    id="demo-simple-select-outlined"
                     value={this.state.temp_tipo_ofi || ""}
                     onChange={this.handleChange}
                     label="Tipo*"
@@ -580,7 +578,6 @@ class CrearOrganizacion2Oficinas extends Component {
                     className="o-space"
                     style={{ marginBottom: BOX_SPACING }}
                   >
-                    <MenuItem disabled={true} value="input_tipo_ofi"></MenuItem>
                     {this.state.tipo_ofi_api.map((obj, i) => {
                       return (
                         <MenuItem key={i} value={obj.id}>
@@ -628,7 +625,7 @@ class CrearOrganizacion2Oficinas extends Component {
                   margin="dense"
                   error={this.state.reqText && this.state.temp_pais_ofi === ""}
                 >
-                  <InputLabel id="demo-simple-select-outlined-label">
+                  <InputLabel>
                     <div style={{ display: "flex", flexDirection: "row" }}>
                       {"País"}
                       <div style={{ color: "#FF0000", marginLeft: "0.1rem" }}>
@@ -637,8 +634,6 @@ class CrearOrganizacion2Oficinas extends Component {
                     </div>
                   </InputLabel>
                   <Select
-                    labelId="demo-simple-select-outlined-label"
-                    id="demo-simple-select-outlined"
                     value={this.state.temp_pais_ofi || ""}
                     onChange={this.handleChange}
                     label="País*"
@@ -646,7 +641,6 @@ class CrearOrganizacion2Oficinas extends Component {
                     className="o-space"
                     style={{ marginBottom: BOX_SPACING }}
                   >
-                    <MenuItem disabled={true} value="input_pais_ofi"></MenuItem>
                     {this.state.pais_ofi_api.map((obj, i) => {
                       return (
                         <MenuItem key={i} value={obj.id}>
@@ -664,7 +658,7 @@ class CrearOrganizacion2Oficinas extends Component {
                     this.state.reqText && this.state.temp_depest_ofi === ""
                   }
                 >
-                  <InputLabel id="demo-simple-select-outlined-label">
+                  <InputLabel>
                     <div style={{ display: "flex", flexDirection: "row" }}>
                       {"Departamento/Estado"}
                       <div style={{ color: "#FF0000", marginLeft: "0.1rem" }}>
@@ -673,8 +667,6 @@ class CrearOrganizacion2Oficinas extends Component {
                     </div>
                   </InputLabel>
                   <Select
-                    labelId="demo-simple-select-outlined-label"
-                    id="demo-simple-select-outlined"
                     value={this.state.temp_depest_ofi || ""}
                     onChange={this.handleChange}
                     label="Departamento/Estado*"
@@ -682,10 +674,6 @@ class CrearOrganizacion2Oficinas extends Component {
                     className="o-space"
                     style={{ marginBottom: BOX_SPACING }}
                   >
-                    <MenuItem
-                      disabled={true}
-                      value="input_depest_ofi"
-                    ></MenuItem>
                     {this.state.depest_ofi_api.map((obj, i) => {
                       return (
                         <MenuItem key={i} value={obj.id}>
@@ -701,7 +689,7 @@ class CrearOrganizacion2Oficinas extends Component {
                   disabled={this.state.temp_depest_ofi === ""}
                   error={this.state.reqText && this.state.temp_city_ofi === ""}
                 >
-                  <InputLabel id="demo-simple-select-outlined-label">
+                  <InputLabel>
                     <div style={{ display: "flex", flexDirection: "row" }}>
                       {"Ciudad"}
                       <div style={{ color: "#FF0000", marginLeft: "0.1rem" }}>
@@ -710,8 +698,6 @@ class CrearOrganizacion2Oficinas extends Component {
                     </div>
                   </InputLabel>
                   <Select
-                    labelId="demo-simple-select-outlined-label"
-                    id="demo-simple-select-outlined"
                     value={this.state.temp_city_ofi || ""}
                     onChange={this.handleChange}
                     label="Ciudad*"
@@ -719,7 +705,6 @@ class CrearOrganizacion2Oficinas extends Component {
                     className="o-space"
                     style={{ marginBottom: BOX_SPACING }}
                   >
-                    <MenuItem disabled={true} value="input_city_ofi"></MenuItem>
                     {this.state.city_ofi_api.map((obj, i) => {
                       return (
                         <MenuItem key={i} value={obj.id}>
@@ -773,7 +758,7 @@ class CrearOrganizacion2Oficinas extends Component {
                     this.state.reqText && this.state.temp_estado_ofi === ""
                   }
                 >
-                  <InputLabel id="demo-simple-select-outlined-label">
+                  <InputLabel>
                     <div style={{ display: "flex", flexDirection: "row" }}>
                       {"Estado"}
                       <div style={{ color: "#FF0000", marginLeft: "0.1rem" }}>
@@ -782,8 +767,6 @@ class CrearOrganizacion2Oficinas extends Component {
                     </div>
                   </InputLabel>
                   <Select
-                    labelId="demo-simple-select-outlined-label"
-                    id="demo-simple-select-outlined"
                     value={this.state.temp_estado_ofi}
                     onChange={this.handleChange}
                     label="Estado*"
@@ -791,10 +774,6 @@ class CrearOrganizacion2Oficinas extends Component {
                     className="o-space"
                     style={{ marginBottom: BOX_SPACING }}
                   >
-                    <MenuItem
-                      disabled={true}
-                      value="input_estado_ofi"
-                    ></MenuItem>
                     {this.state.estado_ofi_api.map((obj, i) => {
                       return (
                         <MenuItem key={i} value={obj.id}>

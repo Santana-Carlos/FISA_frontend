@@ -427,21 +427,13 @@ class ReporteOrganizacion extends Component {
                     className="o-selectShort"
                     style={{ width: "7rem" }}
                   >
-                    <InputLabel id="demo-simple-select-outlined-label">
-                      ID
-                    </InputLabel>
+                    <InputLabel>ID</InputLabel>
                     <Select
-                      labelId="demo-simple-select-outlined-label"
-                      id="demo-simple-select-outlined"
                       value={this.state.tipoid_org || ""}
                       onChange={this.handleChange}
                       label="ID"
                       name="input_tipoid_org"
                     >
-                      <MenuItem
-                        disabled={true}
-                        value="input_tipoid_org"
-                      ></MenuItem>
                       <MenuItem value="">Ninguno</MenuItem>
                       {this.state.tipoid_org_api.map((obj, i) => {
                         return (
@@ -497,11 +489,8 @@ class ReporteOrganizacion extends Component {
               variant="outlined"
               margin="dense"
             >
-              <InputLabel id="demo-mutiple-checkbox-label">
-                Categoría
-              </InputLabel>
+              <InputLabel>Categoría</InputLabel>
               <Select
-                id="demo-mutiple-checkbox"
                 multiple
                 label="Categoría"
                 name="input_cat_org"
@@ -553,19 +542,14 @@ class ReporteOrganizacion extends Component {
                 variant="outlined"
                 margin="dense"
               >
-                <InputLabel id="demo-simple-select-outlined-label">
-                  Reporte
-                </InputLabel>
+                <InputLabel>Reporte</InputLabel>
                 <Select
-                  labelId="demo-simple-select-outlined-label"
-                  id="demo-simple-select-outlined"
                   value={this.state.reportType || ""}
                   onChange={this.handleChange}
                   label="Reporte"
                   name="input_reportType"
                   className="o-space"
                 >
-                  <MenuItem disabled={true} value="input_reportType"></MenuItem>
                   {reportType.map((obj, i) => {
                     return (
                       <MenuItem key={i} value={obj.id}>
