@@ -372,7 +372,7 @@ class Consultar3Contactos extends Component {
       sexo_id: this.state.temp_sex_con,
       categorias: this.state.temp_subcat_con,
     };
-    console.log(data);
+    //console.log(data);
     if (idCon === "") {
       fetch(process.env.REACT_APP_API_URL + "Contacto/", {
         method: "POST",
@@ -416,7 +416,7 @@ class Consultar3Contactos extends Component {
           return response.json();
         })
         .then((data) => {
-          console.log(data);
+          //console.log(data);
           if (data.success) {
             this.setState({
               loading: true,

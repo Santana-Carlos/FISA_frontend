@@ -230,7 +230,7 @@ class Para5Ubicaciones extends Component {
       departamento_estado_id: this.state.temp_idEst,
     };
 
-    console.log(data);
+    //console.log(data);
     fetch(process.env.REACT_APP_API_URL + tipo + "/", {
       method: "POST",
       headers: {
@@ -284,7 +284,7 @@ class Para5Ubicaciones extends Component {
         }
       })
       .catch((error) => {
-        console.log(error);
+        //console.log(error);
         this.setState({
           temp_dato: "",
           addDato: false,

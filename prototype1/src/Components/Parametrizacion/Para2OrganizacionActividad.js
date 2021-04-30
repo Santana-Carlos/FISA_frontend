@@ -165,7 +165,7 @@ class Para2OrganizacionActividad extends Component {
         }
       })
       .catch((error) => {
-        console.log(error);
+        //console.log(error);
         this.setState({
           loading: false,
         });
@@ -188,7 +188,7 @@ class Para2OrganizacionActividad extends Component {
         return response.json();
       })
       .then((data) => {
-        console.log(data);
+        //console.log(data);
         if (data.success) {
           switch (tipo) {
             case "Sector":
@@ -271,7 +271,7 @@ class Para2OrganizacionActividad extends Component {
         break;
     }
 
-    console.log(JSON.stringify(data));
+    //console.log(JSON.stringify(data));
     fetch(process.env.REACT_APP_API_URL + tipo, {
       method: "POST",
       headers: {
@@ -305,7 +305,7 @@ class Para2OrganizacionActividad extends Component {
         }
       })
       .catch((error) => {
-        console.log(error);
+        //console.log(error);
         this.setState({
           temp_dato: "",
           temp_datosDesc: "",

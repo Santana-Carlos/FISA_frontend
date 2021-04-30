@@ -168,7 +168,7 @@ class ReporteFechas extends Component {
       fecha_inicio: dateStart,
       fecha_fin: dateEnd,
     };
-    console.log(data);
+    //console.log(data);
     if (dateStart <= dateEnd) {
       fetch(process.env.REACT_APP_API_URL + "Contacto/RepFec", {
         method: "POST",

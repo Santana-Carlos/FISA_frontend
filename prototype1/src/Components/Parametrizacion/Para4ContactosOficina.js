@@ -231,7 +231,7 @@ class Para4ContactosOficina extends Component {
       nombre: this.state.temp_dato,
       descripcion: this.state.temp_datosDesc,
     };
-    console.log(data);
+    //console.log(data);
     fetch(process.env.REACT_APP_API_URL + tipo + "/", {
       method: "POST",
       headers: {
@@ -258,7 +258,7 @@ class Para4ContactosOficina extends Component {
         }
       })
       .catch((error) => {
-        console.log(error);
+        //console.log(error);
         this.setState({
           temp_dato: "",
           temp_datosDesc: "",

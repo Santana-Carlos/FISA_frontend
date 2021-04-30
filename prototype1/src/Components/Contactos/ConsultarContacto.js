@@ -232,7 +232,7 @@ class ConsultarContacto extends Component {
           return response.json();
         })
         .then((data) => {
-          console.log(data);
+          //console.log(data);
           if (data.success) {
             this.setState({
               loading: false,
@@ -242,7 +242,7 @@ class ConsultarContacto extends Component {
           }
         })
         .catch((error) => {
-          console.log(error);
+          //console.log(error);
         });
     } else {
       this.setState({ loading: false, reqText: true, createS: true });

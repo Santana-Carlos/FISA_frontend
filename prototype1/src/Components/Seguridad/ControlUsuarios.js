@@ -100,7 +100,7 @@ class ControlUsuarios extends Component {
         return response.json();
       })
       .then((data) => {
-        console.log(data);
+        //console.log(data);
         if (data.success) {
           this.setState({
             api_rol_seg: data.roles,
@@ -133,7 +133,7 @@ class ControlUsuarios extends Component {
         return response.json();
       })
       .then((data) => {
-        console.log(data);
+        //console.log(data);
         if (data.success) {
           this.setState({
             api_users_seg: data.usuarios,
@@ -160,7 +160,7 @@ class ControlUsuarios extends Component {
         return response.json();
       })
       .then((data) => {
-        console.log(data);
+        //console.log(data);
         if (data.success) {
           this.setState({
             temp_tipoid_seg: data.usuario.tipo_documento_persona_id,
@@ -233,7 +233,7 @@ class ControlUsuarios extends Component {
         }
       })
       .catch((error) => {
-        console.log(error);
+        //console.log(error);
         this.setState({
           temp_accion: "",
           temp_color: "#bdbdbd",
@@ -294,7 +294,7 @@ class ControlUsuarios extends Component {
         }
       })
       .catch((error) => {
-        console.log(error);
+        //console.log(error);
         this.setState({
           temp_accion: "",
           temp_color: "#bdbdbd",
@@ -317,7 +317,7 @@ class ControlUsuarios extends Component {
         return response.json();
       })
       .then((data) => {
-        console.log(data);
+        //console.log(data);
         if (data.success) {
           this.setState(
             {

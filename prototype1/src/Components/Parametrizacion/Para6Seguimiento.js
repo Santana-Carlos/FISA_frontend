@@ -181,7 +181,7 @@ class Para6Seguimiento extends Component {
       nombre: this.state.temp_dato,
     };
 
-    console.log(data);
+    //console.log(data);
     fetch(process.env.REACT_APP_API_URL + tipo + "/", {
       method: "POST",
       headers: {
@@ -207,7 +207,7 @@ class Para6Seguimiento extends Component {
         }
       })
       .catch((error) => {
-        console.log(error);
+        //console.log(error);
         this.setState({
           temp_dato: "",
           addDato: false,

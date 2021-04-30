@@ -190,7 +190,7 @@ class Consultar5Files extends Component {
       data.append("file", this.state.temp_files_fil);
       data.append("organizacion_id", this.state.dbid_org);
 
-      console.log(data);
+      //console.log(data);
 
       fetch(process.env.REACT_APP_API_URL + "Archivo/Upload", {
         method: "POST",

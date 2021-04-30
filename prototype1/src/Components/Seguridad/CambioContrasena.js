@@ -94,7 +94,7 @@ class CambioContrasena extends Component {
           }
         })
         .catch((error) => {
-          console.log(error);
+          //console.log(error);
           this.setState({
             temp_color: "#dc004e",
             loading: false,

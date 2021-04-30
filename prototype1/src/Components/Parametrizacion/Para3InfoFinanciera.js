@@ -206,7 +206,7 @@ class Para3InfoFinanciera extends Component {
       cuota_anual: this.state.temp_clas_cuo,
       temporada_cuota: this.state.temp_clas_temp,
     };
-    console.log(data);
+    //console.log(data);
     fetch(process.env.REACT_APP_API_URL + tipo + "/", {
       method: "POST",
       headers: {
@@ -236,7 +236,7 @@ class Para3InfoFinanciera extends Component {
         }
       })
       .catch((error) => {
-        console.log(error);
+        //console.log(error);
         this.setState({
           temp_dato: "",
           temp_datosDesc: "",
