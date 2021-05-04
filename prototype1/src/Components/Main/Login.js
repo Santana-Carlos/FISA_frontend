@@ -24,6 +24,7 @@ import {
 const Login = () => {
   const [loading, setloading] = React.useState(false);
   const [diag, setDiag] = React.useState(false);
+  const [passOpen, setPass] = React.useState(false);
   const [diagserver, setDiagserver] = React.useState(false);
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
@@ -108,7 +109,7 @@ const Login = () => {
             className="o-space-log-input"
           />
         </div>
-        <Link className="o-passLost" to="password_recovery">
+        <Link className="o-passLost" onClick={() => setPass(true)}>
           {"¿Olvidaste tu contraseña?"}
         </Link>
         <div className="o-btnLogin">
@@ -165,11 +166,31 @@ const Login = () => {
           {"Servidor no disponible"}
         </DialogTitle>
         <DialogContent style={{ textAlign: "center" }}>
-          {"(El servidor presenta problemas o no se encuentra disponible)"}
+          {"El servidor presenta problemas o no se encuentra disponible"}
         </DialogContent>
         <DialogActions style={{ justifyContent: "center" }}>
           <div className="o-btnBotNav-btnDiag3">
             <GreenButton onClick={() => setDiagserver(false)}>
+              {"Aceptar"}
+            </GreenButton>
+          </div>
+        </DialogActions>
+      </Dialog>
+      <Dialog
+        disableBackdropClick
+        disableEscapeKeyDown
+        open={passOpen}
+        maxWidth={false}
+      >
+        <DialogTitle style={{ textAlign: "center" }}>
+          {"Comunicate con servicios de TI"}
+        </DialogTitle>
+        <DialogContent style={{ textAlign: "center" }}>
+          {"El administrador del sistema podrá reestablecer tu contraseña"}
+        </DialogContent>
+        <DialogActions style={{ justifyContent: "center" }}>
+          <div className="o-btnBotNav-btnDiag3">
+            <GreenButton onClick={() => setPass(false)}>
               {"Aceptar"}
             </GreenButton>
           </div>

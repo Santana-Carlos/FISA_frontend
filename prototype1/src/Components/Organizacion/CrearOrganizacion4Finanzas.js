@@ -895,7 +895,7 @@ class CrearOrganizacion4Finanzas extends Component {
             }}
           >
             <FormControlLabel
-              style={{ margin: 0 }}
+              style={{ margin: "0 0 0 2rem" }}
               control={
                 <CheckboxTri
                   checked={this.state.temp_importcheck_fin}
