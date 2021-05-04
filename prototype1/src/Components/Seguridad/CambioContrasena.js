@@ -168,7 +168,7 @@ class CambioContrasena extends Component {
           >
             <div style={{ marginBottom: BOX_SPACING }}>
               <TextField
-                label="Número"
+                label="Cédula"
                 variant="outlined"
                 value={this.state.temp_nid_seg || ""}
                 name="input_nid_seg"
