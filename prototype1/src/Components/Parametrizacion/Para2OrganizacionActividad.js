@@ -315,13 +315,13 @@ class Para2OrganizacionActividad extends Component {
         });
       });
 
-    // if (tipo === "Subsector") {
-    //   setTimeout(this.callApiGetSub, 2000);
-    //   setTimeout(this.callApiGetSub, 5000);
-    // } else {
-    //   setTimeout(this.callApiRefresh, 2000);
-    //   setTimeout(this.callApiRefresh, 5000);
-    // }
+    if (tipo === "Subsector") {
+      setTimeout(this.callApiGetSub, 2000);
+      setTimeout(this.callApiGetSub, 5000);
+    } else {
+      setTimeout(this.callApiRefresh, 2000);
+      setTimeout(this.callApiRefresh, 5000);
+    }
   };
 
   callApiEdit = () => {
@@ -393,6 +393,14 @@ class Para2OrganizacionActividad extends Component {
           loadingDiag: false,
         });
       });
+
+    if (tipo === "Subsector") {
+      setTimeout(this.callApiGetSub, 2000);
+      setTimeout(this.callApiGetSub, 5000);
+    } else {
+      setTimeout(this.callApiRefresh, 2000);
+      setTimeout(this.callApiRefresh, 5000);
+    }
   };
 
   callApiDel = () => {

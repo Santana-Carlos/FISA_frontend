@@ -666,11 +666,12 @@ class CrearOrganizacion3Contactos extends Component {
         this.setState({ temp_idoffice_con: value }, () => {
           if (this.state.temp_tel_con === "") {
             this.setState({
-              temp_tel_con: this.state.ofices_api[
-                this.state.ofices_api.findIndex(
-                  (x) => x.id === this.state.temp_idoffice_con
-                )
-              ].telefono_1,
+              temp_tel_con:
+                this.state.ofices_api[
+                  this.state.ofices_api.findIndex(
+                    (x) => x.id === this.state.temp_idoffice_con
+                  )
+                ].telefono_1,
             });
           }
         });
@@ -734,7 +735,10 @@ class CrearOrganizacion3Contactos extends Component {
           </div>
         </div>
         <div className="o-contentForm-big-consultas">
-          <TableContainer className="o-tableBase" style={{ marginTop: "1rem" }}>
+          <TableContainer
+            className="o-tableBase"
+            style={{ marginTop: "1rem", maxHeight: BOX_SIZE_TABLE }}
+          >
             <Table stickyHeader size="small">
               <TableHead>
                 <TableRow>

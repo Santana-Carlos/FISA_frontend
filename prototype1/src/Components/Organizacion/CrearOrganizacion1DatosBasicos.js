@@ -127,13 +127,14 @@ class CrearOrganizacion1DatosBasicos extends Component {
             },
             () => {
               this.setState({
-                indexCat: this.state.cat_org_api[
-                  this.state.cat_org_api.findIndex(
-                    (x) =>
-                      x.nombre.includes("DESAFILIADO") ||
-                      x.nombre.includes("desafiliado")
-                  )
-                ].id,
+                indexCat:
+                  this.state.cat_org_api[
+                    this.state.cat_org_api.findIndex(
+                      (x) =>
+                        x.nombre.includes("DESAFILIADO") ||
+                        x.nombre.includes("desafiliado")
+                    )
+                  ].id,
               });
             }
           );
@@ -889,6 +890,7 @@ class CrearOrganizacion1DatosBasicos extends Component {
             name_org={this.state.name_org}
             token={this.props.token}
             box_spacing={this.state.box_spacing}
+            box_size_table={this.state.box_size_table}
           />
         </Route>
         <Route path="/crear_organizacion/contactos">

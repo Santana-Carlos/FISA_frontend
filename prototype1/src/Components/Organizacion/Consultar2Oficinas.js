@@ -389,6 +389,8 @@ class Consultar2Oficinas extends Component {
 
   render() {
     const BOX_SPACING = this.props.box_spacing;
+    const BOX_SIZE_TABLE = this.props.box_size_table;
+
     return (
       <div className="o-cardContent">
         <div className="o-contentTittle">
@@ -413,7 +415,10 @@ class Consultar2Oficinas extends Component {
         </div>
         <div className="o-contentForm-big">
           <div className="o-tableContainer">
-            <TableContainer className="o-tableBase">
+            <TableContainer
+              className="o-tableBase"
+              style={{ maxHeight: BOX_SIZE_TABLE }}
+            >
               <Table stickyHeader size="small">
                 <TableHead>
                   <TableRow>
