@@ -487,7 +487,11 @@ class Para2OrganizacionActividad extends Component {
           <div className="o-contentForm-parametros30per">
             <TableContainer
               className="o-tableBase-consultas"
-              style={{ height: BOX_SIZE, marginTop: "0.5rem" }}
+              style={{
+                display: "inline",
+                height: BOX_SIZE,
+                marginTop: "0.5rem",
+              }}
             >
               <Table stickyHeader size="small">
                 <TableHead>
@@ -605,7 +609,11 @@ class Para2OrganizacionActividad extends Component {
             ) : (
               <TableContainer
                 className="o-tableBase-consultas"
-                style={{ height: BOX_SIZE, marginTop: "1.3rem" }}
+                style={{
+                  display: "inline",
+                  height: BOX_SIZE,
+                  marginTop: "1.3rem",
+                }}
               >
                 <Table stickyHeader size="small">
                   <TableHead>
@@ -685,7 +693,11 @@ class Para2OrganizacionActividad extends Component {
           <div className="o-contentForm-parametros60per">
             <TableContainer
               className="o-tableBase-consultas"
-              style={{ height: BOX_SIZE_BIG, marginTop: "0.5rem" }}
+              style={{
+                display: "inline",
+                height: BOX_SIZE_BIG,
+                marginTop: "0.5rem",
+              }}
             >
               <Table stickyHeader size="small">
                 <TableHead>

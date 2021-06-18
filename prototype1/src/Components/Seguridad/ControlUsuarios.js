@@ -421,7 +421,7 @@ class ControlUsuarios extends Component {
           <div className="o-contentForm-parametros30per">
             <TableContainer
               className="o-tableBase-consultas"
-              style={{ height: BOX_SIZE, marginTop: "1rem" }}
+              style={{ display: "inline", height: BOX_SIZE, marginTop: "1rem" }}
             >
               <Table stickyHeader size="small">
                 <TableHead>

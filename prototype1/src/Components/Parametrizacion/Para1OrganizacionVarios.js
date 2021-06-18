@@ -399,7 +399,11 @@ class Para1OrganizacionVarios extends Component {
           <div className="o-contentForm-parametros30per">
             <TableContainer
               className="o-tableBase-consultas"
-              style={{ height: BOX_SIZE, marginTop: "0.5rem" }}
+              style={{
+                display: "table",
+                height: BOX_SIZE,
+                marginTop: "0.5rem",
+              }}
             >
               <Table stickyHeader size="small">
                 <TableHead>
@@ -475,10 +479,13 @@ class Para1OrganizacionVarios extends Component {
                 </TableBody>
               </Table>
             </TableContainer>
-
             <TableContainer
               className="o-tableBase-consultas"
-              style={{ height: BOX_SIZE, marginTop: "1.3rem" }}
+              style={{
+                display: "table",
+                height: BOX_SIZE,
+                marginTop: "1.3rem",
+              }}
             >
               <Table stickyHeader size="small">
                 <TableHead>
@@ -556,7 +563,11 @@ class Para1OrganizacionVarios extends Component {
           <div className="o-contentForm-parametros30per">
             <TableContainer
               className="o-tableBase-consultas"
-              style={{ height: BOX_SIZE_BIG, marginTop: "0.5rem" }}
+              style={{
+                display: "table",
+                height: BOX_SIZE_BIG,
+                marginTop: "0.5rem",
+              }}
             >
               <Table stickyHeader size="small">
                 <TableHead>
@@ -634,7 +645,11 @@ class Para1OrganizacionVarios extends Component {
           <div className="o-contentForm-parametros30per">
             <TableContainer
               className="o-tableBase-consultas"
-              style={{ height: BOX_SIZE, marginTop: "0.5rem" }}
+              style={{
+                display: "table",
+                height: BOX_SIZE,
+                marginTop: "0.5rem",
+              }}
             >
               <Table stickyHeader size="small">
                 <TableHead>

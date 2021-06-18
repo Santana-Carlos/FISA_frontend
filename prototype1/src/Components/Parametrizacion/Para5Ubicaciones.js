@@ -479,7 +479,11 @@ class Para5Ubicaciones extends Component {
           <div className="o-contentForm-parametros30per">
             <TableContainer
               className="o-tableBase-consultas"
-              style={{ height: BOX_SIZE_BIG, marginTop: "0.5rem" }}
+              style={{
+                display: "inline",
+                height: BOX_SIZE_BIG,
+                marginTop: "0.5rem",
+              }}
             >
               <Table stickyHeader size="small">
                 <TableHead>
@@ -597,7 +601,11 @@ class Para5Ubicaciones extends Component {
             ) : (
               <TableContainer
                 className="o-tableBase-consultas"
-                style={{ height: BOX_SIZE_BIG, marginTop: "0.5rem" }}
+                style={{
+                  display: "inline",
+                  height: BOX_SIZE_BIG,
+                  marginTop: "0.5rem",
+                }}
               >
                 <Table stickyHeader size="small">
                   <TableHead>
@@ -718,7 +726,11 @@ class Para5Ubicaciones extends Component {
             ) : (
               <TableContainer
                 className="o-tableBase-consultas"
-                style={{ height: BOX_SIZE_BIG, marginTop: "0.5rem" }}
+                style={{
+                  display: "inline",
+                  height: BOX_SIZE_BIG,
+                  marginTop: "0.5rem",
+                }}
               >
                 <Table stickyHeader size="small">
                   <TableHead>

@@ -126,16 +126,17 @@ class CrearOrganizacion1DatosBasicos extends Component {
               ciiu_org_api: data.ciius,
             },
             () => {
-              this.setState({
-                indexCat:
-                  this.state.cat_org_api[
-                    this.state.cat_org_api.findIndex(
-                      (x) =>
-                        x.nombre.includes("DESAFILIADO") ||
-                        x.nombre.includes("desafiliado")
-                    )
-                  ].id,
-              });
+              if (data.categorias.lenght > 0)
+                this.setState({
+                  indexCat:
+                    this.state.cat_org_api[
+                      this.state.cat_org_api.findIndex(
+                        (x) =>
+                          x.nombre.includes("DESAFILIADO") ||
+                          x.nombre.includes("desafiliado")
+                      )
+                    ].id,
+                });
             }
           );
         }

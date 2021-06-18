@@ -244,6 +244,7 @@ class Para4ContactosOficina extends Component {
         return response.json();
       })
       .then((data) => {
+        console.log(data);
         if (data.success) {
           this.setState(
             {
@@ -399,7 +400,11 @@ class Para4ContactosOficina extends Component {
           <div className="o-contentForm-parametros30per">
             <TableContainer
               className="o-tableBase-consultas"
-              style={{ height: BOX_SIZE, marginTop: "0.5rem" }}
+              style={{
+                display: "inline",
+                height: BOX_SIZE,
+                marginTop: "0.5rem",
+              }}
             >
               <Table stickyHeader size="small">
                 <TableHead>
@@ -475,7 +480,11 @@ class Para4ContactosOficina extends Component {
 
             <TableContainer
               className="o-tableBase-consultas"
-              style={{ height: BOX_SIZE, marginTop: "1.3rem" }}
+              style={{
+                display: "inline",
+                height: BOX_SIZE,
+                marginTop: "1.3rem",
+              }}
             >
               <Table stickyHeader size="small">
                 <TableHead>
@@ -553,7 +562,11 @@ class Para4ContactosOficina extends Component {
           <div className="o-contentForm-parametros30per">
             <TableContainer
               className="o-tableBase-consultas"
-              style={{ height: BOX_SIZE_BIG, marginTop: "0.5rem" }}
+              style={{
+                display: "inline",
+                height: BOX_SIZE_BIG,
+                marginTop: "0.5rem",
+              }}
             >
               <Table stickyHeader size="small">
                 <TableHead>
@@ -632,7 +645,11 @@ class Para4ContactosOficina extends Component {
           <div className="o-contentForm-parametros30per">
             <TableContainer
               className="o-tableBase-consultas"
-              style={{ height: BOX_SIZE, marginTop: "0.5rem" }}
+              style={{
+                display: "inline",
+                height: BOX_SIZE,
+                marginTop: "0.5rem",
+              }}
             >
               <Table stickyHeader size="small">
                 <TableHead>
