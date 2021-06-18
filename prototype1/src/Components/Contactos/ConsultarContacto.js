@@ -282,25 +282,12 @@ class ConsultarContacto extends Component {
           "Content-Type": "application/json",
           Authorization: "Bearer " + this.props.token,
         },
-      })
-        .then((response) => {
-          return response.json();
-        })
-        .then((data) => {
-          if (data.success) {
-            this.setState({
-              delCon: false,
-              temp_id_con: "",
-            });
-          }
-        })
-        .catch((error) => {});
-    } else {
-      this.setState({
-        delCon: false,
-        temp_id_con: "",
-      });
+      }).catch((error) => {});
     }
+    this.setState({
+      delCon: false,
+      temp_id_con: "",
+    });
     setTimeout(this.callAPi, 2000);
     setTimeout(this.callAPi, 5000);
   };

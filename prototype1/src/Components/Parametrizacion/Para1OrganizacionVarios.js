@@ -350,7 +350,7 @@ class Para1OrganizacionVarios extends Component {
             <TableContainer
               className="o-tableBase-consultas"
               style={{
-                display: "table",
+                display: "inline",
                 height: BOX_SIZE,
                 marginTop: "0.5rem",
               }}
@@ -432,7 +432,7 @@ class Para1OrganizacionVarios extends Component {
             <TableContainer
               className="o-tableBase-consultas"
               style={{
-                display: "table",
+                display: "inline",
                 height: BOX_SIZE,
                 marginTop: "1.3rem",
               }}
@@ -514,7 +514,7 @@ class Para1OrganizacionVarios extends Component {
             <TableContainer
               className="o-tableBase-consultas"
               style={{
-                display: "table",
+                display: "inline",
                 height: BOX_SIZE_BIG,
                 marginTop: "0.5rem",
               }}
@@ -596,7 +596,7 @@ class Para1OrganizacionVarios extends Component {
             <TableContainer
               className="o-tableBase-consultas"
               style={{
-                display: "table",
+                display: "inline",
                 height: BOX_SIZE,
                 marginTop: "0.5rem",
               }}

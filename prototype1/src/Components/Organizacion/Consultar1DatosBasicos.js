@@ -110,7 +110,13 @@ class Consultar1DatosBasicos extends Component {
             ciiu_org_api: data.ciius,
           },
           () => {
-            if (data.categorias.lenght > 0)
+            if (
+              this.state.cat_org_api.findIndex(
+                (x) =>
+                  x.nombre.includes("DESAFILIADO") ||
+                  x.nombre.includes("desafiliado")
+              ) > -1
+            )
               this.setState({
                 indexCat:
                   this.state.cat_org_api[

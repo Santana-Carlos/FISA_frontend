@@ -423,16 +423,18 @@ class CrearOrganizacion4Finanzas extends Component {
             this.state.temp_clas_fin !== null
           ) {
             this.setState({
-              temp_anocuota_fin: this.state.clas_fin_api[
-                this.state.clas_fin_api.findIndex(
-                  (x) => x.id === this.state.temp_clas_fin
-                )
-              ].temporada_cuota,
-              temp_cuotaanual_fin: this.state.clas_fin_api[
-                this.state.clas_fin_api.findIndex(
-                  (x) => x.id === this.state.temp_clas_fin
-                )
-              ].cuota_anual,
+              temp_anocuota_fin:
+                this.state.clas_fin_api[
+                  this.state.clas_fin_api.findIndex(
+                    (x) => x.id === this.state.temp_clas_fin
+                  )
+                ].temporada_cuota,
+              temp_cuotaanual_fin:
+                this.state.clas_fin_api[
+                  this.state.clas_fin_api.findIndex(
+                    (x) => x.id === this.state.temp_clas_fin
+                  )
+                ].cuota_anual,
             });
           }
         });
