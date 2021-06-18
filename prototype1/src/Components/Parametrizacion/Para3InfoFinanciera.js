@@ -97,44 +97,6 @@ class Para3InfoFinanciera extends Component {
       });
   };
 
-  callApiRefresh = () => {
-    const tipo = this.state.temp_tipo;
-
-    fetch(process.env.REACT_APP_API_URL + tipo, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + this.props.token,
-      },
-    })
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        if (data.success) {
-          switch (tipo) {
-            case "Clasificacion":
-              this.setState({
-                api_clas: data.clasificaciones,
-                loading: false,
-              });
-              break;
-            case "Regimen":
-              this.setState({
-                api_reg: data.regimenes,
-                loading: false,
-              });
-              break;
-            default:
-              break;
-          }
-        }
-      })
-      .catch((error) => {
-        this.setState({ loading: false });
-      });
-  };
-
   callApiGet = () => {
     this.setState({ loadingDiag: true });
     const tipo = this.state.temp_tipo;
@@ -231,7 +193,7 @@ class Para3InfoFinanciera extends Component {
               loadingDiag: false,
               loading: true,
             },
-            this.callApiRefresh()
+            this.callApi()
           );
         }
       })
@@ -248,8 +210,8 @@ class Para3InfoFinanciera extends Component {
         });
       });
 
-    setTimeout(this.callApiRefresh, 2000);
-    setTimeout(this.callApiRefresh, 5000);
+    setTimeout(this.callApi, 2000);
+    setTimeout(this.callApi, 5000);
   };
 
   callApiEdit = () => {
@@ -287,7 +249,7 @@ class Para3InfoFinanciera extends Component {
               loadingDiag: false,
               loading: true,
             },
-            this.callApiRefresh()
+            this.callApi()
           );
         }
       })
@@ -303,8 +265,8 @@ class Para3InfoFinanciera extends Component {
         });
       });
 
-    setTimeout(this.callApiRefresh, 2000);
-    setTimeout(this.callApiRefresh, 5000);
+    setTimeout(this.callApi, 2000);
+    setTimeout(this.callApi, 5000);
   };
 
   callApiDel = () => {
@@ -333,8 +295,8 @@ class Para3InfoFinanciera extends Component {
       })
       .catch((error) => {});
 
-    setTimeout(this.callApiRefresh, 2000);
-    setTimeout(this.callApiRefresh, 5000);
+    setTimeout(this.callApi, 2000);
+    setTimeout(this.callApi, 5000);
   };
 
   handleChange(event) {

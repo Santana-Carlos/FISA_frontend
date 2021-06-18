@@ -98,56 +98,6 @@ class Para4ContactosOficina extends Component {
       });
   };
 
-  callApiRefresh = () => {
-    const tipo = this.state.temp_tipo;
-
-    fetch(process.env.REACT_APP_API_URL + tipo, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + this.props.token,
-      },
-    })
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        if (data.success) {
-          switch (tipo) {
-            case "TipoDocumentoPersona":
-              this.setState({
-                api_tipoid: data.tipos,
-                loading: false,
-              });
-              break;
-            case "Subcategoria":
-              this.setState({
-                api_subcat: data.subcategorias,
-                loading: false,
-              });
-              break;
-            case "Sexo":
-              this.setState({
-                api_sex: data.sexos,
-                loading: false,
-              });
-              break;
-            case "TipoOficina":
-              this.setState({
-                api_tipoofi: data.tipos,
-                loading: false,
-              });
-              break;
-            default:
-              break;
-          }
-        }
-      })
-      .catch((error) => {
-        this.setState({ loading: false });
-      });
-  };
-
   callApiGet = () => {
     this.setState({ loadingDiag: true });
     const tipo = this.state.temp_tipo;
@@ -254,7 +204,7 @@ class Para4ContactosOficina extends Component {
               loadingDiag: false,
               loading: true,
             },
-            this.callApiRefresh()
+            this.callApi()
           );
         }
       })
@@ -268,8 +218,8 @@ class Para4ContactosOficina extends Component {
         });
       });
 
-    setTimeout(this.callApiRefresh, 2000);
-    setTimeout(this.callApiRefresh, 5000);
+    setTimeout(this.callApi, 2000);
+    setTimeout(this.callApi, 5000);
   };
 
   callApiEdit = () => {
@@ -302,7 +252,7 @@ class Para4ContactosOficina extends Component {
               loadingDiag: false,
               loading: true,
             },
-            this.callApiRefresh()
+            this.callApi()
           );
         }
       })
@@ -315,8 +265,8 @@ class Para4ContactosOficina extends Component {
         });
       });
 
-    setTimeout(this.callApiRefresh, 2000);
-    setTimeout(this.callApiRefresh, 5000);
+    setTimeout(this.callApi, 2000);
+    setTimeout(this.callApi, 5000);
   };
 
   callApiDel = () => {
@@ -347,8 +297,8 @@ class Para4ContactosOficina extends Component {
       })
       .catch((error) => {});
 
-    setTimeout(this.callApiRefresh, 2000);
-    setTimeout(this.callApiRefresh, 5000);
+    setTimeout(this.callApi, 2000);
+    setTimeout(this.callApi, 5000);
   };
 
   handleChange(event) {

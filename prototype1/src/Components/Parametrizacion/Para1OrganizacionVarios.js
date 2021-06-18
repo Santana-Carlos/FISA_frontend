@@ -98,56 +98,6 @@ class Para1OrganizacionVarios extends Component {
       });
   };
 
-  callApiRefresh = () => {
-    const tipo = this.state.temp_tipo;
-
-    fetch(process.env.REACT_APP_API_URL + tipo, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + this.props.token,
-      },
-    })
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        if (data.success) {
-          switch (tipo) {
-            case "TipoDocumentoOrganizacion":
-              this.setState({
-                api_tipoid: data.tipos,
-                loading: false,
-              });
-              break;
-            case "Categoria":
-              this.setState({
-                api_cat: data.categorias,
-                loading: false,
-              });
-              break;
-            case "TipoOrganizacion":
-              this.setState({
-                api_tipoorg: data.tipos,
-                loading: false,
-              });
-              break;
-            case "Clase":
-              this.setState({
-                api_claseorg: data.clases,
-                loading: false,
-              });
-              break;
-            default:
-              break;
-          }
-        }
-      })
-      .catch((error) => {
-        this.setState({ loading: false });
-      });
-  };
-
   callApiGet = () => {
     this.setState({ loadingDiag: true });
     const tipo = this.state.temp_tipo;
@@ -253,7 +203,7 @@ class Para1OrganizacionVarios extends Component {
               loadingDiag: false,
               loading: true,
             },
-            this.callApiRefresh()
+            this.callApi()
           );
         }
       })
@@ -267,8 +217,8 @@ class Para1OrganizacionVarios extends Component {
         });
       });
 
-    setTimeout(this.callApiRefresh, 2000);
-    setTimeout(this.callApiRefresh, 5000);
+    setTimeout(this.callApi, 2000);
+    setTimeout(this.callApi, 5000);
   };
 
   callApiEdit = () => {
@@ -301,7 +251,7 @@ class Para1OrganizacionVarios extends Component {
               loadingDiag: false,
               loading: true,
             },
-            this.callApiRefresh()
+            this.callApi()
           );
         }
       })
@@ -314,8 +264,8 @@ class Para1OrganizacionVarios extends Component {
         });
       });
 
-    setTimeout(this.callApiRefresh, 2000);
-    setTimeout(this.callApiRefresh, 5000);
+    setTimeout(this.callApi, 2000);
+    setTimeout(this.callApi, 5000);
   };
 
   callApiDel = () => {
@@ -340,14 +290,14 @@ class Para1OrganizacionVarios extends Component {
               temp_datosDesc: "",
               loading: true,
             },
-            this.callApiRefresh()
+            this.callApi()
           );
         }
       })
       .catch((error) => {});
 
-    setTimeout(this.callApiRefresh, 2000);
-    setTimeout(this.callApiRefresh, 5000);
+    setTimeout(this.callApi, 2000);
+    setTimeout(this.callApi, 5000);
   };
 
   handleChange(event) {

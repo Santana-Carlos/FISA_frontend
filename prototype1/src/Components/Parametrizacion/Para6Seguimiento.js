@@ -91,44 +91,6 @@ class Para6Seguimiento extends Component {
       });
   };
 
-  callApiRefresh = () => {
-    const tipo = this.state.temp_tipo;
-
-    fetch(process.env.REACT_APP_API_URL + tipo, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + this.props.token,
-      },
-    })
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        if (data.success) {
-          switch (tipo) {
-            case "EstadoVisita":
-              this.setState({
-                api_estvisita: data.estados,
-                loading: false,
-              });
-              break;
-            case "EstadoTarea":
-              this.setState({
-                api_esttarea: data.estados,
-                loading: false,
-              });
-              break;
-            default:
-              break;
-          }
-        }
-      })
-      .catch((error) => {
-        this.setState({ loading: false });
-      });
-  };
-
   callApiGet = () => {
     this.setState({ loadingDiag: true });
     const tipo = this.state.temp_tipo;
@@ -202,7 +164,7 @@ class Para6Seguimiento extends Component {
               loadingDiag: false,
               loading: true,
             },
-            this.callApiRefresh()
+            this.callApi()
           );
         }
       })
@@ -215,8 +177,8 @@ class Para6Seguimiento extends Component {
         });
       });
 
-    setTimeout(this.callApiRefresh, 2000);
-    setTimeout(this.callApiRefresh, 5000);
+    setTimeout(this.callApi, 2000);
+    setTimeout(this.callApi, 5000);
   };
 
   callApiEdit = () => {
@@ -247,7 +209,7 @@ class Para6Seguimiento extends Component {
               loadingDiag: false,
               loading: true,
             },
-            this.callApiRefresh()
+            this.callApi()
           );
         }
       })
@@ -259,8 +221,8 @@ class Para6Seguimiento extends Component {
         });
       });
 
-    setTimeout(this.callApiRefresh, 2000);
-    setTimeout(this.callApiRefresh, 5000);
+    setTimeout(this.callApi, 2000);
+    setTimeout(this.callApi, 5000);
   };
 
   callApiDel = () => {
@@ -286,7 +248,7 @@ class Para6Seguimiento extends Component {
               loadingDiag: false,
               loading: true,
             },
-            this.callApiRefresh()
+            this.callApi()
           );
         }
       })

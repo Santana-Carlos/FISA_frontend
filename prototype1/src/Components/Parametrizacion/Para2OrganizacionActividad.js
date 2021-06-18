@@ -99,46 +99,6 @@ class Para2OrganizacionActividad extends Component {
       });
   };
 
-  callApiRefresh = () => {
-    const tipo = this.state.temp_tipo;
-
-    fetch(process.env.REACT_APP_API_URL + tipo, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + this.props.token,
-      },
-    })
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        if (data.success) {
-          switch (tipo) {
-            case "Sector":
-              this.setState({
-                api_sec: data.sectores,
-                temp_idSec: "",
-                api_sub: [],
-                loading: false,
-              });
-              break;
-            case "Ciiu":
-              this.setState({
-                api_ciiu: data.ciius,
-                loading: false,
-              });
-              break;
-            default:
-              break;
-          }
-        }
-      })
-      .catch((error) => {
-        this.setState({ loading: false });
-      });
-  };
-
   callApiGetSub = () => {
     const idSec = this.state.temp_idSec;
     const data = {
@@ -298,7 +258,7 @@ class Para2OrganizacionActividad extends Component {
               if (tipo === "Subsector") {
                 this.callApiGetSub();
               } else {
-                this.callApiRefresh();
+                this.callApi();
               }
             }
           );
@@ -319,8 +279,8 @@ class Para2OrganizacionActividad extends Component {
       setTimeout(this.callApiGetSub, 2000);
       setTimeout(this.callApiGetSub, 5000);
     } else {
-      setTimeout(this.callApiRefresh, 2000);
-      setTimeout(this.callApiRefresh, 5000);
+      setTimeout(this.callApi, 2000);
+      setTimeout(this.callApi, 5000);
     }
   };
 
@@ -378,7 +338,7 @@ class Para2OrganizacionActividad extends Component {
               if (tipo === "Subsector") {
                 this.callApiGetSub();
               } else {
-                this.callApiRefresh();
+                this.callApi();
               }
             }
           );
@@ -398,8 +358,8 @@ class Para2OrganizacionActividad extends Component {
       setTimeout(this.callApiGetSub, 2000);
       setTimeout(this.callApiGetSub, 5000);
     } else {
-      setTimeout(this.callApiRefresh, 2000);
-      setTimeout(this.callApiRefresh, 5000);
+      setTimeout(this.callApi, 2000);
+      setTimeout(this.callApi, 5000);
     }
   };
 
@@ -429,13 +389,19 @@ class Para2OrganizacionActividad extends Component {
               if (tipo === "Subsector") {
                 this.callApiGetSub();
               } else {
-                this.callApiRefresh();
+                this.callApi();
               }
             }
           );
         }
       })
       .catch((error) => {});
+
+    if (tipo === "Subsector") {
+      setTimeout(this.callApiGetSub, 2000);
+    } else {
+      setTimeout(this.callApi, 2000);
+    }
   };
 
   handleChange(event) {
