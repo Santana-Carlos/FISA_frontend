@@ -173,12 +173,28 @@ class Consultar1DatosBasicos extends Component {
             ciiu_org: data.actividades,
             loading: false,
           },
-          this.callApiSubsector
+          () => {
+            this.makeFakeCiiu();
+            this.callApiSubsector();
+          }
         );
       })
       .catch((error) => {
         this.setState({ loading: false });
       });
+  };
+
+  makeFakeCiiu = () => {
+    const tempCiiuApi = this.state.ciiu_org_api;
+    const tempFake = tempCiiuApi.filter((obj) => {
+      for (let j = 0; j < this.state.ciiu_org.length; j++) {
+        if (obj.id === this.state.ciiu_org[j]) {
+          return true;
+        }
+      }
+      return false;
+    });
+    this.setState({ ciiuFake_org: tempFake });
   };
 
   callApiSubsector = () => {
@@ -202,16 +218,6 @@ class Consultar1DatosBasicos extends Component {
         });
       })
       .catch((error) => {});
-    const tempCiiuApi = this.state.ciiu_org_api;
-    const tempFake = tempCiiuApi.filter((obj) => {
-      for (let j = 0; j < this.state.ciiu_org.length; j++) {
-        if (obj.id === this.state.ciiu_org[j]) {
-          return true;
-        }
-      }
-      return false;
-    });
-    this.setState({ ciiuFake_org: tempFake });
   };
 
   handleChange(event) {
