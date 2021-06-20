@@ -170,31 +170,15 @@ class Consultar1DatosBasicos extends Component {
             empdir_org: data.organizacion.empleados_directos,
             empind_org: data.organizacion.empleados_indirectos,
             estado_org: data.organizacion.estado,
-            ciiu_org: data.actividades,
+            ciiuFake_org: data.actividades,
             loading: false,
           },
-          () => {
-            this.makeFakeCiiu();
-            this.callApiSubsector();
-          }
+          this.callApiSubsector
         );
       })
       .catch((error) => {
         this.setState({ loading: false });
       });
-  };
-
-  makeFakeCiiu = () => {
-    const tempCiiuApi = this.state.ciiu_org_api;
-    const tempFake = tempCiiuApi.filter((obj) => {
-      for (let j = 0; j < this.state.ciiu_org.length; j++) {
-        if (obj.id === this.state.ciiu_org[j]) {
-          return true;
-        }
-      }
-      return false;
-    });
-    this.setState({ ciiuFake_org: tempFake });
   };
 
   callApiSubsector = () => {

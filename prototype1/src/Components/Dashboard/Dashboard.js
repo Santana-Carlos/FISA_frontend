@@ -3,6 +3,7 @@ import { Route, NavLink, Redirect, Link } from "react-router-dom";
 import { Button } from "@material-ui/core/";
 import { ExitToApp as IconExit } from "@material-ui/icons";
 import logo from "../../Assets/FisaLogo.png";
+import Welcome from "./Welcome";
 import Organizacion from "../Cards/Organizacion";
 import Contacto from "../Cards/Contacto";
 import Seguimiento from "../Cards/Seguimiento";
@@ -135,43 +136,7 @@ const Dashboard = () => {
       </div>
       <SwitchWithSlide>
         <Route exact path="/dashboard/">
-          <div className="o-mainDashboard">
-            <div
-              style={{
-                margin: "auto 0 0",
-                fontSize: "2.5rem",
-              }}
-            >
-              {"Bienvenido " + user}
-            </div>
-            <div
-              style={{
-                fontSize: "1.3rem",
-                marginTop: "0.8rem",
-                fontWeight: 200,
-              }}
-            >
-              {"Sesión iniciada como: " + rol}
-            </div>
-            <Link
-              exact={"true"}
-              to="/3_14159265359/1_61803398874989"
-              style={{
-                display: "flex",
-                margin: "auto auto 4rem 10rem",
-                textDecoration: "none",
-              }}
-            >
-              <div style={{ fontSize: "0.5em", color: "#f00" }}>{"."}</div>
-            </Link>
-            <div
-              style={{
-                margin: "auto 0 0.5rem",
-              }}
-            >
-              {"FISA © 2021 v" + process.env.REACT_APP_VERSION}
-            </div>
-          </div>
+          <Welcome user={user} rol={rol} />
         </Route>
         <Route path="/dashboard/organizacion">
           <Organizacion />
