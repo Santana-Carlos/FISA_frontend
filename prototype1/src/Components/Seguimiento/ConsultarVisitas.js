@@ -936,7 +936,7 @@ class ConsultarVisitas extends Component {
                           disableToolbar
                           inputVariant="outlined"
                           variant="inline"
-                          format="dd/MM/yyyy - hh:mm a"
+                          format="dd/MM/yyyy"
                           margin="dense"
                           label={
                             <div
@@ -974,7 +974,7 @@ class ConsultarVisitas extends Component {
                           disableToolbar
                           inputVariant="outlined"
                           variant="inline"
-                          format="dd/MM/yyyy - hh:mm a"
+                          format="dd/MM/yyyy"
                           margin="dense"
                           label="Fecha ejecución"
                           value={this.state.temp_feceje_vis || null}

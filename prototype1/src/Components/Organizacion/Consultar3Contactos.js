@@ -285,10 +285,7 @@ class Consultar3Contactos extends Component {
               temp_sex_con: data.contacto.sexo_id,
               temp_estado_con: data.contacto.estado,
               loadingDiag: false,
-              temp_subcat_con:
-                data.categorias[0] === this.state.indexCat
-                  ? []
-                  : data.categorias,
+              temp_subcat_con: data.categorias,
             },
             this.subcatFake
           );
@@ -595,8 +592,7 @@ class Consultar3Contactos extends Component {
             temp_nid_con: data.contacto.numero_documento,
             temp_sex_con: data.contacto.sexo_id,
             loadingDiag: false,
-            temp_subcat_con:
-              data.categorias[0] === this.state.indexCat ? [] : data.categorias,
+            temp_subcat_con: data.categorias,
           },
           this.subcatFake
         );
