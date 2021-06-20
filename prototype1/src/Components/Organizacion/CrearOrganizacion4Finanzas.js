@@ -143,8 +143,8 @@ class CrearOrganizacion4Finanzas extends Component {
             temp_pendfac_fin: data.informacion.pendiente_facturacion,
             userUpdated: data.usuario_actualizacion.editor,
             fechaUpdated: data.informacion.updated_at,
-            temp_cuotaanual_fin: "",
-            temp_anocuota_fin: "",
+            temp_cuotaanual_fin: data.informacion.cuota_anual,
+            temp_anocuota_fin: data.informacion.temporada_cuota,
             temp_importcheck_fin: data.informacion.importa,
             temp_exportcheck_fin: data.informacion.exporta,
           });
