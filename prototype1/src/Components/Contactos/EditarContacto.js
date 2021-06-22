@@ -362,11 +362,12 @@ class EditarContacto extends Component {
             this.state.temp_tel_con === null
           ) {
             this.setState({
-              temp_tel_con: this.state.ofices_api[
-                this.state.ofices_api.findIndex(
-                  (x) => x.id === this.state.temp_idoffice_con
-                )
-              ].telefono_1,
+              temp_tel_con:
+                this.state.ofices_api[
+                  this.state.ofices_api.findIndex(
+                    (x) => x.id === this.state.temp_idoffice_con
+                  )
+                ].telefono_1,
             });
           }
         });
@@ -727,7 +728,11 @@ class EditarContacto extends Component {
                 limitTags={3}
                 disableClearable={true}
                 noOptionsText="..."
-                getOptionLabel={(option) => option.nombre}
+                getOptionLabel={(option) =>
+                  option.nombre.length > 20
+                    ? option.nombre.substring(0, 20) + "..."
+                    : option.nombre
+                }
                 renderOption={(option, { selected }) => (
                   <React.Fragment>
                     <Checkbox style={{ marginRight: 8 }} checked={selected} />

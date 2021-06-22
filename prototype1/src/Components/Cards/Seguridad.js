@@ -1,5 +1,5 @@
 import React from "react";
-import { HashRouter, Switch, Route, NavLink } from "react-router-dom";
+import { HashRouter, Switch, Route, NavLink, Redirect } from "react-router-dom";
 import { SideButton } from "../Buttons";
 import { useSelector } from "react-redux";
 import CambioContrasena from "../Seguridad/CambioContrasena";
@@ -40,8 +40,10 @@ const Seguridad = () => {
               </Route>
               <Route path="/control_de_usuarios">
                 {rol === "Administrador" || rol === "MasterUser" ? (
-                <ControlUsuarios token={token} userName={user} rol={rol} />) : 
-                <Redirect exact to="dashboard/"/>}
+                  <ControlUsuarios token={token} userName={user} rol={rol} />
+                ) : (
+                  <Redirect exact to="dashboard/" />
+                )}
               </Route>
             </Switch>
           </div>
