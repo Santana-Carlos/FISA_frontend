@@ -598,7 +598,7 @@ class ConsultarVisitas extends Component {
                             {obj.nombre}
                           </StyledTableCell>
                           <StyledTableCell size="small" align="right">
-                            <div className="o-row-bntIcon">
+                            <div className="o-row-btnIcon">
                               <IconButton
                                 size="small"
                                 color="primary"

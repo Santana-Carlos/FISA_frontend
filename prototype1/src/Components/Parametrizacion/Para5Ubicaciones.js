@@ -847,7 +847,14 @@ class Para5Ubicaciones extends Component {
               <div style={{ marginBottom: BOX_SPACING }}>
                 <TextField
                   id="outlined-textarea"
-                  label="Nombre"
+                  label={
+                    <div style={{ display: "flex", flexDirection: "row" }}>
+                      {"Nombre"}
+                      <div style={{ color: "#FF0000", marginLeft: "0.1rem" }}>
+                        {"*"}
+                      </div>
+                    </div>
+                  }
                   value={this.state.temp_dato || ""}
                   variant="outlined"
                   name="input_temp_dato"

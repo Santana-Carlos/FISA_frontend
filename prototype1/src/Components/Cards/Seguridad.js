@@ -38,11 +38,11 @@ const Seguridad = () => {
               <Route path="/cambio_contraseña">
                 <CambioContrasena token={token} />
               </Route>
-              {rol === "Administrador" ? (
-                <Route path="/control_de_usuarios">
-                  <ControlUsuarios token={token} userName={user} />
-                </Route>
-              ) : null}
+              <Route path="/control_de_usuarios">
+                {rol === "Administrador" || rol === "MasterUser" ? (
+                <ControlUsuarios token={token} userName={user} rol={rol} />) : 
+                <Redirect exact to="dashboard/"/>}
+              </Route>
             </Switch>
           </div>
         </div>

@@ -570,7 +570,14 @@ class Para3InfoFinanciera extends Component {
               <div style={{ marginBottom: BOX_SPACING }}>
                 <TextField
                   id="outlined-textDato"
-                  label="Nombre"
+                  label={
+                    <div style={{ display: "flex", flexDirection: "row" }}>
+                      {"Nombre"}
+                      <div style={{ color: "#FF0000", marginLeft: "0.1rem" }}>
+                        {"*"}
+                      </div>
+                    </div>
+                  }
                   value={this.state.temp_dato || ""}
                   variant="outlined"
                   name="input_temp_dato"
@@ -657,7 +664,14 @@ class Para3InfoFinanciera extends Component {
               <div style={{ marginBottom: BOX_SPACING }}>
                 <TextField
                   id="outlined-textDato"
-                  label="Nombre"
+                  label={
+                    <div style={{ display: "flex", flexDirection: "row" }}>
+                      {"Nombre"}
+                      <div style={{ color: "#FF0000", marginLeft: "0.1rem" }}>
+                        {"*"}
+                      </div>
+                    </div>
+                  }
                   value={this.state.temp_dato || ""}
                   variant="outlined"
                   name="input_temp_dato"
@@ -683,7 +697,14 @@ class Para3InfoFinanciera extends Component {
               <div style={{ marginBottom: BOX_SPACING }}>
                 <TextField
                   id="outlined-textCuo"
-                  label="Cuota anual"
+                  label={
+                    <div style={{ display: "flex", flexDirection: "row" }}>
+                      {"Cuota anual"}
+                      <div style={{ color: "#FF0000", marginLeft: "0.1rem" }}>
+                        {"*"}
+                      </div>
+                    </div>
+                  }
                   value={this.state.temp_clas_cuo || ""}
                   variant="outlined"
                   name="input_temp_clas_cuo"
@@ -695,7 +716,14 @@ class Para3InfoFinanciera extends Component {
               <div style={{ marginBottom: BOX_SPACING }}>
                 <TextField
                   id="outlined-textTemp"
-                  label="Temporada cuota"
+                  label={
+                    <div style={{ display: "flex", flexDirection: "row" }}>
+                      {"Año cuota"}
+                      <div style={{ color: "#FF0000", marginLeft: "0.1rem" }}>
+                        {"*"}
+                      </div>
+                    </div>
+                  }
                   value={this.state.temp_clas_temp || ""}
                   variant="outlined"
                   name="input_temp_clas_temp"
