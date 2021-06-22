@@ -1,5 +1,5 @@
 import React from "react";
-import { HashRouter, Switch, Route, NavLink } from "react-router-dom";
+import { HashRouter, Switch, Route, NavLink, Redirect } from "react-router-dom";
 import { SideButton } from "../Buttons";
 import { useSelector } from "react-redux";
 import ReporteOrganizacion from "../Reportes/ReporteOrganizacion";
@@ -47,6 +47,7 @@ const Reportes = () => {
               <Route path="/reporte_fechas">
                 <ReporteFechas token={token} />
               </Route>
+              <Redirect to="/reporte_organizaciones" />
             </Switch>
           </div>
         </div>

@@ -1,5 +1,5 @@
 import React from "react";
-import { HashRouter, Switch, Route, NavLink } from "react-router-dom";
+import { HashRouter, Switch, Route, NavLink, Redirect } from "react-router-dom";
 import { SideButton } from "../Buttons";
 import { useSelector } from "react-redux";
 import CrearContacto from "../Contactos/CrearContacto";
@@ -36,6 +36,7 @@ const Contacto = () => {
               <Route path="/crear_contacto">
                 <CrearContacto token={token} />
               </Route>
+              <Redirect to="/consultar_contacto" />
             </Switch>
           </div>
         </div>

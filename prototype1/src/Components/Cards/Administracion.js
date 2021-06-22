@@ -1,5 +1,5 @@
 import React from "react";
-import { HashRouter, Switch, Route, NavLink } from "react-router-dom";
+import { HashRouter, Switch, Route, NavLink, Redirect } from "react-router-dom";
 import { SideButton } from "../Buttons";
 import { useSelector } from "react-redux";
 import Para1OrganizacionVarios from "../Parametrizacion/Para1OrganizacionVarios";
@@ -80,6 +80,7 @@ const Administracion = () => {
               <Route path="/seguimiento">
                 <Para6Seguimiento token={token} />
               </Route>
+              <Redirect to="/organizacion_varios" />
             </Switch>
           </div>
         </div>

@@ -2,13 +2,13 @@ import React from "react";
 import Log from "./Log";
 import Login from "./Login";
 import "./Main.css";
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, Redirect } from "react-router-dom";
 
 const Main = () => {
   return (
     <div className="o-main">
       <Switch>
-        <Route exact path="/">
+        <Route exact path="/login">
           <Login />
         </Route>
         <Route path="/dashboard">
@@ -39,6 +39,7 @@ const Main = () => {
             />
           </div>
         </Route>
+        <Redirect to="/login" />
       </Switch>
     </div>
   );

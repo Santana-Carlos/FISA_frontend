@@ -1,9 +1,10 @@
 import React from "react";
-import { Route, NavLink, Redirect, Link } from "react-router-dom";
+import { Route, NavLink, Redirect } from "react-router-dom";
 import { Button } from "@material-ui/core/";
 import { ExitToApp as IconExit } from "@material-ui/icons";
 import logo from "../../Assets/FisaLogo.png";
 import Welcome from "./Welcome";
+import NotFound from "./NotFount";
 import Organizacion from "../Cards/Organizacion";
 import Contacto from "../Cards/Contacto";
 import Seguimiento from "../Cards/Seguimiento";
@@ -103,7 +104,7 @@ const Dashboard = () => {
           >
             <Button className="o-btnBanner-btn">Reportes</Button>
           </NavLink>
-          {rol === "Administrador" ? (
+          {rol === "Administrador" || rol === "MasterUser" ? (
             <NavLink
               className="o-btnBanner"
               activeClassName="o-btnBannerActive o-btnAdministracion-active"
@@ -135,7 +136,7 @@ const Dashboard = () => {
         </NavLink>
       </div>
       <SwitchWithSlide>
-        <Route exact path="/dashboard/">
+        <Route exact path="/dashboard">
           <Welcome user={user} rol={rol} />
         </Route>
         <Route path="/dashboard/organizacion">
@@ -150,15 +151,16 @@ const Dashboard = () => {
         <Route path="/dashboard/reportes">
           <Reportes />
         </Route>
-        <Route path="/dashboard/administracion">
-          {rol === "Administrador" || rol === "MasterUser" ? (
+        {rol === "Administrador" || rol === "MasterUser" ? (
+          <Route path="/dashboard/administracion">
             <Administracion />
-          ) : (
-            <Redirect exact to="/dashboard" />
-          )}
-        </Route>
+          </Route>
+        ) : null}
         <Route path="/dashboard/seguridad">
           <Seguridad />
+        </Route>
+        <Route path="/">
+          <NotFound />
         </Route>
       </SwitchWithSlide>
     </div>

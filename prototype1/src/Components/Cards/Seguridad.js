@@ -23,7 +23,7 @@ const Seguridad = () => {
             >
               <SideButton>Cambio de contraseña</SideButton>
             </NavLink>
-            {rol === "Administrador" ? (
+            {rol === "Administrador" || rol === "MasterUser" ? (
               <NavLink
                 className="o-btnSidebar o-btnSidebar-seguridad"
                 activeClassName="o-btnSidebar o-btnSidebar-seguridadActive"
@@ -42,9 +42,10 @@ const Seguridad = () => {
                 {rol === "Administrador" || rol === "MasterUser" ? (
                   <ControlUsuarios token={token} userName={user} rol={rol} />
                 ) : (
-                  <Redirect exact to="dashboard/" />
+                  <Redirect exact to="/" />
                 )}
               </Route>
+              <Redirect to="/cambio_contraseña" />
             </Switch>
           </div>
         </div>

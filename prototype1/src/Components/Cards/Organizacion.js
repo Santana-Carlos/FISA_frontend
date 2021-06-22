@@ -1,5 +1,5 @@
 import React from "react";
-import { HashRouter, Switch, Route, NavLink } from "react-router-dom";
+import { HashRouter, Switch, Route, NavLink, Redirect } from "react-router-dom";
 import { SideButton } from "../Buttons";
 import { useSelector } from "react-redux";
 import CrearOrganizacion from "../Organizacion/CrearOrganizacion";
@@ -36,6 +36,7 @@ const Organizacion = () => {
               <Route path="/crear_organizacion">
                 <CrearOrganizacion token={token} />
               </Route>
+              <Redirect to="/consultar_organizacion" />
             </Switch>
           </div>
         </div>

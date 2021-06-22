@@ -1,5 +1,5 @@
 import React from "react";
-import { HashRouter, Switch, Route, NavLink } from "react-router-dom";
+import { HashRouter, Switch, Route, NavLink, Redirect } from "react-router-dom";
 import { SideButton } from "../Buttons";
 import { useSelector } from "react-redux";
 import CrearVisitas from "../Seguimiento/CrearVisitas";
@@ -36,6 +36,7 @@ const Seguimiento = () => {
               <Route path="/crear_visitas">
                 <CrearVisitas token={token} />
               </Route>
+              <Redirect to="/consultar_visitas" />
             </Switch>
           </div>
         </div>
