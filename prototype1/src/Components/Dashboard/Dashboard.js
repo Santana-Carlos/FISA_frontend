@@ -152,8 +152,10 @@ const Dashboard = () => {
         </Route>
         <Route path="/dashboard/administracion">
           {rol === "Administrador" || rol === "MasterUser" ? (
-          <Administracion />) : (
-          <Redirect exact to="/"/>)}
+            <Administracion />
+          ) : (
+            <Redirect exact to="/dashboard" />
+          )}
         </Route>
         <Route path="/dashboard/seguridad">
           <Seguridad />
