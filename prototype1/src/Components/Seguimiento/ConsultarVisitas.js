@@ -547,7 +547,7 @@ class ConsultarVisitas extends Component {
                     margin="dense"
                   />
                 </div>
-                <div className="o-consultas-btn">
+                <div className="o-consultas-btnxn">
                   <div className="o-btnConsultas">
                     <BlueButton onClick={this.apiSearch}>Filtrar</BlueButton>
                   </div>

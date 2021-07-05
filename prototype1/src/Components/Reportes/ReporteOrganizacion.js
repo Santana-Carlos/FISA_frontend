@@ -17,6 +17,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  TablePagination,
   Fade,
   CircularProgress,
 } from "@material-ui/core";
@@ -69,8 +70,10 @@ class ReporteOrganizacion extends Component {
       cat_org_api: [],
       loading: true,
       searched: false,
+      currentPage: 0,
+      rowsPerPage: 25,
       box_spacing: window.innerHeight > 900 ? "0.6rem" : "0.2rem",
-      box_size: window.innerHeight > 900 ? "36rem" : "20rem",
+      box_size: window.innerHeight > 900 ? "34rem" : "18rem",
       winInterval: "",
     };
 
@@ -80,7 +83,7 @@ class ReporteOrganizacion extends Component {
   resizeBox = () => {
     this.setState({
       box_spacing: window.innerHeight > 900 ? "0.6rem" : "0.2rem",
-      box_size: window.innerHeight > 900 ? "36rem" : "20rem",
+      box_size: window.innerHeight > 900 ? "34rem" : "18rem",
     });
   };
 
@@ -263,7 +266,7 @@ class ReporteOrganizacion extends Component {
   apiReportGen = () => {
     this.setState({ loading: true });
     fetch(process.env.REACT_APP_API_URL + "Organizacion/RepGen", {
-      method: "GET",
+      method: "POST",
       headers: {
         Authorization: "Bearer " + this.props.token,
       },
@@ -391,6 +394,9 @@ class ReporteOrganizacion extends Component {
   render() {
     let BOX_SPACING = this.state.box_spacing;
     let BOX_SIZE = this.state.box_size;
+    const currentPage = this.state.currentPage;
+    const rowsPerPage = this.state.rowsPerPage;
+
     return (
       <div className="o-cardContent">
         <div className="o-contentTittle">
@@ -535,7 +541,7 @@ class ReporteOrganizacion extends Component {
               <FormControl
                 style={{
                   width: "20%",
-                  marginTop: "0.8rem",
+                  marginTop: "0",
                   marginLeft: "auto",
                   marginRight: "0.6rem",
                 }}
@@ -575,7 +581,7 @@ class ReporteOrganizacion extends Component {
           </div>
           <TableContainer
             className="o-tableBase-consultas"
-            style={{ maxHeight: BOX_SIZE }}
+            style={{ display: "inline", maxHeight: BOX_SIZE }}
           >
             <Table stickyHeader size="small">
               <TableHead>
@@ -588,25 +594,34 @@ class ReporteOrganizacion extends Component {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {this.state.orgs.map((obj, i) => (
-                  <TableRow key={i} hover={true}>
-                    <StyledTableCell size="small">{obj.nombre}</StyledTableCell>
-                    <StyledTableCell size="small">
-                      {obj.tipo_documento_organizacion +
-                        " " +
-                        obj.numero_documento}
-                    </StyledTableCell>
-                    <StyledTableCell size="small">
-                      {obj.razon_social === null ? emptyCell : obj.razon_social}
-                    </StyledTableCell>
-                    <StyledTableCell size="small">
-                      {obj.categoria}
-                    </StyledTableCell>
-                    <StyledTableCell size="small">
-                      {obj.subsector === null ? emptyCell : obj.subsector}
-                    </StyledTableCell>
-                  </TableRow>
-                ))}
+                {this.state.orgs
+                  .slice(
+                    currentPage * rowsPerPage,
+                    currentPage * rowsPerPage + rowsPerPage
+                  )
+                  .map((obj, i) => (
+                    <TableRow key={i} hover={true}>
+                      <StyledTableCell size="small">
+                        {obj.nombre}
+                      </StyledTableCell>
+                      <StyledTableCell size="small">
+                        {obj.tipo_documento_organizacion +
+                          " " +
+                          obj.numero_documento}
+                      </StyledTableCell>
+                      <StyledTableCell size="small">
+                        {obj.razon_social === null
+                          ? emptyCell
+                          : obj.razon_social}
+                      </StyledTableCell>
+                      <StyledTableCell size="small">
+                        {obj.categoria}
+                      </StyledTableCell>
+                      <StyledTableCell size="small">
+                        {obj.subsector === null ? emptyCell : obj.subsector}
+                      </StyledTableCell>
+                    </TableRow>
+                  ))}
                 {this.state.orgs[0] === undefined ? (
                   <TableRow>
                     <StyledTableCell>...</StyledTableCell>
@@ -615,6 +630,30 @@ class ReporteOrganizacion extends Component {
               </TableBody>
             </Table>
           </TableContainer>
+          <TablePagination
+            component={"div"}
+            style={{
+              margin: "0 0 0 auto",
+            }}
+            rowsPerPageOptions={[15, 25, 45]}
+            colSpan={9}
+            count={this.state.orgs.length}
+            rowsPerPage={rowsPerPage}
+            page={currentPage}
+            onChangePage={(e, page) => this.setState({ currentPage: page })}
+            onChangeRowsPerPage={(e) =>
+              this.setState({
+                currentPage: 0,
+                rowsPerPage: parseInt(e.target.value, 10),
+              })
+            }
+            labelRowsPerPage="Filas por página"
+            nextIconButtonText="Siguiente página"
+            backIconButtonText="Página anterior"
+            labelDisplayedRows={({ from, to, count }) =>
+              `${from} - ${to} de ${count !== -1 ? count : `más que ${to}`}`
+            }
+          />
         </div>
 
         <Dialog open={this.state.createS} maxWidth={false}>

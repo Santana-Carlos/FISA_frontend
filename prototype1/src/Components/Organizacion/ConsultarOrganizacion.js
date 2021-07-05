@@ -15,6 +15,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  TablePagination,
   FormControlLabel,
   Checkbox,
   Fade,
@@ -31,6 +32,8 @@ import {
   Delete as IconDelete,
   Edit as IconEdit,
   Refresh as IconRefresh,
+  Fullscreen as IconFull,
+  FullscreenExit as IconExit,
 } from "@material-ui/icons";
 import { Switch, Route } from "react-router-dom";
 import OrganizacionMenu from "./OrganizacionMenu";
@@ -64,8 +67,12 @@ class ConsultarOrganizacion extends Component {
       delcheck: false,
       delcheckOpen: false,
       loading: true,
+      xpantOpen: false,
+      currentPage: 0,
+      rowsPerPage: 25,
       box_spacing: window.innerHeight > 900 ? "0.6rem" : "0.2rem",
-      box_size: window.innerHeight > 900 ? "36rem" : "20rem",
+      box_size: window.innerHeight > 900 ? "38rem" : "22rem",
+      box_size_x: window.innerHeight > 900 ? "48rem" : "29rem",
       box_spacing_tiny: window.innerHeight > 900 ? "0.8rem" : "0rem",
       subtitle_spacing: window.innerHeight > 900 ? "2.1rem" : "1.7rem",
       box_size_tiny: window.innerHeight > 900 ? "24rem" : "13rem",
@@ -79,7 +86,8 @@ class ConsultarOrganizacion extends Component {
   resizeBox = () => {
     this.setState({
       box_spacing: window.innerHeight > 900 ? "0.6rem" : "0.2rem",
-      box_size: window.innerHeight > 900 ? "36rem" : "20rem",
+      box_size: window.innerHeight > 900 ? "38rem" : "22rem",
+      box_size_x: window.innerHeight > 900 ? "48rem" : "29rem",
       box_spacing_tiny: window.innerHeight > 900 ? "0.8rem" : "0rem",
       subtitle_spacing: window.innerHeight > 900 ? "2.1rem" : "1.7rem",
       box_size_tiny: window.innerHeight > 900 ? "24rem" : "13rem",
@@ -105,7 +113,7 @@ class ConsultarOrganizacion extends Component {
         });
       })
       .catch((error) => {});
-    this.callAPi();
+    window.setTimeout(this.callAPi, 500);
     this.setState({
       winInterval: window.setInterval(this.resizeBox, 1000),
     });
@@ -314,6 +322,10 @@ class ConsultarOrganizacion extends Component {
   render() {
     let BOX_SPACING = this.state.box_spacing;
     let BOX_SIZE = this.state.box_size;
+    const BOX_SIZE_X = this.state.box_size_x;
+    const currentPage = this.state.currentPage;
+    const rowsPerPage = this.state.rowsPerPage;
+
     return (
       <Switch>
         <Route exact path="/consultar_organizacion">
@@ -341,206 +353,247 @@ class ConsultarOrganizacion extends Component {
                 </Fade>
               </div>
             </div>
-            <div className="o-contentForm-big-consultas">
-              <div className="o-consultas-containerInit">
-                <div className="o-consultas">
-                  <div style={{ marginBottom: BOX_SPACING }}>
-                    <div className="o-dobleInput">
-                      <FormControl
-                        variant="outlined"
-                        margin="dense"
-                        className="o-selectShort"
-                        style={{ width: "7rem" }}
-                      >
-                        <InputLabel>ID</InputLabel>
-                        <Select
-                          value={this.state.tipoid_org || ""}
-                          onChange={this.handleChange}
-                          label="ID"
-                          name="input_tipoid_org"
-                        >
-                          <MenuItem value="">Ninguno</MenuItem>
-                          {this.state.tipoid_org_api.map((obj, i) => {
-                            return (
-                              <MenuItem key={i} value={obj.id}>
-                                {obj.nombre}
-                              </MenuItem>
-                            );
-                          })}
-                        </Select>
-                      </FormControl>
-                      <div
-                        className="o-inputShort"
-                        style={{ marginLeft: "0.5rem" }}
-                      >
-                        <TextField
-                          label="Número"
+            {this.state.xpantOpen ? (
+              "Tabla extendida abierta"
+            ) : (
+              <div className="o-contentForm-big-consultas">
+                <div
+                  className="o-consultas-containerInit"
+                  style={{ marginBottom: "0.7rem" }}
+                >
+                  <div className="o-consultas">
+                    <div style={{ marginBottom: BOX_SPACING }}>
+                      <div className="o-dobleInput">
+                        <FormControl
                           variant="outlined"
-                          value={this.state.nid_org || ""}
-                          name="input_nid_org"
-                          onChange={this.handleChange}
-                          className="o-space"
                           margin="dense"
-                        />
+                          className="o-selectShort"
+                          style={{ width: "7rem" }}
+                        >
+                          <InputLabel>ID</InputLabel>
+                          <Select
+                            value={this.state.tipoid_org || ""}
+                            onChange={this.handleChange}
+                            label="ID"
+                            name="input_tipoid_org"
+                          >
+                            <MenuItem value="">Ninguno</MenuItem>
+                            {this.state.tipoid_org_api.map((obj, i) => {
+                              return (
+                                <MenuItem key={i} value={obj.id}>
+                                  {obj.nombre}
+                                </MenuItem>
+                              );
+                            })}
+                          </Select>
+                        </FormControl>
+                        <div
+                          className="o-inputShort"
+                          style={{ marginLeft: "0.5rem" }}
+                        >
+                          <TextField
+                            label="Número"
+                            variant="outlined"
+                            value={this.state.nid_org || ""}
+                            name="input_nid_org"
+                            onChange={this.handleChange}
+                            className="o-space"
+                            margin="dense"
+                          />
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-                <div className="o-consultas">
-                  <TextField
-                    label="Nombre comercial"
+                  <div className="o-consultas">
+                    <TextField
+                      label="Nombre comercial"
+                      variant="outlined"
+                      name="input_nomcom_org"
+                      value={this.state.nomcom_org || ""}
+                      onChange={this.handleChange}
+                      className="o-space"
+                      margin="dense"
+                    />
+                  </div>
+                  <FormControl
+                    className="o-consultas"
+                    style={{ margin: "0.8rem 1rem 0 0" }}
                     variant="outlined"
-                    name="input_nomcom_org"
-                    value={this.state.nomcom_org || ""}
-                    onChange={this.handleChange}
-                    className="o-space"
                     margin="dense"
-                  />
-                </div>
-                <div className="o-consultas">
-                  <TextField
-                    label="Razón social"
-                    variant="outlined"
-                    name="input_razsoc_org"
-                    value={this.state.razsoc_org || ""}
-                    onChange={this.handleChange}
-                    className="o-space"
-                    margin="dense"
-                  />
-                </div>
-                <FormControl
-                  className="o-consultas"
-                  style={{ margin: "0.8rem 0 0" }}
-                  variant="outlined"
-                  margin="dense"
-                >
-                  <InputLabel>Categoría</InputLabel>
-                  <Select
-                    multiple
-                    label="Categoría"
-                    name="input_cat_org"
-                    className="o-space"
-                    value={this.state.cat_org || []}
-                    onChange={this.handleChange}
-                    MenuProps={{
-                      getContentAnchorEl: () => null,
-                    }}
-                    renderValue={(selected) =>
-                      selected.map((value) => value.nombre + ", ")
-                    }
-                    style={{ marginBottom: BOX_SPACING }}
                   >
-                    {this.state.cat_org_api.map((obj, i) => (
-                      <MenuItem key={i} value={obj}>
-                        <Checkbox
-                          checked={
-                            this.state.cat_org.findIndex(
-                              (x) => x.id === obj.id
-                            ) > -1
-                          }
-                        />
-                        <ListItemText primary={obj.nombre} />
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </div>
-              <div className="o-consultas-container">
-                <div className="o-consultas-btn">
-                  <div className="o-btnConsultas">
-                    <BlueButton onClick={this.apiSearch}>Buscar</BlueButton>
-                  </div>
-                  <div className="o-btnConsultas">
-                    <RedButton onClick={this.clearFunc}>Limpiar</RedButton>
-                  </div>
-                  <div className="o-btnConsultas" style={{ width: "4rem" }}>
-                    <BlueButton onClick={this.apiRefresh}>
-                      <IconRefresh size="small" />
-                    </BlueButton>
+                    <InputLabel>Categoría</InputLabel>
+                    <Select
+                      multiple
+                      label="Categoría"
+                      name="input_cat_org"
+                      className="o-space"
+                      value={this.state.cat_org || []}
+                      onChange={this.handleChange}
+                      MenuProps={{
+                        getContentAnchorEl: () => null,
+                      }}
+                      renderValue={(selected) =>
+                        selected.map((value) => value.nombre + ", ")
+                      }
+                      style={{ marginBottom: BOX_SPACING }}
+                    >
+                      {this.state.cat_org_api.map((obj, i) => (
+                        <MenuItem key={i} value={obj}>
+                          <Checkbox
+                            checked={
+                              this.state.cat_org.findIndex(
+                                (x) => x.id === obj.id
+                              ) > -1
+                            }
+                          />
+                          <ListItemText primary={obj.nombre} />
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                  <div className="o-consultas-btnxn">
+                    <div className="o-btnConsultas">
+                      <BlueButton onClick={this.apiSearch}>Buscar</BlueButton>
+                    </div>
+                    <div className="o-btnConsultas">
+                      <RedButton onClick={this.clearFunc}>Limpiar</RedButton>
+                    </div>
+                    <div className="o-btnConsultas" style={{ width: "4rem" }}>
+                      <BlueButton onClick={this.apiRefresh}>
+                        <IconRefresh size="small" />
+                      </BlueButton>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <TableContainer
-                className="o-tableBase-consultas"
-                style={{ maxHeight: BOX_SIZE }}
-              >
-                <Table stickyHeader size="small">
-                  <TableHead>
-                    <TableRow>
-                      <StyledTableCell>Nombre</StyledTableCell>
-                      <StyledTableCell>Identificación</StyledTableCell>
-                      <StyledTableCell>Razón social</StyledTableCell>
-                      <StyledTableCell>Categoría</StyledTableCell>
-                      <StyledTableCell>Subsector</StyledTableCell>
-                      <StyledTableCell></StyledTableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {this.state.orgs.map((obj, i) => (
-                      <TableRow key={i} hover={true}>
-                        <StyledTableCell size="small">
-                          {obj.nombre}
-                        </StyledTableCell>
-                        <StyledTableCell size="small">
-                          {obj.tipo_documento_organizacion +
-                            " " +
-                            obj.numero_documento}
-                        </StyledTableCell>
-                        <StyledTableCell size="small">
-                          {obj.razon_social === null
-                            ? emptyCell
-                            : obj.razon_social}
-                        </StyledTableCell>
-                        <StyledTableCell size="small">
-                          {obj.categoria}
-                        </StyledTableCell>
-                        <StyledTableCell size="small">
-                          {obj.subsector === null ? emptyCell : obj.subsector}
-                        </StyledTableCell>
-                        <StyledTableCell size="small" align="right">
-                          <div className="o-row-btnIcon">
-                            <IconButton
-                              size="small"
-                              style={{ color: "#47B14C" }}
-                              onClick={() =>
-                                this.setState(
-                                  { temp_id_org: obj.id },
-                                  this.editOrg
-                                )
-                              }
-                            >
-                              <IconEdit />
-                            </IconButton>
-                            <IconButton
-                              size="small"
-                              color="secondary"
-                              onClick={() =>
-                                this.setState(
-                                  { temp_id_org: obj.id },
-                                  this.handleClickOpenDel
-                                )
-                              }
-                            >
-                              <IconDelete />
-                            </IconButton>
-                          </div>
-                        </StyledTableCell>
-                      </TableRow>
-                    ))}
-                    {this.state.orgs[0] === undefined ? (
+                <TableContainer
+                  className="o-tableBase-consultas"
+                  style={{ display: "inline", maxHeight: BOX_SIZE }}
+                >
+                  <Table stickyHeader size="small">
+                    <TableHead>
                       <TableRow>
-                        <StyledTableCell>...</StyledTableCell>
-                        <StyledTableCell></StyledTableCell>
-                        <StyledTableCell></StyledTableCell>
-                        <StyledTableCell></StyledTableCell>
-                        <StyledTableCell></StyledTableCell>
-                        <StyledTableCell></StyledTableCell>
+                        <StyledTableCell>Nombre</StyledTableCell>
+                        <StyledTableCell>Identificación</StyledTableCell>
+                        <StyledTableCell>Razón social</StyledTableCell>
+                        <StyledTableCell>Categoría</StyledTableCell>
+                        <StyledTableCell>Subsector</StyledTableCell>
+                        <StyledTableCell align="right">
+                          <IconButton
+                            size="small"
+                            style={{ color: "#fff", marginRight: 0 }}
+                            onClick={() =>
+                              this.setState({
+                                xpantOpen: true,
+                              })
+                            }
+                          >
+                            <IconFull />
+                          </IconButton>
+                        </StyledTableCell>
                       </TableRow>
-                    ) : null}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            </div>
+                    </TableHead>
+                    <TableBody>
+                      {this.state.orgs
+                        .slice(
+                          currentPage * rowsPerPage,
+                          currentPage * rowsPerPage + rowsPerPage
+                        )
+                        .map((obj, i) => (
+                          <TableRow key={i} hover={true}>
+                            <StyledTableCell size="small">
+                              {obj.nombre}
+                            </StyledTableCell>
+                            <StyledTableCell size="small">
+                              {obj.tipo_documento_organizacion +
+                                " " +
+                                obj.numero_documento}
+                            </StyledTableCell>
+                            <StyledTableCell size="small">
+                              {obj.razon_social === null
+                                ? emptyCell
+                                : obj.razon_social}
+                            </StyledTableCell>
+                            <StyledTableCell size="small">
+                              {obj.categoria}
+                            </StyledTableCell>
+                            <StyledTableCell size="small">
+                              {obj.subsector === null
+                                ? emptyCell
+                                : obj.subsector}
+                            </StyledTableCell>
+                            <StyledTableCell size="small" align="right">
+                              <div className="o-row-btnIcon">
+                                <IconButton
+                                  size="small"
+                                  style={{ color: "#47B14C" }}
+                                  onClick={() =>
+                                    this.setState(
+                                      { temp_id_org: obj.id },
+                                      this.editOrg
+                                    )
+                                  }
+                                >
+                                  <IconEdit />
+                                </IconButton>
+                                <IconButton
+                                  size="small"
+                                  color="secondary"
+                                  onClick={() =>
+                                    this.setState(
+                                      { temp_id_org: obj.id },
+                                      this.handleClickOpenDel
+                                    )
+                                  }
+                                >
+                                  <IconDelete />
+                                </IconButton>
+                              </div>
+                            </StyledTableCell>
+                          </TableRow>
+                        ))}
+                      {this.state.orgs[0] === undefined ? (
+                        <TableRow>
+                          <StyledTableCell>...</StyledTableCell>
+                          <StyledTableCell></StyledTableCell>
+                          <StyledTableCell></StyledTableCell>
+                          <StyledTableCell></StyledTableCell>
+                          <StyledTableCell></StyledTableCell>
+                          <StyledTableCell></StyledTableCell>
+                        </TableRow>
+                      ) : null}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+                <TablePagination
+                  component={"div"}
+                  style={{
+                    margin: "0 0 0 auto",
+                  }}
+                  rowsPerPageOptions={[15, 25, 45]}
+                  colSpan={9}
+                  count={this.state.orgs.length}
+                  rowsPerPage={rowsPerPage}
+                  page={currentPage}
+                  onChangePage={(e, page) =>
+                    this.setState({ currentPage: page })
+                  }
+                  onChangeRowsPerPage={(e) =>
+                    this.setState({
+                      currentPage: 0,
+                      rowsPerPage: parseInt(e.target.value, 10),
+                    })
+                  }
+                  labelRowsPerPage="Filas por página"
+                  nextIconButtonText="Siguiente página"
+                  backIconButtonText="Página anterior"
+                  labelDisplayedRows={({ from, to, count }) =>
+                    `${from} - ${to} de ${
+                      count !== -1 ? count : `más que ${to}`
+                    }`
+                  }
+                />
+              </div>
+            )}
             <Dialog
               disableBackdropClick
               disableEscapeKeyDown
@@ -632,6 +685,306 @@ class ConsultarOrganizacion extends Component {
                   </GreenButton>
                 </div>
               </DialogActions>
+            </Dialog>
+
+            <Dialog
+              open={this.state.xpantOpen}
+              onClose={() => this.setState({ xpantOpen: false })}
+              PaperProps={{ style: { height: "100%" } }}
+              fullWidth
+              maxWidth="xl"
+              maxHeight="xl"
+            >
+              <DialogContent
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "center",
+                }}
+              >
+                <div
+                  style={{
+                    width: "76%",
+                    height: "100%",
+                    marginRight: "1.6rem",
+                  }}
+                >
+                  <div className="o-contentForm-big-consultas">
+                    <TableContainer
+                      className="o-tableBase-consultas"
+                      style={{
+                        display: "inline",
+                        maxHeight: BOX_SIZE_X,
+                      }}
+                    >
+                      <Table stickyHeader size="small">
+                        <TableHead>
+                          <TableRow>
+                            <StyledTableCell>Nombre</StyledTableCell>
+                            <StyledTableCell>Identificación</StyledTableCell>
+                            <StyledTableCell>Razón social</StyledTableCell>
+                            <StyledTableCell>Categoría</StyledTableCell>
+                            <StyledTableCell>Subsector</StyledTableCell>
+                            <StyledTableCell align="right">
+                              <IconButton
+                                size="small"
+                                style={{ color: "#fff", marginRight: 0 }}
+                                onClick={() =>
+                                  this.setState({
+                                    xpantOpen: false,
+                                  })
+                                }
+                              >
+                                <IconExit />
+                              </IconButton>
+                            </StyledTableCell>
+                          </TableRow>
+                        </TableHead>
+                        <TableBody>
+                          {this.state.orgs
+                            .slice(
+                              currentPage * rowsPerPage,
+                              currentPage * rowsPerPage + rowsPerPage
+                            )
+                            .map((obj, i) => (
+                              <TableRow key={i} hover={true}>
+                                <StyledTableCell size="small">
+                                  {obj.nombre}
+                                </StyledTableCell>
+                                <StyledTableCell size="small">
+                                  {obj.tipo_documento_organizacion +
+                                    " " +
+                                    obj.numero_documento}
+                                </StyledTableCell>
+                                <StyledTableCell size="small">
+                                  {obj.razon_social === null
+                                    ? emptyCell
+                                    : obj.razon_social}
+                                </StyledTableCell>
+                                <StyledTableCell size="small">
+                                  {obj.categoria}
+                                </StyledTableCell>
+                                <StyledTableCell size="small">
+                                  {obj.subsector === null
+                                    ? emptyCell
+                                    : obj.subsector}
+                                </StyledTableCell>
+                                <StyledTableCell size="small" align="right">
+                                  <div className="o-row-btnIcon">
+                                    <IconButton
+                                      size="small"
+                                      style={{ color: "#47B14C" }}
+                                      onClick={() =>
+                                        this.setState(
+                                          { temp_id_org: obj.id },
+                                          this.editOrg
+                                        )
+                                      }
+                                    >
+                                      <IconEdit />
+                                    </IconButton>
+                                    <IconButton
+                                      size="small"
+                                      color="secondary"
+                                      onClick={() =>
+                                        this.setState(
+                                          { temp_id_org: obj.id },
+                                          this.handleClickOpenDel
+                                        )
+                                      }
+                                    >
+                                      <IconDelete />
+                                    </IconButton>
+                                  </div>
+                                </StyledTableCell>
+                              </TableRow>
+                            ))}
+                          {this.state.orgs[0] === undefined ? (
+                            <TableRow>
+                              <StyledTableCell>...</StyledTableCell>
+                              <StyledTableCell></StyledTableCell>
+                              <StyledTableCell></StyledTableCell>
+                              <StyledTableCell></StyledTableCell>
+                              <StyledTableCell></StyledTableCell>
+                              <StyledTableCell></StyledTableCell>
+                            </TableRow>
+                          ) : null}
+                        </TableBody>
+                      </Table>
+                    </TableContainer>
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        width: "100%",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Fade
+                        in={this.state.loading}
+                        style={{
+                          transitionDelay: "200ms",
+                          marginRight: "1rem",
+                        }}
+                        unmountOnExit
+                      >
+                        <div style={{ fontSize: "1rem" }}>
+                          {"Cargando... "}
+                          <CircularProgress size={"1rem"} thickness={6} />
+                        </div>
+                      </Fade>
+                      <TablePagination
+                        component={"div"}
+                        style={{
+                          margin: "0 0 0 auto",
+                        }}
+                        rowsPerPageOptions={[15, 25, 45]}
+                        colSpan={9}
+                        count={this.state.orgs.length}
+                        rowsPerPage={rowsPerPage}
+                        page={currentPage}
+                        onChangePage={(e, page) =>
+                          this.setState({ currentPage: page })
+                        }
+                        onChangeRowsPerPage={(e) =>
+                          this.setState({
+                            currentPage: 0,
+                            rowsPerPage: parseInt(e.target.value, 10),
+                          })
+                        }
+                        labelRowsPerPage="Filas por página"
+                        nextIconButtonText="Siguiente página"
+                        backIconButtonText="Página anterior"
+                        labelDisplayedRows={({ from, to, count }) =>
+                          `${from} - ${to} de ${
+                            count !== -1 ? count : `más que ${to}`
+                          }`
+                        }
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    width: "23%",
+                    height: "100%",
+                  }}
+                >
+                  <div className="o-consultasx">
+                    <div className="o-dobleInput">
+                      <FormControl
+                        variant="outlined"
+                        margin="dense"
+                        className="o-selectShort"
+                        style={{ width: "7rem" }}
+                      >
+                        <InputLabel>ID</InputLabel>
+                        <Select
+                          value={this.state.tipoid_org || ""}
+                          onChange={this.handleChange}
+                          label="ID"
+                          name="input_tipoid_org"
+                        >
+                          <MenuItem value="">Ninguno</MenuItem>
+                          {this.state.tipoid_org_api.map((obj, i) => {
+                            return (
+                              <MenuItem key={i} value={obj.id}>
+                                {obj.nombre}
+                              </MenuItem>
+                            );
+                          })}
+                        </Select>
+                      </FormControl>
+                      <div
+                        className="o-inputShort"
+                        style={{ marginLeft: "0.5rem" }}
+                      >
+                        <TextField
+                          label="Número"
+                          variant="outlined"
+                          value={this.state.nid_org || ""}
+                          name="input_nid_org"
+                          onChange={this.handleChange}
+                          className="o-space"
+                          margin="dense"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="o-consultasx">
+                    <TextField
+                      label="Nombre comercial"
+                      variant="outlined"
+                      name="input_nomcom_org"
+                      value={this.state.nomcom_org || ""}
+                      onChange={this.handleChange}
+                      className="o-space"
+                      margin="dense"
+                    />
+                  </div>
+                  <div className="o-consultasx">
+                    <TextField
+                      label="Razón social"
+                      variant="outlined"
+                      name="input_razsoc_org"
+                      value={this.state.razsoc_org || ""}
+                      onChange={this.handleChange}
+                      className="o-space"
+                      margin="dense"
+                    />
+                  </div>
+                  <FormControl
+                    className="o-consultasx"
+                    variant="outlined"
+                    margin="dense"
+                  >
+                    <InputLabel>Categoría</InputLabel>
+                    <Select
+                      multiple
+                      label="Categoría"
+                      name="input_cat_org"
+                      className="o-space"
+                      value={this.state.cat_org || []}
+                      onChange={this.handleChange}
+                      MenuProps={{
+                        getContentAnchorEl: () => null,
+                      }}
+                      renderValue={(selected) =>
+                        selected.map((value) => value.nombre + ", ")
+                      }
+                    >
+                      {this.state.cat_org_api.map((obj, i) => (
+                        <MenuItem key={i} value={obj}>
+                          <Checkbox
+                            checked={
+                              this.state.cat_org.findIndex(
+                                (x) => x.id === obj.id
+                              ) > -1
+                            }
+                          />
+                          <ListItemText primary={obj.nombre} />
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+
+                  <div className="o-consultas-btnx">
+                    <div className="o-btnConsultas">
+                      <BlueButton onClick={this.apiSearch}>Buscar</BlueButton>
+                    </div>
+                    <div className="o-btnConsultas">
+                      <RedButton onClick={this.clearFunc}>Limpiar</RedButton>
+                    </div>
+                    <div className="o-btnConsultas" style={{ width: "4rem" }}>
+                      <BlueButton onClick={this.apiRefresh}>
+                        <IconRefresh size="small" />
+                      </BlueButton>
+                    </div>
+                  </div>
+                </div>
+              </DialogContent>
             </Dialog>
           </div>
         </Route>
