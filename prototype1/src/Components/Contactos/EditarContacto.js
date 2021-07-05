@@ -87,7 +87,7 @@ class EditarContacto extends Component {
       return null;
     }
     fetch(process.env.REACT_APP_API_URL + "Contacto/Data", {
-      method: "GET",
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + this.props.token,

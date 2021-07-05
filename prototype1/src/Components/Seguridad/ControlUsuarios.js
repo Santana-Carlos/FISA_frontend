@@ -90,7 +90,7 @@ class ControlUsuarios extends Component {
 
   componentDidMount() {
     fetch(process.env.REACT_APP_API_URL + "User/Data", {
-      method: "GET",
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + this.props.token,
