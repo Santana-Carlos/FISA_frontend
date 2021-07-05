@@ -387,8 +387,10 @@
   flex-direction: column;
   text-align: start;
   font-size: large;
-  height: 4.5rem;
+  height: 4.2rem;
   margin: 0.7rem 0 0.2rem;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 
 .o-textSub {
@@ -412,8 +414,6 @@
   margin: 0.3rem 2rem 0 0;
   width: auto;
   max-width: 23%;
-  text-overflow: ellipsis;
-  overflow: hidden;
 }
 
 .o-btnMenu-container {
