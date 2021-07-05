@@ -19,6 +19,7 @@ import {
   Checkbox,
   Fade,
   CircularProgress,
+  ButtonBase,
 } from "@material-ui/core";
 import {
   BlueButton,
@@ -33,6 +34,9 @@ import {
   Refresh as IconRefresh,
   Fullscreen as IconFull,
   FullscreenExit as IconExit,
+  FilterList as IconFilter,
+  TextRotationAngledown as IconDes,
+  TextRotationAngleup as IconAsc,
 } from "@material-ui/icons";
 import { Switch, Route } from "react-router-dom";
 import EditarContacto from "./EditarContacto";
@@ -77,6 +81,8 @@ class ConsultarContacto extends Component {
       xpantOpen: false,
       currentPage: 0,
       rowsPerPage: 25,
+      currentFilter: "",
+      contactsSort: [],
       box_spacing: window.innerHeight > 900 ? "0.6rem" : "0.2rem",
       box_size: window.innerHeight > 900 ? "38rem" : "22rem",
       box_spacing_tiny: window.innerHeight > 900 ? "0.8rem" : "0rem",
@@ -155,6 +161,9 @@ class ConsultarContacto extends Component {
         if (data.success) {
           this.setState({
             contacts: data.contactos,
+            contactsSort: data.contactos,
+            currentPage: 0,
+            currentFilter: "",
             loading: false,
           });
         }
@@ -247,7 +256,10 @@ class ConsultarContacto extends Component {
             this.setState({
               loading: false,
               contacts: data.contactos,
+              contactsSort: data.contactos,
               reqText: false,
+              currentPage: 0,
+              currentFilter: "",
             });
           }
         })
@@ -255,7 +267,13 @@ class ConsultarContacto extends Component {
           //console.log(error);
         });
     } else {
-      this.setState({ loading: false, reqText: true, createS: true });
+      this.setState({
+        loading: false,
+        reqText: true,
+        currentPage: 0,
+        currentFilter: "",
+        createS: true,
+      });
       this.callAPi();
     }
   };
@@ -358,12 +376,87 @@ class ConsultarContacto extends Component {
     }
   }
 
+  sortByOrg = () => {
+    const temp = this.state.contacts;
+
+    if (this.state.currentFilter !== "orgAsc") {
+      this.setState({
+        contactsSort: temp.sort(function (a, b) {
+          const textA =
+            a.organizacion === null ? "~" : a.organizacion.toUpperCase();
+          const textB =
+            b.organizacion === null ? "~" : b.organizacion.toUpperCase();
+          return textA < textB ? -1 : textA > textB ? 1 : 0;
+        }),
+        currentFilter: "orgAsc",
+      });
+    } else {
+      this.setState({
+        contactsSort: temp.sort(function (a, b) {
+          const textA =
+            a.organizacion === null ? "~" : a.organizacion.toUpperCase();
+          const textB =
+            b.organizacion === null ? "~" : b.organizacion.toUpperCase();
+          return textA > textB ? -1 : textA < textB ? 1 : 0;
+        }),
+        currentFilter: "orgDes",
+      });
+    }
+  };
+
+  sortByName = () => {
+    const temp = this.state.contacts;
+    if (this.state.currentFilter !== "namAsc") {
+      this.setState({
+        contactsSort: temp.sort(function (a, b) {
+          const textA = a.nombres === null ? "~" : a.nombres.toUpperCase();
+          const textB = b.nombres === null ? "~" : b.nombres.toUpperCase();
+          return textA < textB ? -1 : textA > textB ? 1 : 0;
+        }),
+        currentFilter: "namAsc",
+      });
+    } else {
+      this.setState({
+        contactsSort: temp.sort(function (a, b) {
+          const textA = a.nombres === null ? "~" : a.nombres.toUpperCase();
+          const textB = b.nombres === null ? "~" : b.nombres.toUpperCase();
+          return textA > textB ? -1 : textA < textB ? 1 : 0;
+        }),
+        currentFilter: "namDes",
+      });
+    }
+  };
+
+  sortByCar = () => {
+    const temp = this.state.contacts;
+    if (this.state.currentFilter !== "carAsc") {
+      this.setState({
+        contactsSort: temp.sort(function (a, b) {
+          const textA = a.cargo === null ? "~" : a.cargo.toUpperCase();
+          const textB = b.cargo === null ? "~" : b.cargo.toUpperCase();
+          return textA < textB ? -1 : textA > textB ? 1 : 0;
+        }),
+        currentFilter: "carAsc",
+      });
+    } else {
+      this.setState({
+        contactsSort: temp.sort(function (a, b) {
+          const textA = a.cargo === null ? "~" : a.cargo.toUpperCase();
+          const textB = b.cargo === null ? "~" : b.cargo.toUpperCase();
+          return textA > textB ? -1 : textA < textB ? 1 : 0;
+        }),
+        currentFilter: "carDes",
+      });
+    }
+  };
+
   render() {
     const BOX_SPACING = this.state.box_spacing;
     const BOX_SIZE = this.state.box_size;
     const BOX_SIZE_X = this.state.box_size_x;
     const currentPage = this.state.currentPage;
     const rowsPerPage = this.state.rowsPerPage;
+    const filter = this.state.currentFilter;
     return (
       <Switch>
         <Route exact path="/consultar_contacto">
@@ -485,9 +578,96 @@ class ConsultarContacto extends Component {
                   <Table stickyHeader size="small">
                     <TableHead>
                       <TableRow>
-                        <StyledTableCell>Org.</StyledTableCell>
-                        <StyledTableCell>Nombre</StyledTableCell>
-                        <StyledTableCell>Cargo</StyledTableCell>
+                        <StyledTableCell>
+                          <ButtonBase
+                            style={{
+                              fontSize: "inherit",
+                              fontFamily: "inherit",
+                            }}
+                            onClick={this.sortByOrg}
+                          >
+                            Org.
+                            {filter === "orgAsc" ? (
+                              <IconAsc
+                                style={{
+                                  margin: "0 0 0 0.5rem",
+                                }}
+                              />
+                            ) : filter === "orgDes" ? (
+                              <IconDes
+                                style={{
+                                  margin: "0 0 0 0.5rem",
+                                }}
+                              />
+                            ) : (
+                              <IconFilter
+                                style={{
+                                  margin: "0 0 0 0.5rem",
+                                }}
+                              />
+                            )}
+                          </ButtonBase>
+                        </StyledTableCell>
+                        <StyledTableCell>
+                          <ButtonBase
+                            style={{
+                              fontSize: "inherit",
+                              fontFamily: "inherit",
+                            }}
+                            onClick={this.sortByName}
+                          >
+                            Nombre
+                            {filter === "namAsc" ? (
+                              <IconAsc
+                                style={{
+                                  margin: "0 0 0 0.5rem",
+                                }}
+                              />
+                            ) : filter === "namDes" ? (
+                              <IconDes
+                                style={{
+                                  margin: "0 0 0 0.5rem",
+                                }}
+                              />
+                            ) : (
+                              <IconFilter
+                                style={{
+                                  margin: "0 0 0 0.5rem",
+                                }}
+                              />
+                            )}
+                          </ButtonBase>
+                        </StyledTableCell>
+                        <StyledTableCell>
+                          <ButtonBase
+                            style={{
+                              fontSize: "inherit",
+                              fontFamily: "inherit",
+                            }}
+                            onClick={this.sortByCar}
+                          >
+                            Cargo
+                            {filter === "carAsc" ? (
+                              <IconAsc
+                                style={{
+                                  margin: "0 0 0 0.5rem",
+                                }}
+                              />
+                            ) : filter === "carDes" ? (
+                              <IconDes
+                                style={{
+                                  margin: "0 0 0 0.5rem",
+                                }}
+                              />
+                            ) : (
+                              <IconFilter
+                                style={{
+                                  margin: "0 0 0 0.5rem",
+                                }}
+                              />
+                            )}
+                          </ButtonBase>
+                        </StyledTableCell>
                         <StyledTableCell>Teléfono</StyledTableCell>
                         <StyledTableCell>Ext.</StyledTableCell>
                         <StyledTableCell>Celular</StyledTableCell>
@@ -509,7 +689,7 @@ class ConsultarContacto extends Component {
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {this.state.contacts
+                      {this.state.contactsSort
                         .slice(
                           currentPage * rowsPerPage,
                           currentPage * rowsPerPage + rowsPerPage
@@ -580,7 +760,7 @@ class ConsultarContacto extends Component {
                             </StyledTableCell>
                           </TableRow>
                         ))}
-                      {this.state.contacts[0] === undefined ? (
+                      {this.state.contactsSort[0] === undefined ? (
                         <TableRow>
                           <StyledTableCell>...</StyledTableCell>
                           <StyledTableCell></StyledTableCell>
@@ -703,9 +883,96 @@ class ConsultarContacto extends Component {
                       <Table stickyHeader size="small">
                         <TableHead>
                           <TableRow>
-                            <StyledTableCell>Org.</StyledTableCell>
-                            <StyledTableCell>Nombre</StyledTableCell>
-                            <StyledTableCell>Cargo</StyledTableCell>
+                            <StyledTableCell>
+                              <ButtonBase
+                                style={{
+                                  fontSize: "inherit",
+                                  fontFamily: "inherit",
+                                }}
+                                onClick={this.sortByOrg}
+                              >
+                                Org.
+                                {filter === "orgAsc" ? (
+                                  <IconAsc
+                                    style={{
+                                      margin: "0 0 0 0.5rem",
+                                    }}
+                                  />
+                                ) : filter === "orgDes" ? (
+                                  <IconDes
+                                    style={{
+                                      margin: "0 0 0 0.5rem",
+                                    }}
+                                  />
+                                ) : (
+                                  <IconFilter
+                                    style={{
+                                      margin: "0 0 0 0.5rem",
+                                    }}
+                                  />
+                                )}
+                              </ButtonBase>
+                            </StyledTableCell>
+                            <StyledTableCell>
+                              <ButtonBase
+                                style={{
+                                  fontSize: "inherit",
+                                  fontFamily: "inherit",
+                                }}
+                                onClick={this.sortByName}
+                              >
+                                Nombre
+                                {filter === "namAsc" ? (
+                                  <IconAsc
+                                    style={{
+                                      margin: "0 0 0 0.5rem",
+                                    }}
+                                  />
+                                ) : filter === "namDes" ? (
+                                  <IconDes
+                                    style={{
+                                      margin: "0 0 0 0.5rem",
+                                    }}
+                                  />
+                                ) : (
+                                  <IconFilter
+                                    style={{
+                                      margin: "0 0 0 0.5rem",
+                                    }}
+                                  />
+                                )}
+                              </ButtonBase>
+                            </StyledTableCell>
+                            <StyledTableCell>
+                              <ButtonBase
+                                style={{
+                                  fontSize: "inherit",
+                                  fontFamily: "inherit",
+                                }}
+                                onClick={this.sortByCar}
+                              >
+                                Cargo
+                                {filter === "carAsc" ? (
+                                  <IconAsc
+                                    style={{
+                                      margin: "0 0 0 0.5rem",
+                                    }}
+                                  />
+                                ) : filter === "carDes" ? (
+                                  <IconDes
+                                    style={{
+                                      margin: "0 0 0 0.5rem",
+                                    }}
+                                  />
+                                ) : (
+                                  <IconFilter
+                                    style={{
+                                      margin: "0 0 0 0.5rem",
+                                    }}
+                                  />
+                                )}
+                              </ButtonBase>
+                            </StyledTableCell>
                             <StyledTableCell>Teléfono</StyledTableCell>
                             <StyledTableCell>Ext.</StyledTableCell>
                             <StyledTableCell>Celular</StyledTableCell>

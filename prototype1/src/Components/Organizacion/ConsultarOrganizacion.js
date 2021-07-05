@@ -138,6 +138,7 @@ class ConsultarOrganizacion extends Component {
         if (data.success) {
           this.setState({
             orgs: data.organizaciones,
+            currentPage: 0,
             loading: false,
           });
         }
@@ -199,13 +200,19 @@ class ConsultarOrganizacion extends Component {
             this.setState({
               loading: false,
               orgs: data.organizaciones,
+              currentPage: 0,
               reqText: false,
             });
           }
         })
         .catch((error) => {});
     } else {
-      this.setState({ loading: false, reqText: true, createS: true });
+      this.setState({
+        loading: false,
+        reqText: true,
+        currentPage: 0,
+        createS: true,
+      });
       this.callAPi();
     }
   };
@@ -249,6 +256,7 @@ class ConsultarOrganizacion extends Component {
               this.setState({
                 delOrg: false,
                 delcheck: false,
+                currentPage: 0,
                 temp_id_org: "",
               });
             }

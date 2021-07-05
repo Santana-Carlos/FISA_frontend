@@ -131,6 +131,7 @@ class ReporteOrganizacion extends Component {
           this.setState({
             orgs: data.organizaciones,
             loading: false,
+            currentPage: 0,
             searched: false,
           });
         }
@@ -194,13 +195,19 @@ class ReporteOrganizacion extends Component {
               loading: false,
               searched: true,
               orgs: data.organizaciones,
+              currentPage: 0,
               reqText: false,
             });
           }
         })
         .catch((error) => {});
     } else {
-      this.setState({ loading: false, reqText: true, createS: true });
+      this.setState({
+        loading: false,
+        reqText: true,
+        createS: true,
+        currentPage: 0,
+      });
       this.callAPi();
     }
   };
@@ -316,7 +323,7 @@ class ReporteOrganizacion extends Component {
   apiReportGenFin = () => {
     this.setState({ loading: true });
     fetch(process.env.REACT_APP_API_URL + "InformacionFinanciera/RepGen", {
-      method: "GET",
+      method: "POST",
       headers: {
         Authorization: "Bearer " + this.props.token,
       },
