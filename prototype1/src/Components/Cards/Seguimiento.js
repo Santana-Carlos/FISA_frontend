@@ -8,6 +8,7 @@ import "./Cards.css";
 
 const Seguimiento = () => {
   const token = useSelector((state) => state.token);
+  const rol = useSelector((state) => state.rol);
   return (
     <HashRouter>
       <div className="o-cards">
@@ -20,22 +21,26 @@ const Seguimiento = () => {
             >
               <SideButton size="small">Consultar visitas</SideButton>
             </NavLink>
-            <NavLink
-              className="o-btnSidebar o-btnSidebar-seguimiento"
-              activeClassName="o-btnSidebar o-btnSidebar-seguimientoActive"
-              to="/crear_visitas"
-            >
-              <SideButton>Crear visitas</SideButton>
-            </NavLink>
+            {rol !== "Comercial" ? (
+              <NavLink
+                className="o-btnSidebar o-btnSidebar-seguimiento"
+                activeClassName="o-btnSidebar o-btnSidebar-seguimientoActive"
+                to="/crear_visitas"
+              >
+                <SideButton>Crear visitas</SideButton>
+              </NavLink>
+            ) : null}
           </div>
           <div className="o-cardPlaceholder">
             <Switch>
               <Route path="/consultar_visitas">
-                <ConsultarVisitas token={token} />
+                <ConsultarVisitas token={token} rol={rol} />
               </Route>
-              <Route path="/crear_visitas">
-                <CrearVisitas token={token} />
-              </Route>
+              {rol !== "Comercial" ? (
+                <Route path="/crear_visitas">
+                  <CrearVisitas token={token} />
+                </Route>
+              ) : null}
               <Redirect to="/consultar_visitas" />
             </Switch>
           </div>

@@ -8,6 +8,7 @@ import "./Cards.css";
 
 const Organizacion = () => {
   const token = useSelector((state) => state.token);
+  const rol = useSelector((state) => state.rol);
   return (
     <HashRouter>
       <div className="o-cards">
@@ -20,22 +21,26 @@ const Organizacion = () => {
             >
               <SideButton>Consultar organización</SideButton>
             </NavLink>
-            <NavLink
-              className="o-btnSidebar o-btnSidebar-organizacion"
-              activeClassName="o-btnSidebar o-btnSidebar-organizacionActive"
-              to="/crear_organizacion"
-            >
-              <SideButton>Crear organización</SideButton>
-            </NavLink>
+            {rol !== "Comercial" ? (
+              <NavLink
+                className="o-btnSidebar o-btnSidebar-organizacion"
+                activeClassName="o-btnSidebar o-btnSidebar-organizacionActive"
+                to="/crear_organizacion"
+              >
+                <SideButton>Crear organización</SideButton>
+              </NavLink>
+            ) : null}
           </div>
           <div className="o-cardPlaceholder">
             <Switch>
               <Route path="/consultar_organizacion">
-                <ConsultarOrganizacion token={token} />
+                <ConsultarOrganizacion token={token} rol={rol} />
               </Route>
-              <Route path="/crear_organizacion">
-                <CrearOrganizacion token={token} />
-              </Route>
+              {rol !== "Comercial" ? (
+                <Route path="/crear_organizacion">
+                  <CrearOrganizacion token={token} />
+                </Route>
+              ) : null}
               <Redirect to="/consultar_organizacion" />
             </Switch>
           </div>

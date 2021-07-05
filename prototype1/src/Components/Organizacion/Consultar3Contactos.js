@@ -790,21 +790,23 @@ class Consultar3Contactos extends Component {
                         >
                           <IconEdit />
                         </IconButton>
-                        <IconButton
-                          size="small"
-                          color="secondary"
-                          onClick={() =>
-                            this.setState(
-                              {
-                                temp_id_con: obj.contacto_id,
-                                temp_id_per: obj.persona_id,
-                              },
-                              this.handleClickOpenDel
-                            )
-                          }
-                        >
-                          <IconDelete />
-                        </IconButton>
+                        {this.props.rol !== "Comercial" ? (
+                          <IconButton
+                            size="small"
+                            color="secondary"
+                            onClick={() =>
+                              this.setState(
+                                {
+                                  temp_id_con: obj.contacto_id,
+                                  temp_id_per: obj.persona_id,
+                                },
+                                this.handleClickOpenDel
+                              )
+                            }
+                          >
+                            <IconDelete />
+                          </IconButton>
+                        ) : null}
                       </div>
                     </StyledTableCell>
                   </TableRow>
@@ -824,31 +826,35 @@ class Consultar3Contactos extends Component {
               </TableBody>
             </Table>
           </TableContainer>
-          <div className="o-btnAnadirTable" style={{ width: "10rem" }}>
-            <BlueButton
-              onClick={() => {
-                this.setState({ contExist: true });
-              }}
-            >
-              {"Añadir existente"}
-            </BlueButton>
-          </div>
-          <div className="o-btnAnadirTable" style={{ marginLeft: "1rem" }}>
-            <BlueButton
-              onClick={() =>
-                this.setState(
-                  { temp_id_con: "", temp_id_per: "" },
-                  this.handleClickOpen
-                )
-              }
-            >
-              {"Añadir"}
-              <IconAdd
-                style={{ marginLeft: "0.4rem", marginRight: 0 }}
-                size="small"
-              />
-            </BlueButton>
-          </div>
+          {this.props.rol !== "Comercial" ? (
+            <React.Fragment>
+              <div className="o-btnAnadirTable" style={{ width: "10rem" }}>
+                <BlueButton
+                  onClick={() => {
+                    this.setState({ contExist: true });
+                  }}
+                >
+                  {"Añadir existente"}
+                </BlueButton>
+              </div>
+              <div className="o-btnAnadirTable" style={{ marginLeft: "1rem" }}>
+                <BlueButton
+                  onClick={() =>
+                    this.setState(
+                      { temp_id_con: "", temp_id_per: "" },
+                      this.handleClickOpen
+                    )
+                  }
+                >
+                  {"Añadir"}
+                  <IconAdd
+                    style={{ marginLeft: "0.4rem", marginRight: 0 }}
+                    size="small"
+                  />
+                </BlueButton>
+              </div>
+            </React.Fragment>
+          ) : null}
         </div>
         <div className="o-btnBotNav">
           <div style={{ color: "#FFFFFF" }}>{"Me encontraste!"}</div>
@@ -1253,11 +1259,13 @@ class Consultar3Contactos extends Component {
                   Cancelar
                 </RedButton>
               </div>
-              <div className="o-btnBotNav-btnDiag2">
-                <GreenButton onClick={() => this.handleClose(true)}>
-                  Guardar
-                </GreenButton>
-              </div>
+              {this.props.rol !== "Comercial" ? (
+                <div className="o-btnBotNav-btnDiag2">
+                  <GreenButton onClick={() => this.handleClose(true)}>
+                    Guardar
+                  </GreenButton>
+                </div>
+              ) : null}
             </div>
           </DialogActions>
         </Dialog>

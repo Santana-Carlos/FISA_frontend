@@ -543,18 +543,20 @@ class ConsultarOrganizacion extends Component {
                                 >
                                   <IconEdit />
                                 </IconButton>
-                                <IconButton
-                                  size="small"
-                                  color="secondary"
-                                  onClick={() =>
-                                    this.setState(
-                                      { temp_id_org: obj.id },
-                                      this.handleClickOpenDel
-                                    )
-                                  }
-                                >
-                                  <IconDelete />
-                                </IconButton>
+                                {this.props.rol !== "Comercial" ? (
+                                  <IconButton
+                                    size="small"
+                                    color="secondary"
+                                    onClick={() =>
+                                      this.setState(
+                                        { temp_id_org: obj.id },
+                                        this.handleClickOpenDel
+                                      )
+                                    }
+                                  >
+                                    <IconDelete />
+                                  </IconButton>
+                                ) : null}
                               </div>
                             </StyledTableCell>
                           </TableRow>
@@ -1004,6 +1006,7 @@ class ConsultarOrganizacion extends Component {
             subtitle_spacing={this.state.subtitle_spacing}
             box_size={this.state.box_size_tiny}
             box_size_table={this.state.box_size_table}
+            rol={this.props.rol}
           />
         </Route>
       </Switch>

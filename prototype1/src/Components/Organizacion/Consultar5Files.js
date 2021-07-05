@@ -119,9 +119,10 @@ class Consultar5Files extends Component {
 
   callAPiDownload = () => {
     this.setState({ loading: true });
-    const nameFile = this.state.files[
-      this.state.files.findIndex((x) => x.id === this.state.temp_id_fil)
-    ].nombre;
+    const nameFile =
+      this.state.files[
+        this.state.files.findIndex((x) => x.id === this.state.temp_id_fil)
+      ].nombre;
     const idFile = this.state.temp_id_fil;
     fetch(process.env.REACT_APP_API_URL + "Archivo/" + idFile, {
       method: "GET",
@@ -308,18 +309,20 @@ class Consultar5Files extends Component {
                           >
                             <IconDownload />
                           </IconButton>
-                          <IconButton
-                            size="small"
-                            color="secondary"
-                            onClick={() =>
-                              this.setState(
-                                { temp_id_fil: obj.id },
-                                this.handleClickOpenDel
-                              )
-                            }
-                          >
-                            <IconDelete />
-                          </IconButton>
+                          {this.props.rol !== "Comercial" ? (
+                            <IconButton
+                              size="small"
+                              color="secondary"
+                              onClick={() =>
+                                this.setState(
+                                  { temp_id_fil: obj.id },
+                                  this.handleClickOpenDel
+                                )
+                              }
+                            >
+                              <IconDelete />
+                            </IconButton>
+                          ) : null}
                         </div>
                       </StyledTableCell>
                     </TableRow>
@@ -335,18 +338,20 @@ class Consultar5Files extends Component {
                 </TableBody>
               </Table>
             </TableContainer>
-            <div className="o-btnAnadirTable">
-              <BlueButton variant="contained" component="label">
-                Subir
-                <IconUpload style={{ marginLeft: "0.5rem" }} size="small" />
-                <input
-                  type="file"
-                  name="input_file_fil"
-                  onChange={this.handleChange}
-                  hidden
-                />
-              </BlueButton>
-            </div>
+            {this.props.rol !== "Comercial" ? (
+              <div className="o-btnAnadirTable">
+                <BlueButton variant="contained" component="label">
+                  Subir
+                  <IconUpload style={{ marginLeft: "0.5rem" }} size="small" />
+                  <input
+                    type="file"
+                    name="input_file_fil"
+                    onChange={this.handleChange}
+                    hidden
+                  />
+                </BlueButton>
+              </div>
+            ) : null}
           </div>
         </div>
         <div className="o-btnBotNav">

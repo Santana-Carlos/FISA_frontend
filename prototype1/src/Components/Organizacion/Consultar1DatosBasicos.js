@@ -815,7 +815,9 @@ class Consultar1DatosBasicos extends Component {
         <div className="o-btnBotNav">
           <div className="o-btnBotNavDoble">
             <div className="o-btnBotNav-btn">
-              <GreenButton onClick={this.apiPost}>Guardar</GreenButton>
+              {this.props.rol !== "Comercial" ? (
+                <GreenButton onClick={this.apiPost}>Guardar</GreenButton>
+              ) : null}
             </div>
             <Link
               exact={"true"}

@@ -615,18 +615,20 @@ class ConsultarVisitas extends Component {
                               >
                                 <IconSelect />
                               </IconButton>
-                              <IconButton
-                                size="small"
-                                color="secondary"
-                                onClick={() =>
-                                  this.setState(
-                                    { temp_id_vis: obj.id },
-                                    this.handleClickOpenDel
-                                  )
-                                }
-                              >
-                                <IconDelete />
-                              </IconButton>
+                              {this.props.rol !== "Comercial" ? (
+                                <IconButton
+                                  size="small"
+                                  color="secondary"
+                                  onClick={() =>
+                                    this.setState(
+                                      { temp_id_vis: obj.id },
+                                      this.handleClickOpenDel
+                                    )
+                                  }
+                                >
+                                  <IconDelete />
+                                </IconButton>
+                              ) : null}
                             </div>
                           </StyledTableCell>
                         </TableRow>
@@ -1067,11 +1069,13 @@ class ConsultarVisitas extends Component {
                     Cancelar
                   </RedButton>
                 </div>
-                <div className="o-btnBotNav-btnDiag2">
-                  <GreenButton onClick={() => this.handleClose(true)}>
-                    Guardar
-                  </GreenButton>
-                </div>
+                {this.props.rol !== "Comercial" ? (
+                  <div className="o-btnBotNav-btnDiag2">
+                    <GreenButton onClick={() => this.handleClose(true)}>
+                      Guardar
+                    </GreenButton>
+                  </div>
+                ) : null}
               </DialogActions>
             </Dialog>
 
@@ -1127,6 +1131,7 @@ class ConsultarVisitas extends Component {
             name_org={this.state.temp_name_org}
             estado_tar_api={this.state.estado_tar_api}
             token={this.props.token}
+            rol={this.props.rol}
             box_spacing={this.state.box_spacing_tiny}
             subtitle_spacing={this.state.subtitle_spacing}
             box_size={this.state.box_size_tiny}

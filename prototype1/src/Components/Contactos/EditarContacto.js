@@ -817,9 +817,11 @@ class EditarContacto extends Component {
           </div>
           <div className="o-btnBotNavDoble">
             <div className="o-btnBotNav-btn">
-              <GreenButton onClick={this.callApiPutContacto}>
-                {"Guardar"}
-              </GreenButton>
+              {this.props.rol !== "Comercial" ? (
+                <GreenButton onClick={this.callApiPutContacto}>
+                  {"Guardar"}
+                </GreenButton>
+              ) : null}
             </div>
             <Link
               exact={"true"}

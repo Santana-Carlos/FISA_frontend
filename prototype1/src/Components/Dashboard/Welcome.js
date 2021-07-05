@@ -26,22 +26,26 @@ const Welcome = (props) => {
         </div>
         Accesos directos:
         <div className="o-accessButton-container">
-          <Link
-            to="dashboard/contacto#/crear_contacto"
-            style={{ textDecoration: "none" }}
-          >
-            <div className="o-accessButton">
-              <BlueButton>Crear Contacto</BlueButton>
-            </div>
-          </Link>
-          <Link
-            to="dashboard/organizacion#/crear_organizacion"
-            style={{ textDecoration: "none" }}
-          >
-            <div className="o-accessButton">
-              <BlueButton>Crear Organización</BlueButton>
-            </div>
-          </Link>
+          {props.rol !== "Comercial" ? (
+            <React.Fragment>
+              <Link
+                to="dashboard/contacto#/crear_contacto"
+                style={{ textDecoration: "none" }}
+              >
+                <div className="o-accessButton">
+                  <BlueButton>Crear Contacto</BlueButton>
+                </div>
+              </Link>
+              <Link
+                to="dashboard/organizacion#/crear_organizacion"
+                style={{ textDecoration: "none" }}
+              >
+                <div className="o-accessButton">
+                  <BlueButton>Crear Organización</BlueButton>
+                </div>
+              </Link>
+            </React.Fragment>
+          ) : null}
           <Link
             to="dashboard/reportes#/reporte_contactos"
             style={{ textDecoration: "none" }}
@@ -50,14 +54,35 @@ const Welcome = (props) => {
               <BlueButton>Reporte contactos</BlueButton>
             </div>
           </Link>
-          <Link
-            to="dashboard/seguimiento#/crear_visitas"
-            style={{ textDecoration: "none" }}
-          >
-            <div className="o-accessButton">
-              <BlueButton>Crear Visita</BlueButton>
-            </div>
-          </Link>
+          {props.rol !== "Comercial" ? (
+            <Link
+              to="dashboard/seguimiento#/crear_visitas"
+              style={{ textDecoration: "none" }}
+            >
+              <div className="o-accessButton">
+                <BlueButton>Crear Visita</BlueButton>
+              </div>
+            </Link>
+          ) : (
+            <React.Fragment>
+              <Link
+                to="dashboard/reportes#/reporte_organizaciones"
+                style={{ textDecoration: "none" }}
+              >
+                <div className="o-accessButton">
+                  <BlueButton>Reporte Orgs.</BlueButton>
+                </div>
+              </Link>
+              <Link
+                to="dashboard/reportes#/reporte_fechas"
+                style={{ textDecoration: "none" }}
+              >
+                <div className="o-accessButton">
+                  <BlueButton>Reporte por Fechas</BlueButton>
+                </div>
+              </Link>
+            </React.Fragment>
+          )}
         </div>
         <Link
           exact={"true"}

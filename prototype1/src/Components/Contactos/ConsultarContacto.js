@@ -741,21 +741,23 @@ class ConsultarContacto extends Component {
                                 >
                                   <IconEdit />
                                 </IconButton>
-                                <IconButton
-                                  size="small"
-                                  color="secondary"
-                                  onClick={() =>
-                                    this.setState(
-                                      {
-                                        temp_id_con: obj.contacto_id,
-                                        temp_id_per: obj.persona_id,
-                                      },
-                                      this.handleClickOpenDel
-                                    )
-                                  }
-                                >
-                                  <IconDelete />
-                                </IconButton>
+                                {this.props.rol !== "Comercial" ? (
+                                  <IconButton
+                                    size="small"
+                                    color="secondary"
+                                    onClick={() =>
+                                      this.setState(
+                                        {
+                                          temp_id_con: obj.contacto_id,
+                                          temp_id_per: obj.persona_id,
+                                        },
+                                        this.handleClickOpenDel
+                                      )
+                                    }
+                                  >
+                                    <IconDelete />
+                                  </IconButton>
+                                ) : null}
                               </div>
                             </StyledTableCell>
                           </TableRow>
@@ -1314,6 +1316,7 @@ class ConsultarContacto extends Component {
         <Route path="/consultar_contacto/editar">
           <EditarContacto
             token={this.props.token}
+            rol={this.props.rol}
             temp_id_con={this.state.temp_id_con}
             temp_id_per={this.state.temp_id_per}
             box_spacing={this.state.box_spacing_tiny}

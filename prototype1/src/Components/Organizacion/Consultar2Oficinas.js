@@ -456,18 +456,20 @@ class Consultar2Oficinas extends Component {
                           >
                             <IconEdit />
                           </IconButton>
-                          <IconButton
-                            size="small"
-                            color="secondary"
-                            onClick={() =>
-                              this.setState(
-                                { temp_id_ofi: obj.id },
-                                this.handleClickOpenDel
-                              )
-                            }
-                          >
-                            <IconDelete />
-                          </IconButton>
+                          {this.props.rol !== "Comercial" ? (
+                            <IconButton
+                              size="small"
+                              color="secondary"
+                              onClick={() =>
+                                this.setState(
+                                  { temp_id_ofi: obj.id },
+                                  this.handleClickOpenDel
+                                )
+                              }
+                            >
+                              <IconDelete />
+                            </IconButton>
+                          ) : null}
                         </div>
                       </StyledTableCell>
                     </TableRow>
@@ -484,19 +486,21 @@ class Consultar2Oficinas extends Component {
                 </TableBody>
               </Table>
             </TableContainer>
-            <div className="o-btnAnadirTable">
-              <BlueButton
-                onClick={() =>
-                  this.setState({ temp_id_ofi: "" }, this.handleClickOpen)
-                }
-              >
-                Añadir
-                <IconAdd
-                  style={{ marginLeft: "0.4rem", marginRight: 0 }}
-                  size="small"
-                />
-              </BlueButton>
-            </div>
+            {this.props.rol !== "Comercial" ? (
+              <div className="o-btnAnadirTable">
+                <BlueButton
+                  onClick={() =>
+                    this.setState({ temp_id_ofi: "" }, this.handleClickOpen)
+                  }
+                >
+                  Añadir
+                  <IconAdd
+                    style={{ marginLeft: "0.4rem", marginRight: 0 }}
+                    size="small"
+                  />
+                </BlueButton>
+              </div>
+            ) : null}
           </div>
         </div>
         <div className="o-btnBotNav">
@@ -778,11 +782,13 @@ class Consultar2Oficinas extends Component {
                 {"Cancelar"}
               </RedButton>
             </div>
-            <div className="o-btnBotNav-btnDiag2">
-              <GreenButton onClick={() => this.handleClose(true)}>
-                {"Guardar"}
-              </GreenButton>
-            </div>
+            {this.props.rol !== "Comercial" ? (
+              <div className="o-btnBotNav-btnDiag2">
+                <GreenButton onClick={() => this.handleClose(true)}>
+                  {"Guardar"}
+                </GreenButton>
+              </div>
+            ) : null}
           </DialogActions>
         </Dialog>
 

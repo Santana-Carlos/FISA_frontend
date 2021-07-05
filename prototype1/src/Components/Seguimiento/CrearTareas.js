@@ -322,39 +322,41 @@ class CrearTareas extends Component {
                       {obj.resultado === null ? "Sin realizar" : obj.resultado}
                     </StyledTableCell>
                     <StyledTableCell size="small">{obj.nombre}</StyledTableCell>
-                    <StyledTableCell size="small" align="right">
-                      <div className="o-row-btnIcon">
-                        <IconButton
-                          size="small"
-                          style={{ color: "#47B14C" }}
-                          onClick={() =>
-                            this.setState(
-                              {
-                                loadingDiag: true,
-                                temp_id_tar: obj.id,
-                              },
-                              this.handleClickOpen
-                            )
-                          }
-                        >
-                          <IconEdit />
-                        </IconButton>
-                        <IconButton
-                          size="small"
-                          color="secondary"
-                          onClick={() =>
-                            this.setState(
-                              {
-                                temp_id_tar: obj.id,
-                              },
-                              this.handleClickOpenDel
-                            )
-                          }
-                        >
-                          <IconDelete />
-                        </IconButton>
-                      </div>
-                    </StyledTableCell>
+                    {this.props.rol !== "Comercial" ? (
+                      <StyledTableCell size="small" align="right">
+                        <div className="o-row-btnIcon">
+                          <IconButton
+                            size="small"
+                            style={{ color: "#47B14C" }}
+                            onClick={() =>
+                              this.setState(
+                                {
+                                  loadingDiag: true,
+                                  temp_id_tar: obj.id,
+                                },
+                                this.handleClickOpen
+                              )
+                            }
+                          >
+                            <IconEdit />
+                          </IconButton>
+                          <IconButton
+                            size="small"
+                            color="secondary"
+                            onClick={() =>
+                              this.setState(
+                                {
+                                  temp_id_tar: obj.id,
+                                },
+                                this.handleClickOpenDel
+                              )
+                            }
+                          >
+                            <IconDelete />
+                          </IconButton>
+                        </div>
+                      </StyledTableCell>
+                    ) : null}
                   </TableRow>
                 ))}
                 {this.state.tareas[0] === undefined ? (
@@ -369,19 +371,21 @@ class CrearTareas extends Component {
               </TableBody>
             </Table>
           </TableContainer>
-          <div className="o-btnAnadirTable">
-            <BlueButton
-              onClick={() =>
-                this.setState({ temp_id_tar: "" }, this.handleClickOpen)
-              }
-            >
-              {"Añadir"}
-              <IconAdd
-                style={{ marginLeft: "0.4rem", marginRight: 0 }}
-                size="small"
-              />
-            </BlueButton>
-          </div>
+          {this.props.rol !== "Comercial" ? (
+            <div className="o-btnAnadirTable">
+              <BlueButton
+                onClick={() =>
+                  this.setState({ temp_id_tar: "" }, this.handleClickOpen)
+                }
+              >
+                {"Añadir"}
+                <IconAdd
+                  style={{ marginLeft: "0.4rem", marginRight: 0 }}
+                  size="small"
+                />
+              </BlueButton>
+            </div>
+          ) : null}
         </div>
         <div className="o-btnBotNav">
           <div style={{ color: "#FFFFFF" }}>{"Me encontraste!"}</div>

@@ -146,7 +146,7 @@ const Dashboard = () => {
           <Contacto />
         </Route>
         <Route path="/dashboard/seguimiento">
-          <Seguimiento />
+          <Seguimiento rol={rol} />
         </Route>
         <Route path="/dashboard/reportes">
           <Reportes />

@@ -904,17 +904,19 @@ class Consultar4Finanzas extends Component {
           </div>
           <div className="o-btnBotNavDoble">
             <div className="o-btnBotNav-btn">
-              <GreenButton
-                onClick={() => {
-                  if (this.state.temp_id_fin === "") {
-                    this.callApiPost();
-                  } else {
-                    this.callApiPut();
-                  }
-                }}
-              >
-                Guardar
-              </GreenButton>
+              {this.props.rol !== "Comercial" ? (
+                <GreenButton
+                  onClick={() => {
+                    if (this.state.temp_id_fin === "") {
+                      this.callApiPost();
+                    } else {
+                      this.callApiPut();
+                    }
+                  }}
+                >
+                  Guardar
+                </GreenButton>
+              ) : null}
             </div>
             <Link
               exact={"true"}
@@ -1047,11 +1049,13 @@ class Consultar4Finanzas extends Component {
                 {"Cancelar"}
               </RedButton>
             </div>
-            <div className="o-btnBotNav-btnDiag2">
-              <GreenButton onClick={() => this.handleClose(true)}>
-                {"Guardar"}
-              </GreenButton>
-            </div>
+            {this.props.rol !== "Comercial" ? (
+              <div className="o-btnBotNav-btnDiag2">
+                <GreenButton onClick={() => this.handleClose(true)}>
+                  {"Guardar"}
+                </GreenButton>
+              </div>
+            ) : null}
           </DialogActions>
         </Dialog>
 
