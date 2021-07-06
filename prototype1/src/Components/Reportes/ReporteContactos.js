@@ -701,7 +701,9 @@ class ReporteContacto extends Component {
                       <div
                         style={{
                           display: "flex",
+                          alignItems: "center",
                           justifyContent: "space-between",
+                          textAlign: "center",
                           width: "100%",
                         }}
                       >
@@ -760,13 +762,13 @@ class ReporteContacto extends Component {
                   {this.state.contacts[0] === undefined ? (
                     <TableRow>
                       <StyledTableCell>...</StyledTableCell>
-                      <StyledTableCell></StyledTableCell>
-                      <StyledTableCell></StyledTableCell>
-                      <StyledTableCell></StyledTableCell>
-                      <StyledTableCell></StyledTableCell>
-                      <StyledTableCell></StyledTableCell>
-                      <StyledTableCell></StyledTableCell>
-                      <StyledTableCell></StyledTableCell>
+                      <StyledTableCell />
+                      <StyledTableCell />
+                      <StyledTableCell />
+                      <StyledTableCell />
+                      <StyledTableCell />
+                      <StyledTableCell />
+                      <StyledTableCell />
                     </TableRow>
                   ) : null}
                 </TableBody>
@@ -1009,13 +1011,13 @@ class ReporteContacto extends Component {
                       {this.state.contacts[0] === undefined ? (
                         <TableRow>
                           <StyledTableCell>...</StyledTableCell>
-                          <StyledTableCell></StyledTableCell>
-                          <StyledTableCell></StyledTableCell>
-                          <StyledTableCell></StyledTableCell>
-                          <StyledTableCell></StyledTableCell>
-                          <StyledTableCell></StyledTableCell>
-                          <StyledTableCell></StyledTableCell>
-                          <StyledTableCell></StyledTableCell>
+                          <StyledTableCell />
+                          <StyledTableCell />
+                          <StyledTableCell />
+                          <StyledTableCell />
+                          <StyledTableCell />
+                          <StyledTableCell />
+                          <StyledTableCell />
                         </TableRow>
                       ) : null}
                     </TableBody>

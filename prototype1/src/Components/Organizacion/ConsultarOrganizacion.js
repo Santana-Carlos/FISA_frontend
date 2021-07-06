@@ -76,7 +76,7 @@ class ConsultarOrganizacion extends Component {
       box_spacing_tiny: window.innerHeight > 900 ? "0.8rem" : "0rem",
       subtitle_spacing: window.innerHeight > 900 ? "2.1rem" : "1.7rem",
       box_size_tiny: window.innerHeight > 900 ? "24rem" : "13rem",
-      box_size_table: window.innerHeight > 900 ? "30rem" : "15rem",
+      box_size_table: window.innerHeight > 900 ? "33rem" : "18rem",
       winInterval: "",
     };
 
@@ -91,7 +91,7 @@ class ConsultarOrganizacion extends Component {
       box_spacing_tiny: window.innerHeight > 900 ? "0.8rem" : "0rem",
       subtitle_spacing: window.innerHeight > 900 ? "2.1rem" : "1.7rem",
       box_size_tiny: window.innerHeight > 900 ? "24rem" : "13rem",
-      box_size_table: window.innerHeight > 900 ? "30rem" : "15rem",
+      box_size_table: window.innerHeight > 900 ? "33rem" : "18rem",
     });
   };
 
@@ -370,47 +370,15 @@ class ConsultarOrganizacion extends Component {
                   style={{ marginBottom: "0.7rem" }}
                 >
                   <div className="o-consultas">
-                    <div style={{ marginBottom: BOX_SPACING }}>
-                      <div className="o-dobleInput">
-                        <FormControl
-                          variant="outlined"
-                          margin="dense"
-                          className="o-selectShort"
-                          style={{ width: "7rem" }}
-                        >
-                          <InputLabel>ID</InputLabel>
-                          <Select
-                            value={this.state.tipoid_org || ""}
-                            onChange={this.handleChange}
-                            label="ID"
-                            name="input_tipoid_org"
-                          >
-                            <MenuItem value="">Ninguno</MenuItem>
-                            {this.state.tipoid_org_api.map((obj, i) => {
-                              return (
-                                <MenuItem key={i} value={obj.id}>
-                                  {obj.nombre}
-                                </MenuItem>
-                              );
-                            })}
-                          </Select>
-                        </FormControl>
-                        <div
-                          className="o-inputShort"
-                          style={{ marginLeft: "0.5rem" }}
-                        >
-                          <TextField
-                            label="Número"
-                            variant="outlined"
-                            value={this.state.nid_org || ""}
-                            name="input_nid_org"
-                            onChange={this.handleChange}
-                            className="o-space"
-                            margin="dense"
-                          />
-                        </div>
-                      </div>
-                    </div>
+                    <TextField
+                      label="Número ID"
+                      variant="outlined"
+                      value={this.state.nid_org || ""}
+                      name="input_nid_org"
+                      onChange={this.handleChange}
+                      className="o-space"
+                      margin="dense"
+                    />
                   </div>
                   <div className="o-consultas">
                     <TextField
@@ -475,7 +443,7 @@ class ConsultarOrganizacion extends Component {
                 </div>
                 <TableContainer
                   className="o-tableBase-consultas"
-                  style={{ display: "inline", maxHeight: BOX_SIZE }}
+                  style={{ display: "inline", height: BOX_SIZE }}
                 >
                   <Table stickyHeader size="small">
                     <TableHead>
@@ -564,11 +532,11 @@ class ConsultarOrganizacion extends Component {
                       {this.state.orgs[0] === undefined ? (
                         <TableRow>
                           <StyledTableCell>...</StyledTableCell>
-                          <StyledTableCell></StyledTableCell>
-                          <StyledTableCell></StyledTableCell>
-                          <StyledTableCell></StyledTableCell>
-                          <StyledTableCell></StyledTableCell>
-                          <StyledTableCell></StyledTableCell>
+                          <StyledTableCell />
+                          <StyledTableCell />
+                          <StyledTableCell />
+                          <StyledTableCell />
+                          <StyledTableCell />
                         </TableRow>
                       ) : null}
                     </TableBody>
@@ -724,7 +692,7 @@ class ConsultarOrganizacion extends Component {
                       className="o-tableBase-consultas"
                       style={{
                         display: "inline",
-                        maxHeight: BOX_SIZE_X,
+                        height: BOX_SIZE_X,
                       }}
                     >
                       <Table stickyHeader size="small">
@@ -812,11 +780,11 @@ class ConsultarOrganizacion extends Component {
                           {this.state.orgs[0] === undefined ? (
                             <TableRow>
                               <StyledTableCell>...</StyledTableCell>
-                              <StyledTableCell></StyledTableCell>
-                              <StyledTableCell></StyledTableCell>
-                              <StyledTableCell></StyledTableCell>
-                              <StyledTableCell></StyledTableCell>
-                              <StyledTableCell></StyledTableCell>
+                              <StyledTableCell />
+                              <StyledTableCell />
+                              <StyledTableCell />
+                              <StyledTableCell />
+                              <StyledTableCell />
                             </TableRow>
                           ) : null}
                         </TableBody>

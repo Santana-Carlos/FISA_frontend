@@ -545,7 +545,7 @@ class Para2OrganizacionActividad extends Component {
                   {this.state.api_sec[0] === undefined ? (
                     <TableRow>
                       <StyledTableCell>...</StyledTableCell>
-                      <StyledTableCell></StyledTableCell>
+                      <StyledTableCell />
                     </TableRow>
                   ) : null}
                 </TableBody>
@@ -647,7 +647,7 @@ class Para2OrganizacionActividad extends Component {
                     {this.state.api_sub[0] === undefined ? (
                       <TableRow>
                         <StyledTableCell>...</StyledTableCell>
-                        <StyledTableCell></StyledTableCell>
+                        <StyledTableCell />
                       </TableRow>
                     ) : null}
                   </TableBody>
@@ -734,8 +734,8 @@ class Para2OrganizacionActividad extends Component {
                   {this.state.api_ciiu[0] === undefined ? (
                     <TableRow>
                       <StyledTableCell>...</StyledTableCell>
-                      <StyledTableCell></StyledTableCell>
-                      <StyledTableCell></StyledTableCell>
+                      <StyledTableCell />
+                      <StyledTableCell />
                     </TableRow>
                   ) : null}
                 </TableBody>

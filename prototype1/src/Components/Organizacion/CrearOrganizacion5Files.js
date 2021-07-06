@@ -117,9 +117,10 @@ class CrearOrganizacion5Files extends Component {
 
   callAPiDownload = () => {
     this.setState({ loading: true });
-    const nameFile = this.state.files[
-      this.state.files.findIndex((x) => x.id === this.state.temp_id_fil)
-    ].nombre;
+    const nameFile =
+      this.state.files[
+        this.state.files.findIndex((x) => x.id === this.state.temp_id_fil)
+      ].nombre;
     const idFile = this.state.temp_id_fil;
     fetch(process.env.REACT_APP_API_URL + "Archivo/" + idFile, {
       method: "GET",
@@ -273,7 +274,7 @@ class CrearOrganizacion5Files extends Component {
                     <StyledTableCellBig>Nombre</StyledTableCellBig>
                     <StyledTableCell>Tipo</StyledTableCell>
                     <StyledTableCell>Creación</StyledTableCell>
-                    <StyledTableCell></StyledTableCell>
+                    <StyledTableCell />
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -326,9 +327,9 @@ class CrearOrganizacion5Files extends Component {
                   {this.state.files[0] === undefined ? (
                     <TableRow>
                       <StyledTableCell>...</StyledTableCell>
-                      <StyledTableCell></StyledTableCell>
-                      <StyledTableCell></StyledTableCell>
-                      <StyledTableCell></StyledTableCell>
+                      <StyledTableCell />
+                      <StyledTableCell />
+                      <StyledTableCell />
                     </TableRow>
                   ) : null}
                 </TableBody>

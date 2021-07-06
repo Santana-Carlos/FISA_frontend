@@ -15,6 +15,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  TablePagination,
   Checkbox,
   Fade,
   CircularProgress,
@@ -108,6 +109,8 @@ class Consultar3Contactos extends Component {
       cat_org_api: [],
       loading: true,
       loadingDiag: false,
+      currentPage: 0,
+      rowsPerPage: 25,
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -705,6 +708,8 @@ class Consultar3Contactos extends Component {
   render() {
     const BOX_SPACING = this.props.box_spacing;
     const BOX_SIZE_TABLE = this.props.box_size_table;
+    const currentPage = this.state.currentPage;
+    const rowsPerPage = this.state.rowsPerPage;
 
     return (
       <div className="o-cardContent">
@@ -743,7 +748,7 @@ class Consultar3Contactos extends Component {
                   <StyledTableCell>Celular</StyledTableCell>
                   <StyledTableCell>Correo</StyledTableCell>
                   <StyledTableCell>Observaciones</StyledTableCell>
-                  <StyledTableCell></StyledTableCell>
+                  <StyledTableCell />
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -814,13 +819,13 @@ class Consultar3Contactos extends Component {
                 {this.state.contacts[0] === undefined ? (
                   <TableRow>
                     <StyledTableCell>...</StyledTableCell>
-                    <StyledTableCell></StyledTableCell>
-                    <StyledTableCell></StyledTableCell>
-                    <StyledTableCell></StyledTableCell>
-                    <StyledTableCell></StyledTableCell>
-                    <StyledTableCell></StyledTableCell>
-                    <StyledTableCell></StyledTableCell>
-                    <StyledTableCell></StyledTableCell>
+                    <StyledTableCell />
+                    <StyledTableCell />
+                    <StyledTableCell />
+                    <StyledTableCell />
+                    <StyledTableCell />
+                    <StyledTableCell />
+                    <StyledTableCell />
                   </TableRow>
                 ) : null}
               </TableBody>
@@ -1320,12 +1325,15 @@ class Consultar3Contactos extends Component {
               </div>
             </div>
           </DialogTitle>
-          <DialogContent style={{ textAlign: "center" }}>
+          <DialogContent style={{ textAlign: "center", overflowY: "hidden" }}>
             <div className="o-diag-contactExist-big">
-              <div className="o-consultas-containerInit">
+              <div
+                className="o-consultas-containerInit"
+                style={{ marginBottom: "1rem" }}
+              >
                 <div
                   className="o-consultas"
-                  style={{ marginBottom: BOX_SPACING }}
+                  style={{ marginTop: 0, marginBottom: BOX_SPACING }}
                 >
                   <TextField
                     label="Organización"
@@ -1334,12 +1342,13 @@ class Consultar3Contactos extends Component {
                     value={this.state.search_nombre_org || ""}
                     onChange={this.handleChange}
                     className="o-space"
+                    style={{ marginTop: 0 }}
                     margin="dense"
                   />
                 </div>
                 <div
                   className="o-consultas"
-                  style={{ marginBottom: BOX_SPACING }}
+                  style={{ marginTop: 0, marginBottom: BOX_SPACING }}
                 >
                   <TextField
                     label="Nombres"
@@ -1348,12 +1357,13 @@ class Consultar3Contactos extends Component {
                     value={this.state.search_nombre_con || ""}
                     onChange={this.handleChange}
                     className="o-space"
+                    style={{ marginTop: 0 }}
                     margin="dense"
                   />
                 </div>
                 <div
                   className="o-consultas"
-                  style={{ marginBottom: BOX_SPACING }}
+                  style={{ marginTop: 0, marginBottom: BOX_SPACING }}
                 >
                   <TextField
                     label="Apellidos"
@@ -1362,25 +1372,10 @@ class Consultar3Contactos extends Component {
                     value={this.state.search_apell_con || ""}
                     onChange={this.handleChange}
                     className="o-space"
+                    style={{ marginTop: 0 }}
                     margin="dense"
                   />
                 </div>
-                <div
-                  className="o-consultas"
-                  style={{ marginBottom: BOX_SPACING, marginRight: 0 }}
-                >
-                  <TextField
-                    label="Cargo"
-                    variant="outlined"
-                    name="input_search_cargo_con"
-                    value={this.state.search_cargo_con || ""}
-                    onChange={this.handleChange}
-                    className="o-space"
-                    margin="dense"
-                  />
-                </div>
-              </div>
-              <div className="o-consultas-container">
                 <div className="o-consultas-btn">
                   <div className="o-btnConsultas">
                     <BlueButton onClick={this.apiSearch}>Buscar</BlueButton>
@@ -1397,7 +1392,7 @@ class Consultar3Contactos extends Component {
               </div>
               <TableContainer
                 className="o-tableBase-consultas"
-                style={{ maxHeight: BOX_SIZE_TABLE }}
+                style={{ display: "inline", height: BOX_SIZE_TABLE }}
               >
                 <Table stickyHeader size="small">
                   <TableHead>
@@ -1406,57 +1401,90 @@ class Consultar3Contactos extends Component {
                       <StyledTableCell>Nombre</StyledTableCell>
                       <StyledTableCell>Cargo</StyledTableCell>
                       <StyledTableCell>Obser.</StyledTableCell>
-                      <StyledTableCell></StyledTableCell>
+                      <StyledTableCell />
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {this.state.contacts_api.map((obj, i) => (
-                      <TableRow key={i} hover={true}>
-                        <StyledTableCell size="small">
-                          {obj.organizacion}
-                        </StyledTableCell>
-                        <StyledTableCell size="small">
-                          {obj.nombres + " " + obj.apellidos}
-                        </StyledTableCell>
-                        <StyledTableCell size="small">
-                          {obj.cargo === null ? emptyCell : obj.cargo}
-                        </StyledTableCell>
-                        <StyledTableCell size="small">
-                          {obj.observaciones === null
-                            ? emptyCell
-                            : obj.observaciones}
-                        </StyledTableCell>
-                        <StyledTableCell
-                          size="small"
-                          style={{ paddingRight: "1rem" }}
-                        >
-                          <IconButton
+                    {this.state.contacts
+                      .slice(
+                        currentPage * rowsPerPage,
+                        currentPage * rowsPerPage + rowsPerPage
+                      )
+                      .map((obj, i) => (
+                        <TableRow key={i} hover={true}>
+                          <StyledTableCell size="small">
+                            {obj.organizacion}
+                          </StyledTableCell>
+                          <StyledTableCell size="small">
+                            {obj.nombres + " " + obj.apellidos}
+                          </StyledTableCell>
+                          <StyledTableCell size="small">
+                            {obj.cargo === null ? emptyCell : obj.cargo}
+                          </StyledTableCell>
+                          <StyledTableCell size="small">
+                            {obj.observaciones === null
+                              ? emptyCell
+                              : obj.observaciones}
+                          </StyledTableCell>
+                          <StyledTableCell
                             size="small"
-                            className="o-tinyBtn2"
-                            color="primary"
-                            onClick={() =>
-                              this.setState(
-                                {
-                                  temp_id_per: obj.persona_id,
-                                  temp_id_con: obj.contacto_id,
-                                },
-                                this.callApiPersona
-                              )
-                            }
+                            style={{ paddingRight: "1rem" }}
                           >
-                            <IconAddCircle />
-                          </IconButton>
-                        </StyledTableCell>
-                      </TableRow>
-                    ))}
-                    {this.state.contacts_api[0] === undefined ? (
+                            <IconButton
+                              size="small"
+                              className="o-tinyBtn2"
+                              color="primary"
+                              onClick={() =>
+                                this.setState(
+                                  {
+                                    temp_id_per: obj.persona_id,
+                                    temp_id_con: obj.contacto_id,
+                                  },
+                                  this.callApiPersona
+                                )
+                              }
+                            >
+                              <IconAddCircle />
+                            </IconButton>
+                          </StyledTableCell>
+                        </TableRow>
+                      ))}
+                    {this.state.contacts[0] === undefined ? (
                       <TableRow>
                         <StyledTableCell>...</StyledTableCell>
+                        <StyledTableCell />
+                        <StyledTableCell />
+                        <StyledTableCell />
+                        <StyledTableCell />
                       </TableRow>
                     ) : null}
                   </TableBody>
                 </Table>
               </TableContainer>
+              <TablePagination
+                component={"div"}
+                style={{
+                  margin: "0 0 0 auto",
+                }}
+                rowsPerPageOptions={[15, 25, 45]}
+                colSpan={9}
+                count={this.state.contacts.length}
+                rowsPerPage={rowsPerPage}
+                page={currentPage}
+                onChangePage={(e, page) => this.setState({ currentPage: page })}
+                onChangeRowsPerPage={(e) =>
+                  this.setState({
+                    currentPage: 0,
+                    rowsPerPage: parseInt(e.target.value, 10),
+                  })
+                }
+                labelRowsPerPage="Filas por página"
+                nextIconButtonText="Siguiente página"
+                backIconButtonText="Página anterior"
+                labelDisplayedRows={({ from, to, count }) =>
+                  `${from} - ${to} de ${count !== -1 ? count : `más que ${to}`}`
+                }
+              />
             </div>
           </DialogContent>
           <DialogActions style={{ justifyContent: "flex-end" }}>

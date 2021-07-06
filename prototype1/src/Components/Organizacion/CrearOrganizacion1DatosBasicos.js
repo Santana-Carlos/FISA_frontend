@@ -85,7 +85,7 @@ class CrearOrganizacion1DatosBasicos extends Component {
       box_spacing: window.innerHeight > 900 ? "0.8rem" : "0rem",
       subtitle_spacing: window.innerHeight > 900 ? "2.1rem" : "1.7rem",
       box_size: window.innerHeight > 900 ? "24rem" : "13rem",
-      box_size_table: window.innerHeight > 900 ? "30rem" : "15rem",
+      box_size_table: window.innerHeight > 900 ? "33rem" : "18rem",
       winInterval: "",
     };
 
@@ -98,7 +98,7 @@ class CrearOrganizacion1DatosBasicos extends Component {
       box_spacing: window.innerHeight > 900 ? "0.8rem" : "0rem",
       subtitle_spacing: window.innerHeight > 900 ? "2.1rem" : "1.7rem",
       box_size: window.innerHeight > 900 ? "24rem" : "13rem",
-      box_size_table: window.innerHeight > 900 ? "30rem" : "15rem",
+      box_size_table: window.innerHeight > 900 ? "33rem" : "17rem",
     });
   };
 

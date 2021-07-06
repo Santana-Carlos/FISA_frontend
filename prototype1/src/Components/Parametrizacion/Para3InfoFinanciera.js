@@ -434,9 +434,9 @@ class Para3InfoFinanciera extends Component {
                   {this.state.api_clas[0] === undefined ? (
                     <TableRow>
                       <StyledTableCell>...</StyledTableCell>
-                      <StyledTableCell></StyledTableCell>
-                      <StyledTableCell></StyledTableCell>
-                      <StyledTableCell></StyledTableCell>
+                      <StyledTableCell />
+                      <StyledTableCell />
+                      <StyledTableCell />
                     </TableRow>
                   ) : null}
                 </TableBody>
@@ -522,7 +522,7 @@ class Para3InfoFinanciera extends Component {
                   {this.state.api_reg[0] === undefined ? (
                     <TableRow>
                       <StyledTableCell>...</StyledTableCell>
-                      <StyledTableCell></StyledTableCell>
+                      <StyledTableCell />
                     </TableRow>
                   ) : null}
                 </TableBody>

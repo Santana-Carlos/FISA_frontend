@@ -415,23 +415,6 @@ class Para5Ubicaciones extends Component {
         }
       })
       .catch((error) => {});
-
-    // switch (tipo) {
-    //   case "Pais":
-    //     setTimeout(this.callApi, 2000);
-    //     setTimeout(this.callApi, 5000);
-    //     break;
-    //   case "DepartamentoEstado":
-    //     setTimeout(this.callApiGetEst, 2000);
-    //     setTimeout(this.callApiGetEst, 5000);
-    //     break;
-    //   case "Ciudad":
-    //     setTimeout(this.callApiGetCiu, 2000);
-    //     setTimeout(this.callApiGetCiu, 5000);
-    //     break;
-    //   default:
-    //     break;
-    // }
   };
 
   handleChange(event) {
@@ -571,7 +554,7 @@ class Para5Ubicaciones extends Component {
                   {this.state.api_pais[0] === undefined ? (
                     <TableRow>
                       <StyledTableCell>...</StyledTableCell>
-                      <StyledTableCell></StyledTableCell>
+                      <StyledTableCell />
                     </TableRow>
                   ) : null}
                 </TableBody>
@@ -693,7 +676,7 @@ class Para5Ubicaciones extends Component {
                     {this.state.api_estado[0] === undefined ? (
                       <TableRow>
                         <StyledTableCell>...</StyledTableCell>
-                        <StyledTableCell></StyledTableCell>
+                        <StyledTableCell />
                       </TableRow>
                     ) : null}
                   </TableBody>
@@ -798,7 +781,7 @@ class Para5Ubicaciones extends Component {
                     {this.state.api_ciudad[0] === undefined ? (
                       <TableRow>
                         <StyledTableCell>...</StyledTableCell>
-                        <StyledTableCell></StyledTableCell>
+                        <StyledTableCell />
                       </TableRow>
                     ) : null}
                   </TableBody>

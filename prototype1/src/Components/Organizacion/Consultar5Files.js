@@ -275,7 +275,7 @@ class Consultar5Files extends Component {
                     <StyledTableCellBig>Nombre</StyledTableCellBig>
                     <StyledTableCell>Tipo</StyledTableCell>
                     <StyledTableCell>Creación</StyledTableCell>
-                    <StyledTableCell></StyledTableCell>
+                    <StyledTableCell />
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -330,9 +330,9 @@ class Consultar5Files extends Component {
                   {this.state.files[0] === undefined ? (
                     <TableRow>
                       <StyledTableCell>...</StyledTableCell>
-                      <StyledTableCell></StyledTableCell>
-                      <StyledTableCell></StyledTableCell>
-                      <StyledTableCell></StyledTableCell>
+                      <StyledTableCell />
+                      <StyledTableCell />
+                      <StyledTableCell />
                     </TableRow>
                   ) : null}
                 </TableBody>

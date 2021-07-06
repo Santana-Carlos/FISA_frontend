@@ -316,7 +316,7 @@
   flex-direction: column;
   flex-wrap: wrap;
   margin: 0.3rem 1rem 0 0;
-  width: 45%;
+  width: 48%;
   max-width: 28%;
 }
 
@@ -461,7 +461,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
-  width: 50rem;
+  width: auto;
   height: 100%;
   margin: 0;
   padding: 0 1rem 0;

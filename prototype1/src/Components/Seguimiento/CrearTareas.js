@@ -300,7 +300,10 @@ class CrearTareas extends Component {
         </div>
 
         <div className="o-contentForm-big-consultas">
-          <TableContainer className="o-tableBase" style={{ marginTop: "1rem" }}>
+          <TableContainer
+            className="o-tableBase"
+            style={{ display: "inline", marginTop: "1rem" }}
+          >
             <Table stickyHeader size="small">
               <TableHead>
                 <TableRow>
@@ -308,7 +311,7 @@ class CrearTareas extends Component {
                   <StyledTableCell>Descripción</StyledTableCell>
                   <StyledTableCell>Resultado</StyledTableCell>
                   <StyledTableCell>Estado</StyledTableCell>
-                  <StyledTableCell></StyledTableCell>
+                  <StyledTableCell />
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -362,10 +365,10 @@ class CrearTareas extends Component {
                 {this.state.tareas[0] === undefined ? (
                   <TableRow>
                     <StyledTableCell>...</StyledTableCell>
-                    <StyledTableCell></StyledTableCell>
-                    <StyledTableCell></StyledTableCell>
-                    <StyledTableCell></StyledTableCell>
-                    <StyledTableCell></StyledTableCell>
+                    <StyledTableCell />
+                    <StyledTableCell />
+                    <StyledTableCell />
+                    <StyledTableCell />
                   </TableRow>
                 ) : null}
               </TableBody>

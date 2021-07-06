@@ -434,7 +434,7 @@ class CrearOrganizacion2Oficinas extends Component {
                     <StyledTableCell>Ciudad - País</StyledTableCell>
                     <StyledTableCell>Dirección</StyledTableCell>
                     <StyledTableCell>Teléfono</StyledTableCell>
-                    <StyledTableCell></StyledTableCell>
+                    <StyledTableCell />
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -483,10 +483,10 @@ class CrearOrganizacion2Oficinas extends Component {
                   {this.state.ofices[0] === undefined ? (
                     <TableRow>
                       <StyledTableCell>...</StyledTableCell>
-                      <StyledTableCell></StyledTableCell>
-                      <StyledTableCell></StyledTableCell>
-                      <StyledTableCell></StyledTableCell>
-                      <StyledTableCell></StyledTableCell>
+                      <StyledTableCell />
+                      <StyledTableCell />
+                      <StyledTableCell />
+                      <StyledTableCell />
                     </TableRow>
                   ) : null}
                 </TableBody>

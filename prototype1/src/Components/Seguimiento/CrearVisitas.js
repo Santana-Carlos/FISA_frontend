@@ -17,6 +17,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  TablePagination,
   Checkbox,
   Fade,
   CircularProgress,
@@ -87,8 +88,10 @@ class CrearVisitas extends Component {
       addVisit: false,
       loading: true,
       loadingDiag: false,
+      currentPage: 0,
+      rowsPerPage: 25,
       box_spacing: window.innerHeight > 900 ? "0.6rem" : "0.2rem",
-      box_size: window.innerHeight > 900 ? "36rem" : "20rem",
+      box_size: window.innerHeight > 900 ? "34rem" : "18rem",
       box_spacing_tiny: window.innerHeight > 900 ? "0.4rem" : "0rem",
       subtitle_spacing: window.innerHeight > 900 ? "2.1rem" : "1.7rem",
       box_size_tiny: window.innerHeight > 900 ? "24rem" : "13rem",
@@ -103,7 +106,7 @@ class CrearVisitas extends Component {
   resizeBox = () => {
     this.setState({
       box_spacing: window.innerHeight > 900 ? "0.6rem" : "0.2rem",
-      box_size: window.innerHeight > 900 ? "36rem" : "20rem",
+      box_size: window.innerHeight > 900 ? "34rem" : "18rem",
       box_spacing_tiny: window.innerHeight > 900 ? "0.4rem" : "0rem",
       subtitle_spacing: window.innerHeight > 900 ? "2.1rem" : "1.7rem",
       box_size_tiny: window.innerHeight > 900 ? "24rem" : "13rem",
@@ -469,6 +472,9 @@ class CrearVisitas extends Component {
   render() {
     const BOX_SPACING = this.state.box_spacing;
     const BOX_SIZE = this.state.box_size;
+    const currentPage = this.state.currentPage;
+    const rowsPerPage = this.state.rowsPerPage;
+
     return (
       <Switch>
         <Route exact path="/crear_visitas">
@@ -617,7 +623,7 @@ class CrearVisitas extends Component {
               </div>
               <TableContainer
                 className="o-tableBase-consultas"
-                style={{ maxHeight: BOX_SIZE }}
+                style={{ display: "inline", height: BOX_SIZE }}
               >
                 <Table stickyHeader size="small">
                   <TableHead>
@@ -627,64 +633,93 @@ class CrearVisitas extends Component {
                       <StyledTableCell>Razón social</StyledTableCell>
                       <StyledTableCell>Categoría</StyledTableCell>
                       <StyledTableCell>Subsector</StyledTableCell>
-                      <StyledTableCell></StyledTableCell>
+                      <StyledTableCell />
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {this.state.orgs.map((obj, i) => (
-                      <TableRow key={i} hover={true}>
-                        <StyledTableCell size="small">
-                          {obj.nombre}
-                        </StyledTableCell>
-                        <StyledTableCell size="small">
-                          {obj.tipo_documento_organizacion +
-                            " " +
-                            obj.numero_documento}
-                        </StyledTableCell>
-                        <StyledTableCell size="small">
-                          {obj.razon_social === null
-                            ? emptyCell
-                            : obj.razon_social}
-                        </StyledTableCell>
-                        <StyledTableCell size="small">
-                          {obj.categoria}
-                        </StyledTableCell>
-                        <StyledTableCell size="small">
-                          {obj.subsector === null ? emptyCell : obj.subsector}
-                        </StyledTableCell>
-                        <StyledTableCell size="small" align="right">
-                          <IconButton
-                            size="small"
-                            color="primary"
-                            onClick={() =>
-                              this.setState(
-                                {
-                                  temp_id_org: obj.id,
-                                  temp_name_org: obj.nombre,
-                                  addVisit: true,
-                                },
-                                this.callApiOrg
-                              )
-                            }
-                          >
-                            <IconAddCircle />
-                          </IconButton>
-                        </StyledTableCell>
-                      </TableRow>
-                    ))}
+                    {this.state.orgs
+                      .slice(
+                        currentPage * rowsPerPage,
+                        currentPage * rowsPerPage + rowsPerPage
+                      )
+                      .map((obj, i) => (
+                        <TableRow key={i} hover={true}>
+                          <StyledTableCell size="small">
+                            {obj.nombre}
+                          </StyledTableCell>
+                          <StyledTableCell size="small">
+                            {obj.tipo_documento_organizacion +
+                              " " +
+                              obj.numero_documento}
+                          </StyledTableCell>
+                          <StyledTableCell size="small">
+                            {obj.razon_social === null
+                              ? emptyCell
+                              : obj.razon_social}
+                          </StyledTableCell>
+                          <StyledTableCell size="small">
+                            {obj.categoria}
+                          </StyledTableCell>
+                          <StyledTableCell size="small">
+                            {obj.subsector === null ? emptyCell : obj.subsector}
+                          </StyledTableCell>
+                          <StyledTableCell size="small" align="right">
+                            <IconButton
+                              size="small"
+                              color="primary"
+                              onClick={() =>
+                                this.setState(
+                                  {
+                                    temp_id_org: obj.id,
+                                    temp_name_org: obj.nombre,
+                                    addVisit: true,
+                                  },
+                                  this.callApiOrg
+                                )
+                              }
+                            >
+                              <IconAddCircle />
+                            </IconButton>
+                          </StyledTableCell>
+                        </TableRow>
+                      ))}
                     {this.state.orgs[0] === undefined ? (
                       <TableRow>
                         <StyledTableCell>...</StyledTableCell>
-                        <StyledTableCell></StyledTableCell>
-                        <StyledTableCell></StyledTableCell>
-                        <StyledTableCell></StyledTableCell>
-                        <StyledTableCell></StyledTableCell>
-                        <StyledTableCell></StyledTableCell>
+                        <StyledTableCell />
+                        <StyledTableCell />
+                        <StyledTableCell />
+                        <StyledTableCell />
+                        <StyledTableCell />
                       </TableRow>
                     ) : null}
                   </TableBody>
                 </Table>
               </TableContainer>
+              <TablePagination
+                component={"div"}
+                style={{
+                  margin: "0 0 0 auto",
+                }}
+                rowsPerPageOptions={[15, 25, 45]}
+                colSpan={9}
+                count={this.state.orgs.length}
+                rowsPerPage={rowsPerPage}
+                page={currentPage}
+                onChangePage={(e, page) => this.setState({ currentPage: page })}
+                onChangeRowsPerPage={(e) =>
+                  this.setState({
+                    currentPage: 0,
+                    rowsPerPage: parseInt(e.target.value, 10),
+                  })
+                }
+                labelRowsPerPage="Filas por página"
+                nextIconButtonText="Siguiente página"
+                backIconButtonText="Página anterior"
+                labelDisplayedRows={({ from, to, count }) =>
+                  `${from} - ${to} de ${count !== -1 ? count : `más que ${to}`}`
+                }
+              />
             </div>
             <Dialog
               disableBackdropClick

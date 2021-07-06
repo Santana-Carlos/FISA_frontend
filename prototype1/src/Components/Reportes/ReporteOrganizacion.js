@@ -588,7 +588,7 @@ class ReporteOrganizacion extends Component {
           </div>
           <TableContainer
             className="o-tableBase-consultas"
-            style={{ display: "inline", maxHeight: BOX_SIZE }}
+            style={{ display: "inline", height: BOX_SIZE }}
           >
             <Table stickyHeader size="small">
               <TableHead>
@@ -632,6 +632,10 @@ class ReporteOrganizacion extends Component {
                 {this.state.orgs[0] === undefined ? (
                   <TableRow>
                     <StyledTableCell>...</StyledTableCell>
+                    <StyledTableCell />
+                    <StyledTableCell />
+                    <StyledTableCell />
+                    <StyledTableCell />
                   </TableRow>
                 ) : null}
               </TableBody>

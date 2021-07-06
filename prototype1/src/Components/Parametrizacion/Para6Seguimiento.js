@@ -372,7 +372,7 @@ class Para6Seguimiento extends Component {
                   {this.state.api_estvisita[0] === undefined ? (
                     <TableRow>
                       <StyledTableCell>...</StyledTableCell>
-                      <StyledTableCell></StyledTableCell>
+                      <StyledTableCell />
                     </TableRow>
                   ) : null}
                 </TableBody>
@@ -455,7 +455,7 @@ class Para6Seguimiento extends Component {
                   {this.state.api_esttarea[0] === undefined ? (
                     <TableRow>
                       <StyledTableCell>...</StyledTableCell>
-                      <StyledTableCell></StyledTableCell>
+                      <StyledTableCell />
                     </TableRow>
                   ) : null}
                 </TableBody>

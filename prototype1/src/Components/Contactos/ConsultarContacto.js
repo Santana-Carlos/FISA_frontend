@@ -457,6 +457,7 @@ class ConsultarContacto extends Component {
     const currentPage = this.state.currentPage;
     const rowsPerPage = this.state.rowsPerPage;
     const filter = this.state.currentFilter;
+
     return (
       <Switch>
         <Route exact path="/consultar_contacto">
@@ -573,7 +574,7 @@ class ConsultarContacto extends Component {
                 </div>
                 <TableContainer
                   className="o-tableBase-consultas"
-                  style={{ display: "inline", maxHeight: BOX_SIZE }}
+                  style={{ display: "inline", height: BOX_SIZE }}
                 >
                   <Table stickyHeader size="small">
                     <TableHead>
@@ -765,14 +766,14 @@ class ConsultarContacto extends Component {
                       {this.state.contactsSort[0] === undefined ? (
                         <TableRow>
                           <StyledTableCell>...</StyledTableCell>
-                          <StyledTableCell></StyledTableCell>
-                          <StyledTableCell></StyledTableCell>
-                          <StyledTableCell></StyledTableCell>
-                          <StyledTableCell></StyledTableCell>
-                          <StyledTableCell></StyledTableCell>
-                          <StyledTableCell></StyledTableCell>
-                          <StyledTableCell></StyledTableCell>
-                          <StyledTableCell></StyledTableCell>
+                          <StyledTableCell />
+                          <StyledTableCell />
+                          <StyledTableCell />
+                          <StyledTableCell />
+                          <StyledTableCell />
+                          <StyledTableCell />
+                          <StyledTableCell />
+                          <StyledTableCell />
                         </TableRow>
                       ) : null}
                     </TableBody>
@@ -879,7 +880,7 @@ class ConsultarContacto extends Component {
                       className="o-tableBase-consultas"
                       style={{
                         display: "inline",
-                        maxHeight: BOX_SIZE_X,
+                        height: BOX_SIZE_X,
                       }}
                     >
                       <Table stickyHeader size="small">
@@ -1074,14 +1075,14 @@ class ConsultarContacto extends Component {
                           {this.state.contacts[0] === undefined ? (
                             <TableRow>
                               <StyledTableCell>...</StyledTableCell>
-                              <StyledTableCell></StyledTableCell>
-                              <StyledTableCell></StyledTableCell>
-                              <StyledTableCell></StyledTableCell>
-                              <StyledTableCell></StyledTableCell>
-                              <StyledTableCell></StyledTableCell>
-                              <StyledTableCell></StyledTableCell>
-                              <StyledTableCell></StyledTableCell>
-                              <StyledTableCell></StyledTableCell>
+                              <StyledTableCell />
+                              <StyledTableCell />
+                              <StyledTableCell />
+                              <StyledTableCell />
+                              <StyledTableCell />
+                              <StyledTableCell />
+                              <StyledTableCell />
+                              <StyledTableCell />
                             </TableRow>
                           ) : null}
                         </TableBody>

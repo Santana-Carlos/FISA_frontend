@@ -423,7 +423,7 @@ class Para1OrganizacionVarios extends Component {
                   {this.state.api_tipoid[0] === undefined ? (
                     <TableRow>
                       <StyledTableCell>...</StyledTableCell>
-                      <StyledTableCell></StyledTableCell>
+                      <StyledTableCell />
                     </TableRow>
                   ) : null}
                 </TableBody>
@@ -502,7 +502,7 @@ class Para1OrganizacionVarios extends Component {
                   {this.state.api_tipoorg[0] === undefined ? (
                     <TableRow>
                       <StyledTableCell>...</StyledTableCell>
-                      <StyledTableCell></StyledTableCell>
+                      <StyledTableCell />
                     </TableRow>
                   ) : null}
                 </TableBody>
@@ -584,7 +584,7 @@ class Para1OrganizacionVarios extends Component {
                   {this.state.api_cat[0] === undefined ? (
                     <TableRow>
                       <StyledTableCell>...</StyledTableCell>
-                      <StyledTableCell></StyledTableCell>
+                      <StyledTableCell />
                     </TableRow>
                   ) : null}
                 </TableBody>
@@ -667,7 +667,7 @@ class Para1OrganizacionVarios extends Component {
                   {this.state.api_claseorg[0] === undefined ? (
                     <TableRow>
                       <StyledTableCell>...</StyledTableCell>
-                      <StyledTableCell></StyledTableCell>
+                      <StyledTableCell />
                     </TableRow>
                   ) : null}
                 </TableBody>
