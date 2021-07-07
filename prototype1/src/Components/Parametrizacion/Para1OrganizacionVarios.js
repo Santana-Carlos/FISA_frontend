@@ -597,7 +597,7 @@ class Para1OrganizacionVarios extends Component {
               className="o-tableBase-consultas"
               style={{
                 display: "inline",
-                height: BOX_SIZE,
+                height: BOX_SIZE_BIG,
                 marginTop: "0.5rem",
               }}
             >

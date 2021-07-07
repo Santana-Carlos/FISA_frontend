@@ -166,92 +166,106 @@ class CambioContrasena extends Component {
             className="o-contentForm-parametros30per"
             style={{ height: "80%", justifyContent: "center" }}
           >
-            <div style={{ marginBottom: BOX_SPACING }}>
-              <TextField
-                label="Cédula"
+            <div style={{ height: "16rem", width: "100%" }}>
+              <div style={{ marginBottom: BOX_SPACING }}>
+                <TextField
+                  label="Cédula"
+                  variant="outlined"
+                  value={this.state.temp_nid_seg || ""}
+                  name="input_nid_seg"
+                  onChange={this.handleChange}
+                  className="o-space"
+                  margin="dense"
+                />
+              </div>
+              <div style={{ marginBottom: BOX_SPACING }}>
+                <TextField
+                  label="Correo"
+                  variant="outlined"
+                  name="input_email_seg"
+                  value={this.state.temp_email_seg || ""}
+                  onChange={this.handleChange}
+                  className="o-space"
+                  margin="dense"
+                />
+              </div>
+              <FormControl
                 variant="outlined"
-                value={this.state.temp_nid_seg || ""}
-                name="input_nid_seg"
-                onChange={this.handleChange}
-                className="o-space"
                 margin="dense"
-              />
-            </div>
-            <div style={{ marginBottom: BOX_SPACING }}>
-              <TextField
-                label="Correo"
+                style={{ width: "100%" }}
+              >
+                <InputLabel>Contraseña</InputLabel>
+                <OutlinedInput
+                  type={this.state.showpass ? "text" : "password"}
+                  value={this.state.temp_pass_seg || ""}
+                  name="input_pass_seg"
+                  className="o-space"
+                  style={{ marginBottom: BOX_SPACING }}
+                  onChange={this.handleChange}
+                  label={"Contraseña"}
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <IconButton
+                        disabled={this.state.temp_accion === ""}
+                        size="small"
+                        onClick={() =>
+                          this.setState({ showpass: !this.state.showpass })
+                        }
+                      >
+                        {this.state.showpass ? (
+                          <Visibility />
+                        ) : (
+                          <VisibilityOff />
+                        )}
+                      </IconButton>
+                    </InputAdornment>
+                  }
+                />
+              </FormControl>
+              <FormControl
                 variant="outlined"
-                name="input_email_seg"
-                value={this.state.temp_email_seg || ""}
-                onChange={this.handleChange}
-                className="o-space"
                 margin="dense"
-              />
+                style={{ width: "100%" }}
+                error={this.state.temp_pass_seg !== this.state.temp_passcon_seg}
+              >
+                <InputLabel>Confirmar contraseña</InputLabel>
+                <OutlinedInput
+                  type={this.state.showpasscon ? "text" : "password"}
+                  value={this.state.temp_passcon_seg || ""}
+                  name="input_passcon_seg"
+                  className="o-space"
+                  style={{ marginBottom: BOX_SPACING }}
+                  onChange={this.handleChange}
+                  label={"Confirmar contraseña"}
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <IconButton
+                        disabled={this.state.temp_accion === ""}
+                        size="small"
+                        onClick={() =>
+                          this.setState({
+                            showpasscon: !this.state.showpasscon,
+                          })
+                        }
+                      >
+                        {this.state.showpasscon ? (
+                          <Visibility />
+                        ) : (
+                          <VisibilityOff />
+                        )}
+                      </IconButton>
+                    </InputAdornment>
+                  }
+                />
+                {this.state.temp_pass_seg !== this.state.temp_passcon_seg ? (
+                  <FormHelperText>Las contraseñas no coinciden</FormHelperText>
+                ) : null}
+              </FormControl>
             </div>
-            <FormControl variant="outlined" margin="dense">
-              <InputLabel>Contraseña</InputLabel>
-              <OutlinedInput
-                type={this.state.showpass ? "text" : "password"}
-                value={this.state.temp_pass_seg || ""}
-                name="input_pass_seg"
-                className="o-space"
-                style={{ marginBottom: BOX_SPACING }}
-                onChange={this.handleChange}
-                label={"Contraseña"}
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton
-                      disabled={this.state.temp_accion === ""}
-                      size="small"
-                      onClick={() =>
-                        this.setState({ showpass: !this.state.showpass })
-                      }
-                    >
-                      {this.state.showpass ? <Visibility /> : <VisibilityOff />}
-                    </IconButton>
-                  </InputAdornment>
-                }
-              />
-            </FormControl>
-            <FormControl
-              variant="outlined"
-              margin="dense"
-              error={this.state.temp_pass_seg !== this.state.temp_passcon_seg}
+            <div
+              className="o-btnAnadirTable"
+              style={{ marginTop: BOX_SPACING }}
             >
-              <InputLabel>Confirmar contraseña</InputLabel>
-              <OutlinedInput
-                type={this.state.showpasscon ? "text" : "password"}
-                value={this.state.temp_passcon_seg || ""}
-                name="input_passcon_seg"
-                className="o-space"
-                style={{ marginBottom: BOX_SPACING }}
-                onChange={this.handleChange}
-                label={"Confirmar contraseña"}
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton
-                      disabled={this.state.temp_accion === ""}
-                      size="small"
-                      onClick={() =>
-                        this.setState({
-                          showpasscon: !this.state.showpasscon,
-                        })
-                      }
-                    >
-                      {this.state.showpasscon ? (
-                        <Visibility />
-                      ) : (
-                        <VisibilityOff />
-                      )}
-                    </IconButton>
-                  </InputAdornment>
-                }
-              />
-              {this.state.temp_pass_seg !== this.state.temp_passcon_seg ? (
-                <FormHelperText>Las contraseñas no coinciden</FormHelperText>
-              ) : null}
-            </FormControl>
-            <div className="o-btnAnadirTable">
               <GreenButton onClick={this.callApi}>Guardar</GreenButton>
             </div>
           </div>
