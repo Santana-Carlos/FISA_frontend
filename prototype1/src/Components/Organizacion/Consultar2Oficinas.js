@@ -390,6 +390,7 @@ class Consultar2Oficinas extends Component {
   render() {
     const BOX_SPACING = this.props.box_spacing;
     const BOX_SIZE_TABLE = this.props.box_size_table;
+    const rol = this.props.rol;
 
     return (
       <div className="o-cardContent">
@@ -456,7 +457,7 @@ class Consultar2Oficinas extends Component {
                           >
                             <IconEdit />
                           </IconButton>
-                          {this.props.rol !== "Comercial" ? (
+                          {rol !== "Comercial" && rol !== "Consulta" ? (
                             <IconButton
                               size="small"
                               color="secondary"
@@ -486,7 +487,7 @@ class Consultar2Oficinas extends Component {
                 </TableBody>
               </Table>
             </TableContainer>
-            {this.props.rol !== "Comercial" ? (
+            {rol !== "Comercial" && rol !== "Consulta" ? (
               <div className="o-btnAnadirTable">
                 <BlueButton
                   onClick={() =>
@@ -782,7 +783,7 @@ class Consultar2Oficinas extends Component {
                 {"Cancelar"}
               </RedButton>
             </div>
-            {this.props.rol !== "Comercial" ? (
+            {rol !== "Comercial" && rol !== "Consulta" ? (
               <div className="o-btnBotNav-btnDiag2">
                 <GreenButton onClick={() => this.handleClose(true)}>
                   {"Guardar"}

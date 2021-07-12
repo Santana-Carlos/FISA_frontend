@@ -710,6 +710,7 @@ class Consultar3Contactos extends Component {
     const BOX_SIZE_TABLE = this.props.box_size_table;
     const currentPage = this.state.currentPage;
     const rowsPerPage = this.state.rowsPerPage;
+    const rol = this.props.rol;
 
     return (
       <div className="o-cardContent">
@@ -795,7 +796,7 @@ class Consultar3Contactos extends Component {
                         >
                           <IconEdit />
                         </IconButton>
-                        {this.props.rol !== "Comercial" ? (
+                        {rol !== "Comercial" && rol !== "Consulta" ? (
                           <IconButton
                             size="small"
                             color="secondary"
@@ -831,7 +832,7 @@ class Consultar3Contactos extends Component {
               </TableBody>
             </Table>
           </TableContainer>
-          {this.props.rol !== "Comercial" ? (
+          {rol !== "Comercial" && rol !== "Consulta" ? (
             <React.Fragment>
               <div className="o-btnAnadirTable" style={{ width: "10rem" }}>
                 <BlueButton
@@ -1264,7 +1265,7 @@ class Consultar3Contactos extends Component {
                   Cancelar
                 </RedButton>
               </div>
-              {this.props.rol !== "Comercial" ? (
+              {rol !== "Comercial" && rol !== "Consulta" ? (
                 <div className="o-btnBotNav-btnDiag2">
                   <GreenButton onClick={() => this.handleClose(true)}>
                     Guardar

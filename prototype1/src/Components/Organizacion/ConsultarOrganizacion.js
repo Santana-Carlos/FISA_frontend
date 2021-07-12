@@ -333,6 +333,7 @@ class ConsultarOrganizacion extends Component {
     const BOX_SIZE_X = this.state.box_size_x;
     const currentPage = this.state.currentPage;
     const rowsPerPage = this.state.rowsPerPage;
+    const rol = this.props.rol;
 
     return (
       <Switch>
@@ -511,7 +512,7 @@ class ConsultarOrganizacion extends Component {
                                 >
                                   <IconEdit />
                                 </IconButton>
-                                {this.props.rol !== "Comercial" ? (
+                                {rol !== "Comercial" && rol !== "Consulta" ? (
                                   <IconButton
                                     size="small"
                                     color="secondary"

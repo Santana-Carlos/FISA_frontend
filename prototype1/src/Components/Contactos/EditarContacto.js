@@ -406,6 +406,8 @@ class EditarContacto extends Component {
 
   render() {
     const BOX_SPACING = this.props.box_spacing;
+    const rol = this.props.rol;
+
     return (
       <div className="o-cardContent">
         {this.props.temp_id_con === "" ? (
@@ -817,7 +819,7 @@ class EditarContacto extends Component {
           </div>
           <div className="o-btnBotNavDoble">
             <div className="o-btnBotNav-btn">
-              {this.props.rol !== "Comercial" ? (
+              {rol !== "Comercial" && rol !== "Consulta" ? (
                 <GreenButton onClick={this.callApiPutContacto}>
                   {"Guardar"}
                 </GreenButton>

@@ -457,6 +457,7 @@ class ConsultarContacto extends Component {
     const currentPage = this.state.currentPage;
     const rowsPerPage = this.state.rowsPerPage;
     const filter = this.state.currentFilter;
+    const rol = this.props.rol;
 
     return (
       <Switch>
@@ -742,7 +743,7 @@ class ConsultarContacto extends Component {
                                 >
                                   <IconEdit />
                                 </IconButton>
-                                {this.props.rol !== "Comercial" ? (
+                                {rol !== "Comercial" && rol !== "Consulta" ? (
                                   <IconButton
                                     size="small"
                                     color="secondary"

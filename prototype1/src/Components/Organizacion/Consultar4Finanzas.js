@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import "date-fns";
 import DateFnsUtils from "@date-io/date-fns";
 import {
@@ -457,6 +457,8 @@ class Consultar4Finanzas extends Component {
   render() {
     const BOX_SPACING = this.props.box_spacing;
     const SUBTITLE_SPACING = this.props.subtitle_spacing;
+    const rol = this.props.rol;
+
     return (
       <div className="o-cardContent">
         <div className="o-contentTittle">
@@ -737,8 +739,14 @@ class Consultar4Finanzas extends Component {
                     this.setState({ openInter: true });
                   }}
                 >
-                  Editar
-                  <IconEdit style={{ marginLeft: "0.7rem" }} size="small" />
+                  {rol !== "Comercial" && rol !== "Consulta" ? (
+                    <Fragment>
+                      Editar
+                      <IconEdit style={{ marginLeft: "0.7rem" }} size="small" />
+                    </Fragment>
+                  ) : (
+                    "Consultar"
+                  )}
                 </BlueButton>
               </div>
             </div>
@@ -904,7 +912,7 @@ class Consultar4Finanzas extends Component {
           </div>
           <div className="o-btnBotNavDoble">
             <div className="o-btnBotNav-btn">
-              {this.props.rol !== "Comercial" ? (
+              {rol !== "Comercial" && rol !== "Consulta" ? (
                 <GreenButton
                   onClick={() => {
                     if (this.state.temp_id_fin === "") {
@@ -1049,7 +1057,7 @@ class Consultar4Finanzas extends Component {
                 {"Cancelar"}
               </RedButton>
             </div>
-            {this.props.rol !== "Comercial" ? (
+            {rol !== "Comercial" && rol !== "Consulta" ? (
               <div className="o-btnBotNav-btnDiag2">
                 <GreenButton onClick={() => this.handleClose(true)}>
                   {"Guardar"}

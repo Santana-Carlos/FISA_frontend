@@ -483,6 +483,8 @@ class ConsultarVisitas extends Component {
   render() {
     let BOX_SPACING = this.state.box_spacing;
     let BOX_SIZE = this.state.box_size;
+    const rol = this.props.rol;
+
     return (
       <Switch>
         <Route exact path="/consultar_visitas">
@@ -615,7 +617,7 @@ class ConsultarVisitas extends Component {
                               >
                                 <IconSelect />
                               </IconButton>
-                              {this.props.rol !== "Comercial" ? (
+                              {rol !== "Comercial" && rol !== "Consulta" ? (
                                 <IconButton
                                   size="small"
                                   color="secondary"
@@ -749,7 +751,9 @@ class ConsultarVisitas extends Component {
                             this.setState({ addVisit: true });
                           }}
                         >
-                          {"Editar"}
+                          {rol !== "Comercial" && rol !== "Consulta"
+                            ? "Editar"
+                            : "Ver"}
                         </GreenButton>
                       </div>
                       <div
@@ -1069,7 +1073,7 @@ class ConsultarVisitas extends Component {
                     Cancelar
                   </RedButton>
                 </div>
-                {this.props.rol !== "Comercial" ? (
+                {rol !== "Comercial" && rol !== "Consulta" ? (
                   <div className="o-btnBotNav-btnDiag2">
                     <GreenButton onClick={() => this.handleClose(true)}>
                       Guardar

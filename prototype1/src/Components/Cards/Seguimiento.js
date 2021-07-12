@@ -21,7 +21,7 @@ const Seguimiento = () => {
             >
               <SideButton size="small">Consultar visitas</SideButton>
             </NavLink>
-            {rol !== "Comercial" ? (
+            {rol !== "Comercial" && rol !== "Consulta" ? (
               <NavLink
                 className="o-btnSidebar o-btnSidebar-seguimiento"
                 activeClassName="o-btnSidebar o-btnSidebar-seguimientoActive"
@@ -36,7 +36,7 @@ const Seguimiento = () => {
               <Route path="/consultar_visitas">
                 <ConsultarVisitas token={token} rol={rol} />
               </Route>
-              {rol !== "Comercial" ? (
+              {rol !== "Comercial" && rol !== "Consulta" ? (
                 <Route path="/crear_visitas">
                   <CrearVisitas token={token} />
                 </Route>

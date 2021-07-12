@@ -220,6 +220,8 @@ class Consultar5Files extends Component {
 
   render() {
     const BOX_SIZE = this.props.box_size;
+    const rol = this.props.rol;
+
     return (
       <div className="o-cardContent">
         <div className="o-contentTittle">
@@ -309,7 +311,7 @@ class Consultar5Files extends Component {
                           >
                             <IconDownload />
                           </IconButton>
-                          {this.props.rol !== "Comercial" ? (
+                          {rol !== "Comercial" && rol !== "Consulta" ? (
                             <IconButton
                               size="small"
                               color="secondary"
@@ -338,7 +340,7 @@ class Consultar5Files extends Component {
                 </TableBody>
               </Table>
             </TableContainer>
-            {this.props.rol !== "Comercial" ? (
+            {rol !== "Comercial" && rol !== "Consulta" ? (
               <div className="o-btnAnadirTable">
                 <BlueButton variant="contained" component="label">
                   Subir

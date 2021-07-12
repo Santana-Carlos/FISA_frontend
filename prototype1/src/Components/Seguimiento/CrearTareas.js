@@ -261,6 +261,8 @@ class CrearTareas extends Component {
 
   render() {
     const BOX_SPACING = this.props.box_spacing;
+    const rol = this.props.rol;
+
     return (
       <div className="o-cardContent">
         {this.props.id_vis === "" ? (
@@ -343,20 +345,22 @@ class CrearTareas extends Component {
                           >
                             <IconEdit />
                           </IconButton>
-                          <IconButton
-                            size="small"
-                            color="secondary"
-                            onClick={() =>
-                              this.setState(
-                                {
-                                  temp_id_tar: obj.id,
-                                },
-                                this.handleClickOpenDel
-                              )
-                            }
-                          >
-                            <IconDelete />
-                          </IconButton>
+                          {rol !== "Comercial" && rol !== "Consulta" ? (
+                            <IconButton
+                              size="small"
+                              color="secondary"
+                              onClick={() =>
+                                this.setState(
+                                  {
+                                    temp_id_tar: obj.id,
+                                  },
+                                  this.handleClickOpenDel
+                                )
+                              }
+                            >
+                              <IconDelete />
+                            </IconButton>
+                          ) : null}
                         </div>
                       </StyledTableCell>
                     ) : null}
@@ -374,7 +378,7 @@ class CrearTareas extends Component {
               </TableBody>
             </Table>
           </TableContainer>
-          {this.props.rol !== "Comercial" ? (
+          {rol !== "Comercial" && rol !== "Consulta" ? (
             <div className="o-btnAnadirTable">
               <BlueButton
                 onClick={() =>
@@ -532,11 +536,13 @@ class CrearTareas extends Component {
                 Cancelar
               </RedButton>
             </div>
-            <div className="o-btnBotNav-btnDiag2">
-              <GreenButton onClick={() => this.handleClose(true)}>
-                Guardar
-              </GreenButton>
-            </div>
+            {rol !== "Comercial" && rol !== "Consulta" ? (
+              <div className="o-btnBotNav-btnDiag2">
+                <GreenButton onClick={() => this.handleClose(true)}>
+                  Guardar
+                </GreenButton>
+              </div>
+            ) : null}
           </DialogActions>
         </Dialog>
 

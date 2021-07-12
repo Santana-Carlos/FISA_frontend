@@ -21,7 +21,7 @@ const Organizacion = () => {
             >
               <SideButton>Consultar organización</SideButton>
             </NavLink>
-            {rol !== "Comercial" ? (
+            {rol !== "Comercial" && rol !== "Consulta" ? (
               <NavLink
                 className="o-btnSidebar o-btnSidebar-organizacion"
                 activeClassName="o-btnSidebar o-btnSidebar-organizacionActive"
@@ -36,7 +36,7 @@ const Organizacion = () => {
               <Route path="/consultar_organizacion">
                 <ConsultarOrganizacion token={token} rol={rol} />
               </Route>
-              {rol !== "Comercial" ? (
+              {rol !== "Comercial" && rol !== "Consulta" ? (
                 <Route path="/crear_organizacion">
                   <CrearOrganizacion token={token} />
                 </Route>

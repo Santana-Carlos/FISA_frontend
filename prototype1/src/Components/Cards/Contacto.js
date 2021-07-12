@@ -22,7 +22,7 @@ const Contacto = () => {
             >
               <SideButton size="small">Consultar contactos</SideButton>
             </NavLink>
-            {rol !== "Comercial" ? (
+            {rol !== "Comercial" && rol !== "Consulta" ? (
               <NavLink
                 className="o-btnSidebar o-btnSidebar-contacto"
                 activeClassName="o-btnSidebar o-btnSidebar-contactoActive"
@@ -37,7 +37,7 @@ const Contacto = () => {
               <Route path="/consultar_contacto">
                 <ConsultarContacto token={token} rol={rol} />
               </Route>
-              {rol !== "Comercial" ? (
+              {rol !== "Comercial" && rol !== "Consulta" ? (
                 <Route path="/crear_contacto">
                   <CrearContacto token={token} />
                 </Route>

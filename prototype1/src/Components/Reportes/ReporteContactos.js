@@ -598,7 +598,7 @@ class ReporteContacto extends Component {
             </div>
             <TableContainer
               className="o-tableBase-consultas"
-              style={{ display: "inline", maxHeight: BOX_SIZE }}
+              style={{ display: "inline", height: BOX_SIZE }}
             >
               <Table stickyHeader size="small">
                 <TableHead>
@@ -846,7 +846,7 @@ class ReporteContacto extends Component {
                   className="o-tableBase-consultas"
                   style={{
                     display: "inline",
-                    maxHeight: BOX_SIZE_X,
+                    height: BOX_SIZE_X,
                   }}
                 >
                   <Table stickyHeader size="small">

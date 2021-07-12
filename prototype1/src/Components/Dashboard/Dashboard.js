@@ -97,13 +97,15 @@ const Dashboard = () => {
           >
             <Button className="o-btnBanner-btn">Seguimiento</Button>
           </NavLink>
-          <NavLink
-            className="o-btnBanner"
-            activeClassName="o-btnBannerActive o-btnReportes-active"
-            to="/dashboard/reportes#/reporte_organizaciones"
-          >
-            <Button className="o-btnBanner-btn">Reportes</Button>
-          </NavLink>
+          {rol !== "Consulta" ? (
+            <NavLink
+              className="o-btnBanner"
+              activeClassName="o-btnBannerActive o-btnReportes-active"
+              to="/dashboard/reportes#/reporte_organizaciones"
+            >
+              <Button className="o-btnBanner-btn">Reportes</Button>
+            </NavLink>
+          ) : null}
           {rol === "Administrador" || rol === "MasterUser" ? (
             <NavLink
               className="o-btnBanner"
@@ -148,9 +150,11 @@ const Dashboard = () => {
         <Route path="/dashboard/seguimiento">
           <Seguimiento rol={rol} />
         </Route>
-        <Route path="/dashboard/reportes">
-          <Reportes />
-        </Route>
+        {rol !== "Consulta" ? (
+          <Route path="/dashboard/reportes">
+            <Reportes />
+          </Route>
+        ) : null}
         {rol === "Administrador" || rol === "MasterUser" ? (
           <Route path="/dashboard/administracion">
             <Administracion />

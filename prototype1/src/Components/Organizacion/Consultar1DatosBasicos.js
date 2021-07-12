@@ -347,6 +347,8 @@ class Consultar1DatosBasicos extends Component {
 
   render() {
     const BOX_SPACING = this.props.box_spacing;
+    const rol = this.props.rol;
+
     return (
       <div className="o-cardContent">
         <div className="o-contentTittle">
@@ -815,7 +817,7 @@ class Consultar1DatosBasicos extends Component {
         <div className="o-btnBotNav">
           <div className="o-btnBotNavDoble">
             <div className="o-btnBotNav-btn">
-              {this.props.rol !== "Comercial" ? (
+              {rol !== "Comercial" && rol !== "Consulta" ? (
                 <GreenButton onClick={this.apiPost}>Guardar</GreenButton>
               ) : null}
             </div>
