@@ -623,46 +623,33 @@ class CrearOrganizacion4Finanzas extends Component {
                 })}
               </Select>
             </FormControl>
-            <div className="o-row">
-              <div
-                style={{
-                  maxWidth: "46%",
-                  marginLeft: 0,
-                  marginBottom: BOX_SPACING,
-                }}
-              >
-                <TextField
-                  label="Ttl. activos"
-                  variant="outlined"
-                  decimalPlaces={0}
-                  maximumValue={"999999999999999999999999"}
-                  minimumValue={"-999999999999999999999999"}
-                  value={this.state.temp_totalact_fin || ""}
-                  name="input_totalact_fin"
-                  onChange={this.handleChange}
-                  className="o-space"
-                  margin="dense"
-                />
-              </div>
-              <div
-                style={{
-                  marginLeft: "1rem",
-                  marginBottom: BOX_SPACING,
-                }}
-              >
-                <TextField
-                  label="Ttl. pasivos"
-                  variant="outlined"
-                  decimalPlaces={0}
-                  maximumValue={"999999999999999999999999"}
-                  minimumValue={"-999999999999999999999999"}
-                  value={this.state.temp_totalpas_fin || ""}
-                  name="input_totalpas_fin"
-                  onChange={this.handleChange}
-                  className="o-space"
-                  margin="dense"
-                />
-              </div>
+            <div style={{ marginBottom: BOX_SPACING }}>
+              <TextField
+                label="Total activos"
+                variant="outlined"
+                decimalPlaces={0}
+                maximumValue={"999999999999999999999999"}
+                minimumValue={"-999999999999999999999999"}
+                value={this.state.temp_totalact_fin || ""}
+                name="input_totalact_fin"
+                onChange={this.handleChange}
+                className="o-space"
+                margin="dense"
+              />
+            </div>
+            <div style={{ marginBottom: BOX_SPACING }}>
+              <TextField
+                label="Total pasivos"
+                variant="outlined"
+                decimalPlaces={0}
+                maximumValue={"999999999999999999999999"}
+                minimumValue={"-999999999999999999999999"}
+                value={this.state.temp_totalpas_fin || ""}
+                name="input_totalpas_fin"
+                onChange={this.handleChange}
+                className="o-space"
+                margin="dense"
+              />
             </div>
             <div style={{ marginBottom: BOX_SPACING }}>
               <TextField
@@ -728,6 +715,7 @@ class CrearOrganizacion4Finanzas extends Component {
                 label="Clasificación"
                 name="input_clas_fin"
                 className="o-space"
+                style={{ marginBottom: BOX_SPACING }}
               >
                 {this.state.clas_fin_api.map((obj, i) => {
                   return (
@@ -751,20 +739,6 @@ class CrearOrganizacion4Finanzas extends Component {
                 className="o-space"
                 margin="dense"
               />
-            </div>
-            <div className="o-textBtn">
-              <div className="o-inner-textBtn">Operaciones internaciones</div>
-              <div className="o-inner-testBtnbtn">
-                <BlueButton
-                  style={{ justifyContent: "center" }}
-                  onClick={() => {
-                    this.setState({ openInter: true });
-                  }}
-                >
-                  Editar
-                  <IconEdit style={{ marginLeft: "0.7rem" }} size="small" />
-                </BlueButton>
-              </div>
             </div>
           </div>
 
@@ -874,16 +848,30 @@ class CrearOrganizacion4Finanzas extends Component {
           <Link to="/crear_organizacion/contactos" className="o-btnBotNav-btn">
             <BlueButton>Anterior</BlueButton>
           </Link>
+          <div className="o-textBtn">
+            <div className="o-inner-textBtn">Operaciones internaciones</div>
+            <div className="o-inner-testBtnbtn">
+              <BlueButton
+                style={{ justifyContent: "center" }}
+                onClick={() => {
+                  this.setState({ openInter: true });
+                }}
+              >
+                Editar
+                <IconEdit style={{ marginLeft: "0.7rem" }} size="small" />
+              </BlueButton>
+            </div>
+          </div>
           <div
             style={{
               display: "flex",
               flexDirection: "row",
               alignItems: "center",
-              marginLeft: 0,
+              margin: "0 auto 0 0",
             }}
           >
             <FormControlLabel
-              style={{ margin: "0 0 0 2rem" }}
+              style={{ margin: 0 }}
               control={
                 <CheckboxTri
                   checked={this.state.temp_importcheck_fin}

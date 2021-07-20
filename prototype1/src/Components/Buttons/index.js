@@ -1,5 +1,11 @@
 import { withStyles } from "@material-ui/core/styles";
-import { Button, TableCell, Chip, IconButton } from "@material-ui/core";
+import {
+  Button,
+  TableCell,
+  Chip,
+  IconButton,
+  Tooltip,
+} from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
 
 export const SideButton = withStyles((theme) => ({
@@ -185,3 +191,11 @@ export const StyledIconButton = withStyles((theme) => ({
     margin: "0 0 0 0.5rem",
   },
 }))(IconButton);
+
+export const StyledTooltip = withStyles({
+  tooltip: {
+    padding: "8px 16px",
+    fontSize: 12,
+    margin: "-10px 0",
+  },
+})(Tooltip);

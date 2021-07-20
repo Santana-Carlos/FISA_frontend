@@ -172,8 +172,10 @@ class ReporteContacto extends Component {
   apiSearch = () => {
     this.setState({ loading: true });
     const nombreOrg = this.state.nombre_org + "%";
-    const nombreCon = this.state.nombre_con + "%";
-    const apellCon = this.state.apell_con + "%";
+    const nombreCon =
+      this.state.nombre_con === "" ? "%" : "%" + this.state.nombre_con + "%";
+    const apellCon =
+      this.state.apell_con === "" ? "%" : "%" + this.state.apell_con + "%";
     const cargo =
       this.state.cargo_con === "" ? "%" : this.state.cargo_con + "%";
     const email =
@@ -825,7 +827,6 @@ class ReporteContacto extends Component {
           PaperProps={{ style: { height: "100%" } }}
           fullWidth
           maxWidth="xl"
-          maxHeight="xl"
         >
           <DialogContent
             style={{

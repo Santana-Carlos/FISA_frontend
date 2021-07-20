@@ -27,6 +27,7 @@ import {
   RedButton,
   StyledTableCellSuperTiny as StyledTableCell,
   StyledIconButton as IconButton,
+  StyledTooltip,
 } from "../Buttons";
 import {
   Delete as IconDelete,
@@ -718,9 +719,13 @@ class ConsultarContacto extends Component {
                             <StyledTableCell size="small">
                               {obj.celular === null ? emptyCell : obj.celular}
                             </StyledTableCell>
-                            <StyledTableCell size="small">
-                              {obj.email === null ? emptyCell : obj.email}
-                            </StyledTableCell>
+                            <StyledTooltip
+                              title={obj.email === null ? emptyCell : obj.email}
+                            >
+                              <StyledTableCell size="small">
+                                {obj.email === null ? emptyCell : obj.email}
+                              </StyledTableCell>
+                            </StyledTooltip>
                             <StyledTableCell size="small">
                               {obj.observaciones === null
                                 ? emptyCell
@@ -860,7 +865,6 @@ class ConsultarContacto extends Component {
               PaperProps={{ style: { height: "100%" } }}
               fullWidth
               maxWidth="xl"
-              maxHeight="xl"
             >
               <DialogContent
                 style={{
@@ -1029,9 +1033,15 @@ class ConsultarContacto extends Component {
                                     ? emptyCell
                                     : obj.celular}
                                 </StyledTableCell>
-                                <StyledTableCell size="small">
-                                  {obj.email === null ? emptyCell : obj.email}
-                                </StyledTableCell>
+                                <StyledTooltip
+                                  title={
+                                    obj.email === null ? emptyCell : obj.email
+                                  }
+                                >
+                                  <StyledTableCell size="small">
+                                    {obj.email === null ? emptyCell : obj.email}
+                                  </StyledTableCell>
+                                </StyledTooltip>
                                 <StyledTableCell size="small">
                                   {obj.observaciones === null
                                     ? emptyCell

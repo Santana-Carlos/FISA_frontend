@@ -672,7 +672,6 @@ class ConsultarOrganizacion extends Component {
               PaperProps={{ style: { height: "100%" } }}
               fullWidth
               maxWidth="xl"
-              maxHeight="xl"
             >
               <DialogContent
                 style={{
