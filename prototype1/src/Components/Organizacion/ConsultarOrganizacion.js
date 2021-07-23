@@ -153,8 +153,10 @@ class ConsultarOrganizacion extends Component {
     this.setState({ loading: true });
 
     const numero = this.state.nid_org + "%";
-    const nombre = this.state.nomcom_org + "%";
-    const razon = this.state.razsoc_org + "%";
+    const nombre =
+      this.state.nomcom_org === "" ? "%" : "%" + this.state.nomcom_org + "%";
+    const razon =
+      this.state.razsoc_org === "" ? "%" : "%" + this.state.razsoc_org + "%";
     const documento =
       this.state.tipoid_org === ""
         ? this.state.tipoid_org_api.map((obj) => obj.id)

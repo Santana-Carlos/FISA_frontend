@@ -177,13 +177,14 @@ class ConsultarContacto extends Component {
 
   apiSearch = () => {
     this.setState({ loading: true });
-    const nombreOrg = this.state.nombre_org + "%";
+    const nombreOrg =
+      this.state.nombre_org === "" ? "%" : "%" + this.state.nombre_org + "%";
     const nombreCon =
       this.state.nombre_con === "" ? "%" : "%" + this.state.nombre_con + "%";
     const apellCon =
       this.state.apell_con === "" ? "%" : "%" + this.state.apell_con + "%";
     const cargo =
-      this.state.cargo_con === "" ? "%" : this.state.cargo_con + "%";
+      this.state.cargo_con === "" ? "%" : "%" + this.state.cargo_con + "%";
     const email =
       this.state.correo_con === "" ? "%" : this.state.correo_con + "%";
     const pais = this.state.pais_ofi === "" ? "%" : this.state.pais_ofi;
