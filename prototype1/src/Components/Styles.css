@@ -490,7 +490,7 @@
   flex-wrap: wrap;
   text-align: start;
   font-size: 0.9em;
-  margin: 0 0 0.8rem 0;
+  margin: 0 0 0.6rem 0;
 }
 
 .o-textSub2 {
@@ -512,4 +512,15 @@
   width: 63%;
   max-height: 100%;
   margin: 0 auto;
+}
+
+.o-customChips-ciiu {
+  margin: 0 0 0 8px;
+  color: gray;
+  cursor: pointer;
+  opacity: 0.5;
+}
+
+.o-customChips-ciiu:hover {
+  opacity: 1;
 }

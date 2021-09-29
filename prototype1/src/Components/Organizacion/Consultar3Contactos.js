@@ -462,7 +462,8 @@ class Consultar3Contactos extends Component {
     });
   };
 
-  apiSearch = () => {
+  apiSearch = (e) => {
+    e?.preventDefault();
     this.setState({ loadingDiag: true });
     const nombreOrg = this.state.search_nombre_org + "%";
     const nombreCon = this.state.search_nombre_con + "%";
@@ -530,6 +531,7 @@ class Consultar3Contactos extends Component {
           //console.log(data);
           if (data.success) {
             this.setState({
+              currentPage: 0,
               loadingDiag: false,
               contacts_api: data.contactos,
               reqText: false,
@@ -832,6 +834,7 @@ class Consultar3Contactos extends Component {
               </TableBody>
             </Table>
           </TableContainer>
+          <p>{"Contactos totales: " + (this.state.contacts.length || "0")}</p>
           {rol !== "Comercial" && rol !== "Consulta" ? (
             <React.Fragment>
               <div className="o-btnAnadirTable" style={{ width: "10rem" }}>
@@ -1328,7 +1331,7 @@ class Consultar3Contactos extends Component {
           </DialogTitle>
           <DialogContent style={{ textAlign: "center", overflowY: "hidden" }}>
             <div className="o-diag-contactExist-big">
-              <div
+              <form
                 className="o-consultas-containerInit"
                 style={{ marginBottom: "1rem" }}
               >
@@ -1379,7 +1382,9 @@ class Consultar3Contactos extends Component {
                 </div>
                 <div className="o-consultas-btn">
                   <div className="o-btnConsultas">
-                    <BlueButton onClick={this.apiSearch}>Buscar</BlueButton>
+                    <BlueButton type="submit" onClick={this.apiSearch}>
+                      Buscar
+                    </BlueButton>
                   </div>
                   <div className="o-btnConsultas">
                     <RedButton onClick={this.clearFunc}>Limpiar</RedButton>
@@ -1390,7 +1395,7 @@ class Consultar3Contactos extends Component {
                     </BlueButton>
                   </div>
                 </div>
-              </div>
+              </form>
               <TableContainer
                 className="o-tableBase-consultas"
                 style={{ display: "inline", height: BOX_SIZE_TABLE }}
@@ -1406,7 +1411,7 @@ class Consultar3Contactos extends Component {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {this.state.contacts
+                    {this.state.contacts_api
                       .slice(
                         currentPage * rowsPerPage,
                         currentPage * rowsPerPage + rowsPerPage
@@ -1469,7 +1474,7 @@ class Consultar3Contactos extends Component {
                 }}
                 rowsPerPageOptions={[15, 25, 45]}
                 colSpan={9}
-                count={this.state.contacts.length}
+                count={this.state.contacts_api.length}
                 rowsPerPage={rowsPerPage}
                 page={currentPage}
                 onChangePage={(e, page) => this.setState({ currentPage: page })}

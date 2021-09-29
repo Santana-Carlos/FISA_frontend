@@ -46,7 +46,8 @@ const Login = () => {
     }
   };
 
-  const callApiLogin = () => {
+  const callApiLogin = (e) => {
+    e?.preventDefault();
     setloading(true);
     const data = {
       usuario: user,
@@ -84,7 +85,7 @@ const Login = () => {
 
   return (
     <div className="o-login">
-      <div className="o-loginCard">
+      <form className="o-loginCard">
         <img className="o-logoLogin" src={logo} alt="Logo FISA" />
         <div className="o-space-log">
           <TextField
@@ -125,7 +126,7 @@ const Login = () => {
             {"Iniciar sesión"}
           </BlueButton>
         </div>
-      </div>
+      </form>
 
       <div
         style={{

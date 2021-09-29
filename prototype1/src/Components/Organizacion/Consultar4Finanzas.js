@@ -63,6 +63,7 @@ class Consultar4Finanzas extends Component {
       temp_cuorealafi_fin: "",
       temp_cuopau_fin: "",
       temp_fecpau_fin: "",
+      temp_feccons_fin: "",
       temp_pendfac_fin: "",
       userUpdated: "",
       fechaUpdated: "",
@@ -140,6 +141,7 @@ class Consultar4Finanzas extends Component {
             temp_cuorealafi_fin: data.informacion.cuota_real_pagada,
             temp_cuopau_fin: data.informacion.cuota_pautas,
             temp_fecpau_fin: data.informacion.fecha_edicion_pauta,
+            temp_feccons_fin: data.informacion.fecha_constitucion,
             temp_pendfac_fin: data.informacion.pendiente_facturacion,
             userUpdated: data.usuario_actualizacion.editor,
             fechaUpdated: data.informacion.updated_at,
@@ -275,6 +277,7 @@ class Consultar4Finanzas extends Component {
       cuota_real_pagada: this.state.temp_cuorealafi_fin,
       cuota_pautas: this.state.temp_cuopau_fin,
       fecha_edicion_pauta: this.state.temp_fecpau_fin,
+      fecha_constitucion: this.state.temp_feccons_fin,
       pendiente_facturacion: this.state.temp_pendfac_fin,
       importa: this.state.temp_importcheck_fin,
       exporta: this.state.temp_exportcheck_fin,
@@ -323,6 +326,7 @@ class Consultar4Finanzas extends Component {
       cuota_real_pagada: this.state.temp_cuorealafi_fin,
       cuota_pautas: this.state.temp_cuopau_fin,
       fecha_edicion_pauta: this.state.temp_fecpau_fin,
+      fecha_constitucion: this.state.temp_feccons_fin,
       pendiente_facturacion: this.state.temp_pendfac_fin,
       importa: this.state.temp_importcheck_fin,
       exporta: this.state.temp_exportcheck_fin,
@@ -451,6 +455,15 @@ class Consultar4Finanzas extends Component {
       this.setState({ temp_fecpau_fin: date });
     } else {
       this.setState({ temp_fecpau_fin: "" });
+    }
+  };
+
+  handleDateCons = (date) => {
+    if (date !== null && date !== "") {
+      date.setHours(12);
+      this.setState({ temp_feccons_fin: date });
+    } else {
+      this.setState({ temp_feccons_fin: "" });
     }
   };
 
@@ -786,41 +799,53 @@ class Consultar4Finanzas extends Component {
                 />
               </MuiPickersUtilsProvider>
             </div>
+            <div style={{ marginBottom: BOX_SPACING }}>
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <KeyboardDatePicker
+                  disableToolbar
+                  inputVariant="outlined"
+                  variant="inline"
+                  format="dd/MM/yyyy"
+                  margin="dense"
+                  label="Fecha constitución"
+                  value={this.state.temp_feccons_fin || null}
+                  onChange={this.handleDateCons}
+                  className="o-space"
+                  invalidDateMessage={"Fecha inválida"}
+                  autoOk={true}
+                  KeyboardButtonProps={{
+                    "aria-label": "change date",
+                  }}
+                />
+              </MuiPickersUtilsProvider>
+            </div>
             <div
               style={{
                 display: "flex",
                 flexDirection: "row",
-                margin: "1rem 0 0.2rem",
+                fontSize: 14,
+                margin: "0.6rem 0 0",
               }}
             >
               {"Año cuota:"}
-              {this.state.temp_anocuota_fin === "" ||
-              this.state.temp_anocuota_fin === null ? (
-                <div style={{ color: "gray", marginLeft: "0.3rem" }}>{"-"}</div>
-              ) : (
-                <div style={{ color: "gray", marginLeft: "0.3rem" }}>
-                  {this.state.temp_anocuota_fin}
-                </div>
-              )}
+              <div style={{ color: "gray", marginLeft: "0.3rem" }}>
+                {this.state.temp_anocuota_fin || "-"}
+              </div>
             </div>
             <div
               style={{
                 display: "flex",
                 flexDirection: "row",
-                margin: "0.2rem 0",
+                fontSize: 14,
+                margin: "0.2rem 0 0.4rem",
               }}
             >
               {"Cuota anual:"}
-              {this.state.temp_cuotaanual_fin === "" ||
-              this.state.temp_cuotaanual_fin === null ? (
-                <div style={{ color: "gray", marginLeft: "0.3rem" }}>{"-"}</div>
-              ) : (
-                <div style={{ color: "gray", marginLeft: "0.3rem" }}>
-                  {this.state.temp_cuotaanual_fin}
-                </div>
-              )}
+              <div style={{ color: "gray", marginLeft: "0.3rem" }}>
+                {this.state.temp_cuotaanual_fin || "-"}
+              </div>
             </div>
-            <div className="o-textMain" style={{ fontSize: "1rem" }}>
+            <div className="o-textMain" style={{ fontSize: 14 }}>
               {"Última actualización:"}
               <div className="o-textSub">
                 {this.state.userUpdated || ""}
@@ -831,7 +856,7 @@ class Consultar4Finanzas extends Component {
           </div>
         </div>
         <div className="o-btnBotNav">
-          <div className="o-textBtn">
+          <div className="o-textBtn" style={{ margin: "0 auto 0 0" }}>
             <div className="o-inner-textBtn">Operaciones internaciones</div>
             <div className="o-inner-testBtnbtn">
               <BlueButton

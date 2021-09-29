@@ -142,12 +142,16 @@ class ReporteOrganizacion extends Component {
       });
   };
 
-  apiSearch = () => {
+  apiSearch = (e) => {
+    e?.preventDefault();
     this.setState({ loading: true });
 
-    const numero = this.state.nid_org + "%";
-    const nombre = this.state.nomcom_org + "%";
-    const razon = this.state.razsoc_org + "%";
+    const numero =
+      this.state.nid_org === "" ? "%" : "%" + this.state.nid_org + "%";
+    const nombre =
+      this.state.nomcom_org === "" ? "%" : "%" + this.state.nomcom_org + "%";
+    const razon =
+      this.state.razsoc_org === "" ? "%" : "%" + this.state.razsoc_org + "%";
     const documento =
       this.state.tipoid_org === ""
         ? this.state.tipoid_org_api.map((obj) => obj.id)
@@ -430,162 +434,166 @@ class ReporteOrganizacion extends Component {
           </div>
         </div>
         <div className="o-contentForm-big-consultas">
-          <div className="o-consultas-containerInit">
-            <div className="o-consultas">
-              <div style={{ marginBottom: BOX_SPACING }}>
-                <div className="o-dobleInput">
-                  <FormControl
-                    variant="outlined"
-                    margin="dense"
-                    className="o-selectShort"
-                    style={{ width: "7rem" }}
-                  >
-                    <InputLabel>ID</InputLabel>
-                    <Select
-                      value={this.state.tipoid_org || ""}
-                      onChange={this.handleChange}
-                      label="ID"
-                      name="input_tipoid_org"
-                    >
-                      <MenuItem value="">Ninguno</MenuItem>
-                      {this.state.tipoid_org_api.map((obj, i) => {
-                        return (
-                          <MenuItem key={i} value={obj.id}>
-                            {obj.nombre}
-                          </MenuItem>
-                        );
-                      })}
-                    </Select>
-                  </FormControl>
-                  <div
-                    className="o-inputShort"
-                    style={{ marginLeft: "0.5rem" }}
-                  >
-                    <TextField
-                      label="Número"
+          <form style={{ width: "100%" }}>
+            <div className="o-consultas-containerInit">
+              <div className="o-consultas">
+                <div style={{ marginBottom: BOX_SPACING }}>
+                  <div className="o-dobleInput">
+                    <FormControl
                       variant="outlined"
-                      value={this.state.nid_org || ""}
-                      name="input_nid_org"
-                      onChange={this.handleChange}
-                      className="o-space"
                       margin="dense"
-                    />
+                      className="o-selectShort"
+                      style={{ width: "7rem" }}
+                    >
+                      <InputLabel>ID</InputLabel>
+                      <Select
+                        value={this.state.tipoid_org || ""}
+                        onChange={this.handleChange}
+                        label="ID"
+                        name="input_tipoid_org"
+                      >
+                        <MenuItem value="">Ninguno</MenuItem>
+                        {this.state.tipoid_org_api.map((obj, i) => {
+                          return (
+                            <MenuItem key={i} value={obj.id}>
+                              {obj.nombre}
+                            </MenuItem>
+                          );
+                        })}
+                      </Select>
+                    </FormControl>
+                    <div
+                      className="o-inputShort"
+                      style={{ marginLeft: "0.5rem" }}
+                    >
+                      <TextField
+                        label="Número"
+                        variant="outlined"
+                        value={this.state.nid_org || ""}
+                        name="input_nid_org"
+                        onChange={this.handleChange}
+                        className="o-space"
+                        margin="dense"
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <div className="o-consultas">
-              <TextField
-                label="Nombre comercial"
-                variant="outlined"
-                name="input_nomcom_org"
-                value={this.state.nomcom_org || ""}
-                onChange={this.handleChange}
-                className="o-space"
-                margin="dense"
-              />
-            </div>
-            <div className="o-consultas">
-              <TextField
-                label="Razón social"
-                variant="outlined"
-                name="input_razsoc_org"
-                value={this.state.razsoc_org || ""}
-                onChange={this.handleChange}
-                className="o-space"
-                margin="dense"
-              />
-            </div>
-            <FormControl
-              className="o-consultas"
-              style={{ margin: "0.8rem 0 0" }}
-              variant="outlined"
-              margin="dense"
-            >
-              <InputLabel>Categoría</InputLabel>
-              <Select
-                multiple
-                label="Categoría"
-                name="input_cat_org"
-                className="o-space"
-                value={this.state.cat_org || []}
-                onChange={this.handleChange}
-                MenuProps={{
-                  getContentAnchorEl: () => null,
-                }}
-                renderValue={(selected) =>
-                  selected.map((value) => value.nombre + ", ")
-                }
-                style={{ marginBottom: BOX_SPACING }}
-              >
-                {this.state.cat_org_api.map((obj, i) => (
-                  <MenuItem key={i} value={obj}>
-                    <Checkbox
-                      checked={
-                        this.state.cat_org.findIndex((x) => x.id === obj.id) >
-                        -1
-                      }
-                    />
-                    <ListItemText primary={obj.nombre} />
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </div>
-          <div className="o-consultas-container">
-            <div className="o-consultas-btn">
-              <div className="o-btnConsultas">
-                <BlueButton onClick={this.apiSearch}>Buscar</BlueButton>
+              <div className="o-consultas">
+                <TextField
+                  label="Nombre comercial"
+                  variant="outlined"
+                  name="input_nomcom_org"
+                  value={this.state.nomcom_org || ""}
+                  onChange={this.handleChange}
+                  className="o-space"
+                  margin="dense"
+                />
               </div>
-              <div className="o-btnConsultas">
-                <RedButton onClick={this.clearFunc}>Limpiar</RedButton>
-              </div>
-              <div className="o-btnConsultas" style={{ width: "4rem" }}>
-                <BlueButton onClick={this.apiRefresh}>
-                  <IconRefresh size="small" />
-                </BlueButton>
+              <div className="o-consultas">
+                <TextField
+                  label="Razón social"
+                  variant="outlined"
+                  name="input_razsoc_org"
+                  value={this.state.razsoc_org || ""}
+                  onChange={this.handleChange}
+                  className="o-space"
+                  margin="dense"
+                />
               </div>
               <FormControl
-                style={{
-                  width: "20%",
-                  marginTop: "0",
-                  marginLeft: "auto",
-                  marginRight: "0.6rem",
-                }}
+                className="o-consultas"
+                style={{ margin: "0.8rem 0 0" }}
                 variant="outlined"
                 margin="dense"
               >
-                <InputLabel>Reporte</InputLabel>
+                <InputLabel>Categoría</InputLabel>
                 <Select
-                  value={this.state.reportType || ""}
-                  onChange={this.handleChange}
-                  label="Reporte"
-                  name="input_reportType"
+                  multiple
+                  label="Categoría"
+                  name="input_cat_org"
                   className="o-space"
+                  value={this.state.cat_org || []}
+                  onChange={this.handleChange}
+                  MenuProps={{
+                    getContentAnchorEl: () => null,
+                  }}
+                  renderValue={(selected) =>
+                    selected.map((value) => value.nombre + ", ")
+                  }
+                  style={{ marginBottom: BOX_SPACING }}
                 >
-                  {reportType.map((obj, i) => {
-                    return (
-                      <MenuItem key={i} value={obj.id}>
-                        {obj.nombre}
-                      </MenuItem>
-                    );
-                  })}
+                  {this.state.cat_org_api.map((obj, i) => (
+                    <MenuItem key={i} value={obj}>
+                      <Checkbox
+                        checked={
+                          this.state.cat_org.findIndex((x) => x.id === obj.id) >
+                          -1
+                        }
+                      />
+                      <ListItemText primary={obj.nombre} />
+                    </MenuItem>
+                  ))}
                 </Select>
               </FormControl>
-              <div
-                className="o-btnConsultas"
-                style={{ width: "4rem", marginRight: 0 }}
-              >
-                <GreenButton
-                  onClick={
-                    this.state.searched ? this.apiReportB : this.apiReportA
-                  }
+            </div>
+            <div className="o-consultas-container">
+              <div className="o-consultas-btn">
+                <div className="o-btnConsultas">
+                  <BlueButton type="submit" onClick={this.apiSearch}>
+                    Buscar
+                  </BlueButton>
+                </div>
+                <div className="o-btnConsultas">
+                  <RedButton onClick={this.clearFunc}>Limpiar</RedButton>
+                </div>
+                <div className="o-btnConsultas" style={{ width: "4rem" }}>
+                  <BlueButton onClick={this.apiRefresh}>
+                    <IconRefresh size="small" />
+                  </BlueButton>
+                </div>
+                <FormControl
+                  style={{
+                    width: "20%",
+                    marginTop: "0",
+                    marginLeft: "auto",
+                    marginRight: "0.6rem",
+                  }}
+                  variant="outlined"
+                  margin="dense"
                 >
-                  <IconDownload size="small" />
-                </GreenButton>
+                  <InputLabel>Reporte</InputLabel>
+                  <Select
+                    value={this.state.reportType || ""}
+                    onChange={this.handleChange}
+                    label="Reporte"
+                    name="input_reportType"
+                    className="o-space"
+                  >
+                    {reportType.map((obj, i) => {
+                      return (
+                        <MenuItem key={i} value={obj.id}>
+                          {obj.nombre}
+                        </MenuItem>
+                      );
+                    })}
+                  </Select>
+                </FormControl>
+                <div
+                  className="o-btnConsultas"
+                  style={{ width: "4rem", marginRight: 0 }}
+                >
+                  <GreenButton
+                    onClick={
+                      this.state.searched ? this.apiReportB : this.apiReportA
+                    }
+                  >
+                    <IconDownload size="small" />
+                  </GreenButton>
+                </div>
               </div>
             </div>
-          </div>
+          </form>
           <TableContainer
             className="o-tableBase-consultas"
             style={{ display: "inline", height: BOX_SIZE }}

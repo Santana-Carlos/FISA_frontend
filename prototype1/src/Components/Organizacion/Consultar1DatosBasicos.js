@@ -15,6 +15,7 @@ import {
   Fade,
   CircularProgress,
 } from "@material-ui/core";
+import { CancelRounded } from "@material-ui/icons";
 import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
@@ -23,6 +24,7 @@ import {
   BlueButton,
   GreenButton,
   CustomAutocomplete as Autocomplete,
+  StyledTooltip,
 } from "../Buttons";
 import "../Styles.css";
 import { Link } from "react-router-dom";
@@ -182,6 +184,7 @@ class Consultar1DatosBasicos extends Component {
   };
 
   callApiSubsector = () => {
+    this.setState({ ciiu_org: this.state.ciiuFake_org?.map((obj) => obj.id) });
     const data = {
       sector_id: this.state.sectoreco_org,
     };
@@ -765,6 +768,40 @@ class Consultar1DatosBasicos extends Component {
                     label="CIIU"
                   />
                 )}
+                renderTags={(value) =>
+                  value.map((obj, i) => (
+                    <StyledTooltip
+                      title={obj.codigo + " - " + obj.nombre}
+                      key={i}
+                      lower
+                    >
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          backgroundColor: "lightgrey",
+                          padding: "4px 6px 4px 10px",
+                          borderRadius: 16,
+                          margin: 4,
+                        }}
+                      >
+                        <span style={{ fontSize: 13 }}>{obj.codigo}</span>
+                        <CancelRounded
+                          className="o-customChips-ciiu"
+                          style={{ fontSize: 20 }}
+                          onClick={() =>
+                            this.handleChangeCiiu(
+                              "",
+                              this.state.ciiuFake_org.filter(
+                                (x) => x.id !== obj.id
+                              )
+                            )
+                          }
+                        />
+                      </div>
+                    </StyledTooltip>
+                  ))
+                }
               />
             </div>
             {this.state.indexCat === this.state.cat_org ? (

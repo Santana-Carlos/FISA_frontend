@@ -18,6 +18,8 @@ import {
   TableRow,
   Fade,
   CircularProgress,
+  Checkbox,
+  ListItemText,
 } from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
 import {
@@ -67,7 +69,7 @@ class ConsultarVisitas extends Component {
       temp_titulo_vis: "",
       temp_obs_vis: "",
       temp_res_vis: "",
-      temp_userasig_vis: "",
+      temp_asignados: [],
       temp_estado_vis: "",
       temp_userUdate_vis: "",
       temp_dateUdate_vis: "",
@@ -160,7 +162,8 @@ class ConsultarVisitas extends Component {
       });
   };
 
-  apiSearch = () => {
+  apiSearch = (e) => {
+    e?.preventDefault();
     this.setState({ loading: true });
     const data = {
       tipo: this.state.search_tipo,
@@ -298,7 +301,7 @@ class ConsultarVisitas extends Component {
               temp_titulo_vis: data.visita.titulo,
               temp_obs_vis: data.visita.observaciones,
               temp_res_vis: data.visita.resultado,
-              temp_userasig_vis: data.visita.usuario_asignado,
+              temp_asignados: data.asignados?.map((obj) => obj.id),
               temp_estado_vis: data.visita.estado_id,
               temp_dateUdate_vis: data.visita.updated_at,
               temp_userUdate_vis:
@@ -381,7 +384,7 @@ class ConsultarVisitas extends Component {
       titulo: this.state.temp_titulo_vis,
       observaciones: this.state.temp_obs_vis,
       resultado: this.state.temp_res_vis,
-      usuario_asignado: this.state.temp_userasig_vis,
+      asignados: this.state.temp_asignados,
       estado_id: this.state.temp_estado_vis,
     };
 
@@ -441,7 +444,7 @@ class ConsultarVisitas extends Component {
         this.setState({ temp_estado_vis: value });
         break;
       case "input_userasig_vis":
-        this.setState({ temp_userasig_vis: value });
+        this.setState({ temp_asignados: value });
         break;
       default:
         break;
@@ -513,7 +516,7 @@ class ConsultarVisitas extends Component {
               </div>
             </div>
             <div className="o-contentForm-big-consultas">
-              <div className="o-consultas-containerInit">
+              <form className="o-consultas-containerInit">
                 <FormControl
                   className="o-consultas"
                   style={{ margin: "0.8rem 1rem 0 0" }}
@@ -551,7 +554,9 @@ class ConsultarVisitas extends Component {
                 </div>
                 <div className="o-consultas-btnxn">
                   <div className="o-btnConsultas">
-                    <BlueButton onClick={this.apiSearch}>Filtrar</BlueButton>
+                    <BlueButton type="submit" onClick={this.apiSearch}>
+                      Filtrar
+                    </BlueButton>
                   </div>
                   <div className="o-btnConsultas">
                     <RedButton onClick={this.clearFunc}>Limpiar</RedButton>
@@ -560,7 +565,7 @@ class ConsultarVisitas extends Component {
                     <BlueButton onClick={this.apiToday}>Próximas</BlueButton>
                   </div>
                 </div>
-              </div>
+              </form>
               <div className="o-contentForm-big-consultasHalf">
                 <TableContainer
                   className="o-tableBase-consultas"
@@ -668,9 +673,8 @@ class ConsultarVisitas extends Component {
                       className="o-textMain2"
                       style={{
                         marginBottom: "1.2rem",
-                        maxHeight: "2.3rem",
-                        overflowY: "scroll",
-                        textOverflow: "ellipsis",
+                        maxHeight: "3.2rem",
+                        overflowY: "auto",
                       }}
                     >
                       {this.state.temp_obs_vis === null
@@ -707,13 +711,11 @@ class ConsultarVisitas extends Component {
                     <div className="o-textMain2">
                       <div>
                         <div className="o-textSub2">{"Asignado:"}</div>
-                        {
-                          this.state.users_api[
-                            this.state.users_api.findIndex(
-                              (x) => x.id === this.state.temp_userasig_vis
-                            )
-                          ].usuario
-                        }
+                        {this.state.users_api[
+                          this.state.users_api.findIndex(
+                            (x) => x.id === this.state.temp_asignados?.[0]
+                          )
+                        ]?.usuario || "-"}
                       </div>
 
                       <div
@@ -725,7 +727,7 @@ class ConsultarVisitas extends Component {
                             this.state.estado_vis_api.findIndex(
                               (x) => x.id === this.state.temp_estado_vis
                             )
-                          ].nombre
+                          ]?.nombre
                         }
                       </div>
                     </div>
@@ -914,7 +916,7 @@ class ConsultarVisitas extends Component {
                     >
                       <InputLabel>Oficina</InputLabel>
                       <Select
-                        value={this.state.temp_id_ofi}
+                        value={this.state.temp_id_ofi || ""}
                         onChange={this.handleChange}
                         label="Oficina"
                         name="input_id_ofi"
@@ -994,17 +996,19 @@ class ConsultarVisitas extends Component {
                         />
                       </MuiPickersUtilsProvider>
                     </div>
+
                     <FormControl
+                      style={{ width: "100%" }}
                       variant="outlined"
                       margin="dense"
                       error={
                         this.state.reqText &&
-                        this.state.temp_userasig_vis === ""
+                        this.state.temp_asignados.length < 1
                       }
                     >
                       <InputLabel>
                         <div style={{ display: "flex", flexDirection: "row" }}>
-                          {"Usuario asignado"}
+                          {"Usuarios asignados"}
                           <div
                             style={{ color: "#FF0000", marginLeft: "0.1rem" }}
                           >
@@ -1013,22 +1017,42 @@ class ConsultarVisitas extends Component {
                         </div>
                       </InputLabel>
                       <Select
-                        value={this.state.temp_userasig_vis || ""}
-                        onChange={this.handleChange}
-                        label="Usuario asignado*"
+                        multiple
+                        label="Usuarios asignados*"
                         name="input_userasig_vis"
                         className="o-space"
+                        value={this.state.temp_asignados || []}
+                        onChange={this.handleChange}
+                        MenuProps={{
+                          getContentAnchorEl: () => null,
+                        }}
+                        renderValue={(selected) =>
+                          selected.map(
+                            (value) =>
+                              this.state.users_api[
+                                this.state.users_api.findIndex(
+                                  (x) => x.id === value
+                                )
+                              ].usuario + ", "
+                          )
+                        }
                         style={{ marginBottom: BOX_SPACING }}
                       >
-                        {this.state.users_api.map((obj, i) => {
-                          return (
-                            <MenuItem key={i} value={obj.id}>
-                              {obj.usuario}
-                            </MenuItem>
-                          );
-                        })}
+                        {this.state.users_api.map((obj, i) => (
+                          <MenuItem key={i} value={obj.id}>
+                            <Checkbox
+                              checked={
+                                this.state.temp_asignados.findIndex(
+                                  (x) => x === obj.id
+                                ) > -1
+                              }
+                            />
+                            <ListItemText primary={obj.usuario} />
+                          </MenuItem>
+                        ))}
                       </Select>
                     </FormControl>
+
                     <FormControl
                       variant="outlined"
                       margin="dense"
@@ -1075,7 +1099,10 @@ class ConsultarVisitas extends Component {
                 </div>
                 {rol !== "Comercial" && rol !== "Consulta" ? (
                   <div className="o-btnBotNav-btnDiag2">
-                    <GreenButton onClick={() => this.handleClose(true)}>
+                    <GreenButton
+                      onClick={() => this.handleClose(true)}
+                      disabled={this.state.temp_asignados.length < 1}
+                    >
                       Guardar
                     </GreenButton>
                   </div>

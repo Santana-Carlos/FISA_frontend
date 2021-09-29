@@ -178,11 +178,16 @@ export const CustomChip = withStyles((theme) => ({
 }))(Chip);
 
 export const CustomAutocomplete = withStyles((theme) => ({
+  fullWidth: { display: "grid" },
+  inputRoot: { width: "100%" },
   focused: {},
   tagSizeSmall: {
-    overflow: "hiiden",
+    overflow: "hidden",
     textOverflow: "clip",
     maxWidth: "5rem",
+    "&:hover": {
+      maxWidth: "min-content",
+    },
   },
 }))(Autocomplete);
 
@@ -196,6 +201,6 @@ export const StyledTooltip = withStyles({
   tooltip: {
     padding: "8px 16px",
     fontSize: 12,
-    margin: "-10px 0",
+    margin: (props) => (props.lower ? "5px 0 0" : "-10px 0 0"),
   },
 })(Tooltip);

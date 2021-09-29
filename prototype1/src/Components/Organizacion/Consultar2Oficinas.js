@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import {
   InputLabel,
   MenuItem,
@@ -487,21 +487,24 @@ class Consultar2Oficinas extends Component {
                 </TableBody>
               </Table>
             </TableContainer>
-            {rol !== "Comercial" && rol !== "Consulta" ? (
-              <div className="o-btnAnadirTable">
-                <BlueButton
-                  onClick={() =>
-                    this.setState({ temp_id_ofi: "" }, this.handleClickOpen)
-                  }
-                >
-                  Añadir
-                  <IconAdd
-                    style={{ marginLeft: "0.4rem", marginRight: 0 }}
-                    size="small"
-                  />
-                </BlueButton>
-              </div>
-            ) : null}
+            <div style={{ display: "flex", flexDirection: "row" }}>
+              <p>{"Oficinas totales: " + (this.state.ofices.length || "0")}</p>
+              {rol !== "Comercial" && rol !== "Consulta" ? (
+                <div className="o-btnAnadirTable">
+                  <BlueButton
+                    onClick={() =>
+                      this.setState({ temp_id_ofi: "" }, this.handleClickOpen)
+                    }
+                  >
+                    Añadir
+                    <IconAdd
+                      style={{ marginLeft: "0.4rem", marginRight: 0 }}
+                      size="small"
+                    />
+                  </BlueButton>
+                </div>
+              ) : null}
+            </div>
           </div>
         </div>
         <div className="o-btnBotNav">

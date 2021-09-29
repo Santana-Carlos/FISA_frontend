@@ -15,6 +15,7 @@ import {
   Fade,
   CircularProgress,
 } from "@material-ui/core";
+import { CancelRounded } from "@material-ui/icons";
 import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
@@ -23,6 +24,7 @@ import {
   BlueButton,
   GreenButton,
   CustomAutocomplete as Autocomplete,
+  StyledTooltip,
 } from "../Buttons";
 import { Switch, Route } from "react-router-dom";
 import CrearOrganizacion2Oficinas from "./CrearOrganizacion2Oficinas";
@@ -762,7 +764,7 @@ class CrearOrganizacion1DatosBasicos extends Component {
                 <div style={{ marginBottom: BOX_SPACING }}>
                   <Autocomplete
                     multiple
-                    style={{ maxWidth: "100%" }}
+                    fullWidth
                     onChange={this.handleChangeCiiu}
                     options={this.state.ciiu_org_api}
                     value={this.state.ciiuFake_org}
@@ -803,6 +805,40 @@ class CrearOrganizacion1DatosBasicos extends Component {
                         label="CIIU"
                       />
                     )}
+                    renderTags={(value) =>
+                      value.map((obj, i) => (
+                        <StyledTooltip
+                          title={obj.codigo + " - " + obj.nombre}
+                          key={i}
+                          lower
+                        >
+                          <div
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              backgroundColor: "lightgrey",
+                              padding: "4px 6px 4px 10px",
+                              borderRadius: 16,
+                              margin: 4,
+                            }}
+                          >
+                            <span style={{ fontSize: 13 }}>{obj.codigo}</span>
+                            <CancelRounded
+                              className="o-customChips-ciiu"
+                              style={{ fontSize: 20 }}
+                              onClick={() =>
+                                this.handleChangeCiiu(
+                                  "",
+                                  this.state.ciiuFake_org.filter(
+                                    (x) => x.id !== obj.id
+                                  )
+                                )
+                              }
+                            />
+                          </div>
+                        </StyledTooltip>
+                      ))
+                    }
                   />
                 </div>
                 {this.state.indexCat === this.state.cat_org ? (

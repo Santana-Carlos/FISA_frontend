@@ -78,7 +78,7 @@ class CrearVisitas extends Component {
       temp_titulo_vis: "",
       temp_obs_vis: "",
       temp_res_vis: "",
-      temp_userasig_vis: "",
+      temp_asignados: [],
       temp_estado_vis: "",
       users_api: [],
       contacto_org_api: [],
@@ -212,12 +212,16 @@ class CrearVisitas extends Component {
       });
   };
 
-  apiSearch = () => {
+  apiSearch = (e) => {
+    e?.preventDefault();
     this.setState({ loading: true });
 
-    const numero = this.state.nid_org + "%";
-    const nombre = this.state.nomcom_org + "%";
-    const razon = this.state.razsoc_org + "%";
+    const numero =
+      this.state.nid_org === "" ? "%" : "%" + this.state.nid_org + "%";
+    const nombre =
+      this.state.nomcom_org === "" ? "%" : "%" + this.state.nomcom_org + "%";
+    const razon =
+      this.state.razsoc_org === "" ? "%" : "%" + this.state.razsoc_org + "%";
     const documento =
       this.state.tipoid_org === ""
         ? this.state.tipoid_org_api.map((obj) => obj.id)
@@ -343,8 +347,8 @@ class CrearVisitas extends Component {
       titulo: this.state.temp_titulo_vis,
       observaciones: this.state.temp_obs_vis,
       resultado: this.state.temp_res_vis,
-      usuario_asignado: this.state.temp_userasig_vis,
       estado_id: this.state.temp_estado_vis,
+      asignados: this.state.temp_asignados.map((obj) => obj.id),
     };
 
     fetch(process.env.REACT_APP_API_URL + "Visita/", {
@@ -391,7 +395,7 @@ class CrearVisitas extends Component {
       temp_titulo_vis: "",
       temp_obs_vis: "",
       temp_res_vis: "",
-      temp_userasig_vis: "",
+      temp_temp_asignados: [],
       temp_estado_vis: "",
       reqText: false,
     });
@@ -430,7 +434,7 @@ class CrearVisitas extends Component {
         this.setState({ temp_estado_vis: value });
         break;
       case "input_userasig_vis":
-        this.setState({ temp_userasig_vis: value });
+        this.setState({ temp_asignados: value });
         break;
       default:
         break;
@@ -503,124 +507,128 @@ class CrearVisitas extends Component {
               </div>
             </div>
             <div className="o-contentForm-big-consultas">
-              <div className="o-consultas-containerInit">
-                <div className="o-consultas">
-                  <div style={{ marginBottom: BOX_SPACING }}>
-                    <div className="o-dobleInput">
-                      <FormControl
-                        variant="outlined"
-                        margin="dense"
-                        className="o-selectShort"
-                        style={{ width: "7rem" }}
-                      >
-                        <InputLabel>ID</InputLabel>
-                        <Select
-                          value={this.state.tipoid_org || ""}
-                          onChange={this.handleChange}
-                          label="ID"
-                          name="input_tipoid_org"
-                        >
-                          <MenuItem value="">Ninguno</MenuItem>
-                          {this.state.tipoid_org_api.map((obj, i) => {
-                            return (
-                              <MenuItem key={i} value={obj.id}>
-                                {obj.nombre}
-                              </MenuItem>
-                            );
-                          })}
-                        </Select>
-                      </FormControl>
-                      <div
-                        className="o-inputShort"
-                        style={{ marginLeft: "0.5rem" }}
-                      >
-                        <TextField
-                          label="Número"
+              <form>
+                <div className="o-consultas-containerInit">
+                  <div className="o-consultas">
+                    <div style={{ marginBottom: BOX_SPACING }}>
+                      <div className="o-dobleInput">
+                        <FormControl
                           variant="outlined"
-                          value={this.state.nid_org || ""}
-                          name="input_nid_org"
-                          onChange={this.handleChange}
-                          className="o-space"
                           margin="dense"
-                        />
+                          className="o-selectShort"
+                          style={{ width: "7rem" }}
+                        >
+                          <InputLabel>ID</InputLabel>
+                          <Select
+                            value={this.state.tipoid_org || ""}
+                            onChange={this.handleChange}
+                            label="ID"
+                            name="input_tipoid_org"
+                          >
+                            <MenuItem value="">Ninguno</MenuItem>
+                            {this.state.tipoid_org_api.map((obj, i) => {
+                              return (
+                                <MenuItem key={i} value={obj.id}>
+                                  {obj.nombre}
+                                </MenuItem>
+                              );
+                            })}
+                          </Select>
+                        </FormControl>
+                        <div
+                          className="o-inputShort"
+                          style={{ marginLeft: "0.5rem" }}
+                        >
+                          <TextField
+                            label="Número"
+                            variant="outlined"
+                            value={this.state.nid_org || ""}
+                            name="input_nid_org"
+                            onChange={this.handleChange}
+                            className="o-space"
+                            margin="dense"
+                          />
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-                <div className="o-consultas">
-                  <TextField
-                    label="Nombre comercial"
+                  <div className="o-consultas">
+                    <TextField
+                      label="Nombre comercial"
+                      variant="outlined"
+                      name="input_nomcom_org"
+                      value={this.state.nomcom_org || ""}
+                      onChange={this.handleChange}
+                      className="o-space"
+                      margin="dense"
+                    />
+                  </div>
+                  <div className="o-consultas">
+                    <TextField
+                      label="Razón social"
+                      variant="outlined"
+                      name="input_razsoc_org"
+                      value={this.state.razsoc_org || ""}
+                      onChange={this.handleChange}
+                      className="o-space"
+                      margin="dense"
+                    />
+                  </div>
+                  <FormControl
+                    className="o-consultas"
+                    style={{ margin: "0.8rem 0 0" }}
                     variant="outlined"
-                    name="input_nomcom_org"
-                    value={this.state.nomcom_org || ""}
-                    onChange={this.handleChange}
-                    className="o-space"
                     margin="dense"
-                  />
-                </div>
-                <div className="o-consultas">
-                  <TextField
-                    label="Razón social"
-                    variant="outlined"
-                    name="input_razsoc_org"
-                    value={this.state.razsoc_org || ""}
-                    onChange={this.handleChange}
-                    className="o-space"
-                    margin="dense"
-                  />
-                </div>
-                <FormControl
-                  className="o-consultas"
-                  style={{ margin: "0.8rem 0 0" }}
-                  variant="outlined"
-                  margin="dense"
-                >
-                  <InputLabel>Categoría</InputLabel>
-                  <Select
-                    multiple
-                    label="Categoría"
-                    name="input_cat_org"
-                    className="o-space"
-                    value={this.state.cat_org || []}
-                    onChange={this.handleChange}
-                    MenuProps={{
-                      getContentAnchorEl: () => null,
-                    }}
-                    renderValue={(selected) =>
-                      selected.map((value) => value.nombre + ", ")
-                    }
-                    style={{ marginBottom: BOX_SPACING }}
                   >
-                    {this.state.cat_org_api.map((obj, i) => (
-                      <MenuItem key={i} value={obj}>
-                        <Checkbox
-                          checked={
-                            this.state.cat_org.findIndex(
-                              (x) => x.id === obj.id
-                            ) > -1
-                          }
-                        />
-                        <ListItemText primary={obj.nombre} />
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </div>
-              <div className="o-consultas-container">
-                <div className="o-consultas-btn">
-                  <div className="o-btnConsultas">
-                    <BlueButton onClick={this.apiSearch}>Buscar</BlueButton>
-                  </div>
-                  <div className="o-btnConsultas">
-                    <RedButton onClick={this.clearFunc}>Limpiar</RedButton>
-                  </div>
-                  <div className="o-btnConsultas" style={{ width: "4rem" }}>
-                    <BlueButton onClick={this.apiRefresh}>
-                      <IconRefresh size="small" />
-                    </BlueButton>
+                    <InputLabel>Categoría</InputLabel>
+                    <Select
+                      multiple
+                      label="Categoría"
+                      name="input_cat_org"
+                      className="o-space"
+                      value={this.state.cat_org || []}
+                      onChange={this.handleChange}
+                      MenuProps={{
+                        getContentAnchorEl: () => null,
+                      }}
+                      renderValue={(selected) =>
+                        selected.map((value) => value.nombre + ", ")
+                      }
+                      style={{ marginBottom: BOX_SPACING }}
+                    >
+                      {this.state.cat_org_api.map((obj, i) => (
+                        <MenuItem key={i} value={obj}>
+                          <Checkbox
+                            checked={
+                              this.state.cat_org.findIndex(
+                                (x) => x.id === obj.id
+                              ) > -1
+                            }
+                          />
+                          <ListItemText primary={obj.nombre} />
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </div>
+                <div className="o-consultas-container">
+                  <div className="o-consultas-btn">
+                    <div className="o-btnConsultas">
+                      <BlueButton type="submit" onClick={this.apiSearch}>
+                        Buscar
+                      </BlueButton>
+                    </div>
+                    <div className="o-btnConsultas">
+                      <RedButton onClick={this.clearFunc}>Limpiar</RedButton>
+                    </div>
+                    <div className="o-btnConsultas" style={{ width: "4rem" }}>
+                      <BlueButton onClick={this.apiRefresh}>
+                        <IconRefresh size="small" />
+                      </BlueButton>
+                    </div>
                   </div>
                 </div>
-              </div>
+              </form>
               <TableContainer
                 className="o-tableBase-consultas"
                 style={{ display: "inline", height: BOX_SIZE }}
@@ -936,17 +944,19 @@ class CrearVisitas extends Component {
                         />
                       </MuiPickersUtilsProvider>
                     </div>
+
                     <FormControl
+                      style={{ width: "100%" }}
                       variant="outlined"
                       margin="dense"
                       error={
                         this.state.reqText &&
-                        this.state.temp_userasig_vis === ""
+                        this.state.temp_asignados.length < 1
                       }
                     >
                       <InputLabel>
                         <div style={{ display: "flex", flexDirection: "row" }}>
-                          {"Usuario asignado"}
+                          {"Usuarios asignados"}
                           <div
                             style={{ color: "#FF0000", marginLeft: "0.1rem" }}
                           >
@@ -955,22 +965,35 @@ class CrearVisitas extends Component {
                         </div>
                       </InputLabel>
                       <Select
-                        value={this.state.temp_userasig_vis || ""}
-                        onChange={this.handleChange}
-                        label="Usuario asignado*"
+                        multiple
+                        label="Usuarios asignados*"
                         name="input_userasig_vis"
                         className="o-space"
+                        value={this.state.temp_asignados || []}
+                        onChange={this.handleChange}
+                        MenuProps={{
+                          getContentAnchorEl: () => null,
+                        }}
+                        renderValue={(selected) =>
+                          selected.map((value) => value.usuario + ", ")
+                        }
                         style={{ marginBottom: BOX_SPACING }}
                       >
-                        {this.state.users_api.map((obj, i) => {
-                          return (
-                            <MenuItem key={i} value={obj.id}>
-                              {obj.usuario}
-                            </MenuItem>
-                          );
-                        })}
+                        {this.state.users_api.map((obj, i) => (
+                          <MenuItem key={i} value={obj}>
+                            <Checkbox
+                              checked={
+                                this.state.temp_asignados.findIndex(
+                                  (x) => x.id === obj.id
+                                ) > -1
+                              }
+                            />
+                            <ListItemText primary={obj.usuario} />
+                          </MenuItem>
+                        ))}
                       </Select>
                     </FormControl>
+
                     <FormControl
                       variant="outlined"
                       margin="dense"
@@ -1016,7 +1039,10 @@ class CrearVisitas extends Component {
                   </RedButton>
                 </div>
                 <div className="o-btnBotNav-btnDiag2">
-                  <GreenButton onClick={() => this.handleClose(true)}>
+                  <GreenButton
+                    onClick={() => this.handleClose(true)}
+                    disabled={this.state.temp_asignados.length < 1}
+                  >
                     Guardar
                   </GreenButton>
                 </div>

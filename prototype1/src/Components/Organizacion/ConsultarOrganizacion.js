@@ -149,7 +149,8 @@ class ConsultarOrganizacion extends Component {
       });
   };
 
-  apiSearch = () => {
+  apiSearch = (e) => {
+    e?.preventDefault();
     this.setState({ loading: true });
 
     const numero = this.state.nid_org + "%";
@@ -368,7 +369,7 @@ class ConsultarOrganizacion extends Component {
               "Tabla extendida abierta"
             ) : (
               <div className="o-contentForm-big-consultas">
-                <div
+                <form
                   className="o-consultas-containerInit"
                   style={{ marginBottom: "0.7rem" }}
                 >
@@ -432,7 +433,9 @@ class ConsultarOrganizacion extends Component {
                   </FormControl>
                   <div className="o-consultas-btnxn">
                     <div className="o-btnConsultas">
-                      <BlueButton onClick={this.apiSearch}>Buscar</BlueButton>
+                      <BlueButton type="submit" onClick={this.apiSearch}>
+                        Buscar
+                      </BlueButton>
                     </div>
                     <div className="o-btnConsultas">
                       <RedButton onClick={this.clearFunc}>Limpiar</RedButton>
@@ -443,7 +446,7 @@ class ConsultarOrganizacion extends Component {
                       </BlueButton>
                     </div>
                   </div>
-                </div>
+                </form>
                 <TableContainer
                   className="o-tableBase-consultas"
                   style={{ display: "inline", height: BOX_SIZE }}
@@ -844,7 +847,7 @@ class ConsultarOrganizacion extends Component {
                     </div>
                   </div>
                 </div>
-                <div
+                <form
                   style={{
                     display: "flex",
                     flexDirection: "column",
@@ -952,7 +955,9 @@ class ConsultarOrganizacion extends Component {
 
                   <div className="o-consultas-btnx">
                     <div className="o-btnConsultas">
-                      <BlueButton onClick={this.apiSearch}>Buscar</BlueButton>
+                      <BlueButton type="submit" onClick={this.apiSearch}>
+                        Buscar
+                      </BlueButton>
                     </div>
                     <div className="o-btnConsultas">
                       <RedButton onClick={this.clearFunc}>Limpiar</RedButton>
@@ -963,7 +968,7 @@ class ConsultarOrganizacion extends Component {
                       </BlueButton>
                     </div>
                   </div>
-                </div>
+                </form>
               </DialogContent>
             </Dialog>
           </div>
