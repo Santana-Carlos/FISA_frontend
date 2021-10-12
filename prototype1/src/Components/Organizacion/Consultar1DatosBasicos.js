@@ -412,21 +412,13 @@ class Consultar1DatosBasicos extends Component {
                 </FormControl>
                 <div className="o-inputShort">
                   <TextField
-                    label={
-                      <div style={{ display: "flex", flexDirection: "row" }}>
-                        {"Número"}
-                        <div style={{ color: "#FF0000", marginLeft: "0.1rem" }}>
-                          {"*"}
-                        </div>
-                      </div>
-                    }
+                    label={"Número"}
                     variant="outlined"
                     value={this.state.nid_org || ""}
                     name="input_nid_org"
                     onChange={this.handleChange}
                     className="o-space"
                     margin="dense"
-                    error={this.state.reqText && this.state.nid_org === ""}
                   />
                 </div>
               </div>

@@ -153,12 +153,10 @@ class ReporteOrganizacion extends Component {
     const razon =
       this.state.razsoc_org === "" ? "%" : "%" + this.state.razsoc_org + "%";
     const documento =
-      this.state.tipoid_org === ""
-        ? this.state.tipoid_org_api.map((obj) => obj.id)
-        : [this.state.tipoid_org];
+      this.state.tipoid_org === "" ? null : [this.state.tipoid_org];
     const categoria =
       this.state.cat_org[0] === undefined
-        ? this.state.cat_org_api.map((obj) => obj.id)
+        ? null
         : this.state.cat_org.map((obj) => obj.id);
 
     const palabra1 = items[0];
