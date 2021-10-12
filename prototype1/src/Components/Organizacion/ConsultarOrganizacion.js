@@ -484,7 +484,7 @@ class ConsultarOrganizacion extends Component {
                               {obj.nombre}
                             </StyledTableCell>
                             <StyledTableCell size="small">
-                              {obj.tipo_documento_organizacion +
+                              {(obj.tipo_documento_organizacion || "-") +
                                 " " +
                                 obj.numero_documento}
                             </StyledTableCell>
@@ -733,7 +733,7 @@ class ConsultarOrganizacion extends Component {
                                   {obj.nombre}
                                 </StyledTableCell>
                                 <StyledTableCell size="small">
-                                  {obj.tipo_documento_organizacion +
+                                  {(obj.tipo_documento_organizacion || "-") +
                                     " " +
                                     obj.numero_documento}
                                 </StyledTableCell>

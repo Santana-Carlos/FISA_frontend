@@ -654,7 +654,7 @@ class CrearVisitas extends Component {
                             {obj.nombre}
                           </StyledTableCell>
                           <StyledTableCell size="small">
-                            {obj.tipo_documento_organizacion +
+                            {(obj.tipo_documento_organizacion || "-") +
                               " " +
                               obj.numero_documento}
                           </StyledTableCell>
