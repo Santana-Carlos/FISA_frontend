@@ -1,0 +1,24 @@
+ORGANIZACIONES:
+numero_documento: string
+nombre: string
+razon_social: string
+documentos: entero(id)
+categorias: enteros(ids)
+sector: entero(id)
+subsector: entero(id)
+pais: entero(id)
+departamento: entero(id)
+ciudad: entero(id)
+
+CONTACTOS:
+	$request->nombres
+        $request->organizacion;
+        $request->cargo;
+        $request->email;
+        $request->pais;
+        $request->departamento;
+        $request->ciudad;
+        $request->categorias;
+        $request->subcategorias;
+        $request->sector;
+        $request->subsector;

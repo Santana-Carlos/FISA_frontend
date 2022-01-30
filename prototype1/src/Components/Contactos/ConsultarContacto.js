@@ -43,17 +43,6 @@ import { Switch, Route } from "react-router-dom";
 import EditarContacto from "./EditarContacto";
 import "../Styles.css";
 
-const items = [
-  "personas.nombres",
-  "personas.apellidos",
-  "organizacions.nombre",
-  "contactos.cargo",
-  "contactos.email",
-  "pais.id",
-  "organizacions.categoria_id",
-  "detalle_categoria_personas.subcategoria_id",
-];
-
 const emptyCell = "-";
 
 class ConsultarContacto extends Component {
@@ -69,12 +58,20 @@ class ConsultarContacto extends Component {
       apell_con: "",
       cargo_con: "",
       correo_con: "",
-      pais_ofi: "",
+      pais_org: "",
+      depest_org: "",
+      city_org: "",
+      sececo_org: "",
+      subsec_org: "",
       cat_org: [],
       subcat_con: [],
-      pais_ofi_api: [],
       cat_org_api: [],
       subcat_con_api: [],
+      pais_org_api: [],
+      depest_org_api: [],
+      city_org_api: [],
+      sececo_org_api: [],
+      subsec_org_api: [],
       temp_id_con: "",
       temp_id_per: "",
       delCon: false,
@@ -87,7 +84,8 @@ class ConsultarContacto extends Component {
       box_spacing: window.innerHeight > 900 ? "0.6rem" : "0.2rem",
       box_size: window.innerHeight > 900 ? "38rem" : "22rem",
       box_spacing_tiny: window.innerHeight > 900 ? "0.8rem" : "0rem",
-      box_size_x: window.innerHeight > 900 ? "48rem" : "29rem",
+      box_size_x: window.innerHeight > 900 ? "49rem" : "32rem",
+      full_size_card: window.innerHeight > 900 ? false : true,
       winInterval: "",
     };
 
@@ -99,7 +97,8 @@ class ConsultarContacto extends Component {
       box_spacing: window.innerHeight > 900 ? "0.6rem" : "0.2rem",
       box_size: window.innerHeight > 900 ? "38rem" : "22rem",
       box_spacing_tiny: window.innerHeight > 900 ? "0.8rem" : "0rem",
-      box_size_x: window.innerHeight > 900 ? "48rem" : "29rem",
+      box_size_x: window.innerHeight > 900 ? "49rem" : "32rem",
+      full_size_card: window.innerHeight > 900 ? false : true,
     });
   };
 
@@ -116,8 +115,9 @@ class ConsultarContacto extends Component {
       })
       .then((data) => {
         this.setState({
-          pais_ofi_api: data.paises,
           cat_org_api: data.categorias,
+          pais_org_api: data.paises,
+          sececo_org_api: data.sectores,
         });
       })
       .catch((error) => {});
@@ -178,57 +178,25 @@ class ConsultarContacto extends Component {
   apiSearch = (e) => {
     e?.preventDefault();
     this.setState({ loading: true });
-    const nombreOrg =
-      this.state.nombre_org === "" ? "%" : "%" + this.state.nombre_org + "%";
-    const nombreCon =
-      this.state.nombre_con === "" ? "%" : "%" + this.state.nombre_con + "%";
-    const apellCon =
-      this.state.apell_con === "" ? "%" : "%" + this.state.apell_con + "%";
-    const cargo =
-      this.state.cargo_con === "" ? "%" : "%" + this.state.cargo_con + "%";
-    const email =
-      this.state.correo_con === "" ? "%" : this.state.correo_con + "%";
-    const pais = this.state.pais_ofi === "" ? "%" : this.state.pais_ofi;
-    const categoria =
-      this.state.cat_org[0] === undefined
-        ? this.state.cat_org_api.map((obj) => obj.id)
-        : this.state.cat_org.map((obj) => obj.id);
-    const subcat =
-      this.state.subcat_con[0] === undefined
-        ? categoria
-        : this.state.subcat_con.map((obj) => obj.id);
-
-    const palabra1 = items[0];
-    const palabra2 = items[1];
-    const palabra3 = items[2];
-    const palabra4 = this.state.cargo_con === "" ? items[0] : items[3];
-    const palabra5 = this.state.correo_con === "" ? items[0] : items[4];
-    const palabra6 = this.state.pais_ofi === "" ? items[0] : items[5];
-    const palabra7 = items[6];
-    const palabra8 =
-      this.state.subcat_con[0] === undefined ? items[6] : items[7];
-    const palabra9 = this.state.pais_ofi === "" ? "ilike" : "=";
 
     const data = {
-      nombres: nombreCon,
-      apellidos: apellCon,
-      organizacion: nombreOrg,
-      cargo: cargo,
-      email: email,
-      pais: pais,
-      categorias: categoria,
-      subcategorias: subcat,
-      parametros: [
-        palabra1,
-        palabra2,
-        palabra3,
-        palabra4,
-        palabra5,
-        palabra6,
-        palabra7,
-        palabra8,
-        palabra9,
-      ],
+      nombres: this.state.nombre_con,
+      organizacion: this.state.nombre_org,
+      cargo: this.state.cargo_con,
+      email: this.state.correo_con,
+      categorias:
+        this.state.cat_org[0] === undefined
+          ? null
+          : this.state.cat_org.map((obj) => obj.id),
+      subcategorias:
+        this.state.subcat_con[0] === undefined
+          ? null
+          : this.state.subcat_con.map((obj) => obj.id),
+      sector: this.state.sececo_org,
+      subsector: this.state.subsec_org,
+      pais: this.state.pais_org,
+      departamento: this.state.depest_org,
+      ciudad: this.state.city_org,
     };
 
     //console.log(data);
@@ -238,9 +206,10 @@ class ConsultarContacto extends Component {
       this.state.apell_con !== "" ||
       this.state.cargo_con !== "" ||
       this.state.correo_con !== "" ||
-      this.state.pais_ofi !== "" ||
       this.state.cat_org[0] !== undefined ||
-      this.state.subcat_con[0] !== undefined
+      this.state.subcat_con[0] !== undefined ||
+      this.state.pais_org !== "" ||
+      this.state.sececo_org !== ""
     ) {
       fetch(process.env.REACT_APP_API_URL + "Contacto/Search", {
         method: "POST",
@@ -289,9 +258,10 @@ class ConsultarContacto extends Component {
       this.state.apell_con !== "" ||
       this.state.cargo_con !== "" ||
       this.state.correo_con !== "" ||
-      this.state.pais_ofi !== "" ||
       this.state.cat_org[0] !== undefined ||
-      this.state.subcat_con[0] !== undefined
+      this.state.subcat_con[0] !== undefined ||
+      this.state.pais_org !== "" ||
+      this.state.sececo_org !== ""
     ) {
       this.apiSearch();
     } else {
@@ -336,10 +306,17 @@ class ConsultarContacto extends Component {
         apell_con: "",
         cargo_con: "",
         correo_con: "",
-        pais_ofi: "",
         cat_org: [],
         subcat_con: [],
         reqText: false,
+        subsec_org: "",
+        sececo_org: "",
+        pais_org: "",
+        depest_org: "",
+        city_org: "",
+        subsec_org_api: [],
+        depest_org_api: [],
+        city_org_api: [],
       },
       this.callAPi()
     );
@@ -365,14 +342,29 @@ class ConsultarContacto extends Component {
       case "input_correo_con":
         this.setState({ correo_con: value });
         break;
-      case "input_pais_ofi":
-        this.setState({ pais_ofi: value });
-        break;
       case "input_cat_org":
         this.setState({ cat_org: value });
         break;
       case "input_subcat_con":
         this.setState({ subcat_con: value });
+        break;
+      case "input_pais_org":
+        this.setState(
+          { pais_org: value, depest_org: "", city_org: "" },
+          this.updateDepest
+        );
+        break;
+      case "input_depest_org":
+        this.setState({ depest_org: value, city_org: "" }, this.updateCity);
+        break;
+      case "input_city_org":
+        this.setState({ city_org: value });
+        break;
+      case "input_sececo_org":
+        this.setState({ sececo_org: value, subsec_org: "" }, this.updateSubsec);
+        break;
+      case "input_subsec_org":
+        this.setState({ subsec_org: value });
         break;
       default:
         break;
@@ -453,6 +445,102 @@ class ConsultarContacto extends Component {
     }
   };
 
+  updateDepest = () => {
+    this.setState({
+      city_org_api: [],
+      loading: true,
+    });
+
+    const data = {
+      pais_id: this.state.pais_org,
+    };
+    fetch(process.env.REACT_APP_API_URL + "DepartamentoEstado/Pais", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + this.props.token,
+      },
+      body: JSON.stringify(data),
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        this.setState({
+          depest_org_api: data.estados,
+          loading: false,
+        });
+      })
+      .catch((error) => {
+        this.setState({
+          loading: false,
+        });
+      });
+  };
+
+  updateCity = () => {
+    this.setState({
+      loading: true,
+    });
+
+    const data = {
+      departamento_estado_id: this.state.depest_org,
+    };
+    fetch(process.env.REACT_APP_API_URL + "Ciudad/Dep", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + this.props.token,
+      },
+      body: JSON.stringify(data),
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        this.setState({
+          loading: false,
+          city_org_api: data.ciudades,
+        });
+      })
+      .catch((error) => {
+        this.setState({
+          loading: false,
+        });
+      });
+  };
+
+  updateSubsec = () => {
+    this.setState({
+      loading: true,
+    });
+    const data = {
+      sector_id: this.state.sececo_org,
+    };
+    fetch(process.env.REACT_APP_API_URL + "Subsector/Sector", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + this.props.token,
+      },
+      body: JSON.stringify(data),
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        this.setState({
+          subsec_org_api: data.subsectores,
+          loading: false,
+        });
+      })
+      .catch((error) => {
+        this.setState({
+          loading: false,
+        });
+      });
+  };
+
   render() {
     const BOX_SPACING = this.state.box_spacing;
     const BOX_SIZE = this.state.box_size;
@@ -461,6 +549,7 @@ class ConsultarContacto extends Component {
     const rowsPerPage = this.state.rowsPerPage;
     const filter = this.state.currentFilter;
     const rol = this.props.rol;
+    const FULLSIZE_CARD = this.state.full_size_card;
 
     return (
       <Switch>
@@ -866,7 +955,13 @@ class ConsultarContacto extends Component {
             <Dialog
               open={this.state.xpantOpen}
               onClose={() => this.setState({ xpantOpen: false })}
-              PaperProps={{ style: { height: "100%" } }}
+              PaperProps={{
+                style: {
+                  height: FULLSIZE_CARD ? "100%" : "calc(100% - 64px)",
+                  maxHeight: "100%",
+                  overflow: "hidden",
+                },
+              }}
               fullWidth
               maxWidth="xl"
             >
@@ -875,16 +970,21 @@ class ConsultarContacto extends Component {
                   display: "flex",
                   flexDirection: "row",
                   justifyContent: "center",
+                  paddingTop: FULLSIZE_CARD ? 3 : 20,
+                  paddingBottom: 0,
                 }}
               >
                 <div
                   style={{
                     width: "76%",
-                    height: "100%",
+                    height: "calc(100% - 3px)",
                     marginRight: "1.6rem",
                   }}
                 >
-                  <div className="o-contentForm-big-consultas">
+                  <div
+                    className="o-contentForm-big-consultas"
+                    style={{ height: "calc(100% - 6px)" }}
+                  >
                     <TableContainer
                       className="o-tableBase-consultas"
                       style={{
@@ -1153,6 +1253,28 @@ class ConsultarContacto extends Component {
                         }
                       />
                     </div>
+                    {FULLSIZE_CARD ? (
+                      <div className="o-consultas-btnx2">
+                        <div className="o-btnConsultas">
+                          <BlueButton type="submit" onClick={this.apiSearch}>
+                            Buscar
+                          </BlueButton>
+                        </div>
+                        <div className="o-btnConsultas">
+                          <RedButton onClick={this.clearFunc}>
+                            Limpiar
+                          </RedButton>
+                        </div>
+                        <div
+                          className="o-btnConsultas"
+                          style={{ width: "4rem" }}
+                        >
+                          <BlueButton onClick={this.apiRefresh}>
+                            <IconRefresh size="small" />
+                          </BlueButton>
+                        </div>
+                      </div>
+                    ) : null}
                   </div>
                 </div>
                 <form
@@ -1187,17 +1309,6 @@ class ConsultarContacto extends Component {
                   </div>
                   <div className="o-consultasx">
                     <TextField
-                      label="Apellidos"
-                      variant="outlined"
-                      name="input_apell_con"
-                      value={this.state.apell_con || ""}
-                      onChange={this.handleChange}
-                      className="o-space"
-                      margin="dense"
-                    />
-                  </div>
-                  <div className="o-consultasx">
-                    <TextField
                       label="Cargo"
                       variant="outlined"
                       name="input_cargo_con"
@@ -1218,29 +1329,6 @@ class ConsultarContacto extends Component {
                       margin="dense"
                     />
                   </div>
-                  <FormControl
-                    className="o-consultasx"
-                    style={{ marginTop: "0.8rem" }}
-                    variant="outlined"
-                    margin="dense"
-                  >
-                    <InputLabel>País</InputLabel>
-                    <Select
-                      value={this.state.pais_ofi || ""}
-                      onChange={this.handleChange}
-                      label="País*"
-                      name="input_pais_ofi"
-                      className="o-space"
-                    >
-                      {this.state.pais_ofi_api.map((obj, i) => {
-                        return (
-                          <MenuItem key={i} value={obj.id}>
-                            {obj.nombre}
-                          </MenuItem>
-                        );
-                      })}
-                    </Select>
-                  </FormControl>
                   <FormControl
                     className="o-consultasx"
                     style={{ marginTop: "0.8rem" }}
@@ -1311,21 +1399,142 @@ class ConsultarContacto extends Component {
                       ))}
                     </Select>
                   </FormControl>
-                  <div className="o-consultas-btnx">
-                    <div className="o-btnConsultas">
-                      <BlueButton type="submit" onClick={this.apiSearch}>
-                        Buscar
-                      </BlueButton>
+
+                  <FormControl
+                    className="o-consultasx"
+                    style={{ marginTop: "0.8rem" }}
+                    variant="outlined"
+                    margin="dense"
+                  >
+                    <InputLabel>Sector económico Org.</InputLabel>
+                    <Select
+                      value={this.state.sececo_org || ""}
+                      onChange={this.handleChange}
+                      label="Sector económico Org."
+                      name="input_sececo_org"
+                      className="o-space"
+                    >
+                      {this.state.sececo_org_api.map((obj, i) => {
+                        return (
+                          <MenuItem key={i} value={obj.id}>
+                            {obj.nombre}
+                          </MenuItem>
+                        );
+                      })}
+                    </Select>
+                  </FormControl>
+
+                  <FormControl
+                    className="o-consultasx"
+                    style={{ marginTop: "0.8rem" }}
+                    variant="outlined"
+                    margin="dense"
+                  >
+                    <InputLabel>Subsector económico Org.</InputLabel>
+                    <Select
+                      value={this.state.subsec_org || ""}
+                      onChange={this.handleChange}
+                      label="Subsector económico Org."
+                      name="input_subsec_org"
+                      className="o-space"
+                    >
+                      {this.state.subsec_org_api.map((obj, i) => {
+                        return (
+                          <MenuItem key={i} value={obj.id}>
+                            {obj.nombre}
+                          </MenuItem>
+                        );
+                      })}
+                    </Select>
+                  </FormControl>
+
+                  <FormControl
+                    className="o-consultasx"
+                    style={{ marginTop: "0.8rem" }}
+                    variant="outlined"
+                    margin="dense"
+                  >
+                    <InputLabel>País Org.</InputLabel>
+                    <Select
+                      value={this.state.pais_org || ""}
+                      onChange={this.handleChange}
+                      label="País Org."
+                      name="input_pais_org"
+                      className="o-space"
+                    >
+                      {this.state.pais_org_api.map((obj, i) => {
+                        return (
+                          <MenuItem key={i} value={obj.id}>
+                            {obj.nombre}
+                          </MenuItem>
+                        );
+                      })}
+                    </Select>
+                  </FormControl>
+                  <FormControl
+                    className="o-consultasx"
+                    style={{ marginTop: "0.8rem" }}
+                    variant="outlined"
+                    margin="dense"
+                  >
+                    <InputLabel>Departamento/Estado Org.</InputLabel>
+                    <Select
+                      value={this.state.depest_org || ""}
+                      onChange={this.handleChange}
+                      label="Departamento/Estado Org."
+                      name="input_depest_org"
+                      className="o-space"
+                    >
+                      {this.state.depest_org_api.map((obj, i) => {
+                        return (
+                          <MenuItem key={i} value={obj.id}>
+                            {obj.nombre}
+                          </MenuItem>
+                        );
+                      })}
+                    </Select>
+                  </FormControl>
+
+                  <FormControl
+                    className="o-consultasx"
+                    style={{ marginTop: "0.8rem" }}
+                    variant="outlined"
+                    margin="dense"
+                  >
+                    <InputLabel>Ciudad Org.</InputLabel>
+                    <Select
+                      value={this.state.city_org || ""}
+                      onChange={this.handleChange}
+                      label="Ciudad Org"
+                      name="input_city_org"
+                      className="o-space"
+                    >
+                      {this.state.city_org_api.map((obj, i) => {
+                        return (
+                          <MenuItem key={i} value={obj.id}>
+                            {obj.nombre}
+                          </MenuItem>
+                        );
+                      })}
+                    </Select>
+                  </FormControl>
+                  {FULLSIZE_CARD ? null : (
+                    <div className="o-consultas-btnx">
+                      <div className="o-btnConsultas">
+                        <BlueButton type="submit" onClick={this.apiSearch}>
+                          Buscar
+                        </BlueButton>
+                      </div>
+                      <div className="o-btnConsultas">
+                        <RedButton onClick={this.clearFunc}>Limpiar</RedButton>
+                      </div>
+                      <div className="o-btnConsultas" style={{ width: "4rem" }}>
+                        <BlueButton onClick={this.apiRefresh}>
+                          <IconRefresh size="small" />
+                        </BlueButton>
+                      </div>
                     </div>
-                    <div className="o-btnConsultas">
-                      <RedButton onClick={this.clearFunc}>Limpiar</RedButton>
-                    </div>
-                    <div className="o-btnConsultas" style={{ width: "4rem" }}>
-                      <BlueButton onClick={this.apiRefresh}>
-                        <IconRefresh size="small" />
-                      </BlueButton>
-                    </div>
-                  </div>
+                  )}
                 </form>
               </DialogContent>
             </Dialog>
