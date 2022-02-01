@@ -844,7 +844,7 @@ class ReporteContacto extends Component {
                           {obj.organizacion}
                         </StyledTableCell>
                         <StyledTableCell size="small">
-                          {obj.nombres + " " + obj.apellidos}
+                          {obj.nombres || emptyCell}
                         </StyledTableCell>
                         <StyledTableCell size="small">
                           {obj.cargo === null ? emptyCell : obj.cargo}
@@ -1101,7 +1101,7 @@ class ReporteContacto extends Component {
                               {obj.organizacion}
                             </StyledTableCell>
                             <StyledTableCell size="small">
-                              {obj.nombres + " " + obj.apellidos}
+                              {obj.nombres || emptyCell}
                             </StyledTableCell>
                             <StyledTableCell size="small">
                               {obj.cargo === null ? emptyCell : obj.cargo}
