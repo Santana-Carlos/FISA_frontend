@@ -160,6 +160,10 @@ class ConsultarVisitas extends Component {
         this.setState({ loading: false });
         alert("SERVIDOR NO DISPONIBLE\nConsulte a su gestor de servicios");
       });
+    this.setState({
+      temp_titulo_vis: "",
+      temp_id_vis: "",
+    });
   };
 
   apiSearch = (e) => {
