@@ -20,6 +20,8 @@ import {
   CircularProgress,
   Checkbox,
   ListItemText,
+  Tooltip,
+  TablePagination,
 } from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
 import {
@@ -32,6 +34,7 @@ import {
   RedButton,
   StyledTableCell,
   StyledIconButton as IconButton,
+  CustomDateRangePicker,
 } from "../Buttons";
 import { Delete as IconDelete, ZoomIn as IconSelect } from "@material-ui/icons";
 import { Switch, Route } from "react-router-dom";
@@ -66,7 +69,7 @@ class ConsultarVisitas extends Component {
       visita_data: {},
       temp_fecpro_vis: "",
       temp_feceje_vis: "",
-      temp_titulo_vis: "",
+      temp_motivo_vis: "",
       temp_obs_vis: "",
       temp_res_vis: "",
       temp_asignados: [],
@@ -76,14 +79,20 @@ class ConsultarVisitas extends Component {
       users_api: [],
       contacto_org_api: [],
       oficina_org_api: [],
-      estado_vis_api: [],
+      motivo_tar_api: [],
       estado_tar_api: [],
-      search_tipo: "",
-      search_pal: "",
+      motivo_vis_api: [],
+      estado_vis_api: [],
+      search_org: "",
+      search_motivo: "",
+      search_date_ini: "",
+      search_date_fin: "",
       addVisit: false,
       delVisit: false,
       loading: true,
       loadingDiag: false,
+      currentPage: 0,
+      rowsPerPage: 25,
       box_spacing: window.innerHeight > 900 ? "0.6rem" : "0.2rem",
       box_size: window.innerHeight > 900 ? "39rem" : "23rem",
       box_spacing_tiny: window.innerHeight > 900 ? "0.4rem" : "0rem",
@@ -124,6 +133,8 @@ class ConsultarVisitas extends Component {
           users_api: data.usuarios,
           estado_vis_api: data.estadoVisitas,
           estado_tar_api: data.estadoTareas,
+          motivo_vis_api: data.motivoVisitas,
+          motivo_tar_api: data.motivoTareas,
         });
       })
       .catch((error) => {});
@@ -137,7 +148,7 @@ class ConsultarVisitas extends Component {
     window.clearInterval(this.state.winInterval);
   }
 
-  callAPi = () => {
+  callAPi = (x) => {
     fetch(process.env.REACT_APP_API_URL + "Visita", {
       method: "GET",
       headers: {
@@ -160,21 +171,32 @@ class ConsultarVisitas extends Component {
         this.setState({ loading: false });
         alert("SERVIDOR NO DISPONIBLE\nConsulte a su gestor de servicios");
       });
-    this.setState({
-      temp_titulo_vis: "",
-      temp_id_vis: "",
-    });
+    if (x !== "put") {
+      this.setState({
+        temp_motivo_vis: "",
+        temp_id_vis: "",
+      });
+    }
   };
 
   apiSearch = (e) => {
     e?.preventDefault();
     this.setState({ loading: true });
     const data = {
-      tipo: this.state.search_tipo,
-      palabra: this.state.search_pal,
+      organizacion: this.state.search_org,
+      motivo_id: this.state.search_motivo,
+      fecha_inicio: this.state.search_date_ini,
+      fecha_fin: this.state.search_date_fin,
     };
     //console.log(data);
-    if (this.state.search_tipo !== "" || this.state.search_pal !== "") {
+    if (
+      this.state.search_motivo !== "" ||
+      this.state.search_org !== "" ||
+      (this.state.search_date_ini !== "" && this.state.search_date_fin !== ""
+        ? this.state.search_date_ini <= this.state.search_date_fin
+        : this.state.search_date_ini !== "" ||
+          this.state.search_date_fin !== "")
+    ) {
       fetch(process.env.REACT_APP_API_URL + "Visita/Search", {
         method: "POST",
         headers: {
@@ -272,8 +294,10 @@ class ConsultarVisitas extends Component {
     this.setState(
       {
         loading: true,
-        search_pal: "",
-        search_tipo: "",
+        search_org: "",
+        search_motivo: "",
+        search_date_ini: "",
+        search_date_fin: "",
         reqText: false,
       },
       this.callAPi()
@@ -302,7 +326,7 @@ class ConsultarVisitas extends Component {
               temp_id_ofi: data.visita.oficina_id,
               temp_fecpro_vis: data.visita.fecha_programada,
               temp_feceje_vis: data.visita.fecha_ejecucion,
-              temp_titulo_vis: data.visita.titulo,
+              temp_motivo_vis: data.visita.motivo_id,
               temp_obs_vis: data.visita.observaciones,
               temp_res_vis: data.visita.resultado,
               temp_asignados: data.asignados?.map((obj) => obj.id),
@@ -385,7 +409,7 @@ class ConsultarVisitas extends Component {
       oficina_id: this.state.temp_id_ofi,
       fecha_programada: this.state.temp_fecpro_vis,
       fecha_ejecucion: this.state.temp_feceje_vis,
-      titulo: this.state.temp_titulo_vis,
+      motivo_id: this.state.temp_motivo_vis,
       observaciones: this.state.temp_obs_vis,
       resultado: this.state.temp_res_vis,
       asignados: this.state.temp_asignados,
@@ -411,7 +435,10 @@ class ConsultarVisitas extends Component {
               addVisit: false,
               reqText: false,
             },
-            this.selVisita
+            () => {
+              this.callAPi("put");
+              this.selVisita();
+            }
           );
         }
       })
@@ -429,14 +456,14 @@ class ConsultarVisitas extends Component {
     let name = event.target.name;
 
     switch (name) {
-      case "input_search_pal":
-        this.setState({ search_pal: value });
+      case "input_search_org":
+        this.setState({ search_org: value });
         break;
-      case "input_search_tipo":
-        this.setState({ search_tipo: value });
+      case "input_search_motivo":
+        this.setState({ search_motivo: value });
         break;
-      case "input_titulo_vis":
-        this.setState({ temp_titulo_vis: value });
+      case "input_id_motivo":
+        this.setState({ temp_motivo_vis: value });
         break;
       case "input_obs_vis":
         this.setState({ temp_obs_vis: value });
@@ -487,9 +514,27 @@ class ConsultarVisitas extends Component {
     }
   };
 
+  handleChangeDateIni = (date) => {
+    if (date !== null && date !== "") {
+      this.setState({ search_date_ini: date });
+    } else {
+      this.setState({ search_date_ini: "" });
+    }
+  };
+
+  handleChangeDateFin = (date) => {
+    if (date !== null && date !== "") {
+      this.setState({ search_date_fin: date });
+    } else {
+      this.setState({ search_date_fin: "" });
+    }
+  };
+
   render() {
-    let BOX_SPACING = this.state.box_spacing;
-    let BOX_SIZE = this.state.box_size;
+    const BOX_SPACING = this.state.box_spacing;
+    const BOX_SIZE = this.state.box_size;
+    const currentPage = this.state.currentPage;
+    const rowsPerPage = this.state.rowsPerPage;
     const rol = this.props.rol;
 
     return (
@@ -523,20 +568,20 @@ class ConsultarVisitas extends Component {
               <form className="o-consultas-containerInit">
                 <FormControl
                   className="o-consultas"
-                  style={{ margin: "0.8rem 1rem 0 0" }}
+                  style={{ margin: "0.8rem 1rem 0 0", width: 600 }}
                   variant="outlined"
                   margin="dense"
                 >
-                  <InputLabel>Filtrar por</InputLabel>
+                  <InputLabel>Motivo</InputLabel>
                   <Select
-                    value={this.state.search_tipo || ""}
+                    value={this.state.search_motivo || ""}
                     onChange={this.handleChange}
-                    label="Filtrar por"
-                    name="input_search_tipo"
+                    label="Motivo"
+                    name="input_search_motivo"
                     className="o-space"
                     style={{ marginBottom: BOX_SPACING }}
                   >
-                    {items.map((obj, i) => {
+                    {this.state.motivo_vis_api.map((obj, i) => {
                       return (
                         <MenuItem key={i} value={obj.id}>
                           {obj.nombre}
@@ -545,17 +590,31 @@ class ConsultarVisitas extends Component {
                     })}
                   </Select>
                 </FormControl>
-                <div className="o-consultas">
+
+                <div className="o-consultas" style={{ width: 800 }}>
                   <TextField
-                    label="Palabra"
+                    label="Organización"
                     variant="outlined"
-                    name="input_search_pal"
-                    value={this.state.search_pal || ""}
+                    name="input_search_org"
+                    value={this.state.search_org || ""}
                     onChange={this.handleChange}
                     className="o-space"
                     margin="dense"
                   />
                 </div>
+
+                <CustomDateRangePicker
+                  labelInput={"Rango de fechas"}
+                  label1={"Fecha inicial"}
+                  label2={"Fecha final"}
+                  value1={this.state.search_date_ini || null}
+                  value2={this.state.search_date_fin || null}
+                  funct1={(date) => this.handleChangeDateIni(date)}
+                  funct2={(date) => this.handleChangeDateFin(date)}
+                  formstyle={{ margin: "0.8rem 1rem 0 0", width: 800 }}
+                  classesname={"o-consultas"}
+                />
+
                 <div className="o-consultas-btnxn">
                   <div className="o-btnConsultas">
                     <BlueButton type="submit" onClick={this.apiSearch}>
@@ -570,7 +629,10 @@ class ConsultarVisitas extends Component {
                   </div>
                 </div>
               </form>
-              <div className="o-contentForm-big-consultasHalf">
+              <div
+                className="o-contentForm-big-consultasHalf"
+                style={{ flexDirection: "column", width: "70%" }}
+              >
                 <TableContainer
                   className="o-tableBase-consultas"
                   style={{
@@ -585,83 +647,177 @@ class ConsultarVisitas extends Component {
                         <StyledTableCell>Organización</StyledTableCell>
                         <StyledTableCell>Fecha</StyledTableCell>
                         <StyledTableCell>Motivo</StyledTableCell>
+                        <StyledTableCell>Tareas</StyledTableCell>
                         <StyledTableCell>Estado</StyledTableCell>
                         <StyledTableCell></StyledTableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {this.state.visitas.map((obj, i) => (
-                        <TableRow
-                          key={i}
-                          hover={true}
-                          selected={obj.id === this.state.temp_id_vis}
-                        >
-                          <StyledTableCell size="small">
-                            {obj.organizacion}
-                          </StyledTableCell>
-                          <StyledTableCell size="small">
-                            {obj.fecha_programada}
-                          </StyledTableCell>
-                          <StyledTableCell size="small">
-                            {obj.titulo}
-                          </StyledTableCell>
-                          <StyledTableCell size="small">
-                            {obj.nombre}
-                          </StyledTableCell>
-                          <StyledTableCell size="small" align="right">
-                            <div className="o-row-btnIcon">
-                              <IconButton
-                                size="small"
-                                color="primary"
-                                onClick={() =>
-                                  this.setState(
-                                    {
-                                      temp_id_vis: obj.id,
-                                      temp_name_org: obj.organizacion,
-                                      loading: true,
-                                    },
-                                    this.selVisita
-                                  )
-                                }
+                      {this.state.visitas
+                        .slice(
+                          currentPage * rowsPerPage,
+                          currentPage * rowsPerPage + rowsPerPage
+                        )
+                        .map((obj, i) => (
+                          <TableRow
+                            key={i}
+                            hover={true}
+                            selected={obj.id === this.state.temp_id_vis}
+                          >
+                            <StyledTableCell size="small">
+                              {obj.organizacion}
+                            </StyledTableCell>
+                            <StyledTableCell size="small">
+                              {obj.fecha_programada}
+                            </StyledTableCell>
+                            <StyledTableCell size="small">
+                              {obj.motivo}
+                            </StyledTableCell>
+                            <StyledTableCell size="small">
+                              <div
+                                style={{
+                                  display: "flex",
+                                  flexDirection: "row",
+                                  alignItems: "center",
+                                  justifyContent: "space-between",
+                                  width: 75,
+                                  fontSize: 12,
+                                  color: "#FFF",
+                                }}
                               >
-                                <IconSelect />
-                              </IconButton>
-                              {rol !== "Comercial" && rol !== "Consulta" ? (
+                                <Tooltip title="Completadas" placement="top">
+                                  <div
+                                    style={{
+                                      display: "flex",
+                                      alignItems: "center",
+                                      justifyContent: "center",
+                                      width: 20,
+                                      height: 20,
+                                      borderRadius: 10,
+                                      backgroundColor: "#32A852",
+                                    }}
+                                  >
+                                    {obj.tareasHechas || "0"}
+                                  </div>
+                                </Tooltip>
+                                <Tooltip title="Pendientes" placement="top">
+                                  <div
+                                    style={{
+                                      display: "flex",
+                                      alignItems: "center",
+                                      justifyContent: "center",
+                                      width: 20,
+                                      height: 20,
+                                      borderRadius: 10,
+                                      backgroundColor: "#DE3C3C",
+                                    }}
+                                  >
+                                    {obj.tareasPendientes || "0"}
+                                  </div>
+                                </Tooltip>
+                                <Tooltip title="Totales" placement="top">
+                                  <div
+                                    style={{
+                                      display: "flex",
+                                      alignItems: "center",
+                                      justifyContent: "center",
+                                      width: 20,
+                                      height: 20,
+                                      borderRadius: 10,
+                                      backgroundColor: "#3F51B5",
+                                    }}
+                                  >
+                                    {obj.tareasTotales || "0"}
+                                  </div>
+                                </Tooltip>
+                              </div>
+                            </StyledTableCell>
+                            <StyledTableCell size="small">
+                              {obj.estado}
+                            </StyledTableCell>
+                            <StyledTableCell size="small" align="right">
+                              <div className="o-row-btnIcon">
                                 <IconButton
                                   size="small"
-                                  color="secondary"
+                                  color="primary"
                                   onClick={() =>
                                     this.setState(
-                                      { temp_id_vis: obj.id },
-                                      this.handleClickOpenDel
+                                      {
+                                        temp_id_vis: obj.id,
+                                        temp_name_org: obj.organizacion,
+                                        loading: true,
+                                      },
+                                      this.selVisita
                                     )
                                   }
                                 >
-                                  <IconDelete />
+                                  <IconSelect />
                                 </IconButton>
-                              ) : null}
-                            </div>
-                          </StyledTableCell>
-                        </TableRow>
-                      ))}
+                                {rol !== "Comercial" && rol !== "Consulta" ? (
+                                  <IconButton
+                                    size="small"
+                                    color="secondary"
+                                    onClick={() =>
+                                      this.setState(
+                                        { temp_id_vis: obj.id },
+                                        this.handleClickOpenDel
+                                      )
+                                    }
+                                  >
+                                    <IconDelete />
+                                  </IconButton>
+                                ) : null}
+                              </div>
+                            </StyledTableCell>
+                          </TableRow>
+                        ))}
                       {this.state.visitas[0] === undefined ? (
                         <TableRow>
                           <StyledTableCell>...</StyledTableCell>
-                          <StyledTableCell></StyledTableCell>
-                          <StyledTableCell></StyledTableCell>
-                          <StyledTableCell></StyledTableCell>
-                          <StyledTableCell></StyledTableCell>
+                          <StyledTableCell />
+                          <StyledTableCell />
+                          <StyledTableCell />
+                          <StyledTableCell />
+                          <StyledTableCell />
                         </TableRow>
                       ) : null}
                     </TableBody>
                   </Table>
                 </TableContainer>
+                <TablePagination
+                  component={"div"}
+                  style={{
+                    margin: "0 0 0 auto",
+                  }}
+                  rowsPerPageOptions={[15, 25, 45]}
+                  colSpan={9}
+                  count={this.state.visitas.length}
+                  rowsPerPage={rowsPerPage}
+                  page={currentPage}
+                  onChangePage={(e, page) =>
+                    this.setState({ currentPage: page })
+                  }
+                  onChangeRowsPerPage={(e) =>
+                    this.setState({
+                      currentPage: 0,
+                      rowsPerPage: parseInt(e.target.value, 10),
+                    })
+                  }
+                  labelRowsPerPage="Filas por página"
+                  nextIconButtonText="Siguiente página"
+                  backIconButtonText="Página anterior"
+                  labelDisplayedRows={({ from, to, count }) =>
+                    `${from} - ${to} de ${
+                      count !== -1 ? count : `más que ${to}`
+                    }`
+                  }
+                />
               </div>
               <div
                 className="o-card-VisitaView"
                 style={{ maxHeight: BOX_SIZE, marginBottom: "auto" }}
               >
-                {this.state.temp_titulo_vis === "" ? (
+                {this.state.temp_motivo_vis === "" ? (
                   <div style={{ margin: "3rem auto", color: "gray" }}>
                     {"Selecciona una visita"}
                   </div>
@@ -671,13 +827,19 @@ class ConsultarVisitas extends Component {
                       className="o-textMain2"
                       style={{ fontSize: "1.3rem", marginBottom: "0.4rem" }}
                     >
-                      {this.state.temp_titulo_vis}
+                      {
+                        this.state.motivo_vis_api?.[
+                          this.state.motivo_vis_api.findIndex(
+                            (x) => x.id === this.state.temp_motivo_vis
+                          )
+                        ]?.nombre
+                      }
                     </div>
                     <div
                       className="o-textMain2"
                       style={{
                         marginBottom: "1.2rem",
-                        maxHeight: "3.2rem",
+                        maxHeight: "4.3rem",
                         overflowY: "auto",
                       }}
                     >
@@ -817,32 +979,43 @@ class ConsultarVisitas extends Component {
                 <div className="o-contentForm-big">
                   <div className="o-contentFormDiag">
                     <h3 className="o-diagSubTittle">Descripción</h3>
-                    <div style={{ marginBottom: BOX_SPACING }}>
-                      <TextField
-                        label={
+
+                    <FormControl
+                      variant="outlined"
+                      margin="dense"
+                      style={{ maxWidth: "100%" }}
+                      error={
+                        this.state.reqText && this.state.temp_motivo_vis === ""
+                      }
+                    >
+                      <InputLabel>
+                        <div style={{ display: "flex", flexDirection: "row" }}>
+                          {"Motivo"}
                           <div
-                            style={{ display: "flex", flexDirection: "row" }}
+                            style={{ color: "#FF0000", marginLeft: "0.1rem" }}
                           >
-                            {"Título"}
-                            <div
-                              style={{ color: "#FF0000", marginLeft: "0.1rem" }}
-                            >
-                              {"*"}
-                            </div>
+                            {"*"}
                           </div>
-                        }
-                        variant="outlined"
-                        name="input_titulo_vis"
-                        value={this.state.temp_titulo_vis || ""}
+                        </div>
+                      </InputLabel>
+                      <Select
+                        value={this.state.temp_motivo_vis}
                         onChange={this.handleChange}
+                        label="Motivo*"
+                        name="input_id_motivo"
                         className="o-space"
-                        margin="dense"
-                        error={
-                          this.state.reqText &&
-                          this.state.temp_titulo_vis === ""
-                        }
-                      />
-                    </div>
+                        style={{ marginBottom: BOX_SPACING }}
+                      >
+                        {this.state.motivo_vis_api.map((obj, i) => {
+                          return (
+                            <MenuItem key={i} value={obj.id}>
+                              {obj.nombre}
+                            </MenuItem>
+                          );
+                        })}
+                      </Select>
+                    </FormControl>
+
                     <div style={{ marginBottom: BOX_SPACING }}>
                       <TextField
                         label="Observaciones"
@@ -1144,7 +1317,9 @@ class ConsultarVisitas extends Component {
                 {"No se pudo buscar"}
               </DialogTitle>
               <DialogContent style={{ textAlign: "center" }}>
-                {"Selecciona un parámetro de filtrado"}
+                {
+                  "Debes agregar al menos un parámetro de búsqueda y la fecha inicial no debe ser mayor que la final"
+                }
               </DialogContent>
               <DialogActions style={{ justifyContent: "center" }}>
                 <div className="o-btnBotNav-btnDiag3">
@@ -1165,6 +1340,7 @@ class ConsultarVisitas extends Component {
             data={this.state.visita_data}
             name_org={this.state.temp_name_org}
             estado_tar_api={this.state.estado_tar_api}
+            motivo_tar_api={this.state.motivo_tar_api}
             token={this.props.token}
             rol={this.props.rol}
             box_spacing={this.state.box_spacing_tiny}

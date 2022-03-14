@@ -41,11 +41,12 @@ class CrearTareas extends Component {
       reqText: false,
       tareas: [],
       temp_id_tar: "",
-      temp_titulo_tar: "",
+      temp_id_motivo_tar: "",
       temp_des_tar: "",
       temp_res_tar: "",
       temp_estado_tar: "",
-      estado_tar_api: props.estado_tar_api,
+      estado_tar_api: props.estado_tar_api || [],
+      motivo_tar_api: props.motivo_tar_api || [],
       addTarea: false,
       delTarea: false,
       loading: true,
@@ -92,7 +93,7 @@ class CrearTareas extends Component {
     const idTar = this.state.temp_id_tar;
     const data = {
       visita_id: this.props.id_vis,
-      titulo: this.state.temp_titulo_tar,
+      motivo_id: this.state.temp_id_motivo_tar,
       descripcion: this.state.temp_des_tar,
       resultado: this.state.temp_res_tar,
       estado_id: this.state.temp_estado_tar,
@@ -176,7 +177,7 @@ class CrearTareas extends Component {
         .then((data) => {
           this.setState({
             temp_id_tar: data.tarea.id,
-            temp_titulo_tar: data.tarea.titulo,
+            temp_id_motivo_tar: data.tarea.motivo_id,
             temp_des_tar: data.tarea.descripcion,
             temp_res_tar: data.tarea.resultado,
             temp_estado_tar: data.tarea.estado_id,
@@ -229,7 +230,7 @@ class CrearTareas extends Component {
   clearTemp = () => {
     this.setState({
       temp_id_tar: "",
-      temp_titulo_tar: "",
+      temp_id_motivo_tar: "",
       temp_des_tar: "",
       temp_res_tar: "",
       temp_estado_tar: "",
@@ -242,8 +243,8 @@ class CrearTareas extends Component {
     let name = event.target.name;
 
     switch (name) {
-      case "input_titulo_tar":
-        this.setState({ temp_titulo_tar: value });
+      case "input_id_motivo":
+        this.setState({ temp_id_motivo_tar: value });
         break;
       case "input_des_tar":
         this.setState({ temp_des_tar: value });
@@ -295,7 +296,7 @@ class CrearTareas extends Component {
           {"Visita: " +
             this.props.name_org +
             " - " +
-            this.props.data.titulo +
+            this.props.data.motivo +
             " (" +
             this.props.data.fecha_programada +
             ")"}
@@ -309,7 +310,7 @@ class CrearTareas extends Component {
             <Table stickyHeader size="small">
               <TableHead>
                 <TableRow>
-                  <StyledTableCell>Tema</StyledTableCell>
+                  <StyledTableCell>Motivo</StyledTableCell>
                   <StyledTableCell>Descripción</StyledTableCell>
                   <StyledTableCell>Resultado</StyledTableCell>
                   <StyledTableCell>Estado</StyledTableCell>
@@ -319,14 +320,14 @@ class CrearTareas extends Component {
               <TableBody>
                 {this.state.tareas.map((obj, i) => (
                   <TableRow key={i} hover={true}>
-                    <StyledTableCell size="small">{obj.titulo}</StyledTableCell>
+                    <StyledTableCell size="small">{obj.motivo}</StyledTableCell>
                     <StyledTableCell size="small">
                       {obj.descripcion}
                     </StyledTableCell>
                     <StyledTableCell size="small">
                       {obj.resultado === null ? "Sin realizar" : obj.resultado}
                     </StyledTableCell>
-                    <StyledTableCell size="small">{obj.nombre}</StyledTableCell>
+                    <StyledTableCell size="small">{obj.estado}</StyledTableCell>
                     {this.props.rol !== "Comercial" ? (
                       <StyledTableCell size="small" align="right">
                         <div className="o-row-btnIcon">
@@ -439,27 +440,40 @@ class CrearTareas extends Component {
           <DialogContent>
             <div className="o-contentForm-big">
               <div className="o-contentFormDiag">
-                <div style={{ marginBottom: BOX_SPACING }}>
-                  <TextField
-                    label={
-                      <div style={{ display: "flex", flexDirection: "row" }}>
-                        {"Título"}
-                        <div style={{ color: "#FF0000", marginLeft: "0.1rem" }}>
-                          {"*"}
-                        </div>
+                <FormControl
+                  variant="outlined"
+                  margin="dense"
+                  style={{ maxWidth: "100%" }}
+                  error={
+                    this.state.reqText && this.state.temp_id_motivo_tar === ""
+                  }
+                >
+                  <InputLabel>
+                    <div style={{ display: "flex", flexDirection: "row" }}>
+                      {"Motivo"}
+                      <div style={{ color: "#FF0000", marginLeft: "0.1rem" }}>
+                        {"*"}
                       </div>
-                    }
-                    variant="outlined"
-                    name="input_titulo_tar"
-                    value={this.state.temp_titulo_tar || ""}
+                    </div>
+                  </InputLabel>
+                  <Select
+                    value={this.state.temp_id_motivo_tar}
                     onChange={this.handleChange}
+                    label="Motivo*"
+                    name="input_id_motivo"
                     className="o-space"
-                    margin="dense"
-                    error={
-                      this.state.reqText && this.state.temp_titulo_tar === ""
-                    }
-                  />
-                </div>
+                    style={{ marginBottom: BOX_SPACING }}
+                  >
+                    {this.state.motivo_tar_api.map((obj, i) => {
+                      return (
+                        <MenuItem key={i} value={obj.id}>
+                          {obj.nombre}
+                        </MenuItem>
+                      );
+                    })}
+                  </Select>
+                </FormControl>
+
                 <div style={{ marginBottom: BOX_SPACING }}>
                   <TextField
                     label={

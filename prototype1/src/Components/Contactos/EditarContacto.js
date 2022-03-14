@@ -13,12 +13,15 @@ import {
   Checkbox,
   Fade,
   CircularProgress,
+  IconButton,
+  Tooltip,
 } from "@material-ui/core";
 import { MuiTriStateCheckbox as CheckboxTri } from "mui-tri-state-checkbox";
 import { Autocomplete } from "@material-ui/lab";
 import {
   CheckBoxOutlineBlank,
   IndeterminateCheckBox,
+  FileCopy,
 } from "@material-ui/icons";
 import { GreenButton, BlueButton } from "../Buttons";
 import { Link, Redirect } from "react-router-dom";
@@ -75,11 +78,13 @@ class EditarContacto extends Component {
       userUpdated_con: "",
       fechaUpdated_con: "",
       loading: true,
+      loadingCopy: "Copiar dirección",
     };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleChangeOrg = this.handleChangeOrg.bind(this);
     this.handleChangeSubcat = this.handleChangeSubcat.bind(this);
+    this.handleCopy = this.handleCopy.bind(this);
   }
 
   componentDidMount() {
@@ -404,6 +409,25 @@ class EditarContacto extends Component {
     }
   }
 
+  handleCopy() {
+    let oTemp =
+      this.state.ofices_api?.[
+        this.state.ofices_api.findIndex(
+          (x) => x.id === this.state.temp_idoffice_con
+        )
+      ] || undefined;
+
+    if (oTemp) {
+      navigator.clipboard.writeText(
+        `${oTemp.direccion}, ${oTemp.ciudad} - ${oTemp.pais}`
+      );
+      this.setState({ loadingCopy: "Copiado!" });
+    } else {
+      this.setState({ loadingCopy: "Nada para copiar" });
+    }
+    setTimeout(() => this.setState({ loadingCopy: "Copiar dirección" }), 1500);
+  }
+
   render() {
     const BOX_SPACING = this.props.box_spacing;
     const rol = this.props.rol;
@@ -556,7 +580,7 @@ class EditarContacto extends Component {
             />
           </div>
 
-          <div className="o-contentForm">
+          <div className="o-contentForm" style={{ overflow: "unset" }}>
             <h3 className="o-innerSubTittle">Ubicación</h3>
             <div style={{ marginBottom: BOX_SPACING }}>
               <Autocomplete
@@ -586,26 +610,49 @@ class EditarContacto extends Component {
               />
             </div>
 
-            <FormControl className="o-space" variant="outlined" margin="dense">
-              <InputLabel>Oficina</InputLabel>
-              <Select
-                disabled={this.state.dbid_org === ""}
-                value={this.state.temp_idoffice_con || ""}
-                onChange={this.handleChange}
-                label="Oficina"
-                name="input_idoffice_con"
+            <div
+              style={{ display: "flex", position: "relative", width: "100%" }}
+            >
+              <Tooltip title={this.state.loadingCopy} placement={"top"}>
+                <IconButton
+                  style={{
+                    height: 35,
+                    width: 35,
+                    position: "absolute",
+                    left: -35,
+                    top: "17%",
+                  }}
+                  onClick={this.handleCopy}
+                  color={"primary"}
+                >
+                  <FileCopy />
+                </IconButton>
+              </Tooltip>
+              <FormControl
                 className="o-space"
-                style={{ marginBottom: BOX_SPACING }}
+                variant="outlined"
+                margin="dense"
               >
-                {this.state.ofices_api.map((obj, i) => {
-                  return (
-                    <MenuItem key={i} value={obj.id}>
-                      {obj.direccion} {obj.ciudad} - {obj.pais}
-                    </MenuItem>
-                  );
-                })}
-              </Select>
-            </FormControl>
+                <InputLabel>Oficina</InputLabel>
+                <Select
+                  disabled={this.state.dbid_org === ""}
+                  value={this.state.temp_idoffice_con || ""}
+                  onChange={this.handleChange}
+                  label="Oficina"
+                  name="input_idoffice_con"
+                  className="o-space"
+                  style={{ marginBottom: BOX_SPACING }}
+                >
+                  {this.state.ofices_api.map((obj, i) => {
+                    return (
+                      <MenuItem key={i} value={obj.id}>
+                        {obj.direccion}, {obj.ciudad} - {obj.pais}
+                      </MenuItem>
+                    );
+                  })}
+                </Select>
+              </FormControl>
+            </div>
 
             <h3 className="o-innerSubTittle2">Datos de contacto</h3>
             <div style={{ marginBottom: BOX_SPACING }}>

@@ -87,7 +87,7 @@ class CrearVisitas extends Component {
       visita_data: {},
       temp_fecpro_vis: "",
       temp_feceje_vis: "",
-      temp_titulo_vis: "",
+      temp_motivo_vis: "",
       temp_obs_vis: "",
       temp_res_vis: "",
       temp_asignados: [],
@@ -95,7 +95,9 @@ class CrearVisitas extends Component {
       users_api: [],
       contacto_org_api: [],
       oficina_org_api: [],
+      motivo_vis_api: [],
       estado_vis_api: [],
+      motivo_tar_api: [],
       estado_tar_api: [],
       addVisit: false,
       loading: true,
@@ -144,7 +146,9 @@ class CrearVisitas extends Component {
       .then((data) => {
         this.setState({
           users_api: data.usuarios,
+          motivo_vis_api: data.motivoVisitas,
           estado_vis_api: data.estadoVisitas,
+          motivo_tar_api: data.motivoTareas,
           estado_tar_api: data.estadoTareas,
         });
       })
@@ -353,7 +357,7 @@ class CrearVisitas extends Component {
               this.state.temp_fecpro_vis.getDate() +
               "-" +
               this.state.temp_fecpro_vis.getDay(),
-        titulo: this.state.temp_titulo_vis,
+        motivo: this.state.temp_motivo_vis,
       },
     });
     const data = {
@@ -362,7 +366,7 @@ class CrearVisitas extends Component {
       oficina_id: this.state.temp_id_ofi,
       fecha_programada: this.state.temp_fecpro_vis,
       fecha_ejecucion: this.state.temp_feceje_vis,
-      titulo: this.state.temp_titulo_vis,
+      motivo_id: this.state.temp_motivo_vis,
       observaciones: this.state.temp_obs_vis,
       resultado: this.state.temp_res_vis,
       estado_id: this.state.temp_estado_vis,
@@ -410,7 +414,7 @@ class CrearVisitas extends Component {
       temp_id_ofi: "",
       temp_fecpro_vis: "",
       temp_feceje_vis: "",
-      temp_titulo_vis: "",
+      temp_motivo_vis: "",
       temp_obs_vis: "",
       temp_res_vis: "",
       temp_temp_asignados: [],
@@ -447,8 +451,8 @@ class CrearVisitas extends Component {
       case "input_razsoc_org":
         this.setState({ razsoc_org: value });
         break;
-      case "input_titulo_vis":
-        this.setState({ temp_titulo_vis: value });
+      case "input_id_motivo":
+        this.setState({ temp_motivo_vis: value });
         break;
       case "input_obs_vis":
         this.setState({ temp_obs_vis: value });
@@ -918,32 +922,41 @@ class CrearVisitas extends Component {
                 <div className="o-contentForm-big">
                   <div className="o-contentFormDiag">
                     <h3 className="o-diagSubTittle">Descripción</h3>
-                    <div style={{ marginBottom: BOX_SPACING }}>
-                      <TextField
-                        label={
+                    <FormControl
+                      variant="outlined"
+                      margin="dense"
+                      style={{ maxWidth: "100%" }}
+                      error={
+                        this.state.reqText && this.state.temp_motivo_vis === ""
+                      }
+                    >
+                      <InputLabel>
+                        <div style={{ display: "flex", flexDirection: "row" }}>
+                          {"Motivo"}
                           <div
-                            style={{ display: "flex", flexDirection: "row" }}
+                            style={{ color: "#FF0000", marginLeft: "0.1rem" }}
                           >
-                            {"Título"}
-                            <div
-                              style={{ color: "#FF0000", marginLeft: "0.1rem" }}
-                            >
-                              {"*"}
-                            </div>
+                            {"*"}
                           </div>
-                        }
-                        variant="outlined"
-                        name="input_titulo_vis"
-                        value={this.state.temp_titulo_vis || ""}
+                        </div>
+                      </InputLabel>
+                      <Select
+                        value={this.state.temp_motivo_vis}
                         onChange={this.handleChange}
+                        label="Motivo*"
+                        name="input_id_motivo"
                         className="o-space"
-                        margin="dense"
-                        error={
-                          this.state.reqText &&
-                          this.state.temp_titulo_vis === ""
-                        }
-                      />
-                    </div>
+                        style={{ marginBottom: BOX_SPACING }}
+                      >
+                        {this.state.motivo_vis_api.map((obj, i) => {
+                          return (
+                            <MenuItem key={i} value={obj.id}>
+                              {obj.nombre}
+                            </MenuItem>
+                          );
+                        })}
+                      </Select>
+                    </FormControl>
                     <div style={{ marginBottom: BOX_SPACING }}>
                       <TextField
                         label="Observaciones"
@@ -1668,6 +1681,7 @@ class CrearVisitas extends Component {
             data={this.state.visita_data}
             name_org={this.state.temp_name_org}
             estado_tar_api={this.state.estado_tar_api}
+            motivo_tar_api={this.state.motivo_tar_api}
             token={this.props.token}
             box_spacing={this.state.box_spacing_tiny}
             subtitle_spacing={this.state.subtitle_spacing}

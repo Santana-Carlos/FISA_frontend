@@ -38,9 +38,12 @@ class Para6Seguimiento extends Component {
       delDato: false,
       api_estvisita: [],
       api_esttarea: [],
+      api_motvisita: [],
+      api_mottarea: [],
       loading: true,
       loadingDiag: false,
       box_spacing: window.innerHeight > 900 ? "0.6rem" : "0.2rem",
+      box_size: window.innerHeight > 900 ? "22rem" : "13rem",
       box_sizeBig: window.innerHeight > 900 ? "45.45rem" : "27.45rem",
       winInterval: "",
     };
@@ -51,6 +54,7 @@ class Para6Seguimiento extends Component {
   resizeBox = () => {
     this.setState({
       box_spacing: window.innerHeight > 900 ? "0.6rem" : "0.2rem",
+      box_size: window.innerHeight > 900 ? "22rem" : "13rem",
       box_sizeBig: window.innerHeight > 900 ? "45.45rem" : "27.45rem",
     });
   };
@@ -80,8 +84,10 @@ class Para6Seguimiento extends Component {
       .then((data) => {
         if (data.success) {
           this.setState({
-            api_estvisita: data.visitas,
-            api_esttarea: data.tareas,
+            api_estvisita: data.estadoVisitas || [],
+            api_esttarea: data.estadoTareas || [],
+            api_motvisita: data.motivoVisitas || [],
+            api_mottarea: data.motivoTareas || [],
             loading: false,
           });
         }
@@ -270,6 +276,7 @@ class Para6Seguimiento extends Component {
 
   render() {
     const BOX_SPACING = this.state.box_spacing;
+    const BOX_SIZE = this.state.box_size;
     const BOX_SIZE_BIG = this.state.box_sizeBig;
     return (
       <div className="o-cardContent">
@@ -303,6 +310,172 @@ class Para6Seguimiento extends Component {
               style={{
                 display: "inline",
                 height: BOX_SIZE_BIG,
+                marginTop: "0.5rem",
+              }}
+            >
+              <Table stickyHeader size="small">
+                <TableHead>
+                  <TableRow>
+                    <StyledTableCell>Motivos Visita</StyledTableCell>
+                    <StyledTableCell align="right">
+                      <IconButton
+                        size="small"
+                        style={{ color: "#ffffff", marginRight: 0 }}
+                        onClick={() =>
+                          this.setState({
+                            addDato: true,
+                            temp_accion: "a",
+                            temp_tipo: "MotivoVisita",
+                          })
+                        }
+                      >
+                        <IconAdd />
+                      </IconButton>
+                    </StyledTableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {this.state.api_motvisita.map((obj, i) => (
+                    <TableRow key={i} hover={true}>
+                      <StyledTableCell size="small">
+                        {obj.nombre}
+                      </StyledTableCell>
+                      <StyledTableCell size="small" align="right">
+                        <div className="o-row-btnIcon">
+                          <IconButton
+                            size="small"
+                            className="o-tinyBtn"
+                            style={{ color: "#47B14C" }}
+                            onClick={() => {
+                              this.setState(
+                                {
+                                  temp_id: obj.id,
+                                  temp_tipo: "MotivoVisita",
+                                  temp_accion: "e",
+                                },
+                                this.callApiGet
+                              );
+                            }}
+                          >
+                            <IconEdit />
+                          </IconButton>
+                          <IconButton
+                            size="small"
+                            color="secondary"
+                            onClick={() =>
+                              this.setState({
+                                temp_tipo: "MotivoVisita",
+                                temp_id: obj.id,
+                                delDato: true,
+                              })
+                            }
+                          >
+                            <IconDelete />
+                          </IconButton>
+                        </div>
+                      </StyledTableCell>
+                    </TableRow>
+                  ))}
+                  {this.state.api_estvisita[0] === undefined ? (
+                    <TableRow>
+                      <StyledTableCell>...</StyledTableCell>
+                      <StyledTableCell />
+                    </TableRow>
+                  ) : null}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </div>
+
+          <div className="o-contentForm-parametros30per">
+            <TableContainer
+              className="o-tableBase-consultas"
+              style={{
+                display: "inline",
+                height: BOX_SIZE_BIG,
+                marginTop: "0.5rem",
+              }}
+            >
+              <Table stickyHeader size="small">
+                <TableHead>
+                  <TableRow>
+                    <StyledTableCell>Motivos Tarea</StyledTableCell>
+                    <StyledTableCell align="right">
+                      <IconButton
+                        size="small"
+                        style={{ color: "#ffffff", marginRight: 0 }}
+                        onClick={() =>
+                          this.setState({
+                            addDato: true,
+                            temp_accion: "a",
+                            temp_tipo: "MotivoTarea",
+                          })
+                        }
+                      >
+                        <IconAdd />
+                      </IconButton>
+                    </StyledTableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {this.state.api_mottarea.map((obj, i) => (
+                    <TableRow key={i} hover={true}>
+                      <StyledTableCell size="small">
+                        {obj.nombre}
+                      </StyledTableCell>
+                      <StyledTableCell size="small" align="right">
+                        <div className="o-row-btnIcon">
+                          <IconButton
+                            size="small"
+                            className="o-tinyBtn"
+                            style={{ color: "#47B14C" }}
+                            onClick={() => {
+                              this.setState(
+                                {
+                                  temp_id: obj.id,
+                                  temp_tipo: "MotivoTarea",
+                                  temp_accion: "e",
+                                },
+                                this.callApiGet
+                              );
+                            }}
+                          >
+                            <IconEdit />
+                          </IconButton>
+                          <IconButton
+                            size="small"
+                            color="secondary"
+                            onClick={() =>
+                              this.setState({
+                                temp_tipo: "MotivoTarea",
+                                temp_id: obj.id,
+                                delDato: true,
+                              })
+                            }
+                          >
+                            <IconDelete />
+                          </IconButton>
+                        </div>
+                      </StyledTableCell>
+                    </TableRow>
+                  ))}
+                  {this.state.api_mottarea[0] === undefined ? (
+                    <TableRow>
+                      <StyledTableCell>...</StyledTableCell>
+                      <StyledTableCell />
+                    </TableRow>
+                  ) : null}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </div>
+
+          <div className="o-contentForm-parametros30per">
+            <TableContainer
+              className="o-tableBase-consultas"
+              style={{
+                display: "inline",
+                height: BOX_SIZE,
                 marginTop: "0.5rem",
               }}
             >
@@ -378,15 +551,13 @@ class Para6Seguimiento extends Component {
                 </TableBody>
               </Table>
             </TableContainer>
-          </div>
 
-          <div className="o-contentForm-parametros30per">
             <TableContainer
               className="o-tableBase-consultas"
               style={{
                 display: "inline",
-                height: BOX_SIZE_BIG,
-                marginTop: "0.5rem",
+                height: BOX_SIZE,
+                marginTop: "1.3rem",
               }}
             >
               <Table stickyHeader size="small">
