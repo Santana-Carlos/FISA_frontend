@@ -39,6 +39,7 @@ import {
   Refresh as IconRefresh,
   Fullscreen as IconFull,
   FullscreenExit as IconExit,
+  CloseRounded,
 } from "@material-ui/icons";
 import { Switch, Route } from "react-router-dom";
 import CrearTareas from "./CrearTareas";
@@ -105,12 +106,18 @@ class CrearVisitas extends Component {
       currentPage: 0,
       rowsPerPage: 25,
       box_spacing: window.innerHeight > 900 ? "0.6rem" : "0.2rem",
-      box_size: window.innerHeight > 900 ? "38rem" : "22rem",
       box_spacing_tiny: window.innerHeight > 900 ? "0.4rem" : "0rem",
       subtitle_spacing: window.innerHeight > 900 ? "2.1rem" : "1.7rem",
       box_size_tiny: window.innerHeight > 900 ? "24rem" : "13rem",
       box_size_table: window.innerHeight > 900 ? "30rem" : "15rem",
-      box_size_x: window.innerHeight > 900 ? "48rem" : "29rem",
+      box_size:
+        window.innerHeight > 900
+          ? "calc(100vh - 8.4rem - 160px)"
+          : "calc(100vh - 8.4rem - 128px)",
+      box_size_x:
+        window.innerHeight > 900
+          ? "calc(100vh - 5.9rem - 60px)"
+          : "calc(100vh - 5.9rem + 10px)",
       full_size_card: window.innerHeight > 900 ? false : true,
       winInterval: "",
     };
@@ -122,12 +129,18 @@ class CrearVisitas extends Component {
   resizeBox = () => {
     this.setState({
       box_spacing: window.innerHeight > 900 ? "0.6rem" : "0.2rem",
-      box_size: window.innerHeight > 900 ? "38rem" : "22rem",
       box_spacing_tiny: window.innerHeight > 900 ? "0.4rem" : "0rem",
       subtitle_spacing: window.innerHeight > 900 ? "2.1rem" : "1.7rem",
       box_size_tiny: window.innerHeight > 900 ? "24rem" : "13rem",
       box_size_table: window.innerHeight > 900 ? "30rem" : "15rem",
-      box_size_x: window.innerHeight > 900 ? "48rem" : "29rem",
+      box_size:
+        window.innerHeight > 900
+          ? "calc(100vh - 8.4rem - 160px)"
+          : "calc(100vh - 8.4rem - 128px)",
+      box_size_x:
+        window.innerHeight > 900
+          ? "calc(100vh - 5.9rem - 60px)"
+          : "calc(100vh - 5.9rem + 10px)",
       full_size_card: window.innerHeight > 900 ? false : true,
     });
   };
@@ -1269,6 +1282,22 @@ class CrearVisitas extends Component {
               fullWidth
               maxWidth="xl"
             >
+              <IconButton
+                size="small"
+                style={{
+                  color: "#fff",
+                  position: "absolute",
+                  top: 2,
+                  right: 2,
+                }}
+                onClick={() =>
+                  this.setState({
+                    xpantOpen: false,
+                  })
+                }
+              >
+                <CloseRounded style={{ color: "gray" }} />
+              </IconButton>
               <DialogContent
                 style={{
                   display: "flex",

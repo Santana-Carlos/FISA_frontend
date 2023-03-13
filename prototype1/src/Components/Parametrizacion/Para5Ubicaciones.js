@@ -45,7 +45,14 @@ class Para5Ubicaciones extends Component {
       loading: true,
       loadingDiag: false,
       box_spacing: window.innerHeight > 900 ? "0.6rem" : "0.2rem",
-      box_sizeBig: window.innerHeight > 900 ? "45.45rem" : "27.45rem",
+      box_size:
+        window.innerHeight > 900
+          ? "calc(50vh - 75px - 0.65rem)"
+          : "calc(50vh - 67px - 0.65rem)",
+      box_size_big:
+        window.innerHeight > 900
+          ? "calc(100vh - 148px)"
+          : "calc(100vh - 132px)",
       winInterval: "",
     };
 
@@ -55,7 +62,14 @@ class Para5Ubicaciones extends Component {
   resizeBox = () => {
     this.setState({
       box_spacing: window.innerHeight > 900 ? "0.6rem" : "0.2rem",
-      box_sizeBig: window.innerHeight > 900 ? "45.45rem" : "27.45rem",
+      box_size:
+        window.innerHeight > 900
+          ? "calc(50vh - 75px - 0.65rem)"
+          : "calc(50vh - 67px - 0.65rem)",
+      box_size_big:
+        window.innerHeight > 900
+          ? "calc(100vh - 148px)"
+          : "calc(100vh - 132px)",
     });
   };
 
@@ -432,7 +446,7 @@ class Para5Ubicaciones extends Component {
 
   render() {
     const BOX_SPACING = this.state.box_spacing;
-    const BOX_SIZE_BIG = this.state.box_sizeBig;
+    const BOX_SIZE_BIG = this.state.box_size_big;
     return (
       <div className="o-cardContent">
         <div className="o-contentTittle">

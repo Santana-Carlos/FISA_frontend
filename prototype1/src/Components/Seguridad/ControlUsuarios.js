@@ -523,6 +523,7 @@ class ControlUsuarios extends Component {
                 paddingTop: "3rem",
                 border: "1px solid" + this.state.temp_color,
                 borderRadius: "5px",
+                position: "relative",
               }}
             >
               <div className="o-contentFormDiag">
@@ -744,8 +745,15 @@ class ControlUsuarios extends Component {
                 </FormControl>
               </div>
               <div
-                className="o-btnBotNavDoble"
-                style={{ margin: "auto 1rem 1rem auto" }}
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  width: "14.5rem",
+                  position: "absolute",
+                  right: "1rem",
+                  bottom: "1rem",
+                }}
               >
                 <div className="o-btnBotNav-btn">
                   <RedButton

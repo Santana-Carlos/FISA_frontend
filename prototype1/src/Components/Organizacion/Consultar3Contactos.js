@@ -19,6 +19,7 @@ import {
   Checkbox,
   Fade,
   CircularProgress,
+  ButtonBase,
 } from "@material-ui/core";
 import { MuiTriStateCheckbox as CheckboxTri } from "mui-tri-state-checkbox";
 import {
@@ -27,6 +28,9 @@ import {
   Add as IconAdd,
   AddCircleOutline as IconAddCircle,
   Refresh as IconRefresh,
+  FilterList as IconFilter,
+  TextRotationAngledown as IconDes,
+  TextRotationAngleup as IconAsc,
   CheckBoxOutlineBlank,
   IndeterminateCheckBox,
 } from "@material-ui/icons";
@@ -64,6 +68,8 @@ class Consultar3Contactos extends Component {
       temp_id_con: "",
       temp_id_per: "",
       contacts: [],
+      contactsSort: [],
+      currentFilter: "",
       addContact: false,
       delContact: false,
       createS: false,
@@ -157,6 +163,56 @@ class Consultar3Contactos extends Component {
     this.callAPi();
   }
 
+  sortByName = () => {
+    const temp = this.state.contacts;
+    if (this.state.currentFilter === "namAsc") {
+      this.setState({
+        contactsSort: temp.sort(function (a, b) {
+          const textA = a.nombres === null ? "~" : a.nombres.toUpperCase();
+          const textB = b.nombres === null ? "~" : b.nombres.toUpperCase();
+          return textA > textB ? -1 : textA < textB ? 1 : 0;
+        }),
+        currentFilter: "namDes",
+      });
+    } else if (this.state.currentFilter === "namDes") {
+      this.callAPi();
+    } else {
+      this.setState({
+        contactsSort: temp.sort(function (a, b) {
+          const textA = a.nombres === null ? "~" : a.nombres.toUpperCase();
+          const textB = b.nombres === null ? "~" : b.nombres.toUpperCase();
+          return textA < textB ? -1 : textA > textB ? 1 : 0;
+        }),
+        currentFilter: "namAsc",
+      });
+    }
+  };
+
+  sortByCar = () => {
+    const temp = this.state.contacts;
+    if (this.state.currentFilter === "carAsc") {
+      this.setState({
+        contactsSort: temp.sort(function (a, b) {
+          const textA = a.cargo === null ? "~" : a.cargo.toUpperCase();
+          const textB = b.cargo === null ? "~" : b.cargo.toUpperCase();
+          return textA > textB ? -1 : textA < textB ? 1 : 0;
+        }),
+        currentFilter: "carDes",
+      });
+    } else if (this.state.currentFilter === "carDes") {
+      this.callAPi();
+    } else {
+      this.setState({
+        contactsSort: temp.sort(function (a, b) {
+          const textA = a.cargo === null ? "~" : a.cargo.toUpperCase();
+          const textB = b.cargo === null ? "~" : b.cargo.toUpperCase();
+          return textA < textB ? -1 : textA > textB ? 1 : 0;
+        }),
+        currentFilter: "carAsc",
+      });
+    }
+  };
+
   callAPi = () => {
     const data = {
       organizacion_id: this.state.dbid_org,
@@ -176,6 +232,8 @@ class Consultar3Contactos extends Component {
         this.setState(
           {
             contacts: data.contactos,
+            contactsSort: data.contactos,
+            currentFilter: "",
             loading: false,
           },
           this.callAPiOff
@@ -713,6 +771,7 @@ class Consultar3Contactos extends Component {
     const currentPage = this.state.currentPage;
     const rowsPerPage = this.state.rowsPerPage;
     const rol = this.props.rol;
+    const filter = this.state.currentFilter;
 
     return (
       <div className="o-cardContent">
@@ -744,8 +803,66 @@ class Consultar3Contactos extends Component {
             <Table stickyHeader size="small">
               <TableHead>
                 <TableRow>
-                  <StyledTableCell>Nombre</StyledTableCell>
-                  <StyledTableCell>Cargo</StyledTableCell>
+                  <StyledTableCell>
+                    <ButtonBase
+                      style={{
+                        fontSize: "inherit",
+                        fontFamily: "inherit",
+                      }}
+                      onClick={this.sortByName}
+                    >
+                      Nombre
+                      {filter === "namAsc" ? (
+                        <IconAsc
+                          style={{
+                            margin: "0 0 0 0.5rem",
+                          }}
+                        />
+                      ) : filter === "namDes" ? (
+                        <IconDes
+                          style={{
+                            margin: "0 0 0 0.5rem",
+                          }}
+                        />
+                      ) : (
+                        <IconFilter
+                          style={{
+                            margin: "0 0 0 0.5rem",
+                          }}
+                        />
+                      )}
+                    </ButtonBase>
+                  </StyledTableCell>
+                  <StyledTableCell>
+                    <ButtonBase
+                      style={{
+                        fontSize: "inherit",
+                        fontFamily: "inherit",
+                      }}
+                      onClick={this.sortByCar}
+                    >
+                      Cargo
+                      {filter === "carAsc" ? (
+                        <IconAsc
+                          style={{
+                            margin: "0 0 0 0.5rem",
+                          }}
+                        />
+                      ) : filter === "carDes" ? (
+                        <IconDes
+                          style={{
+                            margin: "0 0 0 0.5rem",
+                          }}
+                        />
+                      ) : (
+                        <IconFilter
+                          style={{
+                            margin: "0 0 0 0.5rem",
+                          }}
+                        />
+                      )}
+                    </ButtonBase>
+                  </StyledTableCell>
                   <StyledTableCell>Teléfono</StyledTableCell>
                   <StyledTableCell>Ext.</StyledTableCell>
                   <StyledTableCell>Celular</StyledTableCell>
@@ -755,7 +872,7 @@ class Consultar3Contactos extends Component {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {this.state.contacts.map((obj, i) => (
+                {this.state.contactsSort.map?.((obj, i) => (
                   <TableRow key={i} hover={true}>
                     <StyledTableCell size="small">
                       {obj.nombres + " " + obj.apellidos}

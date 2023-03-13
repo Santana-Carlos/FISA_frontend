@@ -36,6 +36,7 @@ import {
   Fullscreen as IconFull,
   FullscreenExit as IconExit,
   FilterList as IconFilter,
+  CloseRounded,
   TextRotationAngledown as IconDes,
   TextRotationAngleup as IconAsc,
 } from "@material-ui/icons";
@@ -82,9 +83,15 @@ class ConsultarContacto extends Component {
       currentFilter: "",
       contactsSort: [],
       box_spacing: window.innerHeight > 900 ? "0.6rem" : "0.2rem",
-      box_size: window.innerHeight > 900 ? "38rem" : "22rem",
       box_spacing_tiny: window.innerHeight > 900 ? "0.8rem" : "0rem",
-      box_size_x: window.innerHeight > 900 ? "49rem" : "32rem",
+      box_size:
+        window.innerHeight > 900
+          ? "calc(100vh - 5.9rem - 160px)"
+          : "calc(100vh - 5.9rem - 128px)",
+      box_size_x:
+        window.innerHeight > 900
+          ? "calc(100vh - 5.9rem - 60px)"
+          : "calc(100vh - 5.9rem - 50px)",
       full_size_card: window.innerHeight > 900 ? false : true,
       winInterval: "",
     };
@@ -95,9 +102,15 @@ class ConsultarContacto extends Component {
   resizeBox = () => {
     this.setState({
       box_spacing: window.innerHeight > 900 ? "0.6rem" : "0.2rem",
-      box_size: window.innerHeight > 900 ? "38rem" : "22rem",
       box_spacing_tiny: window.innerHeight > 900 ? "0.8rem" : "0rem",
-      box_size_x: window.innerHeight > 900 ? "49rem" : "32rem",
+      box_size:
+        window.innerHeight > 900
+          ? "calc(100vh - 5.9rem - 160px)"
+          : "calc(100vh - 5.9rem - 128px)",
+      box_size_x:
+        window.innerHeight > 900
+          ? "calc(100vh - 5.9rem - 60px)"
+          : "calc(100vh - 5.9rem - 50px)",
       full_size_card: window.innerHeight > 900 ? false : true,
     });
   };
@@ -373,19 +386,7 @@ class ConsultarContacto extends Component {
 
   sortByOrg = () => {
     const temp = this.state.contacts;
-
-    if (this.state.currentFilter !== "orgAsc") {
-      this.setState({
-        contactsSort: temp.sort(function (a, b) {
-          const textA =
-            a.organizacion === null ? "~" : a.organizacion.toUpperCase();
-          const textB =
-            b.organizacion === null ? "~" : b.organizacion.toUpperCase();
-          return textA < textB ? -1 : textA > textB ? 1 : 0;
-        }),
-        currentFilter: "orgAsc",
-      });
-    } else {
+    if (this.state.currentFilter === "orgAsc") {
       this.setState({
         contactsSort: temp.sort(function (a, b) {
           const textA =
@@ -396,21 +397,25 @@ class ConsultarContacto extends Component {
         }),
         currentFilter: "orgDes",
       });
+    } else if (this.state.currentFilter === "orgDes") {
+      this.callAPi();
+    } else {
+      this.setState({
+        contactsSort: temp.sort(function (a, b) {
+          const textA =
+            a.organizacion === null ? "~" : a.organizacion.toUpperCase();
+          const textB =
+            b.organizacion === null ? "~" : b.organizacion.toUpperCase();
+          return textA < textB ? -1 : textA > textB ? 1 : 0;
+        }),
+        currentFilter: "orgAsc",
+      });
     }
   };
 
   sortByName = () => {
     const temp = this.state.contacts;
-    if (this.state.currentFilter !== "namAsc") {
-      this.setState({
-        contactsSort: temp.sort(function (a, b) {
-          const textA = a.nombres === null ? "~" : a.nombres.toUpperCase();
-          const textB = b.nombres === null ? "~" : b.nombres.toUpperCase();
-          return textA < textB ? -1 : textA > textB ? 1 : 0;
-        }),
-        currentFilter: "namAsc",
-      });
-    } else {
+    if (this.state.currentFilter === "namAsc") {
       this.setState({
         contactsSort: temp.sort(function (a, b) {
           const textA = a.nombres === null ? "~" : a.nombres.toUpperCase();
@@ -419,21 +424,23 @@ class ConsultarContacto extends Component {
         }),
         currentFilter: "namDes",
       });
+    } else if (this.state.currentFilter === "namDes") {
+      this.callAPi();
+    } else {
+      this.setState({
+        contactsSort: temp.sort(function (a, b) {
+          const textA = a.nombres === null ? "~" : a.nombres.toUpperCase();
+          const textB = b.nombres === null ? "~" : b.nombres.toUpperCase();
+          return textA < textB ? -1 : textA > textB ? 1 : 0;
+        }),
+        currentFilter: "namAsc",
+      });
     }
   };
 
   sortByCar = () => {
     const temp = this.state.contacts;
-    if (this.state.currentFilter !== "carAsc") {
-      this.setState({
-        contactsSort: temp.sort(function (a, b) {
-          const textA = a.cargo === null ? "~" : a.cargo.toUpperCase();
-          const textB = b.cargo === null ? "~" : b.cargo.toUpperCase();
-          return textA < textB ? -1 : textA > textB ? 1 : 0;
-        }),
-        currentFilter: "carAsc",
-      });
-    } else {
+    if (this.state.currentFilter === "carAsc") {
       this.setState({
         contactsSort: temp.sort(function (a, b) {
           const textA = a.cargo === null ? "~" : a.cargo.toUpperCase();
@@ -441,6 +448,17 @@ class ConsultarContacto extends Component {
           return textA > textB ? -1 : textA < textB ? 1 : 0;
         }),
         currentFilter: "carDes",
+      });
+    } else if (this.state.currentFilter === "carDes") {
+      this.callAPi();
+    } else {
+      this.setState({
+        contactsSort: temp.sort(function (a, b) {
+          const textA = a.cargo === null ? "~" : a.cargo.toUpperCase();
+          const textB = b.cargo === null ? "~" : b.cargo.toUpperCase();
+          return textA < textB ? -1 : textA > textB ? 1 : 0;
+        }),
+        currentFilter: "carAsc",
       });
     }
   };
@@ -965,12 +983,28 @@ class ConsultarContacto extends Component {
               fullWidth
               maxWidth="xl"
             >
+              <IconButton
+                size="small"
+                style={{
+                  color: "#fff",
+                  position: "absolute",
+                  top: 2,
+                  right: 2,
+                }}
+                onClick={() =>
+                  this.setState({
+                    xpantOpen: false,
+                  })
+                }
+              >
+                <CloseRounded style={{ color: "gray" }} />
+              </IconButton>
               <DialogContent
                 style={{
                   display: "flex",
                   flexDirection: "row",
                   justifyContent: "center",
-                  paddingTop: FULLSIZE_CARD ? 3 : 20,
+                  paddingTop: 20,
                   paddingBottom: 0,
                 }}
               >

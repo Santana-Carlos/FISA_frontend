@@ -33,6 +33,7 @@ import {
   GetApp as IconDownload,
   Fullscreen as IconFull,
   FullscreenExit as IconExit,
+  CloseRounded,
 } from "@material-ui/icons";
 import "../Styles.css";
 
@@ -87,8 +88,14 @@ class ReporteOrganizacion extends Component {
       currentPage: 0,
       rowsPerPage: 25,
       box_spacing: window.innerHeight > 900 ? "0.6rem" : "0.2rem",
-      box_size: window.innerHeight > 900 ? "34rem" : "18rem",
-      box_size_x: window.innerHeight > 900 ? "48rem" : "29rem",
+      box_size:
+        window.innerHeight > 900
+          ? "calc(100vh - 8.4rem - 170px)"
+          : "calc(100vh - 8.4rem - 140px)",
+      box_size_x:
+        window.innerHeight > 900
+          ? "calc(100vh - 5.9rem - 60px)"
+          : "calc(100vh - 5.9rem + 10px)",
       full_size_card: window.innerHeight > 900 ? false : true,
       winInterval: "",
     };
@@ -99,8 +106,14 @@ class ReporteOrganizacion extends Component {
   resizeBox = () => {
     this.setState({
       box_spacing: window.innerHeight > 900 ? "0.6rem" : "0.2rem",
-      box_size: window.innerHeight > 900 ? "34rem" : "18rem",
-      box_size_x: window.innerHeight > 900 ? "48rem" : "29rem",
+      box_size:
+        window.innerHeight > 900
+          ? "calc(100vh - 8.4rem - 170px)"
+          : "calc(100vh - 8.4rem - 140px)",
+      box_size_x:
+        window.innerHeight > 900
+          ? "calc(100vh - 5.9rem - 60px)"
+          : "calc(100vh - 5.9rem + 10px)",
       full_size_card: window.innerHeight > 900 ? false : true,
     });
   };
@@ -860,6 +873,22 @@ class ReporteOrganizacion extends Component {
           fullWidth
           maxWidth="xl"
         >
+          <IconButton
+            size="small"
+            style={{
+              color: "#fff",
+              position: "absolute",
+              top: 2,
+              right: 2,
+            }}
+            onClick={() =>
+              this.setState({
+                xpantOpen: false,
+              })
+            }
+          >
+            <CloseRounded style={{ color: "gray" }} />
+          </IconButton>
           <DialogContent
             style={{
               display: "flex",

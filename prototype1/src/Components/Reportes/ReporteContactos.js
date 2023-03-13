@@ -38,6 +38,7 @@ import {
   FilterList as IconFilter,
   TextRotationAngledown as IconDes,
   TextRotationAngleup as IconAsc,
+  CloseRounded,
 } from "@material-ui/icons";
 import "../Styles.css";
 
@@ -89,8 +90,14 @@ class ReporteContacto extends Component {
       currentFilter: "",
       contactsSort: [],
       box_spacing: window.innerHeight > 900 ? "0.6rem" : "0.2rem",
-      box_size: window.innerHeight > 900 ? "38rem" : "22rem",
-      box_size_x: window.innerHeight > 900 ? "49rem" : "32rem",
+      box_size:
+        window.innerHeight > 900
+          ? "calc(100vh - 8.4rem - 170px)"
+          : "calc(100vh - 8.4rem - 140px)",
+      box_size_x:
+        window.innerHeight > 900
+          ? "calc(100vh - 5.9rem - 60px)"
+          : "calc(100vh - 5.9rem - 50px)",
       full_size_card: window.innerHeight > 900 ? false : true,
       winInterval: "",
     };
@@ -101,8 +108,14 @@ class ReporteContacto extends Component {
   resizeBox = () => {
     this.setState({
       box_spacing: window.innerHeight > 900 ? "0.6rem" : "0.2rem",
-      box_size: window.innerHeight > 900 ? "38rem" : "22rem",
-      box_size_x: window.innerHeight > 900 ? "49rem" : "32rem",
+      box_size:
+        window.innerHeight > 900
+          ? "calc(100vh - 8.4rem - 170px)"
+          : "calc(100vh - 8.4rem - 140px)",
+      box_size_x:
+        window.innerHeight > 900
+          ? "calc(100vh - 5.9rem - 60px)"
+          : "calc(100vh - 5.9rem - 50px)",
       full_size_card: window.innerHeight > 900 ? false : true,
     });
   };
@@ -400,19 +413,7 @@ class ReporteContacto extends Component {
   }
   sortByOrg = () => {
     const temp = this.state.contacts;
-
-    if (this.state.currentFilter !== "orgAsc") {
-      this.setState({
-        contactsSort: temp.sort(function (a, b) {
-          const textA =
-            a.organizacion === null ? "~" : a.organizacion.toUpperCase();
-          const textB =
-            b.organizacion === null ? "~" : b.organizacion.toUpperCase();
-          return textA < textB ? -1 : textA > textB ? 1 : 0;
-        }),
-        currentFilter: "orgAsc",
-      });
-    } else {
+    if (this.state.currentFilter === "orgAsc") {
       this.setState({
         contactsSort: temp.sort(function (a, b) {
           const textA =
@@ -423,21 +424,25 @@ class ReporteContacto extends Component {
         }),
         currentFilter: "orgDes",
       });
+    } else if (this.state.currentFilter === "orgDes") {
+      this.callAPi();
+    } else {
+      this.setState({
+        contactsSort: temp.sort(function (a, b) {
+          const textA =
+            a.organizacion === null ? "~" : a.organizacion.toUpperCase();
+          const textB =
+            b.organizacion === null ? "~" : b.organizacion.toUpperCase();
+          return textA < textB ? -1 : textA > textB ? 1 : 0;
+        }),
+        currentFilter: "orgAsc",
+      });
     }
   };
 
   sortByName = () => {
     const temp = this.state.contacts;
-    if (this.state.currentFilter !== "namAsc") {
-      this.setState({
-        contactsSort: temp.sort(function (a, b) {
-          const textA = a.nombres === null ? "~" : a.nombres.toUpperCase();
-          const textB = b.nombres === null ? "~" : b.nombres.toUpperCase();
-          return textA < textB ? -1 : textA > textB ? 1 : 0;
-        }),
-        currentFilter: "namAsc",
-      });
-    } else {
+    if (this.state.currentFilter === "namAsc") {
       this.setState({
         contactsSort: temp.sort(function (a, b) {
           const textA = a.nombres === null ? "~" : a.nombres.toUpperCase();
@@ -446,21 +451,23 @@ class ReporteContacto extends Component {
         }),
         currentFilter: "namDes",
       });
+    } else if (this.state.currentFilter === "namDes") {
+      this.callAPi();
+    } else {
+      this.setState({
+        contactsSort: temp.sort(function (a, b) {
+          const textA = a.nombres === null ? "~" : a.nombres.toUpperCase();
+          const textB = b.nombres === null ? "~" : b.nombres.toUpperCase();
+          return textA < textB ? -1 : textA > textB ? 1 : 0;
+        }),
+        currentFilter: "namAsc",
+      });
     }
   };
 
   sortByCar = () => {
     const temp = this.state.contacts;
-    if (this.state.currentFilter !== "carAsc") {
-      this.setState({
-        contactsSort: temp.sort(function (a, b) {
-          const textA = a.cargo === null ? "~" : a.cargo.toUpperCase();
-          const textB = b.cargo === null ? "~" : b.cargo.toUpperCase();
-          return textA < textB ? -1 : textA > textB ? 1 : 0;
-        }),
-        currentFilter: "carAsc",
-      });
-    } else {
+    if (this.state.currentFilter === "carAsc") {
       this.setState({
         contactsSort: temp.sort(function (a, b) {
           const textA = a.cargo === null ? "~" : a.cargo.toUpperCase();
@@ -468,6 +475,17 @@ class ReporteContacto extends Component {
           return textA > textB ? -1 : textA < textB ? 1 : 0;
         }),
         currentFilter: "carDes",
+      });
+    } else if (this.state.currentFilter === "carDes") {
+      this.callAPi();
+    } else {
+      this.setState({
+        contactsSort: temp.sort(function (a, b) {
+          const textA = a.cargo === null ? "~" : a.cargo.toUpperCase();
+          const textB = b.cargo === null ? "~" : b.cargo.toUpperCase();
+          return textA < textB ? -1 : textA > textB ? 1 : 0;
+        }),
+        currentFilter: "carAsc",
       });
     }
   };
@@ -607,75 +625,116 @@ class ReporteContacto extends Component {
           "Tabla extendida abierta"
         ) : (
           <div className="o-contentForm-big-consultas">
-            <form
-              className="o-consultas-containerInit"
-              style={{ marginBottom: "0.7rem" }}
-            >
-              <div
-                className="o-consultas"
-                style={{ marginBottom: BOX_SPACING }}
-              >
-                <TextField
-                  label="Organización"
-                  variant="outlined"
-                  name="input_nombre_org"
-                  value={this.state.nombre_org || ""}
-                  onChange={this.handleChange}
-                  className="o-space"
-                  margin="dense"
-                />
-              </div>
-              <div
-                className="o-consultas"
-                style={{ marginBottom: BOX_SPACING }}
-              >
-                <TextField
-                  label="Nombres"
-                  variant="outlined"
-                  name="input_nombre_con"
-                  value={this.state.nombre_con || ""}
-                  onChange={this.handleChange}
-                  className="o-space"
-                  margin="dense"
-                />
-              </div>
-              <FormControl
-                className="o-consultas"
-                style={{ marginTop: "0.8rem", marginRight: "1rem" }}
-                variant="outlined"
-                margin="dense"
-              >
-                <InputLabel>Subcategoría</InputLabel>
-                <Select
-                  multiple
-                  label="Subcategoría"
-                  name="input_subcat_con"
-                  className="o-space"
-                  value={this.state.subcat_con || []}
-                  onChange={this.handleChange}
-                  MenuProps={{
-                    getContentAnchorEl: () => null,
-                  }}
-                  renderValue={(selected) =>
-                    selected.map((value) => value.nombre + ", ")
-                  }
+            <form style={{ width: "100%" }}>
+              <div className="o-consultas-containerInit">
+                <div
+                  className="o-consultas"
                   style={{ marginBottom: BOX_SPACING }}
                 >
-                  {this.state.subcat_con_api.map((obj, i) => (
-                    <MenuItem key={i} value={obj}>
-                      <Checkbox
-                        checked={
-                          this.state.subcat_con.findIndex(
-                            (x) => x.id === obj.id
-                          ) > -1
-                        }
-                      />
-                      <ListItemText primary={obj.nombre} />
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-              <div className="o-consultas-btnxn">
+                  <TextField
+                    label="Organización"
+                    variant="outlined"
+                    name="input_nombre_org"
+                    value={this.state.nombre_org || ""}
+                    onChange={this.handleChange}
+                    className="o-space"
+                    margin="dense"
+                  />
+                </div>
+                <div
+                  className="o-consultas"
+                  style={{ marginBottom: BOX_SPACING }}
+                >
+                  <TextField
+                    label="Nombres"
+                    variant="outlined"
+                    name="input_nombre_con"
+                    value={this.state.nombre_con || ""}
+                    onChange={this.handleChange}
+                    className="o-space"
+                    margin="dense"
+                  />
+                </div>
+                <FormControl
+                  className="o-consultas"
+                  style={{ marginTop: "0.8rem", marginRight: "1rem" }}
+                  variant="outlined"
+                  margin="dense"
+                >
+                  <InputLabel>Subcategoría</InputLabel>
+                  <Select
+                    multiple
+                    label="Subcategoría"
+                    name="input_subcat_con"
+                    className="o-space"
+                    value={this.state.subcat_con || []}
+                    onChange={this.handleChange}
+                    MenuProps={{
+                      getContentAnchorEl: () => null,
+                    }}
+                    renderValue={(selected) =>
+                      selected.map((value) => value.nombre + ", ")
+                    }
+                    style={{ marginBottom: BOX_SPACING }}
+                  >
+                    {this.state.subcat_con_api.map((obj, i) => (
+                      <MenuItem key={i} value={obj}>
+                        <Checkbox
+                          checked={
+                            this.state.subcat_con.findIndex(
+                              (x) => x.id === obj.id
+                            ) > -1
+                          }
+                        />
+                        <ListItemText primary={obj.nombre} />
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+
+                <FormControl
+                  className="o-consultas"
+                  style={{ marginTop: "0.8rem" }}
+                  variant="outlined"
+                  margin="dense"
+                >
+                  <InputLabel>Categoría Org.</InputLabel>
+                  <Select
+                    multiple
+                    label="Categoría Org."
+                    name="input_cat_org"
+                    className="o-space"
+                    value={this.state.cat_org || []}
+                    onChange={this.handleChange}
+                    MenuProps={{
+                      getContentAnchorEl: () => null,
+                    }}
+                    renderValue={(selected) =>
+                      selected.map((value) => value.nombre + ", ")
+                    }
+                  >
+                    {this.state.cat_org_api.map((obj, i) => (
+                      <MenuItem key={i} value={obj}>
+                        <Checkbox
+                          checked={
+                            this.state.cat_org.findIndex(
+                              (x) => x.id === obj.id
+                            ) > -1
+                          }
+                        />
+                        <ListItemText primary={obj.nombre} />
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </div>
+              <div
+                className="o-consultas-btnxn"
+                style={{
+                  marginTop: "1rem",
+                  marginBottom: "calc(0.8rem + 4px)",
+                }}
+              >
                 <div className="o-btnConsultas">
                   <BlueButton type="submit" onClick={this.apiSearch}>
                     Buscar
@@ -691,7 +750,11 @@ class ReporteContacto extends Component {
                 </div>
                 <div
                   className="o-btnConsultas"
-                  style={{ width: "4rem", marginLeft: "auto", marginRight: 0 }}
+                  style={{
+                    width: 140,
+                    marginLeft: "auto",
+                    marginRight: 0,
+                  }}
                 >
                   <GreenButton
                     onClick={
@@ -700,6 +763,7 @@ class ReporteContacto extends Component {
                         : this.apiReportGen
                     }
                   >
+                    <span style={{ marginRight: 10 }}>Exportar</span>
                     <IconDownload size="small" />
                   </GreenButton>
                 </div>
@@ -941,12 +1005,28 @@ class ReporteContacto extends Component {
           fullWidth
           maxWidth="xl"
         >
+          <IconButton
+            size="small"
+            style={{
+              color: "#fff",
+              position: "absolute",
+              top: 2,
+              right: 2,
+            }}
+            onClick={() =>
+              this.setState({
+                xpantOpen: false,
+              })
+            }
+          >
+            <CloseRounded style={{ color: "gray" }} />
+          </IconButton>
           <DialogContent
             style={{
               display: "flex",
               flexDirection: "row",
               justifyContent: "center",
-              paddingTop: FULLSIZE_CARD ? 3 : 20,
+              paddingTop: 20,
               paddingBottom: 0,
             }}
           >

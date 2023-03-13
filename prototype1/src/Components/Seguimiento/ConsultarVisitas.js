@@ -94,11 +94,18 @@ class ConsultarVisitas extends Component {
       currentPage: 0,
       rowsPerPage: 25,
       box_spacing: window.innerHeight > 900 ? "0.6rem" : "0.2rem",
-      box_size: window.innerHeight > 900 ? "39rem" : "23rem",
       box_spacing_tiny: window.innerHeight > 900 ? "0.4rem" : "0rem",
       subtitle_spacing: window.innerHeight > 900 ? "2.1rem" : "1.7rem",
       box_size_tiny: window.innerHeight > 900 ? "24rem" : "13rem",
       box_size_table: window.innerHeight > 900 ? "30rem" : "15rem",
+      box_size:
+        window.innerHeight > 900
+          ? "calc(100vh - 5.9rem - 160px)"
+          : "calc(100vh - 5.9rem - 128px)",
+      box_size2:
+        window.innerHeight > 900
+          ? "calc(100vh - 5.9rem - 142px)"
+          : "calc(100vh - 5.9rem - 111px)",
       winInterval: "",
     };
 
@@ -109,11 +116,18 @@ class ConsultarVisitas extends Component {
   resizeBox = () => {
     this.setState({
       box_spacing: window.innerHeight > 900 ? "0.6rem" : "0.2rem",
-      box_size: window.innerHeight > 900 ? "39rem" : "23rem",
       box_spacing_tiny: window.innerHeight > 900 ? "0.4rem" : "0rem",
       subtitle_spacing: window.innerHeight > 900 ? "2.1rem" : "1.7rem",
       box_size_tiny: window.innerHeight > 900 ? "24rem" : "13rem",
       box_size_table: window.innerHeight > 900 ? "30rem" : "15rem",
+      box_size:
+        window.innerHeight > 900
+          ? "calc(100vh - 5.9rem - 160px)"
+          : "calc(100vh - 5.9rem - 128px)",
+      box_size2:
+        window.innerHeight > 900
+          ? "calc(100vh - 5.9rem - 142px)"
+          : "calc(100vh - 5.9rem - 111px)",
     });
   };
 
@@ -533,6 +547,7 @@ class ConsultarVisitas extends Component {
   render() {
     const BOX_SPACING = this.state.box_spacing;
     const BOX_SIZE = this.state.box_size;
+    const BOX_SIZE2 = this.state.box_size2;
     const currentPage = this.state.currentPage;
     const rowsPerPage = this.state.rowsPerPage;
     const rol = this.props.rol;
@@ -815,7 +830,11 @@ class ConsultarVisitas extends Component {
               </div>
               <div
                 className="o-card-VisitaView"
-                style={{ maxHeight: BOX_SIZE, marginBottom: "auto" }}
+                style={{
+                  minHeight: BOX_SIZE2,
+                  maxHeight: BOX_SIZE2,
+                  marginBottom: "auto",
+                }}
               >
                 {this.state.temp_motivo_vis === "" ? (
                   <div style={{ margin: "3rem auto", color: "gray" }}>

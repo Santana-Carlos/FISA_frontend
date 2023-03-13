@@ -34,6 +34,7 @@ import {
   Refresh as IconRefresh,
   Fullscreen as IconFull,
   FullscreenExit as IconExit,
+  CloseRounded,
 } from "@material-ui/icons";
 import { Switch, Route } from "react-router-dom";
 import OrganizacionMenu from "./OrganizacionMenu";
@@ -75,8 +76,14 @@ class ConsultarOrganizacion extends Component {
       currentPage: 0,
       rowsPerPage: 25,
       box_spacing: window.innerHeight > 900 ? "0.6rem" : "0.2rem",
-      box_size: window.innerHeight > 900 ? "38rem" : "22rem",
-      box_size_x: window.innerHeight > 900 ? "48rem" : "29rem",
+      box_size:
+        window.innerHeight > 900
+          ? "calc(100vh - 5.9rem - 160px)"
+          : "calc(100vh - 5.9rem - 128px)",
+      box_size_x:
+        window.innerHeight > 900
+          ? "calc(100vh - 5.9rem - 60px)"
+          : "calc(100vh - 5.9rem + 10px)",
       box_spacing_tiny: window.innerHeight > 900 ? "0.8rem" : "0rem",
       subtitle_spacing: window.innerHeight > 900 ? "2.1rem" : "1.7rem",
       box_size_tiny: window.innerHeight > 900 ? "24rem" : "13rem",
@@ -91,8 +98,14 @@ class ConsultarOrganizacion extends Component {
   resizeBox = () => {
     this.setState({
       box_spacing: window.innerHeight > 900 ? "0.6rem" : "0.2rem",
-      box_size: window.innerHeight > 900 ? "38rem" : "22rem",
-      box_size_x: window.innerHeight > 900 ? "48rem" : "29rem",
+      box_size:
+        window.innerHeight > 900
+          ? "calc(100vh - 5.9rem - 160px)"
+          : "calc(100vh - 5.9rem - 128px)",
+      box_size_x:
+        window.innerHeight > 900
+          ? "calc(100vh - 5.9rem - 60px)"
+          : "calc(100vh - 5.9rem + 10px)",
       box_spacing_tiny: window.innerHeight > 900 ? "0.8rem" : "0rem",
       subtitle_spacing: window.innerHeight > 900 ? "2.1rem" : "1.7rem",
       box_size_tiny: window.innerHeight > 900 ? "24rem" : "13rem",
@@ -454,8 +467,8 @@ class ConsultarOrganizacion extends Component {
   };
 
   render() {
-    let BOX_SPACING = this.state.box_spacing;
-    let BOX_SIZE = this.state.box_size;
+    const BOX_SPACING = this.state.box_spacing;
+    const BOX_SIZE = this.state.box_size;
     const BOX_SIZE_X = this.state.box_size_x;
     const currentPage = this.state.currentPage;
     const rowsPerPage = this.state.rowsPerPage;
@@ -808,6 +821,22 @@ class ConsultarOrganizacion extends Component {
               fullWidth
               maxWidth="xl"
             >
+              <IconButton
+                size="small"
+                style={{
+                  color: "#fff",
+                  position: "absolute",
+                  top: 2,
+                  right: 2,
+                }}
+                onClick={() =>
+                  this.setState({
+                    xpantOpen: false,
+                  })
+                }
+              >
+                <CloseRounded style={{ color: "gray" }} />
+              </IconButton>
               <DialogContent
                 style={{
                   display: "flex",
