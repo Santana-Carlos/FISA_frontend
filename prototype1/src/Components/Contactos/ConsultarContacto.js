@@ -79,8 +79,10 @@ class ConsultarContacto extends Component {
       loading: true,
       xpantOpen: false,
       currentPage: 0,
-      rowsPerPage: 25,
+      rowsPerPage: 50,
+      totalRows: 0,
       currentFilter: "",
+      currentOrder: "",
       contactsSort: [],
       box_spacing: window.innerHeight > 900 ? "0.6rem" : "0.2rem",
       box_spacing_tiny: window.innerHeight > 900 ? "0.8rem" : "0rem",
@@ -160,26 +162,72 @@ class ConsultarContacto extends Component {
     window.clearInterval(this.state.winInterval);
   }
 
-  callAPi = () => {
-    fetch(process.env.REACT_APP_API_URL + "Contacto", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + this.props.token,
-      },
-    })
+  componentDidUpdate(prevProps, prevState) {
+    if (
+      prevState.rowsPerPage !== this.state.rowsPerPage ||
+      prevState.currentPage !== this.state.currentPage ||
+      prevState.currentFilter !== this.state.currentFilter ||
+      prevState.currentOrder !== this.state.currentOrder
+    ) {
+      if (
+        this.state.nombre_org !== "" ||
+        this.state.nombre_con !== "" ||
+        this.state.apell_con !== "" ||
+        this.state.cargo_con !== "" ||
+        this.state.correo_con !== "" ||
+        this.state.cat_org[0] !== undefined ||
+        this.state.subcat_con[0] !== undefined ||
+        this.state.pais_org !== "" ||
+        this.state.sececo_org !== ""
+      ) {
+        this.apiSearch(undefined, true);
+      } else {
+        this.callAPi(true);
+      }
+    }
+  }
+
+  callAPi = (dontChangeRow) => {
+    fetch(
+      dontChangeRow
+        ? `${process.env.REACT_APP_API_URL}Contacto?skip=${
+            this.state.currentPage * this.state.rowsPerPage
+          }&limit=${this.state.rowsPerPage}&orderKey=${
+            this.state.currentFilter
+          }&orderType=${this.state.currentOrder}`
+        : `${process.env.REACT_APP_API_URL}Contacto?skip=${0}&limit=${
+            this.state.rowsPerPage
+          }&orderKey=${""}&orderType=${""}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + this.props.token,
+        },
+      }
+    )
       .then((response) => {
         return response.json();
       })
       .then((data) => {
         if (data.success) {
-          this.setState({
-            contacts: data.contactos,
-            contactsSort: data.contactos,
-            currentPage: 0,
-            currentFilter: "",
-            loading: false,
-          });
+          if (dontChangeRow)
+            this.setState({
+              contacts: data.contactos,
+              contactsSort: data.contactos,
+              totalRows: data.total || "0",
+              loading: false,
+            });
+          else
+            this.setState({
+              contacts: data.contactos,
+              contactsSort: data.contactos,
+              totalRows: data.total || "0",
+              currentFilter: "",
+              currentOrder: "",
+              currentPage: 0,
+              loading: false,
+            });
         }
       })
       .catch((error) => {
@@ -188,7 +236,7 @@ class ConsultarContacto extends Component {
       });
   };
 
-  apiSearch = (e) => {
+  apiSearch = (e, dontChangeRow) => {
     e?.preventDefault();
     this.setState({ loading: true });
 
@@ -210,6 +258,10 @@ class ConsultarContacto extends Component {
       pais: this.state.pais_org,
       departamento: this.state.depest_org,
       ciudad: this.state.city_org,
+      skip: dontChangeRow ? this.state.currentPage * this.state.rowsPerPage : 0,
+      limit: this.state.rowsPerPage,
+      orderType: dontChangeRow ? this.state.currentOrder : "",
+      orderKey: dontChangeRow ? this.state.currentFilter : "",
     };
 
     //console.log(data);
@@ -238,14 +290,25 @@ class ConsultarContacto extends Component {
         .then((data) => {
           //console.log(data);
           if (data.success) {
-            this.setState({
-              loading: false,
-              contacts: data.contactos,
-              contactsSort: data.contactos,
-              reqText: false,
-              currentPage: 0,
-              currentFilter: "",
-            });
+            if (dontChangeRow)
+              this.setState({
+                loading: false,
+                contacts: data.contactos,
+                contactsSort: data.contactos,
+                reqText: false,
+                totalRows: data.total || 0,
+              });
+            else
+              this.setState({
+                loading: false,
+                contacts: data.contactos,
+                contactsSort: data.contactos,
+                reqText: false,
+                currentPage: 0,
+                currentFilter: "",
+                currentOrder: "",
+                totalRows: data.total || 0,
+              });
           }
         })
         .catch((error) => {
@@ -384,81 +447,22 @@ class ConsultarContacto extends Component {
     }
   }
 
-  sortByOrg = () => {
-    const temp = this.state.contacts;
-    if (this.state.currentFilter === "orgAsc") {
-      this.setState({
-        contactsSort: temp.sort(function (a, b) {
-          const textA =
-            a.organizacion === null ? "~" : a.organizacion.toUpperCase();
-          const textB =
-            b.organizacion === null ? "~" : b.organizacion.toUpperCase();
-          return textA > textB ? -1 : textA < textB ? 1 : 0;
-        }),
-        currentFilter: "orgDes",
-      });
-    } else if (this.state.currentFilter === "orgDes") {
-      this.callAPi();
+  sortBy = (name) => {
+    if (this.state.currentFilter === name) {
+      if (this.state.currentOrder === "ASC")
+        this.setState({
+          currentFilter: name,
+          currentOrder: "DESC",
+        });
+      else
+        this.setState({
+          currentFilter: "",
+          currentOrder: "",
+        });
     } else {
       this.setState({
-        contactsSort: temp.sort(function (a, b) {
-          const textA =
-            a.organizacion === null ? "~" : a.organizacion.toUpperCase();
-          const textB =
-            b.organizacion === null ? "~" : b.organizacion.toUpperCase();
-          return textA < textB ? -1 : textA > textB ? 1 : 0;
-        }),
-        currentFilter: "orgAsc",
-      });
-    }
-  };
-
-  sortByName = () => {
-    const temp = this.state.contacts;
-    if (this.state.currentFilter === "namAsc") {
-      this.setState({
-        contactsSort: temp.sort(function (a, b) {
-          const textA = a.nombres === null ? "~" : a.nombres.toUpperCase();
-          const textB = b.nombres === null ? "~" : b.nombres.toUpperCase();
-          return textA > textB ? -1 : textA < textB ? 1 : 0;
-        }),
-        currentFilter: "namDes",
-      });
-    } else if (this.state.currentFilter === "namDes") {
-      this.callAPi();
-    } else {
-      this.setState({
-        contactsSort: temp.sort(function (a, b) {
-          const textA = a.nombres === null ? "~" : a.nombres.toUpperCase();
-          const textB = b.nombres === null ? "~" : b.nombres.toUpperCase();
-          return textA < textB ? -1 : textA > textB ? 1 : 0;
-        }),
-        currentFilter: "namAsc",
-      });
-    }
-  };
-
-  sortByCar = () => {
-    const temp = this.state.contacts;
-    if (this.state.currentFilter === "carAsc") {
-      this.setState({
-        contactsSort: temp.sort(function (a, b) {
-          const textA = a.cargo === null ? "~" : a.cargo.toUpperCase();
-          const textB = b.cargo === null ? "~" : b.cargo.toUpperCase();
-          return textA > textB ? -1 : textA < textB ? 1 : 0;
-        }),
-        currentFilter: "carDes",
-      });
-    } else if (this.state.currentFilter === "carDes") {
-      this.callAPi();
-    } else {
-      this.setState({
-        contactsSort: temp.sort(function (a, b) {
-          const textA = a.cargo === null ? "~" : a.cargo.toUpperCase();
-          const textB = b.cargo === null ? "~" : b.cargo.toUpperCase();
-          return textA < textB ? -1 : textA > textB ? 1 : 0;
-        }),
-        currentFilter: "carAsc",
+        currentFilter: name,
+        currentOrder: "ASC",
       });
     }
   };
@@ -565,7 +569,9 @@ class ConsultarContacto extends Component {
     const BOX_SIZE_X = this.state.box_size_x;
     const currentPage = this.state.currentPage;
     const rowsPerPage = this.state.rowsPerPage;
+    const totalRows = this.state.totalRows;
     const filter = this.state.currentFilter;
+    const filterOrder = this.state.currentOrder;
     const rol = this.props.rol;
     const FULLSIZE_CARD = this.state.full_size_card;
 
@@ -698,17 +704,19 @@ class ConsultarContacto extends Component {
                               fontSize: "inherit",
                               fontFamily: "inherit",
                             }}
-                            onClick={this.sortByOrg}
+                            onClick={() => this.sortBy("organizacion")}
                           >
                             Org.
-                            {filter === "orgAsc" ? (
-                              <IconAsc
+                            {filter === "organizacion" &&
+                            filterOrder === "DESC" ? (
+                              <IconDes
                                 style={{
                                   margin: "0 0 0 0.5rem",
                                 }}
                               />
-                            ) : filter === "orgDes" ? (
-                              <IconDes
+                            ) : filter === "organizacion" &&
+                              filterOrder === "ASC" ? (
+                              <IconAsc
                                 style={{
                                   margin: "0 0 0 0.5rem",
                                 }}
@@ -728,17 +736,18 @@ class ConsultarContacto extends Component {
                               fontSize: "inherit",
                               fontFamily: "inherit",
                             }}
-                            onClick={this.sortByName}
+                            onClick={() => this.sortBy("nombres")}
                           >
                             Nombre
-                            {filter === "namAsc" ? (
-                              <IconAsc
+                            {filter === "nombres" && filterOrder === "DESC" ? (
+                              <IconDes
                                 style={{
                                   margin: "0 0 0 0.5rem",
                                 }}
                               />
-                            ) : filter === "namDes" ? (
-                              <IconDes
+                            ) : filter === "nombres" &&
+                              filterOrder === "ASC" ? (
+                              <IconAsc
                                 style={{
                                   margin: "0 0 0 0.5rem",
                                 }}
@@ -758,17 +767,17 @@ class ConsultarContacto extends Component {
                               fontSize: "inherit",
                               fontFamily: "inherit",
                             }}
-                            onClick={this.sortByCar}
+                            onClick={() => this.sortBy("cargo")}
                           >
                             Cargo
-                            {filter === "carAsc" ? (
-                              <IconAsc
+                            {filter === "cargo" && filterOrder === "DESC" ? (
+                              <IconDes
                                 style={{
                                   margin: "0 0 0 0.5rem",
                                 }}
                               />
-                            ) : filter === "carDes" ? (
-                              <IconDes
+                            ) : filter === "cargo" && filterOrder === "ASC" ? (
+                              <IconAsc
                                 style={{
                                   margin: "0 0 0 0.5rem",
                                 }}
@@ -803,83 +812,76 @@ class ConsultarContacto extends Component {
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {this.state.contactsSort
-                        .slice(
-                          currentPage * rowsPerPage,
-                          currentPage * rowsPerPage + rowsPerPage
-                        )
-                        .map((obj, i) => (
-                          <TableRow key={i} hover={true}>
+                      {this.state.contacts.map?.((obj, i) => (
+                        <TableRow key={i} hover={true}>
+                          <StyledTableCell size="small">
+                            {obj.organizacion}
+                          </StyledTableCell>
+                          <StyledTableCell size="small">
+                            {obj.nombres || emptyCell}
+                          </StyledTableCell>
+                          <StyledTableCell size="small">
+                            {obj.cargo === null ? emptyCell : obj.cargo}
+                          </StyledTableCell>
+                          <StyledTableCell size="small">
+                            {obj.telefono === null ? emptyCell : obj.telefono}
+                          </StyledTableCell>
+                          <StyledTableCell size="small">
+                            {obj.extension === null ? emptyCell : obj.extension}
+                          </StyledTableCell>
+                          <StyledTableCell size="small">
+                            {obj.celular === null ? emptyCell : obj.celular}
+                          </StyledTableCell>
+                          <StyledTooltip
+                            title={obj.email === null ? emptyCell : obj.email}
+                          >
                             <StyledTableCell size="small">
-                              {obj.organizacion}
+                              {obj.email === null ? emptyCell : obj.email}
                             </StyledTableCell>
-                            <StyledTableCell size="small">
-                              {obj.nombres || emptyCell}
-                            </StyledTableCell>
-                            <StyledTableCell size="small">
-                              {obj.cargo === null ? emptyCell : obj.cargo}
-                            </StyledTableCell>
-                            <StyledTableCell size="small">
-                              {obj.telefono === null ? emptyCell : obj.telefono}
-                            </StyledTableCell>
-                            <StyledTableCell size="small">
-                              {obj.extension === null
-                                ? emptyCell
-                                : obj.extension}
-                            </StyledTableCell>
-                            <StyledTableCell size="small">
-                              {obj.celular === null ? emptyCell : obj.celular}
-                            </StyledTableCell>
-                            <StyledTooltip
-                              title={obj.email === null ? emptyCell : obj.email}
-                            >
-                              <StyledTableCell size="small">
-                                {obj.email === null ? emptyCell : obj.email}
-                              </StyledTableCell>
-                            </StyledTooltip>
-                            <StyledTableCell size="small">
-                              {obj.observaciones === null
-                                ? emptyCell
-                                : obj.observaciones}
-                            </StyledTableCell>
-                            <StyledTableCell size="small" align="right">
-                              <div className="o-row-btnIcon">
+                          </StyledTooltip>
+                          <StyledTableCell size="small">
+                            {obj.observaciones === null
+                              ? emptyCell
+                              : obj.observaciones}
+                          </StyledTableCell>
+                          <StyledTableCell size="small" align="right">
+                            <div className="o-row-btnIcon">
+                              <IconButton
+                                size="small"
+                                style={{ color: "#47B14C" }}
+                                onClick={() =>
+                                  this.setState(
+                                    {
+                                      temp_id_con: obj.contacto_id,
+                                      temp_id_per: obj.persona_id,
+                                    },
+                                    this.editCon
+                                  )
+                                }
+                              >
+                                <IconEdit />
+                              </IconButton>
+                              {rol !== "Comercial" && rol !== "Consulta" ? (
                                 <IconButton
                                   size="small"
-                                  style={{ color: "#47B14C" }}
+                                  color="secondary"
                                   onClick={() =>
                                     this.setState(
                                       {
                                         temp_id_con: obj.contacto_id,
                                         temp_id_per: obj.persona_id,
                                       },
-                                      this.editCon
+                                      this.handleClickOpenDel
                                     )
                                   }
                                 >
-                                  <IconEdit />
+                                  <IconDelete />
                                 </IconButton>
-                                {rol !== "Comercial" && rol !== "Consulta" ? (
-                                  <IconButton
-                                    size="small"
-                                    color="secondary"
-                                    onClick={() =>
-                                      this.setState(
-                                        {
-                                          temp_id_con: obj.contacto_id,
-                                          temp_id_per: obj.persona_id,
-                                        },
-                                        this.handleClickOpenDel
-                                      )
-                                    }
-                                  >
-                                    <IconDelete />
-                                  </IconButton>
-                                ) : null}
-                              </div>
-                            </StyledTableCell>
-                          </TableRow>
-                        ))}
+                              ) : null}
+                            </div>
+                          </StyledTableCell>
+                        </TableRow>
+                      ))}
                       {this.state.contactsSort[0] === undefined ? (
                         <TableRow>
                           <StyledTableCell>...</StyledTableCell>
@@ -901,9 +903,9 @@ class ConsultarContacto extends Component {
                   style={{
                     margin: "0 0 0 auto",
                   }}
-                  rowsPerPageOptions={[15, 25, 45]}
+                  rowsPerPageOptions={[15, 25, 50, 100]}
                   colSpan={9}
-                  count={this.state.contacts.length}
+                  count={totalRows}
                   rowsPerPage={rowsPerPage}
                   page={currentPage}
                   onChangePage={(e, page) =>
@@ -1035,17 +1037,19 @@ class ConsultarContacto extends Component {
                                   fontSize: "inherit",
                                   fontFamily: "inherit",
                                 }}
-                                onClick={this.sortByOrg}
+                                onClick={() => this.sortBy("organizacion")}
                               >
                                 Org.
-                                {filter === "orgAsc" ? (
-                                  <IconAsc
+                                {filter === "organizacion" &&
+                                filterOrder === "DESC" ? (
+                                  <IconDes
                                     style={{
                                       margin: "0 0 0 0.5rem",
                                     }}
                                   />
-                                ) : filter === "orgDes" ? (
-                                  <IconDes
+                                ) : filter === "organizacion" &&
+                                  filterOrder === "ASC" ? (
+                                  <IconAsc
                                     style={{
                                       margin: "0 0 0 0.5rem",
                                     }}
@@ -1065,17 +1069,19 @@ class ConsultarContacto extends Component {
                                   fontSize: "inherit",
                                   fontFamily: "inherit",
                                 }}
-                                onClick={this.sortByName}
+                                onClick={() => this.sortBy("nombre")}
                               >
                                 Nombre
-                                {filter === "namAsc" ? (
-                                  <IconAsc
+                                {filter === "nombre" &&
+                                filterOrder === "DESC" ? (
+                                  <IconDes
                                     style={{
                                       margin: "0 0 0 0.5rem",
                                     }}
                                   />
-                                ) : filter === "namDes" ? (
-                                  <IconDes
+                                ) : filter === "nombre" &&
+                                  filterOrder === "ASC" ? (
+                                  <IconAsc
                                     style={{
                                       margin: "0 0 0 0.5rem",
                                     }}
@@ -1095,17 +1101,19 @@ class ConsultarContacto extends Component {
                                   fontSize: "inherit",
                                   fontFamily: "inherit",
                                 }}
-                                onClick={this.sortByCar}
+                                onClick={() => this.sortBy("cargo")}
                               >
                                 Cargo
-                                {filter === "carAsc" ? (
-                                  <IconAsc
+                                {filter === "cargo" &&
+                                filterOrder === "DESC" ? (
+                                  <IconDes
                                     style={{
                                       margin: "0 0 0 0.5rem",
                                     }}
                                   />
-                                ) : filter === "carDes" ? (
-                                  <IconDes
+                                ) : filter === "cargo" &&
+                                  filterOrder === "ASC" ? (
+                                  <IconAsc
                                     style={{
                                       margin: "0 0 0 0.5rem",
                                     }}
@@ -1140,87 +1148,80 @@ class ConsultarContacto extends Component {
                           </TableRow>
                         </TableHead>
                         <TableBody>
-                          {this.state.contacts
-                            .slice(
-                              currentPage * rowsPerPage,
-                              currentPage * rowsPerPage + rowsPerPage
-                            )
-                            .map((obj, i) => (
-                              <TableRow key={i} hover={true}>
+                          {this.state.contacts.map?.((obj, i) => (
+                            <TableRow key={i} hover={true}>
+                              <StyledTableCell size="small">
+                                {obj.organizacion}
+                              </StyledTableCell>
+                              <StyledTableCell size="small">
+                                {obj.nombres || emptyCell}
+                              </StyledTableCell>
+                              <StyledTableCell size="small">
+                                {obj.cargo === null ? emptyCell : obj.cargo}
+                              </StyledTableCell>
+                              <StyledTableCell size="small">
+                                {obj.telefono === null
+                                  ? emptyCell
+                                  : obj.telefono}
+                              </StyledTableCell>
+                              <StyledTableCell size="small">
+                                {obj.extension === null
+                                  ? emptyCell
+                                  : obj.extension}
+                              </StyledTableCell>
+                              <StyledTableCell size="small">
+                                {obj.celular === null ? emptyCell : obj.celular}
+                              </StyledTableCell>
+                              <StyledTooltip
+                                title={
+                                  obj.email === null ? emptyCell : obj.email
+                                }
+                              >
                                 <StyledTableCell size="small">
-                                  {obj.organizacion}
+                                  {obj.email === null ? emptyCell : obj.email}
                                 </StyledTableCell>
-                                <StyledTableCell size="small">
-                                  {obj.nombres || emptyCell}
-                                </StyledTableCell>
-                                <StyledTableCell size="small">
-                                  {obj.cargo === null ? emptyCell : obj.cargo}
-                                </StyledTableCell>
-                                <StyledTableCell size="small">
-                                  {obj.telefono === null
-                                    ? emptyCell
-                                    : obj.telefono}
-                                </StyledTableCell>
-                                <StyledTableCell size="small">
-                                  {obj.extension === null
-                                    ? emptyCell
-                                    : obj.extension}
-                                </StyledTableCell>
-                                <StyledTableCell size="small">
-                                  {obj.celular === null
-                                    ? emptyCell
-                                    : obj.celular}
-                                </StyledTableCell>
-                                <StyledTooltip
-                                  title={
-                                    obj.email === null ? emptyCell : obj.email
-                                  }
-                                >
-                                  <StyledTableCell size="small">
-                                    {obj.email === null ? emptyCell : obj.email}
-                                  </StyledTableCell>
-                                </StyledTooltip>
-                                <StyledTableCell size="small">
-                                  {obj.observaciones === null
-                                    ? emptyCell
-                                    : obj.observaciones}
-                                </StyledTableCell>
-                                <StyledTableCell size="small" align="right">
-                                  <div className="o-row-btnIcon">
-                                    <IconButton
-                                      size="small"
-                                      style={{ color: "#47B14C" }}
-                                      onClick={() =>
-                                        this.setState(
-                                          {
-                                            temp_id_con: obj.contacto_id,
-                                            temp_id_per: obj.persona_id,
-                                          },
-                                          this.editCon
-                                        )
-                                      }
-                                    >
-                                      <IconEdit />
-                                    </IconButton>
-                                    <IconButton
-                                      size="small"
-                                      color="secondary"
-                                      onClick={() =>
-                                        this.setState(
-                                          {
-                                            temp_id_con: obj.contacto_id,
-                                            temp_id_per: obj.persona_id,
-                                          },
-                                          this.handleClickOpenDel
-                                        )
-                                      }
-                                    >
-                                      <IconDelete />
-                                    </IconButton>
-                                  </div>
-                                </StyledTableCell>
-                              </TableRow>
-                            ))}
+                              </StyledTooltip>
+                              <StyledTableCell size="small">
+                                {obj.observaciones === null
+                                  ? emptyCell
+                                  : obj.observaciones}
+                              </StyledTableCell>
+                              <StyledTableCell size="small" align="right">
+                                <div className="o-row-btnIcon">
+                                  <IconButton
+                                    size="small"
+                                    style={{ color: "#47B14C" }}
+                                    onClick={() =>
+                                      this.setState(
+                                        {
+                                          temp_id_con: obj.contacto_id,
+                                          temp_id_per: obj.persona_id,
+                                        },
+                                        this.editCon
+                                      )
+                                    }
+                                  >
+                                    <IconEdit />
+                                  </IconButton>
+                                  <IconButton
+                                    size="small"
+                                    color="secondary"
+                                    onClick={() =>
+                                      this.setState(
+                                        {
+                                          temp_id_con: obj.contacto_id,
+                                          temp_id_per: obj.persona_id,
+                                        },
+                                        this.handleClickOpenDel
+                                      )
+                                    }
+                                  >
+                                    <IconDelete />
+                                  </IconButton>
+                                </div>
+                              </StyledTableCell>
+                            </TableRow>
+                          ))}
                           {this.state.contacts[0] === undefined ? (
                             <TableRow>
                               <StyledTableCell>...</StyledTableCell>
@@ -1263,9 +1264,9 @@ class ConsultarContacto extends Component {
                         style={{
                           margin: "0 0 0 auto",
                         }}
-                        rowsPerPageOptions={[15, 25, 45]}
+                        rowsPerPageOptions={[15, 25, 50, 100]}
                         colSpan={9}
-                        count={this.state.contacts.length}
+                        count={totalRows}
                         rowsPerPage={rowsPerPage}
                         page={currentPage}
                         onChangePage={(e, page) =>

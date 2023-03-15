@@ -105,7 +105,7 @@ class ConsultarVisitas extends Component {
       box_size2:
         window.innerHeight > 900
           ? "calc(100vh - 5.9rem - 142px)"
-          : "calc(100vh - 5.9rem - 111px)",
+          : "calc(100vh - 5.9rem - 113px)",
       winInterval: "",
     };
 
@@ -127,7 +127,7 @@ class ConsultarVisitas extends Component {
       box_size2:
         window.innerHeight > 900
           ? "calc(100vh - 5.9rem - 142px)"
-          : "calc(100vh - 5.9rem - 111px)",
+          : "calc(100vh - 5.9rem - 113px)",
     });
   };
 
@@ -583,7 +583,7 @@ class ConsultarVisitas extends Component {
               <form className="o-consultas-containerInit">
                 <FormControl
                   className="o-consultas"
-                  style={{ margin: "0.8rem 1rem 0 0", width: 600 }}
+                  style={{ margin: "0.8rem 1rem 0 0", width: 495 }}
                   variant="outlined"
                   margin="dense"
                 >
@@ -639,7 +639,7 @@ class ConsultarVisitas extends Component {
                   <div className="o-btnConsultas">
                     <RedButton onClick={this.clearFunc}>Limpiar</RedButton>
                   </div>
-                  <div className="o-btnConsultas" style={{ width: "6.5rem" }}>
+                  <div className="o-btnConsultas" style={{ width: "6.4rem" }}>
                     <BlueButton onClick={this.apiToday}>Próximas</BlueButton>
                   </div>
                 </div>
