@@ -453,16 +453,19 @@ class ConsultarContacto extends Component {
         this.setState({
           currentFilter: name,
           currentOrder: "DESC",
+          currentPage: 0,
         });
       else
         this.setState({
           currentFilter: "",
           currentOrder: "",
+          currentPage: 0,
         });
     } else {
       this.setState({
         currentFilter: name,
         currentOrder: "ASC",
+        currentPage: 0,
       });
     }
   };
