@@ -106,7 +106,7 @@ const Welcome = (props) => {
             margin: "auto 0 0.5rem",
           }}
         >
-          {"FISA © 2022 v" + process.env.REACT_APP_VERSION}
+          {"FISA © 2023 v" + process.env.REACT_APP_VERSION}
         </div>
       </div>
     </div>

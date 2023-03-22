@@ -16,16 +16,6 @@ const Main = () => {
         </Route>
         <Route exact path="/3_14159265359/1_61803398874989">
           <div style={{ display: "flex", width: "100%", height: "100%" }}>
-            <div
-              style={{
-                display: "flex",
-                width: "100%",
-                height: "100%",
-                backgroundColor: "transparent",
-                position: "fixed",
-                zIndex: 2,
-              }}
-            />
             <iframe
               title="Rickroll"
               width="100%"

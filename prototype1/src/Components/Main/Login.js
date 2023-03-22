@@ -136,7 +136,7 @@ const Login = () => {
           color: "#ffffff",
         }}
       >
-        {"FISA © 2022 v" + process.env.REACT_APP_VERSION}
+        {"FISA © 2023 v" + process.env.REACT_APP_VERSION}
       </div>
 
       <Dialog
