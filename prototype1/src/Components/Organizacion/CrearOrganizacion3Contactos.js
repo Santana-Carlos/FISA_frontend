@@ -117,6 +117,7 @@ class CrearOrganizacion3Contactos extends Component {
       loadingDiag: false,
       currentPage: 0,
       rowsPerPage: 25,
+      totalRows: 0,
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -161,6 +162,23 @@ class CrearOrganizacion3Contactos extends Component {
     this.callApiOrg();
     this.callApiCont();
     this.callAPi();
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (
+      prevState.rowsPerPage !== this.state.rowsPerPage ||
+      prevState.currentPage !== this.state.currentPage
+    ) {
+      if (
+        this.state.search_nombre_org !== "" ||
+        this.state.search_nombre_con !== "" ||
+        this.state.search_apell_con !== ""
+      ) {
+        this.apiSearch(undefined, true);
+      } else {
+        this.callApiCont(true);
+      }
+    }
   }
 
   sortByName = () => {
@@ -286,23 +304,43 @@ class CrearOrganizacion3Contactos extends Component {
       .catch((error) => {});
   };
 
-  callApiCont = () => {
-    fetch(process.env.REACT_APP_API_URL + "Contacto", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + this.props.token,
-      },
-    })
+  callApiCont = (dontChangeRow) => {
+    fetch(
+      dontChangeRow
+        ? `${process.env.REACT_APP_API_URL}Contacto?skip=${
+            this.state.currentPage * this.state.rowsPerPage
+          }&limit=${this.state.rowsPerPage}&orderKey=${
+            this.state.currentFilter
+          }&orderType=${this.state.currentOrder}`
+        : `${process.env.REACT_APP_API_URL}Contacto?skip=${0}&limit=${
+            this.state.rowsPerPage
+          }&orderKey=${""}&orderType=${""}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + this.props.token,
+        },
+      }
+    )
       .then((response) => {
         return response.json();
       })
       .then((data) => {
         if (data.success) {
-          this.setState({
-            contacts_api: data.contactos,
-            loadingDiag: false,
-          });
+          if (dontChangeRow)
+            this.setState({
+              contacts_api: data.contactos,
+              totalRows: data.total || "0",
+              loadingDiag: false,
+            });
+          else
+            this.setState({
+              contacts_api: data.contactos,
+              totalRows: data.total || "0",
+              currentPage: 0,
+              loadingDiag: false,
+            });
         }
       })
       .catch((error) => {
@@ -522,59 +560,31 @@ class CrearOrganizacion3Contactos extends Component {
     });
   };
 
-  apiSearch = (e) => {
+  apiSearch = (e, dontChangeRow) => {
     e?.preventDefault();
     this.setState({ loadingDiag: true });
-    const nombreOrg = this.state.search_nombre_org + "%";
-    const nombreCon = this.state.search_nombre_con + "%";
-    const apellCon = this.state.search_apell_con + "%";
-    const cargo =
-      this.state.search_cargo_con === ""
-        ? "%"
-        : this.state.search_cargo_con + "%";
-    const email = "%";
-    const pais = "%";
-    const categoria = this.state.cat_org_api.map((obj) => obj.id);
-    const subcat = categoria;
-
-    const palabra1 = items[0];
-    const palabra2 = items[1];
-    const palabra3 = items[2];
-    const palabra4 = this.state.search_cargo_con === "" ? items[0] : items[3];
-    const palabra5 = items[0];
-    const palabra6 = items[0];
-    const palabra7 = items[6];
-    const palabra8 = items[6];
-    const palabra9 = "ilike";
 
     const data = {
-      nombres: nombreCon,
-      apellidos: apellCon,
-      organizacion: nombreOrg,
-      cargo: cargo,
-      email: email,
-      pais: pais,
-      categorias: categoria,
-      subcategorias: subcat,
-      parametros: [
-        palabra1,
-        palabra2,
-        palabra3,
-        palabra4,
-        palabra5,
-        palabra6,
-        palabra7,
-        palabra8,
-        palabra9,
-      ],
+      nombres: this.state.search_nombre_con,
+      organizacion: this.state.search_nombre_org,
+      cargo: this.state.search_apell_con,
+      email: "",
+      categorias: null,
+      subcategorias: null,
+      sector: "",
+      subsector: "",
+      pais: "",
+      departamento: "",
+      ciudad: "",
+      skip: dontChangeRow ? this.state.currentPage * this.state.rowsPerPage : 0,
+      limit: this.state.rowsPerPage,
     };
 
     //console.log(data);
     if (
       this.state.search_nombre_org !== "" ||
       this.state.search_nombre_con !== "" ||
-      this.state.search_apell_con !== "" ||
-      this.state.search_cargo_con !== ""
+      this.state.search_apell_con !== ""
     ) {
       fetch(process.env.REACT_APP_API_URL + "Contacto/Search", {
         method: "POST",
@@ -590,12 +600,21 @@ class CrearOrganizacion3Contactos extends Component {
         .then((data) => {
           //console.log(data);
           if (data.success) {
-            this.setState({
-              currentPage: 0,
-              loadingDiag: false,
-              contacts_api: data.contactos,
-              reqText: false,
-            });
+            if (dontChangeRow)
+              this.setState({
+                loadingDiag: false,
+                contacts_api: data.contactos,
+                reqText: false,
+                totalRows: data.total || 0,
+              });
+            else
+              this.setState({
+                loadingDiag: false,
+                contacts_api: data.contactos,
+                reqText: false,
+                currentPage: 0,
+                totalRows: data.total || 0,
+              });
           }
         })
         .catch((error) => {});
@@ -773,6 +792,7 @@ class CrearOrganizacion3Contactos extends Component {
     const BOX_SIZE_TABLE = this.props.box_size_table;
     const currentPage = this.state.currentPage;
     const rowsPerPage = this.state.rowsPerPage;
+    const totalRows = this.state.totalRows;
     const filter = this.state.currentFilter;
 
     return (
@@ -1490,7 +1510,7 @@ class CrearOrganizacion3Contactos extends Component {
                   style={{ marginTop: 0, marginBottom: BOX_SPACING }}
                 >
                   <TextField
-                    label="Apellidos"
+                    label="Cargo"
                     variant="outlined"
                     name="input_search_apell_con"
                     value={this.state.search_apell_con || ""}
@@ -1531,50 +1551,45 @@ class CrearOrganizacion3Contactos extends Component {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {this.state.contacts_api
-                      .slice(
-                        currentPage * rowsPerPage,
-                        currentPage * rowsPerPage + rowsPerPage
-                      )
-                      .map((obj, i) => (
-                        <TableRow key={i} hover={true}>
-                          <StyledTableCell size="small">
-                            {obj.organizacion}
-                          </StyledTableCell>
-                          <StyledTableCell size="small">
-                            {obj.nombres + " " + obj.apellidos}
-                          </StyledTableCell>
-                          <StyledTableCell size="small">
-                            {obj.cargo === null ? emptyCell : obj.cargo}
-                          </StyledTableCell>
-                          <StyledTableCell size="small">
-                            {obj.observaciones === null
-                              ? emptyCell
-                              : obj.observaciones}
-                          </StyledTableCell>
-                          <StyledTableCell
+                    {this.state.contacts_api.map?.((obj, i) => (
+                      <TableRow key={i} hover={true}>
+                        <StyledTableCell size="small">
+                          {obj.organizacion}
+                        </StyledTableCell>
+                        <StyledTableCell size="small">
+                          {obj.nombres + " " + obj.apellidos}
+                        </StyledTableCell>
+                        <StyledTableCell size="small">
+                          {obj.cargo === null ? emptyCell : obj.cargo}
+                        </StyledTableCell>
+                        <StyledTableCell size="small">
+                          {obj.observaciones === null
+                            ? emptyCell
+                            : obj.observaciones}
+                        </StyledTableCell>
+                        <StyledTableCell
+                          size="small"
+                          style={{ paddingRight: "1rem" }}
+                        >
+                          <IconButton
                             size="small"
-                            style={{ paddingRight: "1rem" }}
+                            className="o-tinyBtn2"
+                            color="primary"
+                            onClick={() =>
+                              this.setState(
+                                {
+                                  temp_id_per: obj.persona_id,
+                                  temp_id_con: obj.contacto_id,
+                                },
+                                this.callApiPersona
+                              )
+                            }
                           >
-                            <IconButton
-                              size="small"
-                              className="o-tinyBtn2"
-                              color="primary"
-                              onClick={() =>
-                                this.setState(
-                                  {
-                                    temp_id_per: obj.persona_id,
-                                    temp_id_con: obj.contacto_id,
-                                  },
-                                  this.callApiPersona
-                                )
-                              }
-                            >
-                              <IconAddCircle />
-                            </IconButton>
-                          </StyledTableCell>
-                        </TableRow>
-                      ))}
+                            <IconAddCircle />
+                          </IconButton>
+                        </StyledTableCell>
+                      </TableRow>
+                    ))}
                     {this.state.contacts[0] === undefined ? (
                       <TableRow>
                         <StyledTableCell>...</StyledTableCell>
@@ -1592,9 +1607,9 @@ class CrearOrganizacion3Contactos extends Component {
                 style={{
                   margin: "0 0 0 auto",
                 }}
-                rowsPerPageOptions={[15, 25, 45]}
+                rowsPerPageOptions={[15, 25, 50]}
                 colSpan={9}
-                count={this.state.contacts_api.length}
+                count={totalRows}
                 rowsPerPage={rowsPerPage}
                 page={currentPage}
                 onChangePage={(e, page) => this.setState({ currentPage: page })}
