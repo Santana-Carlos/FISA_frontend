@@ -241,7 +241,7 @@ class ConsultarContacto extends Component {
     this.setState({ loading: true });
 
     const data = {
-      nombres: this.state.nombre_con,
+      nombres: this.state.nombre_con.replace?.(/  +/g, " "),
       organizacion: this.state.nombre_org,
       cargo: this.state.cargo_con,
       email: this.state.correo_con,

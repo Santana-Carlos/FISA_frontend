@@ -42,17 +42,6 @@ import {
 } from "@material-ui/icons";
 import "../Styles.css";
 
-const items = [
-  "personas.nombres",
-  "personas.apellidos",
-  "organizacions.nombre",
-  "contactos.cargo",
-  "contactos.email",
-  "pais.id",
-  "organizacions.categoria_id",
-  "detalle_categoria_personas.subcategoria_id",
-];
-
 const emptyCell = "-";
 
 class ReporteContacto extends Component {
@@ -198,7 +187,7 @@ class ReporteContacto extends Component {
     this.setState({ loading: true });
 
     const data = {
-      nombres: this.state.nombre_con,
+      nombres: this.state.nombre_con.replace?.(/  +/g, " "),
       organizacion: this.state.nombre_org,
       cargo: this.state.cargo_con,
       email: this.state.correo_con,

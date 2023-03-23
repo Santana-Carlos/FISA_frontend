@@ -45,17 +45,6 @@ import { Autocomplete } from "@material-ui/lab";
 import { Link } from "react-router-dom";
 import "../Styles.css";
 
-const items = [
-  "personas.nombres",
-  "personas.apellidos",
-  "organizacions.nombre",
-  "contactos.cargo",
-  "contactos.email",
-  "pais.id",
-  "organizacions.categoria_id",
-  "detalle_categoria_personas.subcategoria_id",
-];
-
 const emptyCell = "-";
 
 class Consultar3Contactos extends Component {
@@ -563,7 +552,7 @@ class Consultar3Contactos extends Component {
     this.setState({ loadingDiag: true });
 
     const data = {
-      nombres: this.state.search_nombre_con,
+      nombres: this.state.search_nombre_con.replace?.(/  +/g, " "),
       organizacion: this.state.search_nombre_org,
       cargo: this.state.search_apell_con,
       email: "",

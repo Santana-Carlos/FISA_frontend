@@ -37,12 +37,6 @@ import {
 } from "@material-ui/icons";
 import "../Styles.css";
 
-const items = [
-  "organizacions.numero_documento",
-  "organizacions.nombre",
-  "organizacions.razon_social",
-];
-
 const reportType = [
   {
     id: 1,

@@ -41,17 +41,6 @@ import { Switch, Route } from "react-router-dom";
 import CrearTareas from "./CrearTareas";
 import "../Styles.css";
 
-const items = [
-  {
-    id: "organizacion",
-    nombre: "Organización",
-  },
-  {
-    id: "titulo",
-    nombre: "Motivo",
-  },
-];
-
 class ConsultarVisitas extends Component {
   constructor(props) {
     super();

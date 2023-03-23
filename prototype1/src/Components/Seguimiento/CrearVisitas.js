@@ -45,12 +45,6 @@ import { Switch, Route } from "react-router-dom";
 import CrearTareas from "./CrearTareas";
 import "../Styles.css";
 
-const items = [
-  "organizacions.numero_documento",
-  "organizacions.nombre",
-  "organizacions.razon_social",
-];
-
 const emptyCell = "-";
 
 class CrearVisitas extends Component {
